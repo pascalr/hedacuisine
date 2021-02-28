@@ -7,10 +7,10 @@ Rails.application.routes.draw do
   devise_for :users
   get 'home', to: 'home#index'
   resources :menus
+  resources :categories, only: [:create, :update, :destroy]
 
   root :to => 'home#index'
 #  resources :sections
-#  resources :categories
 #  resources :menus
 #  resources :mesh_objs
 #  resources :translations

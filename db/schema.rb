@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_28_130356) do
+ActiveRecord::Schema.define(version: 2021_02_28_131923) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,16 @@ ActiveRecord::Schema.define(version: 2021_02_28_130356) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["menu_id"], name: "index_favorite_menus_on_menu_id"
     t.index ["user_id"], name: "index_favorite_menus_on_user_id"
+  end
+
+  create_table "items", force: :cascade do |t|
+    t.integer "category_id"
+    t.bigint "recipe_id", null: false
+    t.bigint "menu_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["menu_id"], name: "index_items_on_menu_id"
+    t.index ["recipe_id"], name: "index_items_on_recipe_id"
   end
 
   create_table "menus", force: :cascade do |t|
@@ -82,6 +92,8 @@ ActiveRecord::Schema.define(version: 2021_02_28_130356) do
   add_foreign_key "categories", "menus"
   add_foreign_key "favorite_menus", "menus"
   add_foreign_key "favorite_menus", "users"
+  add_foreign_key "items", "menus"
+  add_foreign_key "items", "recipes"
   add_foreign_key "recipe_comments", "recipes"
   add_foreign_key "recipe_comments", "users"
   add_foreign_key "recipe_ratings", "recipes"

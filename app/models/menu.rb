@@ -1,7 +1,7 @@
 class Menu < ApplicationRecord
   belongs_to :user, optional: true
-  #has_many :categories
-  #has_many :favorite_menus
+  has_many :categories
+  has_many :favorite_menus
   def recipes
     categories.map(&:recipes).flatten
   end

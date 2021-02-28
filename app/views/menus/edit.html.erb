@@ -25,9 +25,6 @@
     <div class="field">
       Is cookable: <%= form.check_box :is_cookable %>
     </div>
-    <div class="field">
-      Section: <%= form.collection_select :section_id, Section.order(:name).all, :id, :name %>
-    </div>
     <%= form.submit "Modifier" %>
   <% end %>
 </div>
