@@ -4,9 +4,10 @@ end
 
 Rails.application.routes.draw do
 
+  devise_for :users
   get 'home', to: 'home#index'
 
-  root :to => redirect('/home')
+  root :to => 'home#index'
 #  resources :sections
 #  resources :categories
 #  resources :menus

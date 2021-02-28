@@ -25,16 +25,15 @@
         <%# link_to_highlight_active "Old", items_path %>
         <%# link_to_highlight_active t("mine.robot"), robot_path %>
         <%# link_to_highlight_active t("mine.FAQ"), faqs_path %>
+        <%= link_to_highlight_active "🏠", home_path %>
         <%= link_to_highlight_active "Menus", 'TODO' %>
         <%= link_to_highlight_active "Recettes", 'TODO' %>
         <%= link_to_highlight_active "Ingrédients", 'TODO' %>
-        <%= link_to_highlight_active "Old", 'TODO' %>
         <%= link_to_highlight_active t("mine.robot"), 'TODO' %>
-        <%= link_to_highlight_active t("mine.FAQ"), 'TODO' %>
       </div>
 
       <div>
-        <input id="autocomplete-search-all" type="search" placeholder="Rechercher..." data-recipes="<%= Recipe.all.map {|v| [v.id, v.name] } %>" data-items="<%= Item.all.map {|v| [v.id, v.name] } %>" data-ingredients="<%= Ingredient.all.map {|v| [v.id, v.name] } %>" size="30">
+        <input id="autocomplete-search-all" type="search" placeholder="Rechercher..." size="30">
       </div>
 
       <div>
@@ -50,30 +49,9 @@
         <% else %>
           <%= link_to 'FR', '/fr'+request.path[((request.path[1..-1].index('/')||0)+1)..-1], class: 'topnavlink' %>
         <% end %>
-        <%= link_to_highlight_active t("mine.about"), about_path %>
+        <%= link_to_highlight_active t("mine.about"), 'TODO' %>
+        <%# link_to_highlight_active t("mine.about"), about_path %>
       </div>
-    </div>
-    <div class="mynav">
-      <%# if_admin do %>
-        <%= link_to_highlight_active "My robot", heda_dashboard_path %>
-        <%= link_to_highlight_active "Debug", heda_debug_path %>
-        <%= link_to_highlight_active "Manual", heda_manual_path %>
-        <%= link_to_highlight_active "Real objects", real_objects_path %>
-        <%= link_to_highlight_active "Meshes", mesh_objs_path %>
-        <%= link_to_highlight_active "Hooks", hooks_path %>
-        <%= link_to_highlight_active "Mes recettes", home_path %>
-        <%= link_to_highlight_active t("mine.calendar"), meals_path %>
-        <%= link_to_highlight_active "My images", images_path %>
-        <%= link_to_highlight_active "My inventory", inventory_index_path %>
-        <%= link_to_highlight_active "My ingredients", ingredients_path %>
-        <%= link_to_highlight_active "Lang", languages_path %>
-        <%= link_to_highlight_active "Translations", translations_path %>
-        <%= link_to_highlight_active 'Detected', detected_codes_path %>
-        <%= link_to_highlight_active "Database", database_path %>
-      <%# end %>
-      <% if ENV['COMPILING'].blank? %>
-        <%= link_to_highlight_active "Admin", admin_toggle_admin_path %>
-      <% end %>
     </div>
     <% unless flash.empty? %>
       <script type="text/javascript">
@@ -84,7 +62,7 @@
       </script>
     <% end %>
     <%= yield %>
-    <%= javascript_pack_tag 'autocomplete_pack' %>
+    <%# javascript_pack_tag 'autocomplete_pack' %>
   </body>
   <%= content_for :render_async %>
 </html>
