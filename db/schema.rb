@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_28_131923) do
+ActiveRecord::Schema.define(version: 2021_02_28_141317) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,16 @@ ActiveRecord::Schema.define(version: 2021_02_28_131923) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["menu_id"], name: "index_categories_on_menu_id"
+  end
+
+  create_table "descriptions", force: :cascade do |t|
+    t.text "content"
+    t.bigint "language_id", null: false
+    t.integer "described_id"
+    t.string "described_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["language_id"], name: "index_descriptions_on_language_id"
   end
 
   create_table "favorite_menus", force: :cascade do |t|
@@ -40,6 +50,13 @@ ActiveRecord::Schema.define(version: 2021_02_28_131923) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["menu_id"], name: "index_items_on_menu_id"
     t.index ["recipe_id"], name: "index_items_on_recipe_id"
+  end
+
+  create_table "languages", force: :cascade do |t|
+    t.string "name"
+    t.string "locale"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "menus", force: :cascade do |t|
@@ -90,6 +107,7 @@ ActiveRecord::Schema.define(version: 2021_02_28_131923) do
   end
 
   add_foreign_key "categories", "menus"
+  add_foreign_key "descriptions", "languages"
   add_foreign_key "favorite_menus", "menus"
   add_foreign_key "favorite_menus", "users"
   add_foreign_key "items", "menus"

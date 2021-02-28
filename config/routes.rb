@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 
   post 'users/toggle_favorite_menu'
 
+  resources :descriptions, only: [:create, :update, :destroy]
   resources :recipes, param: 'slug'
   resources :recipe_comments, only: [:create, :update, :destroy]
   resources :recipe_ratings, only: [:create]

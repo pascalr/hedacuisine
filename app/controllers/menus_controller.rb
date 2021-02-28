@@ -18,6 +18,7 @@ class MenusController < ApplicationController
   end
 
   def edit
+    #@description = @menu.descriptions.find_by locale: 
     @category = Category.new
     @recipes = Recipe.order(:name).all # OPTIMIZE: I only need the name. No need to load everything.
   end

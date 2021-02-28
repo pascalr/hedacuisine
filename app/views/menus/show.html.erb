@@ -16,6 +16,10 @@
   </div>
 </div>
 
+<% unless @menu.descriptions.blank? %>
+  <%= @menu.descriptions.first %>
+<% end %>
+
 <!--
 <%# if @attachment %>
   <div id="preview_recipe">

@@ -17,6 +17,28 @@
   <span class="title_icon">🗑️</span>
 </h1>
 
+<h2>
+  Description
+  <span class="toggle_link title_icon" data-toggle_id="add_description_form">✏️</span>
+</h2>
+
+<% if @description.blank? %>
+  <p>Aucune description</p>
+<% else %>
+  <p><%= @description %></p>
+<% end %>
+
+<div id='add_description_form'>
+  <%= form_with(model: Description.new) do |form| %>
+    <div><%= form.collection_select :language_id, Language.order(:name).all, :id, :name %></div>
+    <div><%= form.text_area :content, rows: 10, cols: 120 %></div>
+    <%= form.hidden_field :described_id, value: @menu.id %>
+    <%# FIXME: This is dangerous. Instead use an action inside menus instead of going generic. This way check current_user.menus ........ %>
+    <%= form.hidden_field :described_type, value: 'Menu' %>
+    <div><%= form.submit %></div>
+  <% end %>
+</div>
+
 <div id="edit_menu_name_form" hidden>
   <%= form_with(model: @menu, local: true) do |form| %>
     <div class="field">

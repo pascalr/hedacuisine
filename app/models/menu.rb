@@ -3,6 +3,7 @@ class Menu < ApplicationRecord
   has_many :categories
   has_many :items
   has_many :favorite_menus
+  has_many :descriptions, as: :described
   def recipes
     categories.map(&:recipes).flatten
   end
