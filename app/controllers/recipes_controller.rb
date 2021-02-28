@@ -13,7 +13,6 @@ class RecipesController < ApplicationController
   # GET /recipes/1
   # GET /recipes/1.json
   def show
-    raise "Not implemented..."
   end
 
   # Somehow process is an invalid method name in a Rails controller.
