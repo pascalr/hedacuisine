@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_28_023746) do
+ActiveRecord::Schema.define(version: 2021_02_28_130356) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.bigint "menu_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["menu_id"], name: "index_categories_on_menu_id"
+  end
 
   create_table "favorite_menus", force: :cascade do |t|
     t.bigint "menu_id", null: false
@@ -32,6 +40,33 @@ ActiveRecord::Schema.define(version: 2021_02_28_023746) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "recipe_comments", force: :cascade do |t|
+    t.text "content"
+    t.bigint "recipe_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["recipe_id"], name: "index_recipe_comments_on_recipe_id"
+    t.index ["user_id"], name: "index_recipe_comments_on_user_id"
+  end
+
+  create_table "recipe_ratings", force: :cascade do |t|
+    t.float "rating"
+    t.bigint "recipe_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["recipe_id"], name: "index_recipe_ratings_on_recipe_id"
+    t.index ["user_id"], name: "index_recipe_ratings_on_user_id"
+  end
+
+  create_table "recipes", force: :cascade do |t|
+    t.string "name"
+    t.string "source"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -44,6 +79,11 @@ ActiveRecord::Schema.define(version: 2021_02_28_023746) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "categories", "menus"
   add_foreign_key "favorite_menus", "menus"
   add_foreign_key "favorite_menus", "users"
+  add_foreign_key "recipe_comments", "recipes"
+  add_foreign_key "recipe_comments", "users"
+  add_foreign_key "recipe_ratings", "recipes"
+  add_foreign_key "recipe_ratings", "users"
 end
