@@ -33,7 +33,6 @@
     <div><%= form.collection_select :language_id, Language.order(:name).all, :id, :name %></div>
     <div><%= form.text_area :content, rows: 10, cols: 120 %></div>
     <%= form.hidden_field :described_id, value: @menu.id %>
-    <%# FIXME: This is dangerous. Instead use an action inside menus instead of going generic. This way check current_user.menus ........ %>
     <%= form.hidden_field :described_type, value: 'Menu' %>
     <div><%= form.submit %></div>
   <% end %>

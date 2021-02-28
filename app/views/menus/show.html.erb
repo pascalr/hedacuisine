@@ -16,10 +16,6 @@
   </div>
 </div>
 
-<% unless @menu.descriptions.blank? %>
-  <%= @menu.descriptions.first %>
-<% end %>
-
 <!--
 <%# if @attachment %>
   <div id="preview_recipe">
@@ -50,6 +46,10 @@
 
 <div id="show_item" style="margin: auto; width: 70%;">
   <h1 id="show_item_title"><%= @menu.name %></h1>
+
+  <% unless @menu.descriptions.blank? %>
+    <%= @menu.descriptions.first.content %>
+  <% end %>
 
   <% @menu.categories.each do |category| %>
     <table>
