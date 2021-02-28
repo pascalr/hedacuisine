@@ -1,15 +1,90 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Hedacuisine</title>
+    <title>HedaRecipes</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+    <%= javascript_pack_tag 'application' %>
+    <%# favicon_link_tag asset_path("logo.png") %>
+
   </head>
 
   <body>
+    <% if params[:locale] %>
+      <span id="locale" data-full="<%= params[:locale] %>" data-lang="<%= params[:locale][0..1] %>" hidden></span>
+    <% end %>
+    <div class="topnav">
+      <div>
+        <%# link_to_highlight_active t("mine.home"), home_path %>
+        <%# TODO: Une petite image de maison à côté de menus %>
+        <%# link_to_highlight_active "Menus", menus_path %>
+        <%# link_to_highlight_active "Recettes", recipes_path %>
+        <%# link_to_highlight_active "Ingrédients", ingredients_path %>
+        <%# link_to_highlight_active "Old", items_path %>
+        <%# link_to_highlight_active t("mine.robot"), robot_path %>
+        <%# link_to_highlight_active t("mine.FAQ"), faqs_path %>
+        <%= link_to_highlight_active "Menus", 'TODO' %>
+        <%= link_to_highlight_active "Recettes", 'TODO' %>
+        <%= link_to_highlight_active "Ingrédients", 'TODO' %>
+        <%= link_to_highlight_active "Old", 'TODO' %>
+        <%= link_to_highlight_active t("mine.robot"), 'TODO' %>
+        <%= link_to_highlight_active t("mine.FAQ"), 'TODO' %>
+      </div>
+
+      <div>
+        <input id="autocomplete-search-all" type="search" placeholder="Rechercher..." data-recipes="<%= Recipe.all.map {|v| [v.id, v.name] } %>" data-items="<%= Item.all.map {|v| [v.id, v.name] } %>" data-ingredients="<%= Ingredient.all.map {|v| [v.id, v.name] } %>" size="30">
+      </div>
+
+      <div>
+        <% if user_signed_in? %>
+          <%= link_to current_user.email, edit_user_registration_path, class: "topnavlink" %>
+          <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "topnavlink"  %>
+        <% else %>
+          <%= link_to "Sign up", new_user_registration_path, class: "topnavlink" %>
+          <%= link_to "Login", new_user_session_path, class: "topnavlink" %>
+        <% end %>
+        <% if params[:locale] and params[:locale][0..1] == 'fr' %>
+          <%= link_to 'EN', '/en'+request.path[((request.path[1..-1].index('/')||0)+1)..-1], class: 'topnavlink' %>
+        <% else %>
+          <%= link_to 'FR', '/fr'+request.path[((request.path[1..-1].index('/')||0)+1)..-1], class: 'topnavlink' %>
+        <% end %>
+        <%= link_to_highlight_active t("mine.about"), about_path %>
+      </div>
+    </div>
+    <div class="mynav">
+      <%# if_admin do %>
+        <%= link_to_highlight_active "My robot", heda_dashboard_path %>
+        <%= link_to_highlight_active "Debug", heda_debug_path %>
+        <%= link_to_highlight_active "Manual", heda_manual_path %>
+        <%= link_to_highlight_active "Real objects", real_objects_path %>
+        <%= link_to_highlight_active "Meshes", mesh_objs_path %>
+        <%= link_to_highlight_active "Hooks", hooks_path %>
+        <%= link_to_highlight_active "Mes recettes", home_path %>
+        <%= link_to_highlight_active t("mine.calendar"), meals_path %>
+        <%= link_to_highlight_active "My images", images_path %>
+        <%= link_to_highlight_active "My inventory", inventory_index_path %>
+        <%= link_to_highlight_active "My ingredients", ingredients_path %>
+        <%= link_to_highlight_active "Lang", languages_path %>
+        <%= link_to_highlight_active "Translations", translations_path %>
+        <%= link_to_highlight_active 'Detected', detected_codes_path %>
+        <%= link_to_highlight_active "Database", database_path %>
+      <%# end %>
+      <% if ENV['COMPILING'].blank? %>
+        <%= link_to_highlight_active "Admin", admin_toggle_admin_path %>
+      <% end %>
+    </div>
+    <% unless flash.empty? %>
+      <script type="text/javascript">
+         <% flash.each do |f| %>
+       <% type = f[0].to_s.gsub('alert', 'error').gsub('notice', 'info') %>
+      	 toastr['<%= type %>']('<%= f[1] %>');
+      <% end %>
+      </script>
+    <% end %>
     <%= yield %>
+    <%= javascript_pack_tag 'autocomplete_pack' %>
   </body>
+  <%= content_for :render_async %>
 </html>

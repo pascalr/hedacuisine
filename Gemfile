@@ -3,6 +3,18 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.0'
 
+# -------- MINE --------------
+gem 'ruby-prof' # For profiling
+gem 'devise' # For authentication
+#gem 'serialport' # For communicating with arduino (serial)
+#gem 'filequeue' # For the simulation
+#gem 'mittsu' # For simulation and collision detection
+#gem 'nokogiri', '1.10.10'
+gem "simple_calendar", "~> 2.0" # For a calendar
+gem 'rails-i18n', '~> 6.0.0' # For locale (languages by region)
+gem 'mini_magick' # to analyze image widths
+# ----------------------------
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.4'
 # Use postgresql as the database for Active Record

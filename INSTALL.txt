@@ -1,0 +1,14 @@
+# Go on the postgres sql website and look how to install it locally on ubuntu.
+# This was what was used at the time of the writing:
+#sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+#wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+#sudo apt-get update
+#sudo apt-get -y install postgresql
+
+# Then launch the server.
+sudo service postgresql start
+# Then launch the postgres client in order to create a new role
+sudo -u postgres psql
+# Then create a new role
+create role hedacuisine with createdb login password 'FIXMEINGIT';
+rails db:create
