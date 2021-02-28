@@ -1,0 +1,13 @@
+<% unless recipes.blank? %>
+  <span id="prev-tag-<%= tag_id %>" class="my-tns-control"><%= image_tag "left_arrow.svg", size: "15x15" %></span>
+  <span id="next-tag-<%= tag_id %>" class="my-tns-control"><%= image_tag "right_arrow.svg", size: "15x15" %></span>
+  <div class="items" data-tagid=<%= tag_id %>>
+    <% recipes.each do |recipe| %>
+      <div class="item">
+        <%= link_to image_tag(recipe.image.file, size: '300x210'), recipe %>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <br>
+<% end %>

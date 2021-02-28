@@ -2,4 +2,4 @@
   <%= menu.is_cookable ? image_tag("logo.png", size: "24x24") : "" %>
   <%= link_to menu.name, menu, class: 'not-link' %>
 </span>
-<%= render file: "/home/_recipe_list", locals: {tag_id: menu.id, recipes: menu.recipes.select(&:image)} %><br>
+<%# render file: "/menus/_recipe_list", locals: {tag_id: menu.id, recipes: menu.recipes.select(&:image)} %><br>

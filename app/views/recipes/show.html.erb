@@ -1,0 +1,152 @@
+<style>
+  td {
+    padding-bottom: 0px;
+  }
+</style>
+
+<%= link_to 'Edit', edit_recipe_path(@recipe) %> |
+<% if @recipe.categories.blank? %>
+  Se retrouve dans aucun menu.
+<% else %>
+  Retrouver dans <%= @recipe.categories.map {|c| link_to c.fullpath, c.menu }.join(', ').html_safe %>
+<% end %>
+<%# " > " %>
+<%# @recipe.item.ancestors.each do |ancestor| %>
+  <%# link_to ancestor.name, ancestor %>
+<%# end %>
+<%# link_to @recipe.item.name, @recipe.item %>
+<br><br>
+
+<%= show_error_messages(@recipe) %>
+
+<%= select_tag "pretty_multiple", raw("<option>Recette simple</option><option>Recette double</option><option>Moitié de la recette</option><option>Autre multiple</option>") %>
+<%= label_tag :multiplier, 'Multiple', class: 'inline' %>:
+<%= number_field_tag :multiplier, 1, step: 0.01, size: 4 %>
+<%= select_tag "unit_system", raw("<option>(unité, g, mL)</option><option>(g, mL)</option><option>(unité, cc, cs, t)</option><option>(unité, cc, cs, t, mL)</option>") %>
+<% if_admin do %>
+  <%# link_to "Fetch", heda_run_path(cmd: "fetch #{@recipe.id}"), method: "post", remote: true %>
+<% end %>
+
+
+<div class="recipe_header">
+  <% if @recipe.image %>
+    <div class="recipe_header_image">
+      <%= image_tag(@recipe.image.file, size: '300x210') %>
+    </div>
+  <% elsif @recipe.source_image.attached? %>
+    <div class="recipe_header_image">
+      <%= image_tag(@recipe.source_image, size: '400x400') %>
+    </div>
+  <% end %>
+  
+  <% if @recipe.source %>
+    Source: <%= link_to @recipe.source, @recipe.source %>
+  <% end %>
+
+  <h1>
+    <%= @recipe.name %>
+    <span style="font-size: 0.5em;"><%= @recipe.rating_emoji %></span>
+  </h1>
+
+  <p>
+    <strong>Cuisson:</strong> 🕒 1 heure
+  </p>
+
+  <p>
+    <strong>Weight:</strong>
+    <%= number_with_precision(@recipe.weight, precision: 2) %>g
+  </p>
+  
+  <p>
+    <strong>Costs:</strong>
+    <%= number_with_precision(@recipe.cost, precision: 2) %>$
+  </p>
+  
+  <p>
+    <strong>Portions:</strong> 4
+  </p>
+  
+  <p>
+    <strong>Économies:</strong>
+    2 $
+  </p>
+  
+  <p>
+    <strong>Environnement:</strong> 🌳🌳🌳🌳
+  </p>
+
+</div>
+
+<p>
+  <strong>Ingredients:</strong><br/>
+  
+  <% @recipe.ingredient_quantities.each do |ingredient_quantity| %>
+    <%= pretty_value ingredient_quantity %>
+    
+    <% if ingredient_quantity.unit %>
+      <%= ingredient_quantity.unit.name %>
+    <% end %>
+    
+    <%= link_to ingredient_quantity.ingredient.name, ingredient_quantity.ingredient %>
+
+    <%# number_with_precision(ingredient_quantity.volume, precision: 2, strip_insignificant_zeros: true)  %>
+    <%# number_with_precision(ingredient_quantity.weight, precision: 2, strip_insignificant_zeros: true)  %>
+    <%# number_with_precision(ingredient_quantity.cost, precision: 2, strip_insignificant_zeros: true) %>
+    
+  <br>
+  <% end %>
+
+<br/>
+</p>
+
+<p>
+  <strong>Pretty instructions:</strong>
+  <%= simple_format(@recipe.instructions) %>
+</p>
+
+<p>
+  <strong>Steps:</strong>
+  <table id="instructions_table">
+    <%
+      total = 0.0
+    
+      def pretty_time(time)
+        str = @recipe.total_seconds > 3600.0 ? "%H:%M:%S" : "%M:%S"
+        Time.at(time).utc.strftime(str)
+      end
+    %>
+
+    <% @recipe.steps.each do |step| %>
+      <tr>
+        <td><%= pretty_time(total) %></td>
+        <td><%= step.action_required ? "⚠️" : "" %></td>
+        <td><%= step.command %></td>
+      </tr>
+      <% total += step.seconds %>
+    <% end %>
+    <tr>
+      <td><%= pretty_time(total) %></td>
+      <td>
+      <td>✅</td>
+    </tr>
+  </table>
+</p>
+
+<p>
+  <strong>Rating:</strong>
+  <%= @recipe.rating %>
+</p>
+  
+<p>
+  <strong>Tags:</strong>
+  <%= (@recipe.tags.map {|t| t.name }).join(', ') %>
+</p>
+
+<% if_admin do %>
+  <%= link_to 'Cook', heda_cook_recipe_path(id: @recipe.id), method: :post %> |
+  <%= link_to 'Seed', heda_seed_recipe_path(id: @recipe.id), method: :post %> |
+  <%= link_to 'Process', recipes_do_process_path(id: @recipe.id), method: :post %> |
+  <%= link_to 'Destroy', @recipe, method: :delete, data: { confirm: 'Are you sure?' } %> |
+  <%= link_to 'Edit', edit_recipe_path(@recipe) %> |
+  <%= link_to 'Back', recipes_path %>
+<% end %>

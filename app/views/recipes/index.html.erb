@@ -1,0 +1,9 @@
+<p id="notice"><%= notice %></p>
+
+<%= link_to 'Nouvelle recette', new_recipe_path %>
+
+<h1>Rechercher</h1>
+<h2>Filtres</h2>
+<% Tag.order(:name).all.each do |tag| %>
+  #<%= tag.name %>
+<% end %>

@@ -1,0 +1,26 @@
+<div class="recipe_image">
+  <% if recipe.primary_image %>
+    <div class="primary_image">
+      <% if link_to_recipe %>
+        <%= link_to image_tag(recipe.primary_image.file, size: '300x210'), recipe_path(recipe) %>
+      <% else %>
+        <%= image_tag(recipe.primary_image.file, size: '300x210') %>
+      <% end %>
+    </div>
+    <% if recipe.secondary_image_left %>
+      <div class="secondary_image_left">
+        <%= image_tag(recipe.secondary_image_left.file, size: '97x70') %>
+      </div>
+    <% end %>
+    <% if recipe.secondary_image_middle %>
+      <div class="secondary_image_middle">
+        <%= image_tag(recipe.secondary_image_middle.file, size: '97x70') %>
+      </div>
+    <% end %>
+    <% if recipe.secondary_image_right %>
+      <div class="secondary_image_right">
+        <%= image_tag(recipe.secondary_image_right.file, size: '97x70') %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

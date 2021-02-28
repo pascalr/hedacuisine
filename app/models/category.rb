@@ -1,7 +1,7 @@
 class Category < ApplicationRecord
   belongs_to :menu
-  has_many :menu_items
-  has_many :recipes, through: "menu_items"
+  has_many :items
+  has_many :recipes, through: "items"
 
   def fullpath
     "#{menu.name}/#{name}"

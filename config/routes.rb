@@ -5,9 +5,19 @@ end
 Rails.application.routes.draw do
 
   devise_for :users
+
   get 'home', to: 'home#index'
+
   resources :menus
   resources :categories, only: [:create, :update, :destroy]
+  post 'menus/add_or_create_recipe'
+
+  post 'users/toggle_favorite_menu'
+
+  resources :recipes, param: 'slug'
+  resources :recipe_comments, only: [:create, :update, :destroy]
+  resources :recipe_ratings, only: [:create]
+  delete 'recipe_ratings', to: 'recipe_ratings#destroy'
 
   root :to => 'home#index'
 #  resources :sections
@@ -25,9 +35,6 @@ Rails.application.routes.draw do
 #  # FIXME: These should be nested resources, or maybe it does not matter
 #  resources :menu_items, only: [:create, :destroy]
 #  resources :recipe_images, only: [:create, :destroy]
-#  resources :recipe_ratings, only: [:create]
-#  resources :recipe_comments, only: [:create, :destroy]
-#  delete 'recipe_ratings', to: 'recipe_ratings#destroy'
 #  
 #  post 'heda/change_color'
 #  post 'heda/change_speed'
@@ -49,8 +56,6 @@ Rails.application.routes.draw do
 #
 #  post 'items/add_recipe'
 #  post 'recipes/:id/rate', to: 'recipes#rate'
-#  post 'menus/add_or_create_recipe'
-#  post 'users/toggle_favorite_menu'
 #  
 #  lazy_resources :faqs
 #  resources :images

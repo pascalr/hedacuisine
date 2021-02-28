@@ -66,7 +66,7 @@
     <span class="title_icon">🗑️</span>
   </h3>
   <ul>
-    <% category.menu_items.each do |item| %>
+    <% category.items.each do |item| %>
       <li><%= link_to item.recipe.name, edit_recipe_path(item.recipe) %></li>
     <% end %>
   </ul>

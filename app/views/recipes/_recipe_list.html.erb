@@ -1,0 +1,9 @@
+<span id="prev-tag-<%= tag_id %>" class="my-tns-control"><%= image_tag "left_arrow.svg", size: "15x15" %></span>
+<span id="next-tag-<%= tag_id %>" class="my-tns-control"><%= image_tag "right_arrow.svg", size: "15x15" %></span>
+<div class="recipes" data-tagid=<%= tag_id %>>
+  <% recipes.each do |recipe| %>
+    <div class="recipe">
+      <%= link_to_recipe recipe, edit_recipes %>
+    </div>
+  <% end %>
+</div>

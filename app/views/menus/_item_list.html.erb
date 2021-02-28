@@ -1,0 +1,17 @@
+<% unless items.blank? %>
+  <span id="prev-tag-<%= tag_id %>" class="my-tns-control"><%= image_tag "left_arrow.svg", size: "15x15" %></span>
+  <span id="next-tag-<%= tag_id %>" class="my-tns-control"><%= image_tag "right_arrow.svg", size: "15x15" %></span>
+  <div class="items" data-tagid=<%= tag_id %>>
+    <% items.each do |item| %>
+      <div class="item">
+        <% if item.picture.attached? %>
+          <%= link_to image_tag(item.picture, size: '300x210'), item  %>
+        <% else %>
+          <div class="item_without_picture">
+            <%= link_to item.name, item %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
