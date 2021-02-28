@@ -10,10 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_28_020211) do
+ActiveRecord::Schema.define(version: 2021_02_28_023746) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "favorite_menus", force: :cascade do |t|
+    t.bigint "menu_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["menu_id"], name: "index_favorite_menus_on_menu_id"
+    t.index ["user_id"], name: "index_favorite_menus_on_user_id"
+  end
+
+  create_table "menus", force: :cascade do |t|
+    t.string "name"
+    t.boolean "is_cookable"
+    t.integer "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -27,4 +44,6 @@ ActiveRecord::Schema.define(version: 2021_02_28_020211) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "favorite_menus", "menus"
+  add_foreign_key "favorite_menus", "users"
 end
