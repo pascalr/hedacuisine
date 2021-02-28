@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   devise_for :users
   get 'home', to: 'home#index'
+  resources :menus
 
   root :to => 'home#index'
 #  resources :sections

@@ -1,0 +1,23 @@
+<p id="notice"><%= notice %></p>
+
+<%= link_to 'Nouveau menu', new_menu_path %> |
+Rechercher un menu
+<br><br>
+
+<% if current_user %>
+  <h2 style="font-size: 2em;">Mes menus 🧑‍🍳</h2>
+  <hr>
+  <%= render partial: current_user.menus %>
+  <% unless current_user.favorite_menus.blank? %>
+    <h2 style="font-size: 2em;">Mes favoris ❤️</h2>
+    <hr>
+    <%= render partial: current_user.favorite_menus %>
+  <% end %>
+  <h2 style="font-size: 2em;">Plus de menus</h2>
+  <hr>
+<% end %>
+
+<%= render partial: @menus %>
+<%# Heda (Zéro déchet), Simulation 3D, Test, Aquafaba, Exemple journée 1 %>
+
+<%= javascript_pack_tag "recipe_slider_pack" %>

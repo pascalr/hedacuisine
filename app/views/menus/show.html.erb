@@ -1,0 +1,100 @@
+<div style="display: flex; justify-content: space-between;">
+  <div>
+    <%= link_to 'Edit', edit_menu_path(@menu) %> |
+    <%= link_to 'Menus', menus_path %>
+    <%= " > " %>
+    <%= @menu.name %>
+  </div>
+  <div>
+    <% if @menu.is_user_favorite(current_user) %>
+      <%= link_to "❤️ Enlever de mes favoris", users_toggle_favorite_menu_path(menu_id: @menu.id), method: :post %> |
+    <% else %>
+      <%= link_to "♡ Ajouter à mes favoris", users_toggle_favorite_menu_path(menu_id: @menu.id), method: :post %> |
+    <% end %>
+    Imprimer |
+    Télécharger
+  </div>
+</div>
+
+<!--
+<%# if @attachment %>
+  <div id="preview_recipe">
+    <h2 id="preview_recipe_name"><%# @recipe.name %></h2>
+    <%# image_tag @attachment, size: '640x480', id: "preview_recipe_image" %>
+  </div>
+<%# end %>
+-->
+
+<style>
+#add_comment_form {
+  border: 1px solid black;
+  position: absolute;
+  background-color: white;
+}
+.add_recipe_comment {
+  cursor: pointer;
+}
+</style>
+
+<div id='add_comment_form' hidden>
+  <%= form_with(model: RecipeComment.new, local: true) do |form| %>
+    <%= form.hidden_field :recipe_id, id: 'add_comment_form_recipe_id' %>
+    <div><%= form.text_area :content, cols: 60, rows: 12 %></div>
+    <div><%= form.submit "Ajouter un commentaire" %></div>
+  <% end %>
+</div>
+
+<div id="show_item" style="margin: auto; width: 70%;">
+  <h1 id="show_item_title"><%= @menu.name %></h1>
+
+  <% @menu.categories.each do |category| %>
+    <table>
+      <tbody>
+          <%# next if child.recipes.count == 1%>
+          <tr><td colspan="3"><h2><%= category.name %></h2></td></tr>
+          <% category.recipes.each do |recipe| %>
+            <tr class='recipe_row' data-id='<%= recipe.id %>'>
+              <td class="show_item_rating">
+                <%# TODO: Put all this in a partial. To be reused directly in the recipe. %>
+                <% if current_user and recipe.user_rating(current_user) %>
+                  <div class="rating" style="display: inline-block;" data-id=<%= recipe.id %> <%= "data-rating=#{recipe.user_rating(current_user).rating}" %>></div>
+                  <span style="padding-left: 3px;"><%= link_to 'X', recipe_ratings_path(recipe_id: recipe.id), method: :delete %></span>
+                <% elsif recipe.average_rating %>
+                  <div class="rating" style="display: inline-block;" data-id=<%= recipe.id %> <%= "data-rating=#{recipe.average_rating}" %>></div>
+                  <span style="padding-left: 3px;">(<%= recipe.number_of_ratings %>)</span>
+                <% else %>
+                  <div class="rating" style="display: inline-block;" data-id=<%= recipe.id %>></div>
+                  <span style="padding-left: 3px;">(0)</span>
+                <% end %>
+                <!--
+                <div class="recipe_rating" style="width: 5em;">
+                  <%# recipe.rating_emoji %>
+                  </div>
+                -->
+              </td>
+              <td class="show_item_name">
+                <%= link_to recipe.name, recipe %>
+                <% if recipe.user_comment(current_user) %>
+                  <span style='cursor: pointer;' onclick='alert("<%= recipe.user_comment(current_user).content %>");'>🗒️</span>
+                <% else %>
+                  <!-- TODO: A hidden way to add a note, that appears when you go mouseover -->
+                  <span style="display: inline-block; width: 1em;">
+                    <span class='add_recipe_comment' id='add_recipe_comment_<%= recipe.id %>' hidden>+
+                    </span>
+                  </span>
+                <% end %>
+              </td>
+              <td class="show_item_source"><%= link_to recipe.source, recipe.source if recipe.source %></td>
+            </tr>
+          <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>
+
+<% if current_user %>
+  <%= javascript_pack_tag "recipe_rating" %>
+  <%= javascript_pack_tag "recipe_commentor" %>
+<% else %>
+  <%= javascript_pack_tag "recipe_rating_read_only" %>
+<% end %>

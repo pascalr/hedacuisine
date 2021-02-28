@@ -1,0 +1,88 @@
+<%= link_to 'Show', @menu %>
+
+<style>
+.title_icon {
+  font-size: 0.5em;
+  cursor: pointer;
+}
+.easy-autocomplete {
+  display: inline-block;
+}
+</style>
+
+<h1>
+  Menu: <%= @menu.name %>
+  <span class="toggle_link title_icon" data-toggle_id="edit_menu_name_form">✏️</span>
+  <span class="toggle_link title_icon" data-toggle_id="add_category_form">➕</span>
+  <span class="title_icon">🗑️</span>
+</h1>
+
+<div id="edit_menu_name_form" hidden>
+  <%= form_with(model: @menu, local: true) do |form| %>
+    <div class="field">
+      Nom: <%= form.text_field :name %>
+    </div>
+    <div class="field">
+      Is cookable: <%= form.check_box :is_cookable %>
+    </div>
+    <div class="field">
+      Section: <%= form.collection_select :section_id, Section.order(:name).all, :id, :name %>
+    </div>
+    <%= form.submit "Modifier" %>
+  <% end %>
+</div>
+
+<div id="add_category_form" hidden>
+  <%= form_with(model: @category, local: true) do |form| %>
+    <% if @category.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@category.errors.count, "error") %> prohibited this category from being saved:</h2>
+  
+        <ul>
+          <% @category.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  
+    <div class="field">
+      <%= form.label :name %>
+      <%= form.text_field :name %>
+    </div>
+  
+    <%= form.hidden_field :menu_id, value: @menu.id %>
+  
+    <div class="actions">
+      <%= form.submit %>
+    </div>
+  <% end %>
+</div>
+
+<span id="autocomplete-data" data-recipes="<%= Recipe.all.map {|v| [v.id, v.name] } %>"/>
+
+<% @menu.categories.each do |category| %>
+  <h2>
+    <%= category.name %>
+    <span class="title_icon">✏️</span>
+    <span class="toggle_link title_icon" data-toggle_id="add_recipe_<%= category.id %>">➕</span>
+    <span class="title_icon">🗑️</span>
+  </h3>
+  <ul>
+    <% category.menu_items.each do |item| %>
+      <li><%= link_to item.recipe.name, edit_recipe_path(item.recipe) %></li>
+    <% end %>
+  </ul>
+
+  <div id="add_recipe_<%= category.id %>">
+    <%= form_with(url: menus_add_or_create_recipe_path, local: true) do |form| %>
+      Nom: <%= form.text_field :recipe_name, id: "autocomplete-search-recipe-#{category.id}", class: 'autocomplete-search-recipe', placeholder: "Recette...", size: "40" %><br>
+      Lien: <%= form.text_field :link, size: 40 %><br>
+      <%= hidden_field_tag :category_id, category.id %>
+      <%= form.submit "Ajouter ou créer" %>
+    <% end %>
+  </div>
+<% end %>
+
+
+<%= javascript_pack_tag "menu_editor" %>
