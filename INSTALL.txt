@@ -12,3 +12,12 @@ sudo -u postgres psql
 # Then create a new role
 create role hedacuisine with createdb login password 'FIXMEINGIT';
 rails db:create
+
+# Did at the beginning:
+# heroku create
+# heroku stack:set heroku-18
+# git push heroku main
+# heroku run rake db:migrate
+# heroku run rake db:seed
+# heroku ps:scale web=1
+# heroku open
