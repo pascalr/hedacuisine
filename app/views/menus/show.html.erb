@@ -1,3 +1,25 @@
+<style>
+#add_comment_form {
+  border: 1px solid black;
+  position: absolute;
+  background-color: white;
+}
+.add_recipe_comment {
+  cursor: pointer;
+}
+#show_item {
+  margin: auto;
+  width: 70%;
+}
+/* Use a media query to add a breakpoint at 800px: */
+/* @media screen and (max-width: 800px) {*/
+@media screen and (max-width: 1200px) {
+  #show_item {
+    width: 100%; /* The width is 100%, when the viewport is 800px or smaller */
+  }
+}
+</style>
+
 <div style="display: flex; justify-content: space-between;">
   <div>
     <%= link_to 'Edit', edit_menu_path(@menu) %> |
@@ -25,17 +47,6 @@
 <%# end %>
 -->
 
-<style>
-#add_comment_form {
-  border: 1px solid black;
-  position: absolute;
-  background-color: white;
-}
-.add_recipe_comment {
-  cursor: pointer;
-}
-</style>
-
 <div id='add_comment_form' hidden>
   <%= form_with(model: RecipeComment.new, local: true) do |form| %>
     <%= form.hidden_field :recipe_id, id: 'add_comment_form_recipe_id' %>
@@ -44,7 +55,7 @@
   <% end %>
 </div>
 
-<div id="show_item" style="margin: auto; width: 70%;">
+<div id="show_item">
   <h1 id="show_item_title"><%= @menu.name %></h1>
 
   <% unless @menu.descriptions.blank? %>
