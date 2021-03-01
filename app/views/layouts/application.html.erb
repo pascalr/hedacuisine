@@ -57,7 +57,9 @@
       <% end %>
       </script>
     <% end %>
-    <%= yield %>
+    <div class="mx-2">
+      <%= yield %>
+    </div>
     <%# javascript_pack_tag 'autocomplete_pack' %>
   </body>
   <%= content_for :render_async %>

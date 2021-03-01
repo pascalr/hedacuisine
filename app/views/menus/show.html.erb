@@ -22,7 +22,6 @@
 
 <div style="display: flex; justify-content: space-between;">
   <div>
-    <%= link_to 'Edit', edit_menu_path(@menu) %> |
     <%= link_to 'Menus', menus_path %>
     <%= " > " %>
     <%= @menu.name %>
@@ -34,7 +33,8 @@
       <%= link_to "♡ Ajouter à mes favoris", users_toggle_favorite_menu_path(menu_id: @menu.id), method: :post %> |
     <% end %>
     Imprimer |
-    Télécharger
+    Télécharger |
+    <%= link_to 'Edit', edit_menu_path(@menu) %>
   </div>
 </div>
 
