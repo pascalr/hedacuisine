@@ -1,10 +1,10 @@
 <p id="notice"><%= notice %></p>
 
-<%= link_to 'Nouveau menu', new_menu_path %> |
-Rechercher un menu
-<br><br>
-
 <% if current_user %>
+
+  <%= link_to 'Nouveau menu', new_menu_path %>
+  <br><br>
+
   <h2 style="font-size: 2em;">Mes menus 🧑‍🍳</h2>
   <hr>
   <%= render partial: current_user.menus %>
@@ -13,6 +13,12 @@ Rechercher un menu
     <hr>
     <%= render partial: current_user.favorite_menus %>
   <% end %>
+<% else %>
+
+  <h2 style="font-size: 2em;">Menus Heda 🦾</h2>
+  <hr>
+  <% user = User.first # FIXME: Temporary %>
+  <%= render partial: user.menus %>
 <% end %>
 
 <%# render partial: @menus %>

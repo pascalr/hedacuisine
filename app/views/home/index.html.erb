@@ -1,2 +1,15 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<h1>Bienvenue sur le site de Heda!</h1>
+<p>Sur ce site, on retrouve des <%= link_to "menus", menus_path %>, des recettes et de l'information sur Heda, le robot de cuisine!</p>
+<p>Vous pouvez aussi vous <%= link_to "connecter", new_user_session_path %> ou vous <%= link_to "inscrire", new_user_session_path %> pour gérer vos propres listes de recettes!</p>
+<h2>Liens utils</h2>
+<ul>
+  <li>
+    <h3><%= link_to t("hedacuisine.menu.menus"), menus_path, class: "nav-item nav-link" %></h3>
+    <p>Les menus servent à découvrir et à regrouper des recettes. Ils ressemblent beaucoup à un menu de restaurent!</p>
+  </li>
+  <li>
+    <h3><%= link_to t("hedacuisine.menu.recipes"), 'TODO', class: "nav-item nav-link disabled" %></h3>
+    <p>En général, les recettes sont découvert à travers les <%= link_to "menus", menus_path %>. Il est aussi possible de recherche directement des recettes.</p>
+  </li>
+  <li><h3><%= link_to t("hedacuisine.menu.ingredients"), 'TODO', class: "nav-item nav-link disabled" %></h3></li>
+</ul>

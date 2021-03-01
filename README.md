@@ -1,5 +1,7 @@
 https://aqueous-fortress-30634.herokuapp.com/
 
+TODO : Linker les recettes entre elles. Ça serait tellement plus simple de simplement linker les recettes entre elles. class RelatedRecipe, belongs_to :recipe, belongs_to :other_recipe
+
 TODO: Faire un pull request pour fr-CA pour devise
 signed_up_but_unconfirmed: Un message avec un lien de confirmation vous a été envoyé par mail. Veuillez suivre ce lien pour activer votre compte.
 update_needs_confirmation: Vous avez bien modifié votre compte, mais nous devons vérifier votre nouvelle adresse email. Veuillez consulter vos emails et cliquer sur le lien de confirmation pour confirmer votre nouvelle adresse.

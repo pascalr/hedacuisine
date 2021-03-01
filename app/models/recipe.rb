@@ -6,10 +6,12 @@ class Recipe < ApplicationRecord
   #has_one_attached :source_image
 
   def user_rating(user)
+    return nil unless user
     user.recipe_ratings.find_by(recipe_id: self.id)
   end
 
   def user_comment(user)
+    return nil unless user
     user.recipe_comments.find_by(recipe_id: self.id)
   end
 
