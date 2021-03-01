@@ -21,3 +21,8 @@ rails db:create
 # heroku run rake db:seed
 # heroku ps:scale web=1
 # heroku open
+
+https://blog.makersacademy.com/how-to-install-bootstrap-and-jquery-on-rails-6-da6e810c1b87
+
+# Not so much install, more how to, navbar
+https://getbootstrap.com/docs/4.0/components/navbar/
