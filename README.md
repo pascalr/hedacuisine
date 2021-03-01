@@ -1,5 +1,6 @@
 https://aqueous-fortress-30634.herokuapp.com/
 
+TODO: Faire un pull request pour fr-CA pour devise
 TODO: Responsive menu at the top.
 
 TODO: Add recipes without categories too.

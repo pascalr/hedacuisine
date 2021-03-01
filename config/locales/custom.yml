@@ -6,12 +6,3 @@ fr-CA:
       ingredients: "Ingrédients"
       robot: "Robot"
       about: "À propos"
-  devise:
-    sessions:
-      new:
-        sign_in: "Se connecter"
-    shared:
-      links:
-        sign_up: "S'enregistrer"
-        forgot_your_password: "Mot de passe oublié"
-
