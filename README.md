@@ -1,7 +1,16 @@
 https://aqueous-fortress-30634.herokuapp.com/
 
 TODO: Faire un pull request pour fr-CA pour devise
+signed_up_but_unconfirmed: Un message avec un lien de confirmation vous a été envoyé par mail. Veuillez suivre ce lien pour activer votre compte.
+update_needs_confirmation: Vous avez bien modifié votre compte, mais nous devons vérifier votre nouvelle adresse email. Veuillez consulter vos emails et cliquer sur le lien de confirmation pour confirmer votre nouvelle adresse.
+didn_t_receive_confirmation_instructions: Vous n'avez pas reçu l'email de confirmation ?
+didn_t_receive_unlock_instructions: Vous n'avez pas reçu l'email de déblocage ?
+send_instructions: Vous allez recevoir sous quelques minutes un email comportant des instructions pour déverrouiller votre compte.
+      send_paranoid_instructions: Si votre email existe sur notre base de données, vous recevrez sous quelques minutes un message avec des instructions pour déverrouiller votre compte.
+      unlocked: Votre compte a bien été déverrouillé. Veuillez vous connecter.
 TODO: Responsive menu at the top.
+
+TODO: Remove all the bad recipes.
 
 TODO: Add recipes without categories too.
 
