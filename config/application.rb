@@ -6,10 +6,20 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+# FIXME: Hack for allowing SVG files. While this hack is here, we should **not**
+# allow arbitrary SVG uploads. https://github.com/rails/rails/issues/34665
+ActiveStorage::Engine.config
+.active_storage
+.content_types_to_serve_as_binary
+.delete('image/svg+xml')
+
 module Hedacuisine
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
+
+    # Set the default locale to French canada
+    config.i18n.default_locale = 'fr-CA'
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
