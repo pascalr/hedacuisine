@@ -14,58 +14,41 @@
 
   <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
       <%= link_to "🦾Heda", home_path, class: "navbar-brand" %>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <%= link_to t("hedacuisine.menu.menus"), menus_path, class: "nav-item nav-link" %>
+          <%= link_to t("hedacuisine.menu.recipes"), 'TODO', class: "nav-item nav-link disabled" %>
+          <%= link_to t("hedacuisine.menu.ingredients"), 'TODO', class: "nav-item nav-link disabled" %>
+        </div>
+      </div>
+      <form class="form-inline">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      </form>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <% if params[:locale] and params[:locale][0..1] == 'fr' %>
+            <%= link_to 'EN', url_for(locale: 'en'), class: 'nav-item nav-link' %>
+            <%# url_for(params.merge({:your_new_parameter => value})) maybe this is above does not work %>
+          <% else %>
+            <%= link_to 'FR', url_for(locale: 'fr-CA'), class: 'nav-item nav-link' %>
+          <% end %>
+          <% if user_signed_in? %>
+            <%= link_to current_user.email, edit_user_registration_path, class: "nav-item nav-link" %>
+            <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "nav-item nav-link"  %>
+          <% else %>
+            <%= link_to t("devise.shared.links.sign_up"), new_user_registration_path, class: "nav-item nav-link" %>
+            <%= link_to t("devise.sessions.new.sign_in"), new_user_session_path, class: "nav-item nav-link" %>
+          <% end %>
+        </div>
+      </div>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-    
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-          </li>
-          <li class="nav-item">
-            <%= link_to t("hedacuisine.menu.menus"), menus_path, class: "nav-link" %>
-          </li>
-          <li class="nav-item">
-            <%= link_to t("hedacuisine.menu.recipes"), 'TODO', class: "nav-link disabled" %>
-          </li>
-          <li class="nav-item">
-            <%= link_to t("hedacuisine.menu.ingredients"), 'TODO', class: "nav-link disabled" %>
-          </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-      </div>
     </nav>
 
-
-
-    <% if params[:locale] %>
-      <span id="locale" data-full="<%= params[:locale] %>" data-lang="<%= params[:locale][0..1] %>" hidden></span>
-    <% end %>
-    <div class="topnav">
-
-      <div>
-        <% if user_signed_in? %>
-          <%= link_to current_user.email, edit_user_registration_path, class: "topnavlink" %>
-          <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "topnavlink"  %>
-        <% else %>
-          <%= link_to t("devise.shared.links.sign_up"), new_user_registration_path, class: "topnavlink" %>
-          <%= link_to t("devise.sessions.new.sign_in"), new_user_session_path, class: "topnavlink" %>
-        <% end %>
-        <% if params[:locale] and params[:locale][0..1] == 'fr' %>
-          <%= link_to 'EN', url_for(locale: 'en'), class: 'topnavlink' %>
-          <%# url_for(params.merge({:your_new_parameter => value})) maybe this is above does not work %>
-        <% else %>
-          <%= link_to 'FR', url_for(locale: 'fr-CA'), class: 'topnavlink' %>
-        <% end %>
-        <%= link_to_highlight_active t("hedacuisine.menu.about"), 'TODO' %>
-        <%# link_to_highlight_active t("mine.about"), about_path %>
-      </div>
-    </div>
     <% unless flash.empty? %>
       <script type="text/javascript">
          <% flash.each do |f| %>
