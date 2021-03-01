@@ -8,16 +8,13 @@ Rechercher un menu
   <h2 style="font-size: 2em;">Mes menus 🧑‍🍳</h2>
   <hr>
   <%= render partial: current_user.menus %>
-  <% unless current_user.favorite_menus.blank? %>
+  <% unless true and current_user.favorite_menus.blank? %>
     <h2 style="font-size: 2em;">Mes favoris ❤️</h2>
     <hr>
     <%= render partial: current_user.favorite_menus %>
   <% end %>
-  <h2 style="font-size: 2em;">Plus de menus</h2>
-  <hr>
 <% end %>
 
-<%= render partial: @menus %>
-<%# Heda (Zéro déchet), Simulation 3D, Test, Aquafaba, Exemple journée 1 %>
+<%# render partial: @menus %>
 
-<%= javascript_pack_tag "recipe_slider_pack" %>
+<%# javascript_pack_tag "recipe_slider_pack" %>

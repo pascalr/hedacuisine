@@ -10,7 +10,15 @@ https://www.culinarynutrition.com/packaged-staple-foods-you-can-easily-make-from
 
 TODO: <%# FIXME: WHYYYYY NOT WORKING anymore?!?!?! stylesheet_link_tag 'tiny-slider.css' %>
 
-Later item will have order:integer
+TODO: Be able to move items. Later item will have order:integer
+
+How to link recipes from different languages?
+UserRecipe belongs_to Language.
+HedaRecipe would represent abstracted recipes identified by Heda.
+
+For now we don't care. OOOOOOOOOOOOHOOOOOOOOOOOOOOOK! Only do my menus and my recipes. It's
+all I need anyway to be able to retrieve recipes! Nothing else for now. And then the ability
+to send recipes to friends.
 
 You can complement your pantry ingredients with fresh, seasonal produce and herbs from your local market. That way, you’ll never get bored with the same ingredients.
 https://www.culinarynutrition.com/stocking-a-culinary-nutrition-pantry/
