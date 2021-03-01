@@ -26,20 +26,19 @@
     <%= form.text_field :source, size: 80 %>
   </div>
 
-
-  <div class="field">
-    <%= form.label :source_image %>
-    <%= form.file_field :source_image %>
-  </div>
-
-  <div class="field">
-    <%= form.label :comment %>
-    <%= form.text_area :comment, cols: 120, rows: 12 %>
-  </div>
-
   <%# select_radio_image(form, :recipe, :image_id) %>
   
   <!--
+
+  <div class="field">
+    <%# form.label :source_image %>
+    <%# form.file_field :source_image %>
+  </div>
+
+  <div class="field">
+    <%# form.label :comment %>
+    <%# form.text_area :comment, cols: 120, rows: 12 %>
+  </div>
     <div id='paste-div' contenteditable='true' style="border: 1px solid black; width: 400px; height: 300px;">Paste an image here...</div>
 
   <div class="field">
@@ -72,7 +71,6 @@
   </div>
 <%# end %>
   -->
-
 
   <div class="actions">
     <%= form.submit %>

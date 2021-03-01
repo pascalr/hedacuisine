@@ -12,6 +12,8 @@ TODO: Responsive menu at the top.
 
 TODO: Remove all the bad recipes.
 
+TODO: La page des menus quand tu n'es pas connecté.
+
 TODO: Add recipes without categories too.
 
 TODO: Get all the recipes from here: https://www.culinarynutrition.com/stocking-a-culinary-nutrition-pantry/
