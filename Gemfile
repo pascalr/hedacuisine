@@ -6,6 +6,7 @@ ruby '2.7.0'
 # -------- MINE --------------
 gem 'ruby-prof' # For profiling
 gem 'devise' # For authentication
+gem 'devise-i18n' # For authentication in all languages
 #gem 'serialport' # For communicating with arduino (serial)
 #gem 'filequeue' # For the simulation
 #gem 'mittsu' # For simulation and collision detection

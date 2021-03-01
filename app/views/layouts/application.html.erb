@@ -26,10 +26,10 @@
         <%# link_to_highlight_active t("mine.robot"), robot_path %>
         <%# link_to_highlight_active t("mine.FAQ"), faqs_path %>
         <%= link_to_highlight_active "🏠", home_path %>
-        <%= link_to_highlight_active "Menus", menus_path %>
-        <%= link_to_highlight_active "Recettes", 'TODO' %>
-        <%= link_to_highlight_active "Ingrédients", 'TODO' %>
-        <%= link_to_highlight_active t("mine.robot"), 'TODO' %>
+        <%= link_to_highlight_active t("hedacuisine.menu.menus"), menus_path %>
+        <%= link_to_highlight_active t("hedacuisine.menu.recipes"), 'TODO' %>
+        <%= link_to_highlight_active t("hedacuisine.menu.ingredients"), 'TODO' %>
+        <%= link_to_highlight_active t("hedacuisine.menu.robot"), 'TODO' %>
       </div>
 
       <div>
@@ -41,15 +41,16 @@
           <%= link_to current_user.email, edit_user_registration_path, class: "topnavlink" %>
           <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "topnavlink"  %>
         <% else %>
-          <%= link_to "Sign up", new_user_registration_path, class: "topnavlink" %>
-          <%= link_to "Login", new_user_session_path, class: "topnavlink" %>
+          <%= link_to t("devise.shared.links.sign_up"), new_user_registration_path, class: "topnavlink" %>
+          <%= link_to t("devise.sessions.new.sign_in"), new_user_session_path, class: "topnavlink" %>
         <% end %>
         <% if params[:locale] and params[:locale][0..1] == 'fr' %>
-          <%= link_to 'EN', '/en'+request.path[((request.path[1..-1].index('/')||0)+1)..-1], class: 'topnavlink' %>
+          <%= link_to 'EN', url_for(locale: 'en'), class: 'topnavlink' %>
+          <%# url_for(params.merge({:your_new_parameter => value})) maybe this is above does not work %>
         <% else %>
-          <%= link_to 'FR', '/fr'+request.path[((request.path[1..-1].index('/')||0)+1)..-1], class: 'topnavlink' %>
+          <%= link_to 'FR', url_for(locale: 'fr-CA'), class: 'topnavlink' %>
         <% end %>
-        <%= link_to_highlight_active t("mine.about"), 'TODO' %>
+        <%= link_to_highlight_active t("hedacuisine.menu.about"), 'TODO' %>
         <%# link_to_highlight_active t("mine.about"), about_path %>
       </div>
     </div>
