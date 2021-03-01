@@ -58,7 +58,7 @@
           <tr><td colspan="3"><h2><%= category.name %></h2></td></tr>
           <% category.recipes.each do |recipe| %>
             <tr class='recipe_row' data-id='<%= recipe.id %>'>
-              <td class="show_item_rating">
+              <td class="show_item_rating" style="width: 9em;">
                 <%# TODO: Put all this in a partial. To be reused directly in the recipe. %>
                 <% if current_user and recipe.user_rating(current_user) %>
                   <div class="rating" style="display: inline-block;" data-id=<%= recipe.id %> <%= "data-rating=#{recipe.user_rating(current_user).rating}" %>></div>
