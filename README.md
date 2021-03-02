@@ -1,5 +1,7 @@
 https://aqueous-fortress-30634.herokuapp.com/
 
+TODO: Les sources trop longues, ne pas montrer tout, mettre ... à la fin
+
 TODO: Look at order classes to make the search always at the top when expanding:
 https://getbootstrap.com/docs/4.0/layout/grid/
 
