@@ -1,8 +1,7 @@
 class RenameRecipesToLinks < ActiveRecord::Migration[6.0]
-  def self.up
+  def change
+    #rename_table :[old_table_name], :[new_table_name]
     rename_table :recipes, :links
-  end
-  def self.down
-    rename_table :links, :recipes
+    drop_table(:recipes, if_exists: true)
   end
 end
