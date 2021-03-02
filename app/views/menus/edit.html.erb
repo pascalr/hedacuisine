@@ -88,7 +88,7 @@
   </h3>
   <ul>
     <% category.items.each do |item| %>
-      <li><%= link_to item.recipe.name, edit_recipe_path(item.recipe) %></li>
+      <li><%= link_to item.link.name, edit_link_path(item.link) %></li>
     <% end %>
   </ul>
 

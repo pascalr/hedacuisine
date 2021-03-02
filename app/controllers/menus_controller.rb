@@ -27,8 +27,8 @@ class MenusController < ApplicationController
     category = Category.find params[:category_id]
     recipe = Link.find_by name: params[:recipe_name]
     ActiveRecord::Base.transaction do
-      recipe = Link.create!(name: params[:recipe_name], source: params[:link]) unless recipe
-      Item.create!(category: category, menu: category.menu, recipe: recipe)
+      link = Link.create!(name: params[:recipe_name], source: params[:link]) unless recipe
+      Item.create!(category: category, menu: category.menu, link: link)
     end
     redirect_to edit_menu_path(category.menu)
   end

@@ -2,6 +2,7 @@ https://aqueous-fortress-30634.herokuapp.com/
 http://www.responsinator.com/?url=hedacuisine.com
 
 TODO: An item has a link, or has a recipe
+FIXME: It should be item rating. Not recipe_rating. Ratings applies to recipes and to links.
 
 Ça serait cool de pouvoir programmer les recettes visuellement. Tu prends des ingrédients en input. Tomates, céleris, etc. Tu prends un pot en input. Tu les drags and drop sur la step 1. Tu drag and drop les ingrédients dans le pots pour qu'il les rajoute dans le pots. Ensuite tu drag and drop le pot dans le step 2. Tu drag and drog l'outil pour mélanger. Tu mets l'outils pour mélanger dans le pot. Je viens juste de penser à ça et je trouve ça cool, mais on s'entend que ce n'est vraiment pas une priorité!
 
