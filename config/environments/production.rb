@@ -35,6 +35,14 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
 
+  # FIXME: Temporary for testing on responsinator
+  # Could be a security issue
+  config.action_dispatch.default_headers = {
+    'X-Frame-Options' => 'ALLOWALL',
+    'X-XSS-Protection' => '1; mode=block',
+    'X-Content-Type-Options' => 'nosniff'
+  }
+
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 

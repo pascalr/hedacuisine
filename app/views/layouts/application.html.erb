@@ -15,13 +15,13 @@
   <body>
 
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
       <%= link_to "🦾Heda", home_path, class: "navbar-brand" %>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <%= link_to t("hedacuisine.menu.menus"), menus_path, class: "nav-item nav-link" %>
-          <%= link_to t("hedacuisine.menu.recipes"), 'TODO', class: "nav-item nav-link disabled" %>
-          <%= link_to t("hedacuisine.menu.ingredients"), 'TODO', class: "nav-item nav-link disabled" %>
+          <%= link_to_active t("hedacuisine.menu.menus"), menus_path, class: "nav-item nav-link" %>
+          <%= link_to_active t("hedacuisine.menu.recipes"), 'TODO', class: "nav-item nav-link disabled" %>
+          <%= link_to_active t("hedacuisine.menu.ingredients"), 'TODO', class: "nav-item nav-link disabled" %>
         </div>
       </div>
       <form class="form-inline">
