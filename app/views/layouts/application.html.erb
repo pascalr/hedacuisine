@@ -15,12 +15,13 @@
   <body>
 
 
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark justify-content-between">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="collapse navbar-collapse" style="flex-grow: unset;">
         <div class="navbar-nav">
+          <%= link_to_active "🦾Heda", home_path, class: "navbar-brand" %>
           <%= link_to_active t("hedacuisine.menu.recipes"), menus_path, class: "nav-item nav-link" %>
           <%= link_to_active t("hedacuisine.menu.ingredients"), 'TODO', class: "nav-item nav-link disabled" %>
           <%= link_to_active t("hedacuisine.menu.about"), home_path, class: "nav-item nav-link" %>
@@ -29,7 +30,7 @@
       <form class="form-inline">
         <input class="form-control" type="search" placeholder="Search" aria-label="Search">
       </form>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup2">
+      <div class="collapse navbar-collapse" style="flex-grow: unset;">
         <div class="navbar-nav">
           <% if params[:locale] and params[:locale][0..1] == 'fr' %>
             <%= link_to 'EN', url_for(locale: 'en'), class: 'nav-item nav-link' %>
