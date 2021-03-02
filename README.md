@@ -1,4 +1,9 @@
 https://aqueous-fortress-30634.herokuapp.com/
+http://www.responsinator.com/?url=hedacuisine.com
+
+Tout ce que je fais sur le site présentement est juste personnel et pouvoir montrer aux investisseurs. Parce que par exemple, les liens des recettes que je trouve sont souvent en anglais dans mes menus français. Je ne veux pas focuser sur faire un site de recette. Je veux focuser sur mon robot. Là je fais juste trouver des recettes et montrer ce que ça va avoir l'air. (et faire de quoi de pratique pour moi et Céline)
+
+TODO: Créer un utilisateur Heda. Séparer moi et Heda.
 
 TODO: Les sources trop longues, ne pas montrer tout, mettre ... à la fin
 
