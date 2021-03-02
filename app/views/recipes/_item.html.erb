@@ -1,0 +1,12 @@
+<span>
+  <%= link_to recipe.name, recipe %>
+  <% if recipe.user_comment(current_user) %>
+    <span style='cursor: pointer;' onclick='alert("<%= recipe.user_comment(current_user).content %>");'>🗒️</span>
+  <% else %>
+    <!-- TODO: A hidden way to add a note, that appears when you go mouseover -->
+    <span style="display: inline-block; width: 1em;">
+      <span class='add_recipe_comment' id='add_recipe_comment_<%= recipe.id %>' hidden>+
+      </span>
+    </span>
+  <% end %>
+</span>

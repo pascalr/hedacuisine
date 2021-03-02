@@ -1,5 +1,8 @@
 https://aqueous-fortress-30634.herokuapp.com/
 
+TODO: Look at order classes to make the search always at the top when expanding:
+https://getbootstrap.com/docs/4.0/layout/grid/
+
 TODO : Linker les recettes entre elles. Ça serait tellement plus simple de simplement linker les recettes entre elles. class RelatedRecipe, belongs_to :recipe, belongs_to :other_recipe
 
 TODO: Faire un pull request pour fr-CA pour devise
