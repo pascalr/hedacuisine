@@ -77,7 +77,7 @@
   <% end %>
 </div>
 
-<span id="autocomplete-data" data-recipes="<%= Recipe.all.map {|v| [v.id, v.name] } %>"/>
+<span id="autocomplete-data" data-recipes="<%= Link.all.map {|v| [v.id, v.name] } %>"/>
 
 <% @menu.categories.each do |category| %>
   <h2>

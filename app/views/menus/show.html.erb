@@ -61,11 +61,11 @@
   <% @menu.categories.each do |category| %>
 
     <h2><%= category.name %></h2>
-    <% category.recipes.each do |recipe| %>
+    <% category.links.each do |recipe| %>
       <div class="row no-gutters">
         <div class="col-lg">
-          <%= render partial: 'recipes/rating', locals: {recipe: recipe} %>
-          <%= render partial: 'recipes/item', locals: {recipe: recipe} %>
+          <%= render partial: 'links/rating', locals: {recipe: recipe} %>
+          <%= render partial: 'links/item', locals: {recipe: recipe} %>
         </div>
         <div class="col-lg">
           <div class="show_item_source">

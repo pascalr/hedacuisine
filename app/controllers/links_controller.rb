@@ -1,11 +1,11 @@
-class RecipesController < ApplicationController
+class LinksController < ApplicationController
   before_action :set_recipe, only: [:do_process, :show, :edit, :update, :destroy, :rate]
   skip_before_action :authenticate_user!, only: [:show]
 
   def index
     #@tags = Tag.order(priority: :desc).where("priority >= 400")
     #@tags = Tag.order(priority: :desc)
-    @recipes = Recipe.order(:name).all
+    @recipes = Link.order(:name).all
     @items = Item.order(:name).all
   end
 
@@ -13,7 +13,7 @@ class RecipesController < ApplicationController
   end
 
   def new
-    @recipe = Recipe.new
+    @recipe = Link.new
   end
 
   def edit
@@ -51,9 +51,9 @@ class RecipesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_recipe
       if params[:slug]
-        @recipe = Recipe.find(params[:slug].split('-')[0])
+        @recipe = Link.find(params[:slug].split('-')[0])
       else
-        @recipe = Recipe.find(params[:id])
+        @recipe = Link.find(params[:id])
       end
     end
 
