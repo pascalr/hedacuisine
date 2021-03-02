@@ -2,8 +2,8 @@
 
 one:
   name: MyString
-  source: MyString
+  instructions: MyText
 
 two:
   name: MyString
-  source: MyString
+  instructions: MyText
