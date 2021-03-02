@@ -12,13 +12,13 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :name %>
+    <%= form.label :name %><br>
     <%= form.text_field :name %>
   </div>
 
   <div class="field">
-    <%= form.label :instructions %>
-    <%= form.text_area :instructions %>
+    <%= form.label :instructions %><br>
+    <%= form.text_area :instructions, cols: 80, rows: 8 %>
   </div>
 
   <div class="actions">

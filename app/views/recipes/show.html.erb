@@ -1,14 +1,15 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @recipe.name %>
-</p>
-
-<p>
-  <strong>Instructions:</strong>
-  <%= @recipe.instructions %>
-</p>
-
 <%= link_to 'Edit', edit_recipe_path(@recipe) %> |
 <%= link_to 'Back', recipes_path %>
+
+<div class="responsive-margins-lg">
+  <h1><%= @recipe.name %></h1>
+  
+  <strong>Instructions:</strong>
+  <p>
+    <%= simple_format @recipe.instructions %>
+  </p>
+  
+  <br>
+</div>
