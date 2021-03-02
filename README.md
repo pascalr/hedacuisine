@@ -1,8 +1,13 @@
 https://aqueous-fortress-30634.herokuapp.com/
 http://www.responsinator.com/?url=hedacuisine.com
+
+TODO: Rename Recipe to RecipeLink
+
+TODO: Get all the recipes from here: https://www.culinarynutrition.com/stocking-a-culinary-nutrition-pantry/
+https://www.culinarynutrition.com/packaged-staple-foods-you-can-easily-make-from-scratch/
 https://lovingitvegan.com/category/entree/page/2/ # Some great vegan recipes!
 
-FIXME: By putting the database inside git, someone could know my password maybe. I don't know how it is stored.
+FIXME: By putting the database inside git, someone could know my password maybe. It's encrypted but is it secure?
 
 Tout ce que je fais sur le site présentement est juste personnel et pouvoir montrer aux investisseurs. Parce que par exemple, les liens des recettes que je trouve sont souvent en anglais dans mes menus français. Je ne veux pas focuser sur faire un site de recette. Je veux focuser sur mon robot. Là je fais juste trouver des recettes et montrer ce que ça va avoir l'air. (et faire de quoi de pratique pour moi et Céline)
 
@@ -14,25 +19,6 @@ TODO: Look at order classes to make the search always at the top when expanding:
 https://getbootstrap.com/docs/4.0/layout/grid/
 
 TODO : Linker les recettes entre elles. Ça serait tellement plus simple de simplement linker les recettes entre elles. class RelatedRecipe, belongs_to :recipe, belongs_to :other_recipe
-
-TODO: Faire un pull request pour fr-CA pour devise
-signed_up_but_unconfirmed: Un message avec un lien de confirmation vous a été envoyé par mail. Veuillez suivre ce lien pour activer votre compte.
-update_needs_confirmation: Vous avez bien modifié votre compte, mais nous devons vérifier votre nouvelle adresse email. Veuillez consulter vos emails et cliquer sur le lien de confirmation pour confirmer votre nouvelle adresse.
-didn_t_receive_confirmation_instructions: Vous n'avez pas reçu l'email de confirmation ?
-didn_t_receive_unlock_instructions: Vous n'avez pas reçu l'email de déblocage ?
-send_instructions: Vous allez recevoir sous quelques minutes un email comportant des instructions pour déverrouiller votre compte.
-      send_paranoid_instructions: Si votre email existe sur notre base de données, vous recevrez sous quelques minutes un message avec des instructions pour déverrouiller votre compte.
-      unlocked: Votre compte a bien été déverrouillé. Veuillez vous connecter.
-TODO: Responsive menu at the top.
-
-TODO: Remove all the bad recipes.
-
-TODO: La page des menus quand tu n'es pas connecté.
-
-TODO: Add recipes without categories too.
-
-TODO: Get all the recipes from here: https://www.culinarynutrition.com/stocking-a-culinary-nutrition-pantry/
-https://www.culinarynutrition.com/packaged-staple-foods-you-can-easily-make-from-scratch/
 
 TODO: <%# FIXME: WHYYYYY NOT WORKING anymore?!?!?! stylesheet_link_tag 'tiny-slider.css' %>
 
