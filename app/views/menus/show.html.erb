@@ -7,23 +7,12 @@
 .add_recipe_comment {
   cursor: pointer;
 }
-#show_item {
-  margin: auto;
-  width: 70%;
-}
 .show_item_source > a {
   color: #777777;
 }
-/* Use a media query to add a breakpoint at 800px: */
-/* @media screen and (max-width: 800px) {*/
-@media screen and (max-width: 1200px) {
-  #show_item {
-    width: 100%; /* The width is 100%, when the viewport is 800px or smaller */
-  }
-}
 </style>
 
-<div style="display: flex; justify-content: space-between;">
+<div class="d-flex justify-content-between">
   <div>
     <%= link_to 'Menus', menus_path %>
     <%= " > " %>
@@ -62,7 +51,7 @@
   <% end %>
 </div>
 
-<div id="show_item">
+<div class="responsive-margins-lg">
   <h1 id="show_item_title"><%= @menu.name %></h1>
 
   <% unless @menu.descriptions.blank? %>

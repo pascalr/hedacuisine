@@ -1,5 +1,6 @@
 class RecipesController < ApplicationController
   before_action :set_recipe, only: [:do_process, :show, :edit, :update, :destroy, :rate]
+  skip_before_action :authenticate_user!, only: [:show]
 
   def index
     #@tags = Tag.order(priority: :desc).where("priority >= 400")

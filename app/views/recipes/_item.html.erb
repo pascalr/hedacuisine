@@ -1,5 +1,9 @@
 <span>
-  <%= link_to recipe.name, recipe %>
+  <% if recipe.source %>
+    <%= link_to recipe.name, recipe.source %>
+  <% else %>
+    <%= link_to recipe.name, recipe %>
+  <% end %>
   <% if recipe.user_comment(current_user) %>
     <span style='cursor: pointer;' onclick='alert("<%= recipe.user_comment(current_user).content %>");'>🗒️</span>
   <% else %>

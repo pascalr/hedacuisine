@@ -1,25 +1,27 @@
 <p id="notice"><%= notice %></p>
 
-<% if current_user %>
-
-  <%= link_to 'Nouveau menu', new_menu_path %>
-  <br><br>
-
-  <h2 style="font-size: 2em;">Mes menus 🧑‍🍳</h2>
-  <hr>
-  <%= render partial: current_user.menus %>
-  <% unless true and current_user.favorite_menus.blank? %>
-    <h2 style="font-size: 2em;">Mes favoris ❤️</h2>
+<div class="responsive-margins-sm">
+  <% if current_user %>
+  
+    <%= link_to 'Nouveau menu', new_menu_path %>
+    <br><br>
+  
+    <h2 style="font-size: 2em;">Mes menus 🧑‍🍳</h2>
     <hr>
-    <%= render partial: current_user.favorite_menus %>
+    <%= render partial: current_user.menus %>
+    <% unless true and current_user.favorite_menus.blank? %>
+      <h2 style="font-size: 2em;">Mes favoris ❤️</h2>
+      <hr>
+      <%= render partial: current_user.favorite_menus %>
+    <% end %>
+  <% else %>
+  
+    <h2 style="font-size: 2em;">Menus Heda 🦾</h2>
+    <hr>
+    <% user = User.first # FIXME: Temporary %>
+    <%= render partial: user.menus %>
   <% end %>
-<% else %>
-
-  <h2 style="font-size: 2em;">Menus Heda 🦾</h2>
-  <hr>
-  <% user = User.first # FIXME: Temporary %>
-  <%= render partial: user.menus %>
-<% end %>
+</div>
 
 <%# render partial: @menus %>
 
