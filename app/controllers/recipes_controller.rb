@@ -1,5 +1,6 @@
 class RecipesController < ApplicationController
   before_action :set_recipe, only: %i[ show edit update destroy do_process ]
+  skip_before_action :only_admin!
 
   # GET /recipes or /recipes.json
   def index

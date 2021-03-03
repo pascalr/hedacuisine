@@ -1,6 +1,7 @@
 class LinksController < ApplicationController
   before_action :set_recipe, only: [:do_process, :show, :edit, :update, :destroy, :rate]
   skip_before_action :authenticate_user!, only: [:show]
+  skip_before_action :only_admin!
 
   def index
     #@tags = Tag.order(priority: :desc).where("priority >= 400")

@@ -1,4 +1,5 @@
 class RecipeCommentsController < ApplicationController
+  skip_before_action :only_admin!
   def create
     #@recipe_comment = RecipeComment.new(recipe_comment_params)
     #@recipe_comment.save!

@@ -1,6 +1,7 @@
 class DescriptionsController < ApplicationController
 
   before_action :validate_allowed
+  skip_before_action :only_admin!
 
   def validate_allowed
   end

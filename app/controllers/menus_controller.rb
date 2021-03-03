@@ -1,6 +1,7 @@
 class MenusController < ApplicationController
   before_action :set_menu, only: [:show, :edit, :update, :destroy]
   skip_before_action :authenticate_user!, only: [:index, :show]
+  skip_before_action :only_admin!
 
   def index
     @menus = Menu.where(user_id: nil)

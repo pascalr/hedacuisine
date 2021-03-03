@@ -1,5 +1,6 @@
 class CategoriesController < ApplicationController
   before_action :set_category, only: [:destroy]
+  skip_before_action :only_admin!
 
   def create
     @category = Category.new(category_params)
