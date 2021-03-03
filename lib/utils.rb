@@ -254,8 +254,9 @@ module Utils
   end
   
   def parse_instruction(sentence)
-    # FIXME: Parse comments correctly, they are not only at the beginning.
-    nil if sentence.blank? or sentence.start_with?("#")
+
+    sentence = sentence.gsub(/#.*/, '')
+    return nil if sentence.blank?
     words = sentence.split(' ', 2)
     cmd = words[0].to_sym
     args = (words[1] || '').split(',').map(&:strip).map {|a| parse_arg(a)}
