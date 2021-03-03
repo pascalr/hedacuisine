@@ -1,5 +1,5 @@
 class RecipesController < ApplicationController
-  before_action :set_recipe, only: %i[ show edit update destroy ]
+  before_action :set_recipe, only: %i[ show edit update destroy do_process ]
 
   # GET /recipes or /recipes.json
   def index
@@ -17,6 +17,13 @@ class RecipesController < ApplicationController
 
   # GET /recipes/1/edit
   def edit
+  end
+  
+  # Somehow process is an invalid method name in a Rails controller.
+  def do_process
+    require Rails.root().join("lib").join("recipe_preprocessor.rb")
+    RecipeProcessor.new.process(@recipe)
+    redirect_to recipe_path(@recipe)
   end
 
   # POST /recipes or /recipes.json
@@ -59,7 +66,11 @@ class RecipesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_recipe
-      @recipe = Recipe.find(params[:id])
+      if params[:slug]
+        @recipe = Recipe.find(params[:slug].split('-')[0])
+      else
+        @recipe = Recipe.find(params[:id])
+      end
     end
 
     # Only allow a list of trusted parameters through.

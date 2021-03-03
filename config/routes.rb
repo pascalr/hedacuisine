@@ -4,7 +4,6 @@ end
 
 Rails.application.routes.draw do
 
-  resources :recipes
   devise_for :users
 
   get 'home', to: 'home#index'
@@ -20,6 +19,13 @@ Rails.application.routes.draw do
   resources :recipe_comments, only: [:create, :update, :destroy]
   resources :recipe_ratings, only: [:create]
   delete 'recipe_ratings', to: 'recipe_ratings#destroy'
+  resources :recipes
+  #post 'recipes/do_process'
+  resources :recipes, param: 'slug' do
+    member do
+      patch 'do_process', param: 'slug'
+    end
+  end
 
   root :to => 'home#index'
 #  resources :sections

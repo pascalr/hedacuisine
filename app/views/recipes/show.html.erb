@@ -1,6 +1,7 @@
 <p id="notice"><%= notice %></p>
 
 <%= link_to 'Edit', edit_recipe_path(@recipe) %> |
+<%= link_to 'Process', do_process_recipe_path(@recipe), method: :patch %> |
 <%= link_to 'Back', recipes_path %>
 
 <div class="responsive-margins-lg">
