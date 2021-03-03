@@ -10,7 +10,7 @@ def parseIngredient(quantity, unit_or_ingredient_name, ingredient_name)
   end
 
   ingredient_name = ingredient_name || unit_or_ingredient_name
-  food = Food.where('lower(name) = ?', ingredient_name).first
+  food = Food.where('lower(name) = ? or lower(plural) = ?', ingredient_name, ingredient_name).first
   raise "Invalid ingredient #{ingredient_name}" unless food
 
   Ingredient.build(quantity, unit, food)

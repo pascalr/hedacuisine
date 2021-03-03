@@ -13,10 +13,15 @@
     <ul>
       <% @recipe.ingredients.each do |ingredient| %>
         <% unit = current_unit_system.unit_for(ingredient.food) %>
+        <% value = ingredient.value_for(unit) %>
         <li>
-          <%= pretty_ingredient_value ingredient, unit %>
-          <%= unit.name if unit and not unit.is_unitary? %>
-          <%= ingredient.name %>
+          <%= pretty_ingredient_value value, unit %>
+          <% if unit and not unit.is_unitary? %>
+            <%= unit.name %>
+            <%= ingredient.name %>
+          <% else %>
+            <%= (value.to_i >= 2) ? ingredient.plural : ingredient.name %>
+          <% end %>
         </li>
       <% end %>
     </ul>

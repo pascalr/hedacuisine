@@ -3,6 +3,7 @@ class Ingredient < ApplicationRecord
   belongs_to :food
 
   delegate :name, to: :food
+  delegate :plural, to: :food
 
   def self.weight_of(value, unit, food)
     return value * food.unit_weight unless unit

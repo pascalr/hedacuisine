@@ -6,6 +6,7 @@
   <thead class="thead-dark">
     <tr>
       <th>Nom</th>
+      <th>Pluriel</th>
       <th>Col</th>
       <th>Poids unitaire</th>
       <th>Densité<br/>(g/mL)</th>
@@ -19,6 +20,7 @@
       <%= form_with(model: food, local: true) do |form| %>
         <tr>
           <td><%= form.text_field :name, size: 15 %></td>
+          <td><%= form.text_field :plural, size: 15 %></td>
           <td><%= form.color_field :color_string %></td>
           <td><%= form.number_field :unit_weight, precision: 2, size: 3 %></td>
           <td><%= form.number_field :density, precision: 2, size: 3 %></td>

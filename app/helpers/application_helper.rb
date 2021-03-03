@@ -13,8 +13,7 @@ module ApplicationHelper
     link_to name, path, options
   end
 
-  def pretty_ingredient_value(ing, unit)
-    value = ing.value_for(unit)
+  def pretty_ingredient_value(value, unit)
     return number_with_precision value, precision: 2, strip_insignificant_zeros: true if unit.blank? or not unit.show_fraction
     #fractions = [1/8r, 1/4r, 1/3r, 3/8r, 1/2r, 5/8r, 2/3r, 3/4r, 7/8r]
     fractions = [0, 1/4r, 1/3r, 1/2r, 2/3r, 3/4r, 7/8r, 1]
