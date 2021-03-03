@@ -18,8 +18,8 @@ class UnitSystem < ApplicationRecord
   end
 
   def unit_for(ingredient)
-    return volume_unit if ingredient.is_liquid and volume_unit
     return unitary_unit if ingredient.is_unitary and unitary_unit
+    return volume_unit if ingredient.is_liquid and volume_unit
     weight_unit
   end
 

@@ -15,7 +15,7 @@
         <% unit = current_unit_system.unit_for(ingredient.food) %>
         <li>
           <%= pretty_ingredient_value ingredient, unit %>
-          <%= unit.name if unit %>
+          <%= unit.name if unit and not unit.is_unitary? %>
           <%= ingredient.name %>
         </li>
       <% end %>
