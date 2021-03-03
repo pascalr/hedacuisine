@@ -12,7 +12,12 @@
     <strong>Ingredients:</strong>
     <ul>
       <% @recipe.ingredients.each do |ingredient| %>
-        <li><%= ingredient.name %></li>
+        <% unit = current_unit_system.unit_for(ingredient.food) %>
+        <li>
+          <%= pretty_ingredient_value ingredient, unit %>
+          <%= unit.name if unit %>
+          <%= ingredient.name %>
+        </li>
       <% end %>
     </ul>
   <% end %>

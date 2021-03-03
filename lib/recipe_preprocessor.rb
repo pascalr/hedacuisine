@@ -7,15 +7,13 @@ def parseIngredient(quantity, unit_or_ingredient_name, ingredient_name)
   if (ingredient_name)
     unit = Unit.where('lower(name) = ?', unit_or_ingredient_name).first
     raise "Invalid unit #{unit_or_ingredient_name}" unless unit
-  else
-    unit = Unit.unitary
   end
 
   ingredient_name = ingredient_name || unit_or_ingredient_name
   food = Food.where('lower(name) = ?', ingredient_name).first
   raise "Invalid ingredient #{ingredient_name}" unless food
 
-  Ingredient.new(weight: food.weight_for(quantity, unit), food: food)
+  Ingredient.build(quantity, unit, food)
 end
 
 # Defines specific rules for some instructions.

@@ -2,12 +2,6 @@ class Food < ApplicationRecord
 
   has_many :ingredients
   has_many :recipes, through: :ingredients
-
-  def weight_for(value, unit)
-    return value if unit.is_weight
-    return value/self.density if unit.is_volume
-    return value * self.unit_weight
-  end
   
   def color_string
     return nil if color.nil?
@@ -18,8 +12,10 @@ class Food < ApplicationRecord
     self.color = str[1..-1].to_i(16)
   end
 
+  # FIXME: Should probably be unitary_weight instead of unit_weight.
+
   def is_unitary
-    !self.is_volume and !self.is_weight
+    !self.unit_weight.blank?
   end
   alias is_unitary? is_unitary
 
