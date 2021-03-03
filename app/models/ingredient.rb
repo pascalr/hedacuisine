@@ -6,9 +6,9 @@ class Ingredient < ApplicationRecord
 
   def self.weight_of(value, unit, food)
     return value * food.unit_weight unless unit
-    return value if unit.is_weight
-    return value * food.density if unit.is_volume
-    return value * food.unit_weight
+    return value * unit.value if unit.is_weight
+    return value * food.density * unit.value if unit.is_volume
+    return value * food.unit_weight * unit.value
   end
 
   def self.build(value, unit, food)
