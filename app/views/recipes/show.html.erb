@@ -2,7 +2,8 @@
 
 <%= link_to 'Edit', edit_recipe_path(@recipe) %> |
 <%= link_to 'Process', do_process_recipe_path(@recipe), method: :patch %> |
-<%= link_to 'Back', recipes_path %>
+<%= link_to 'Back', recipes_path %> |
+<%= select_tag "unit_system", raw("<option>(unité, g, mL)</option><option>(g, mL)</option><option>(unité, cc, cs, t)</option><option>(unité, cc, cs, t, mL)</option>") %>
 
 <div class="responsive-margins-lg">
   <h1><%= @recipe.name %></h1>
