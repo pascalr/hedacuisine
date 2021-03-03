@@ -1,6 +1,10 @@
 https://aqueous-fortress-30634.herokuapp.com/
 http://www.responsinator.com/?url=hedacuisine.com
 
+TODO: Le user contrôle ses aliments. Par défault, tous les remplacements possibles sont activés, mais sont sur le mode demander. Tu peux choisir: activer, demander ou supprimer.
+
+TODO: Login by token (by email since I don't have SSL!) https://stackoverflow.com/questions/36733524/devise-token-auth-and-devise-login-with-username-and-email
+
 TODO: Units can't be both weight and volume. Or maybe they can. Sometimes they are but maybe it's hard to consider this case. Simply not allow it?
 
 TODO: Process recipes like before. Add units. Add ingredients. They are heda, users can't add
