@@ -4,6 +4,7 @@ end
 
 Rails.application.routes.draw do
 
+  resources :foods
   get 'meta/index'
   resources :units
   devise_for :users

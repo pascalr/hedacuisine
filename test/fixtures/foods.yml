@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  density: 1.5
+  unit_weight: 1.5
+  color: 1
+  is_liquid: false
+
+two:
+  name: MyString
+  density: 1.5
+  unit_weight: 1.5
+  color: 1
+  is_liquid: false

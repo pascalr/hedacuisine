@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_03_144615) do
+ActiveRecord::Schema.define(version: 2021_03_03_152948) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,16 @@ ActiveRecord::Schema.define(version: 2021_03_03_144615) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["menu_id"], name: "index_favorite_menus_on_menu_id"
     t.index ["user_id"], name: "index_favorite_menus_on_user_id"
+  end
+
+  create_table "foods", force: :cascade do |t|
+    t.string "name"
+    t.float "density"
+    t.float "unit_weight"
+    t.integer "color"
+    t.boolean "is_liquid"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "items", force: :cascade do |t|

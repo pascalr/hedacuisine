@@ -1,0 +1,54 @@
+<%= render partial: 'meta/nav' %>
+
+<p id="notice"><%= notice %></p>
+
+<h1>Ingrédients</h1>
+
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th>Nom</th>
+      <th>Col</th>
+      <th>Poids unitaire</th>
+      <th>Densité<br/>(g/mL)</th>
+      <th>Liq</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @foods.each do |food| %>
+      <%= form_with(model: food, local: true) do |form| %>
+        <tr>
+          <td><%= form.text_field :name, size: 15 %></td>
+          <td><%= form.color_field :color_string %></td>
+          <td><%= form.number_field :unit_weight, precision: 2, size: 3 %></td>
+          <td><%= form.number_field :density, precision: 2, size: 3 %></td>
+          <td><%= form.check_box :is_liquid %></td>
+          <td><%= form.submit "Mettre à jour" %></td>
+          <td><%= link_to 'Show', food %></td>
+          <td><%= link_to 'Destroy', food, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<span class="toggle-link title_icon" data-toggle_id="add_unit">➕</span>
+<div id="add_unit">
+  <%= form_with(model: Food.new, local: true) do |form| %>
+    <%= form.label :name %>
+    <%= form.text_field :name, size: 15 %>
+    <%= form.label :color %>
+    <%= form.color_field :color_string %>
+    <%= form.label :unit_weight %>
+    <%= form.number_field :unit_weight, precision: 2, size: 3 %>
+    <%= form.label :density %>
+    <%= form.number_field :density, precision: 2, size: 3 %>
+    <%= form.label :is_liquid %>
+    <%= form.check_box :is_liquid %>
+    <%= form.submit %>
+  <% end %>
+</div>
+
+<%= javascript_pack_tag "editor" %>
