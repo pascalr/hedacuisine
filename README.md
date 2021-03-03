@@ -1,6 +1,8 @@
 https://aqueous-fortress-30634.herokuapp.com/
 http://www.responsinator.com/?url=hedacuisine.com
 
+TODO: Units can't be both weight and volume. Or maybe they can. Sometimes they are but maybe it's hard to consider this case. Simply not allow it?
+
 TODO: Process recipes like before. Add units. Add ingredients. They are heda, users can't add
 any. At least for now. I want to try to add all ingredients anyway. But I will have to do something about ingredients anyway. Aliases probably. (Lait végétal => Lait d'avoine) This is how you decide your preferences. (Huile végétal => Huile de canola, Huile de tournesol, ...) Units and ingredients belong to a language. Complete the french language first. Maybe link between languages when it makes sense between ingredients, when it is translable.
 

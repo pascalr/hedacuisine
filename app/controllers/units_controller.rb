@@ -6,54 +6,20 @@ class UnitsController < ApplicationController
     @units = Unit.all
   end
 
-  # GET /units/1 or /units/1.json
-  def show
-  end
-
-  # GET /units/new
-  def new
-    @unit = Unit.new
-  end
-
-  # GET /units/1/edit
-  def edit
-  end
-
-  # POST /units or /units.json
   def create
     @unit = Unit.new(unit_params)
-
-    respond_to do |format|
-      if @unit.save
-        format.html { redirect_to @unit, notice: "Unit was successfully created." }
-        format.json { render :show, status: :created, location: @unit }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @unit.errors, status: :unprocessable_entity }
-      end
-    end
+    @unit.save!
+    redirect_to units_path
   end
 
-  # PATCH/PUT /units/1 or /units/1.json
   def update
-    respond_to do |format|
-      if @unit.update(unit_params)
-        format.html { redirect_to @unit, notice: "Unit was successfully updated." }
-        format.json { render :show, status: :ok, location: @unit }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @unit.errors, status: :unprocessable_entity }
-      end
-    end
+    @unit.update!(unit_params)
+    redirect_to units_path
   end
 
-  # DELETE /units/1 or /units/1.json
   def destroy
     @unit.destroy
-    respond_to do |format|
-      format.html { redirect_to units_url, notice: "Unit was successfully destroyed." }
-      format.json { head :no_content }
-    end
+    redirect_to units_path
   end
 
   private

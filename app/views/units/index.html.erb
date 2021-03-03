@@ -1,5 +1,3 @@
-<%= render partial: 'meta/nav' %>
-
 <p id="notice"><%= notice %></p>
 
 <h1>Units</h1>
@@ -12,28 +10,46 @@
       <th>Is weight</th>
       <th>Is volume</th>
       <th>Show fraction</th>
-      <th>Language</th>
       <th colspan="3"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @units.each do |unit| %>
-      <tr>
-        <td><%= unit.name %></td>
-        <td><%= unit.value %></td>
-        <td><%= unit.is_weight %></td>
-        <td><%= unit.is_volume %></td>
-        <td><%= unit.show_fraction %></td>
-        <td><%= unit.language_id %></td>
-        <td><%= link_to 'Show', unit %></td>
-        <td><%= link_to 'Edit', edit_unit_path(unit) %></td>
-        <td><%= link_to 'Destroy', unit, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+      <%= form_with(model: unit, local: true) do |form| %>
+        <tr>
+          <td><%= form.text_field :name, size: 15 %></td>
+          <td><%= form.number_field :value, precision: 6, size: 6 %></td>
+          <td><%= form.check_box :is_weight %></td>
+          <td><%= form.check_box :is_volume %></td>
+          <td><%= form.check_box :show_fraction %></td>
+          <td><%= form.submit "Mettre à jour" %></td>
+          <td><%= link_to 'Show', unit %></td>
+          <td><%= link_to 'Destroy', unit, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>
 
 <br>
 
-<%= link_to 'New Unit', new_unit_path %>
+<span class="toggle-link title_icon" data-toggle_id="add_unit">➕</span>
+<div id="add_unit">
+  <%= form_with(model: Unit.new, local: true) do |form| %>
+    <%= form.label :name %>
+    <%= form.text_field :name, size: 15 %>
+    <%= form.label :is_weight %>
+    <%= form.check_box :is_weight %>
+    <%= form.label :is_volume %>
+    <%= form.check_box :is_volume %>
+    <%= form.label :value %>
+    <%= form.number_field :value, precision: 6, size: 6 %>
+    <%= form.label :show_fraction %>
+    <%= form.check_box :show_fraction %>
+    <%= form.hidden_field :language_id, value: current_language.id %>
+    <%= form.submit %>
+  <% end %>
+</div>
+
+<%= javascript_pack_tag "editor" %>

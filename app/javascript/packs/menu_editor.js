@@ -1,5 +1,6 @@
 require("jquery")
 require("easy-autocomplete")
+require("./editor")
 
 document.addEventListener("DOMContentLoaded", function(event) { 
 
@@ -37,16 +38,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
   $('.autocomplete-search-recipe').each(function(i, obj) {
     $('#'+obj.id).easyAutocomplete(options);
   });
-
-  var links = document.getElementsByClassName('toggle_link')
-  for (var i = 0; i < links.length; i++) {
-    var link = links.item(i)
-    document.getElementById(link.dataset.toggle_id).hidden = true;
-    link.addEventListener("click", function(e) {
-      var elem = document.getElementById(e.target.dataset.toggle_id);
-      elem.hidden = !elem.hidden
-    })
-  }
 
 });
 

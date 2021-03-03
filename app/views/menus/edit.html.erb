@@ -12,14 +12,14 @@
 
 <h1>
   Menu: <%= @menu.name %>
-  <span class="toggle_link title_icon" data-toggle_id="edit_menu_name_form">✏️</span>
-  <span class="toggle_link title_icon" data-toggle_id="add_category_form">➕</span>
+  <span class="toggle-link title_icon" data-toggle_id="edit_menu_name_form">✏️</span>
+  <span class="toggle-link title_icon" data-toggle_id="add_category_form">➕</span>
   <span class="title_icon">🗑️</span>
 </h1>
 
 <h2>
   Description
-  <span class="toggle_link title_icon" data-toggle_id="add_description_form">✏️</span>
+  <span class="toggle-link title_icon" data-toggle_id="add_description_form">✏️</span>
 </h2>
 
 <% if @description.blank? %>
@@ -83,7 +83,7 @@
   <h2>
     <%= category.name %>
     <span class="title_icon">✏️</span>
-    <span class="toggle_link title_icon" data-toggle_id="add_recipe_<%= category.id %>">➕</span>
+    <span class="toggle-link title_icon" data-toggle_id="add_recipe_<%= category.id %>">➕</span>
     <span class="title_icon">🗑️</span>
   </h3>
   <ul>
