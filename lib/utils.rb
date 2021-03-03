@@ -253,36 +253,36 @@ module Utils
     update_3d if respond_to? :update_3d
   end
   
-  def parse_instruction(heda, sentence)
+  def parse_instruction(sentence)
     # FIXME: Parse comments correctly, they are not only at the beginning.
     nil if sentence.blank? or sentence.start_with?("#")
     words = sentence.split(' ', 2)
     cmd = words[0].to_sym
-    args = (words[1] || '').split(',').map(&:strip).map {|a| parse_arg(heda, a)}
+    args = (words[1] || '').split(',').map(&:strip).map {|a| parse_arg(a)}
     ParsedCommand.new(cmd, args)
   end
 
-  def parse_instructions(heda, input)
+  def parse_instructions(input)
     input.downcase.lines.map(&:strip).map do |sentence|
       next if sentence.blank? or sentence.start_with?("#")
-      parse_instruction(heda, sentence)
+      parse_instruction(sentence)
     end
   end
 
   private
 
-  def parse_arg(heda, arg)
+  def parse_arg(arg)
     return arg.to_i if arg.to_i.to_s == arg
     return arg.to_r if arg.to_r.to_s == arg
     return arg.to_f if arg.to_f.to_s == arg
     return @current_container if arg == "$current_container"
-    if arg.start_with?("$")
-      name = arg[1..-1]
-      heda.physical_objects.each do |obj|
-        return obj if obj.name == name
-      end
-      raise "Parse error. Missing object #{arg}" # FIXME: Should yield instead of raise
-    end
+    #if arg.start_with?("$")
+    #  name = arg[1..-1]
+    #  heda.physical_objects.each do |obj|
+    #    return obj if obj.name == name
+    #  end
+    #  raise "Parse error. Missing object #{arg}" # FIXME: Should yield instead of raise
+    #end
     return arg
   end
 end

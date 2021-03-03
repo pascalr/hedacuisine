@@ -6,6 +6,15 @@
 
 <div class="responsive-margins-lg">
   <h1><%= @recipe.name %></h1>
+
+  <% unless @recipe.ingredients.blank? %>
+    <strong>Ingredients:</strong>
+    <ul>
+      <% @recipe.ingredients.each do |ingredient| %>
+        <li><%= ingredient.name %></li>
+      <% end %>
+    </ul>
+  <% end %>
   
   <strong>Instructions:</strong>
   <p>

@@ -22,7 +22,7 @@ class RecipesController < ApplicationController
   
   # Somehow process is an invalid method name in a Rails controller.
   def do_process
-    require Rails.root().join("lib").join("recipe_preprocessor.rb")
+    load Rails.root().join("lib").join("recipe_preprocessor.rb")
     RecipeProcessor.new.process(@recipe)
     redirect_to recipe_path(@recipe)
   end

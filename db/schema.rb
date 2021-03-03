@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_03_152948) do
+ActiveRecord::Schema.define(version: 2021_03_03_171211) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,16 @@ ActiveRecord::Schema.define(version: 2021_03_03_152948) do
     t.boolean "is_liquid"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "ingredients", force: :cascade do |t|
+    t.bigint "recipe_id", null: false
+    t.bigint "food_id", null: false
+    t.float "weight"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["food_id"], name: "index_ingredients_on_food_id"
+    t.index ["recipe_id"], name: "index_ingredients_on_recipe_id"
   end
 
   create_table "items", force: :cascade do |t|
@@ -140,6 +150,8 @@ ActiveRecord::Schema.define(version: 2021_03_03_152948) do
   add_foreign_key "descriptions", "languages"
   add_foreign_key "favorite_menus", "menus"
   add_foreign_key "favorite_menus", "users"
+  add_foreign_key "ingredients", "foods"
+  add_foreign_key "ingredients", "recipes"
   add_foreign_key "items", "links", column: "recipe_id"
   add_foreign_key "items", "menus"
   add_foreign_key "recipe_comments", "links", column: "recipe_id"
