@@ -1,0 +1,36 @@
+<%= render partial: 'meta/nav' %>
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @unit.name %>
+</p>
+
+<p>
+  <strong>Value:</strong>
+  <%= @unit.value %>
+</p>
+
+<p>
+  <strong>Is weight:</strong>
+  <%= @unit.is_weight %>
+</p>
+
+<p>
+  <strong>Is volume:</strong>
+  <%= @unit.is_volume %>
+</p>
+
+<p>
+  <strong>Show fraction:</strong>
+  <%= @unit.show_fraction %>
+</p>
+
+<p>
+  <strong>Language:</strong>
+  <%= @unit.language_id %>
+</p>
+
+<%= link_to 'Edit', edit_unit_path(@unit) %> |
+<%= link_to 'Back', units_path %>

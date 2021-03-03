@@ -1,0 +1,47 @@
+<%= form_with(model: unit, local: true) do |form| %>
+  <% if unit.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(unit.errors.count, "error") %> prohibited this unit from being saved:</h2>
+
+      <ul>
+        <% unit.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :value %>
+    <%= form.text_field :value %>
+  </div>
+
+  <div class="field">
+    <%= form.label :is_weight %>
+    <%= form.check_box :is_weight %>
+  </div>
+
+  <div class="field">
+    <%= form.label :is_volume %>
+    <%= form.check_box :is_volume %>
+  </div>
+
+  <div class="field">
+    <%= form.label :show_fraction %>
+    <%= form.check_box :show_fraction %>
+  </div>
+
+  <div class="field">
+    <%= form.label :language_id %>
+    <%= form.text_field :language_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

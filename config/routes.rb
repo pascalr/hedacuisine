@@ -4,6 +4,8 @@ end
 
 Rails.application.routes.draw do
 
+  get 'meta/index'
+  resources :units
   devise_for :users
 
   get 'home', to: 'home#index'

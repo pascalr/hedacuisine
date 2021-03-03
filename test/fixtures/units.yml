@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  value: 1.5
+  is_weight: false
+  is_volume: false
+  show_fraction: false
+  language: one
+
+two:
+  name: MyString
+  value: 1.5
+  is_weight: false
+  is_volume: false
+  show_fraction: false
+  language: two
