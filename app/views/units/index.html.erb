@@ -21,7 +21,7 @@
       <%= form_with(model: unit, local: true) do |form| %>
         <tr>
           <td><%= form.text_field :name, size: 15 %></td>
-          <td><%= form.number_field :value, precision: 6, size: 6 %></td>
+          <td><%= form.number_field :value, precision: 6, step: 0.001, size: 6 %></td>
           <td><%= form.check_box :is_weight %></td>
           <td><%= form.check_box :is_volume %></td>
           <td><%= form.check_box :show_fraction %></td>
@@ -46,7 +46,7 @@
     <%= form.label :is_volume %>
     <%= form.check_box :is_volume %>
     <%= form.label :value %>
-    <%= form.number_field :value, precision: 6, size: 6 %>
+    <%= form.number_field :value, precision: 6, step: 0.001, size: 6 %>
     <%= form.label :show_fraction %>
     <%= form.check_box :show_fraction %>
     <%= form.hidden_field :language_id, value: current_language.id %>
