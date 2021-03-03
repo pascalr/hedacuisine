@@ -4,6 +4,8 @@ end
 
 Rails.application.routes.draw do
 
+  resources :unit_systems
+  resources :unit_system_items, only: [:create, :destroy]
   resources :foods
   get 'meta/index'
   resources :units

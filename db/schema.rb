@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_03_171211) do
+ActiveRecord::Schema.define(version: 2021_03_03_175156) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -121,6 +121,21 @@ ActiveRecord::Schema.define(version: 2021_03_03_171211) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "unit_system_items", force: :cascade do |t|
+    t.bigint "unit_id", null: false
+    t.bigint "unit_system_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["unit_id"], name: "index_unit_system_items_on_unit_id"
+    t.index ["unit_system_id"], name: "index_unit_system_items_on_unit_system_id"
+  end
+
+  create_table "unit_systems", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "name"
+  end
+
   create_table "units", force: :cascade do |t|
     t.string "name"
     t.float "value"
@@ -158,5 +173,7 @@ ActiveRecord::Schema.define(version: 2021_03_03_171211) do
   add_foreign_key "recipe_comments", "users"
   add_foreign_key "recipe_ratings", "links", column: "recipe_id"
   add_foreign_key "recipe_ratings", "users"
+  add_foreign_key "unit_system_items", "unit_systems"
+  add_foreign_key "unit_system_items", "units"
   add_foreign_key "units", "languages"
 end

@@ -1,6 +1,10 @@
 https://aqueous-fortress-30634.herokuapp.com/
 http://www.responsinator.com/?url=hedacuisine.com
 
+TODO: Add language to unit systems
+
+TODO: Add an order to unit systems. Default is the first at the top.
+
 TODO: Le user contrôle ses aliments. Par défault, tous les remplacements possibles sont activés, mais sont sur le mode demander. Tu peux choisir: activer, demander ou supprimer.
 
 TODO: Login by token (by email since I don't have SSL!) https://stackoverflow.com/questions/36733524/devise-token-auth-and-devise-login-with-username-and-email

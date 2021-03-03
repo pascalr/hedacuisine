@@ -1,0 +1,47 @@
+<%= render partial: 'meta/nav' %>
+
+<h1>Systèmes d'unité</h1>
+
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th>Name</th>
+      <th>Unités</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @unit_systems.each do |unit_system| %>
+      <tr>
+        <td><%= unit_system.name %></td>
+        <td>
+          <%= unit_system.units.map(&:name).join(', ') %>
+          <span class="toggle-link title_icon" data-toggle_id="add_i_<%= unit_system.id %>">➕</span>
+          <div id="add_i_<%= unit_system.id %>">
+            <%= form_with(model: UnitSystemItem.new, local: true) do |form| %>
+              <%= form.hidden_field :unit_system_id, value: unit_system.id %>
+              <%= form.collection_select :unit_id, @units, :id, :name %>
+              <%= form.submit "Ajouter" %>
+            <% end %>
+          </div>
+        </td>
+        <td><%= link_to 'Show', unit_system %></td>
+        <td><%= link_to 'Destroy', unit_system, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<span class="toggle-link title_icon" data-toggle_id="add_unit_system">➕</span>
+<div id="add_unit_system">
+  <%= form_with(model: UnitSystem.new, local: true) do |form| %>
+    <%= form.label :name %>
+    <%= form.text_field :name, size: 15 %>
+    <%= form.submit %>
+  <% end %>
+</div>
+
+<%= javascript_pack_tag "editor" %>
