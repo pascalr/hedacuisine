@@ -2,7 +2,7 @@
 <%= link_to 'Process', do_process_recipe_path(@recipe), method: :patch %> |
 <%= link_to 'Back', recipes_path %> |
 <%= form_with(url: 'TODO', local: true, class: 'inline') do |form| %>
-  <%= form.collection_select :unit_system, UnitSystem.all, :id, :name, class: 'inline' %>
+  <%= form.collection_select :unit_system, UnitSystem.all, :id, :name, selected: params[:unit_system_id], class: 'inline' %>
 <% end %>
 
 <div class="responsive-margins-lg">
@@ -34,3 +34,5 @@
   
   <br>
 </div>
+
+<%= javascript_pack_tag "recipe" %>
