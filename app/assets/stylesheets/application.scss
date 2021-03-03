@@ -18,6 +18,9 @@
 @import "bootstrap/scss/bootstrap";
 @import "toastr/toastr";
 
+.inline {
+  display: inline;
+}
 
 .responsive-margins-lg, .responsive-margins-sm {
   margin: auto;

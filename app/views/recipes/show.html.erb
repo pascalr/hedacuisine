@@ -1,9 +1,9 @@
-<p id="notice"><%= notice %></p>
-
 <%= link_to 'Edit', edit_recipe_path(@recipe) %> |
 <%= link_to 'Process', do_process_recipe_path(@recipe), method: :patch %> |
 <%= link_to 'Back', recipes_path %> |
-<%= select_tag "unit_system", raw("<option>(unité, g, mL)</option><option>(g, mL)</option><option>(unité, cc, cs, t)</option><option>(unité, cc, cs, t, mL)</option>") %>
+<%= form_with(url: 'TODO', local: true, class: 'inline') do |form| %>
+  <%= form.collection_select :unit_system, UnitSystem.all, :id, :name, class: 'inline' %>
+<% end %>
 
 <div class="responsive-margins-lg">
   <h1><%= @recipe.name %></h1>
