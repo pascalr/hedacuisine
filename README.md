@@ -1,6 +1,17 @@
 https://aqueous-fortress-30634.herokuapp.com/
 http://www.responsinator.com/?url=hedacuisine.com
 
+TODO: Remove unit systems at some point when I am sure it is useless.
+Pretty sure it is useless, the way it is working right now at least
+
+TODO: Unit system. c. à thé, c. à table, t.
+Unit systems:
+- weight (g)
+- volume (mL)
+- volume solide: (c. à thé, c. à table, t) liquide: 
+
+TODO: Change the database password before sharing git.
+
 TODO: Add missing indexes in database one day.
 
 FIXME: Links and categories.

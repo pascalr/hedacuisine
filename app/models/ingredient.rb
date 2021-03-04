@@ -4,6 +4,8 @@ class Ingredient < ApplicationRecord
 
   delegate :name, to: :food
   delegate :plural, to: :food
+  delegate :is_unitary?, to: :food
+  delegate :is_unitary, to: :food
 
   def self.weight_of(value, unit, food)
     return value * food.unit_weight unless unit
@@ -20,6 +22,10 @@ class Ingredient < ApplicationRecord
     return self.weight if unit.is_weight
     return self.weight/food.density if unit.is_volume
     return self.weight/food.unit_weight
+  end
+
+  def nb_units
+    weight / food.unit_weight
   end
 
   def volume

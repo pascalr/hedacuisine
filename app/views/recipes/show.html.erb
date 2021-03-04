@@ -2,10 +2,10 @@
   <%= link_to 'Edit', edit_recipe_path(@recipe) %> |
   <%= link_to 'Process', do_process_recipe_path(@recipe), method: :patch %> |
 <% end %>
-<%= link_to 'Back', recipes_path %> |
-<%= form_with(url: 'TODO', local: true, class: 'inline') do |form| %>
-  <%= form.collection_select :unit_system, UnitSystem.all, :id, :name, selected: params[:unit_system_id], class: 'inline' %>
-<% end %>
+<%= link_to 'Back', recipes_path %>
+<%# form_with(url: 'TODO', local: true, class: 'inline') do |form| %>
+  <%# form.collection_select :unit_system, UnitSystem.all, :id, :name, selected: params[:unit_system_id], class: 'inline' %>
+<%# end %>
 
 <div class="responsive-margins-lg">
   <h1><%= @recipe.name %></h1>
@@ -14,21 +14,20 @@
     <strong>Ingredients:</strong>
     <ul>
       <% @recipe.ingredients.each do |ingredient| %>
-        <% unit = current_unit_system.unit_for(ingredient.food) %>
-        <% value = ingredient.value_for(unit) %>
         <li>
-          <%= pretty_ingredient_value value, unit %>
-          <% if unit and not unit.is_unitary? %>
-            <%= unit.name %>
-            <%= ingredient.name %>
+          <% if ingredient.is_unitary? %>
+            <%= pretty_fraction ingredient.nb_units %>
+            <%= (ingredient.nb_units >= 2) ? ingredient.plural.downcase : ingredient.name.downcase %>
           <% else %>
-            <%= (value.to_i >= 2) ? ingredient.plural : ingredient.name %>
+            <%= pretty_volume(ingredient) %>
+            <%= ingredient.name.downcase %>
+            <%= pretty_base_unit(ingredient) %>
           <% end %>
         </li>
       <% end %>
     </ul>
   <% end %>
-  
+
   <strong>Instructions:</strong>
   <p>
     <%= simple_format @recipe.instructions %>
@@ -37,4 +36,4 @@
   <br>
 </div>
 
-<%= javascript_pack_tag "recipe" %>
+<%# javascript_pack_tag "recipe" %>
