@@ -27,6 +27,8 @@ class RecipesController < ApplicationController
     load Rails.root().join("lib").join("recipe_preprocessor.rb")
     RecipeProcessor.new.process(@recipe)
     redirect_to recipe_path(@recipe)
+  rescue => e
+    redirect_to recipe_path(@recipe), alert: e.message
   end
 
   # POST /recipes or /recipes.json
