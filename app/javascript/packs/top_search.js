@@ -24,11 +24,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   var elem = $("#top-search")
   elem.data("menus").forEach((v) => {
-    options.data.push({"text": v[1] + " (Menu)", "link": "/menus/"+v[0]+"_"+v[1]})
+    options.data.push({"text": v[1] + " (menu)", "link": "/menus/"+v[0]+"_"+v[1]})
     //options.data.push({"text": v[1], "link": "/"+locale+"/recipes/"+v[0]+"_"+v[1]})
   })
   elem.data("recipes").forEach((v) => {
     options.data.push({"text": v[1], "link": "/recipes/"+v[0]+"_"+v[1]})
+    //options.data.push({"text": v[1], "link": "/"+locale+"/recipes/"+v[0]+"_"+v[1]})
+  })
+  elem.data("links").forEach((v) => {
+    options.data.push({"text": v[1] + " (link)", "link": v[0]})
     //options.data.push({"text": v[1], "link": "/"+locale+"/recipes/"+v[0]+"_"+v[1]})
   })
   elem.easyAutocomplete(options);
