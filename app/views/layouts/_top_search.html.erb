@@ -1,0 +1,3 @@
+<form class="form-inline">
+  <%= search_field_tag nil, nil, id: "top-search", placeholder: "Search...", 'aria-lable': "Search", 'data-menus': Menu.all.order(:name).map {|m| [m.id, m.name]}.to_json, 'data-recipes': Recipe.all.order(:name).map {|m| [m.id, m.name]}.to_json %>
+</form>

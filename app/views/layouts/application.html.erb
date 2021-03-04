@@ -28,9 +28,7 @@
           <% end %>
         </div>
       </div>
-      <form class="form-inline">
-        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-      </form>
+      <%= render partial: 'layouts/top_search', locals: {user: current_user} %>
       <div class="collapse navbar-collapse" style="flex-grow: unset;">
         <div class="navbar-nav">
           <% if params[:locale] and params[:locale][0..1] == 'fr' %>
@@ -69,3 +67,5 @@
   </body>
   <%= content_for :render_async %>
 </html>
+
+<%= javascript_pack_tag "top_search" %>

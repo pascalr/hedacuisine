@@ -1,6 +1,8 @@
 https://aqueous-fortress-30634.herokuapp.com/
 http://www.responsinator.com/?url=hedacuisine.com
 
+TODO: Put much of application layout inside partials for performance reason I believe.
+
 TODO: Remove unit systems at some point when I am sure it is useless.
 Pretty sure it is useless, the way it is working right now at least
 
