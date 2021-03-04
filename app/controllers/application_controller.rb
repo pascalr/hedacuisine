@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   end
 
   def only_admin!
-    if !current_user or !current_user.admin?
+    if current_user && !current_user.admin?
       redirect_to request.referrer, alert: 'Only administrators can see this page!'
     end
   end
