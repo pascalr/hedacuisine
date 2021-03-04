@@ -16,6 +16,9 @@ Rails.application.routes.draw do
   post 'menus/add_or_create_recipe'
 
   post 'users/toggle_favorite_menu'
+  get 'users/modify' # devise already use edit
+#  resources 'users', only: [:edit]
+#  post 'users/toggle_favorite_menu'
 
   resources :descriptions, only: [:create, :update, :destroy]
   resources :links, param: 'slug'

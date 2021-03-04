@@ -2,11 +2,7 @@
 
 <div class="responsive-margins-lg">
 
-  <h1>Bienvenue sur le site de Heda!</h1>
-  <p>Sur ce site, on retrouve des <%= link_to "recettes", menus_path %> et de l'information sur Heda, le robot de cuisine!</p>
-  <p>Vous pouvez aussi vous <%= link_to "connecter", new_user_session_path %> ou vous <%= link_to "inscrire", new_user_session_path %> pour gérer vos propres listes de recettes!</p>
-
-  <h2>Recettes</h2>
+  <h1>Recettes</h1>
   
   <% @recipes.each do |recipe| %>
     <%= link_to recipe.name, recipe %><br>

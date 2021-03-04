@@ -1,9 +1,7 @@
+<%= link_to 'Nouveau menu', new_menu_path if current_user %>
+
 <div class="responsive-margins-sm">
   <% if current_user %>
-  
-    <%= link_to 'Nouveau menu', new_menu_path %>
-    <br><br>
-  
     <h2 style="font-size: 2em;">Mes menus 🧑‍🍳</h2>
     <hr>
     <%= render partial: current_user.menus %>

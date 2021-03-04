@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
-  skip_before_action :only_admin!, only: [:toggle_favorite_menu]
+
+  skip_before_action :only_admin!
+
   def toggle_favorite_menu
     @menu = Menu.find(params[:menu_id])
     fav_menu = FavoriteMenu.find_by(menu_id: @menu.id, user_id: current_user.id)
@@ -11,4 +13,8 @@ class UsersController < ApplicationController
       redirect_to request.referrer
     end
   end
+
+  def modify
+  end
+
 end
