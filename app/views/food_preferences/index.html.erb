@@ -1,0 +1,36 @@
+<h1>Mes ingrédients</h1>
+
+<h2>En inventaire</h2>
+<hr>
+
+<%= render partial: current_user.food_preferences.in_stock %>
+
+<h2>Disponible</h2>
+<hr>
+
+<%= render partial: current_user.food_preferences.available %>
+
+<h2>Non disponible</h2>
+<hr>
+
+<%= render partial: current_user.food_preferences.unavailable %>
+
+<h2>Autres aliments</h2>
+<hr>
+
+<%# TODO: minus the ones already in a category above %>
+<ul>
+<% Food.order(:name).where.not(id: current_user.food_preferences.map(&:food_id)).each do |food| %>
+  <li class="mb-2">
+    <big class="mr-3"><%= food.name %></big> 
+    <%= form_with(model: FoodPreference.new, local: true, class: 'inline') do |form| %>
+      <% FoodPreference.availabilities.keys.each do |a| %>
+        <%= form.radio_button :availability, a %>
+        <%= form.label a.to_sym %>
+      <% end %>
+      <%= form.hidden_field :food_id, value: food.id %>
+      <%= form.submit %>
+    <% end %>
+  </li>
+<% end %>
+</ul>

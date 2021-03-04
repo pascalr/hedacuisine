@@ -5,7 +5,11 @@
   <h1>Recettes</h1>
   
   <% @recipes.each do |recipe| %>
-    <%= link_to recipe.name, recipe %><br>
+    <big><%= link_to recipe.name, recipe %></big>
+    <%= "(N/A)" if recipe.ingredients.blank? %>
+    <% ms = recipe.missing_ingredients_for(current_user) %>
+    <%= ms.blank? ? "" : "(#{ms.map(&:name).join(', ')})" %>
+    <br>
   <% end %>
   
   <br>
