@@ -2,6 +2,7 @@ class Link < ApplicationRecord
   has_many :items, foreign_key: 'recipe_id'
   has_many :categories, through: "items"
   has_many :menus, through: "items"
+  belongs_to :user
   
   #has_one_attached :source_image
 

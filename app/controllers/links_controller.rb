@@ -52,9 +52,7 @@ class LinksController < ApplicationController
 
     # Use callbacks to share common setup or constraints between actions.
     def set_recipe
-      @recipe = Link.find(params[:slug].split('-')[0])
-      # TODO: Maybe simply add user_id to links?
-      raise "Invalid user exception" unless @recipe.menus.first.user_id == current_user.id
+      @recipe = current_user.links.find(params[:slug].split('-')[0])
     end
 
     # Only allow a list of trusted parameters through.
