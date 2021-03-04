@@ -1,5 +1,5 @@
 class Link < ApplicationRecord
-  has_many :items
+  has_many :items, foreign_key: 'recipe_id'
   has_many :categories, through: "items"
   has_many :menus, through: "items"
   

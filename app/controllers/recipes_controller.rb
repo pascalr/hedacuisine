@@ -1,5 +1,6 @@
 class RecipesController < ApplicationController
-  before_action :set_recipe, only: %i[ show edit update destroy do_process ]
+  before_action :set_recipe, only: %i[ edit update destroy do_process ]
+  skip_before_action :authenticate_user!, only: [:index, :show]
   skip_before_action :only_admin!
 
   # GET /recipes or /recipes.json
@@ -9,6 +10,7 @@ class RecipesController < ApplicationController
 
   # GET /recipes/1 or /recipes/1.json
   def show
+    @recipe = Recipe.find(params[:slug].split('-')[0])
   end
 
   # GET /recipes/new
@@ -67,11 +69,11 @@ class RecipesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_recipe
-      if params[:slug]
-        @recipe = Recipe.find(params[:slug].split('-')[0])
-      else
-        @recipe = Recipe.find(params[:id])
-      end
+#      if params[:slug]
+      @recipe = current_user.recipes.find(params[:slug].split('-')[0])
+#      else
+#        @recipe = Recipe.find(params[:id])
+#      end
     end
 
     # Only allow a list of trusted parameters through.

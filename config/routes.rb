@@ -24,7 +24,6 @@ Rails.application.routes.draw do
   resources :recipe_comments, only: [:create, :update, :destroy]
   resources :recipe_ratings, only: [:create]
   delete 'recipe_ratings', to: 'recipe_ratings#destroy'
-  resources :recipes
   #post 'recipes/do_process'
   resources :recipes, param: 'slug' do
     member do

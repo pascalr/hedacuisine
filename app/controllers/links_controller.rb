@@ -1,5 +1,5 @@
 class LinksController < ApplicationController
-  before_action :set_recipe, only: [:do_process, :show, :edit, :update, :destroy, :rate]
+  before_action :set_recipe, only: [:edit, :update, :destroy, :rate]
   skip_before_action :authenticate_user!, only: [:show]
   skip_before_action :only_admin!
 
@@ -11,6 +11,7 @@ class LinksController < ApplicationController
   end
 
   def show
+    @recipe = Link.find(params[:slug].split('-')[0])
   end
 
   def new
@@ -51,11 +52,9 @@ class LinksController < ApplicationController
 
     # Use callbacks to share common setup or constraints between actions.
     def set_recipe
-      if params[:slug]
-        @recipe = Link.find(params[:slug].split('-')[0])
-      else
-        @recipe = Link.find(params[:id])
-      end
+      @recipe = Link.find(params[:slug].split('-')[0])
+      # TODO: Maybe simply add user_id to links?
+      raise "Invalid user exception" unless @recipe.menus.first.user_id == current_user.id
     end
 
     # Only allow a list of trusted parameters through.

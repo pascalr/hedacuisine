@@ -1,5 +1,5 @@
 class MenusController < ApplicationController
-  before_action :set_menu, only: [:show, :edit, :update, :destroy]
+  before_action :set_menu, only: [:edit, :update, :destroy]
   skip_before_action :authenticate_user!, only: [:index, :show]
   skip_before_action :only_admin!
 
@@ -9,6 +9,7 @@ class MenusController < ApplicationController
   end
 
   def show
+    @menu = Menu.find(params[:id])
     #args = {record_type: "Recipe", name: "source_image", record_id: @menu.recipes.map(&:id)}
     #@attachment = ActiveStorage::Attachment.where(args).first
     #@recipe = Recipe.find(@attachment.record_id) if @attachment
@@ -72,7 +73,7 @@ class MenusController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_menu
-      @menu = Menu.find(params[:id])
+      @menu = current_user.menus.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

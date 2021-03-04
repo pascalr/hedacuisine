@@ -1,6 +1,10 @@
 https://aqueous-fortress-30634.herokuapp.com/
 http://www.responsinator.com/?url=hedacuisine.com
 
+FIXME: Links and categories.
+
+TODO: Create user Heda. This is way easier this way rather than doing something special.
+
 Big TODO: Add security. Currently, any user can destroy any menu, any recipe...
 
 TODO: Add language to unit systems

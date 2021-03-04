@@ -1,5 +1,5 @@
 class CategoriesController < ApplicationController
-  before_action :set_category, only: [:destroy]
+  before_action :set_category, only: [:update, :destroy]
   skip_before_action :only_admin!
 
   def create
@@ -40,10 +40,7 @@ class CategoriesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_category
       @category = Category.find(params[:id])
-    end
-
-    def set_menu
-      @menu = Menu.find(params[:menu_id])
+      raise "Invalid user exception" unless @category.menu.user_id == current_user.id
     end
 
     # Only allow a list of trusted parameters through.
