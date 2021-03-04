@@ -4,6 +4,10 @@ module ApplicationHelper
     @current_language ||= Language.find_by(locale: params[:locale])
   end
 
+  def current_user_admin?
+    current_user && current_user.admin?
+  end
+
   def current_unit_system
     params[:unit_system_id] ? UnitSystem.find(params[:unit_system_id]) : UnitSystem.default
   end
