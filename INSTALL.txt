@@ -26,3 +26,5 @@ https://blog.makersacademy.com/how-to-install-bootstrap-and-jquery-on-rails-6-da
 
 # Not so much install, more how to, navbar
 https://getbootstrap.com/docs/4.0/components/navbar/
+
+heroku git:remote -a aqueous-fortress-30634
