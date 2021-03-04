@@ -5,12 +5,12 @@ def parseIngredient(quantity, unit_or_ingredient_name, ingredient_name)
   raise "Invalid quantity #{quantity}" unless quantity.is_a? Numeric
 
   if (ingredient_name)
-    unit = Unit.where('lower(name) = ?', unit_or_ingredient_name).first
+    unit = Unit.find_by(name: unit_or_ingredient_name)
     raise "Invalid unit #{unit_or_ingredient_name}" unless unit
   end
 
   ingredient_name = ingredient_name || unit_or_ingredient_name
-  food = Food.where('lower(name) = ? or lower(plural) = ?', ingredient_name, ingredient_name).first
+  food = Food.where('name = ? or plural = ?', ingredient_name, ingredient_name).first
   raise "Invalid ingredient #{ingredient_name}" unless food
 
   Ingredient.build(quantity, unit, food)
