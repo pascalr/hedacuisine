@@ -1,6 +1,8 @@
 https://aqueous-fortress-30634.herokuapp.com/
 http://www.responsinator.com/?url=hedacuisine.com
 
+TODO: Add missing indexes in database one day.
+
 FIXME: Links and categories.
 
 TODO: Create user Heda. This is way easier this way rather than doing something special.

@@ -1,5 +1,7 @@
-<%= link_to 'Edit', edit_recipe_path(@recipe) %> |
-<%= link_to 'Process', do_process_recipe_path(@recipe), method: :patch %> |
+<% if @recipe.owned_by?(current_user) %>
+  <%= link_to 'Edit', edit_recipe_path(@recipe) %> |
+  <%= link_to 'Process', do_process_recipe_path(@recipe), method: :patch %> |
+<% end %>
 <%= link_to 'Back', recipes_path %> |
 <%= form_with(url: 'TODO', local: true, class: 'inline') do |form| %>
   <%= form.collection_select :unit_system, UnitSystem.all, :id, :name, selected: params[:unit_system_id], class: 'inline' %>
