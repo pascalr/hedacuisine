@@ -1,6 +1,31 @@
 https://aqueous-fortress-30634.herokuapp.com/
 http://www.responsinator.com/?url=hedacuisine.com
 
+TODO: Always add all ingredients, if I don't know the quantity, write 999, so it is clear it is made up
+TODO: Rechecker toutes les recettes de tofu et comprendre c'est quoi les ingrédients manquants.
+
+TODO: Garder les majuscules dans les ingrédients. Par exemple: poivre de Sichuan.
+
+TODO: MetaIngredient
+Oeuf peut être: oeuf petit, oeuf moyen, oeuf gros, oeuf extra gros
+Huile végétale peut être:
+Huile neutre peut être:
+Crème peut être:
+Oignons peut être:
+"Fécule de patate ou de maïs" peut être: Fécule de maïs, Fécule de patate
+Sauce soja ou tamari peut être: Sauce soja, Tamari
+Tamari ou sauce soja peut être: Sauce soja, Tamari
+Fécule peut être: ...
+Thym peut être: thym séché, thym frais
+Ingredient has_many :substitutes
+Substitute ingredient:references substitute_id:integer, class_name: 'Ingredient'
+FoodPreference recipe:references # the recipe to make this ingredient
+Waaaaaaaaaaaaaaaaaaaaaaiiiiitt! Comment faire pour les quantités par contre?! Il doit y avoir un équivalent entre chaque quantité. (séchés est moins pesant que frais par exemple)
+Admettons 3, cs, gingembre. Tu choisis si tu veux que gingembre réfère à du gingembre frais ou du gingembre séché. Mais la recette elle doit décidé c'est laquelle.
+Ajouter 3, cs, gingembre frais [gingembre]
+devient:
+3 c. à soupe gingembre frais ou 2 c. à soupe de gingembre en poudre
+
 TODO: Rajouter le format des contenants pour les ingrédients. Comme ça cela possible de savoir je dois avoir combien de contenant de chaque trucs.
 
 TODO: Additionner les même ingrédients ensemble.
