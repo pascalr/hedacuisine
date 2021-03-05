@@ -23,9 +23,17 @@
   display: inline;
 }
 
+.inline-block {
+  display: inline;
+}
+
 .responsive-margins-lg, .responsive-margins-sm {
   margin: auto;
   width: 70%;
+}
+
+.responsive-side-sm {
+  display: inline-block;
 }
 
 // xs: phones, sm: tablets, md: small laptop, lg: laptops and desktops
@@ -41,4 +49,8 @@
   .responsive-margins-sm {
     width: 100%; /* The width is 100%, when the viewport is 800px or smaller */
   }
+//  .responsive-side-sm {
+//    display: block;
+//  }
+
 }
