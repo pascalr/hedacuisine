@@ -1,6 +1,8 @@
 https://aqueous-fortress-30634.herokuapp.com/
 http://www.responsinator.com/?url=hedacuisine.com
 
+TODO: Rajouter le format des contenants pour les ingrédients. Comme ça cela possible de savoir je dois avoir combien de contenant de chaque trucs.
+
 TODO: Additionner les même ingrédients ensemble.
 
 TODO: Put much of application layout inside partials for performance reason I believe.

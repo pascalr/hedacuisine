@@ -69,7 +69,12 @@
         </div>
         <div class="col-lg">
           <div class="show_item_source">
-            <%= link_to recipe.source, recipe.source if recipe.source %>
+            <% if recipe.ingredients.blank? %>
+              <%= link_to recipe.source, recipe.source if recipe.source %>
+            <% else %>
+              <% ms = recipe.missing_ingredients_for(current_user) %>
+              <%= ms.blank? ? "(100%)" : "(#{ms.map(&:name).join(', ')})" %>
+            <% end %>
           </div>
         </div>
       </div>
