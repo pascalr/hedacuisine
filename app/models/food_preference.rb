@@ -3,6 +3,7 @@
 class FoodPreference < ApplicationRecord
   belongs_to :food
   belongs_to :user
+  belongs_to :container_format, optional: true
 
   validates :food_id, uniqueness: {scope: :user_id}
 

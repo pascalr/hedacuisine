@@ -28,6 +28,6 @@ class FoodPreferencesController < ApplicationController
     end
 
     def food_preference_params
-      params.require(:food_preference).permit(:food_id, :preference, :availability)
+      params.require(:food_preference).permit(:food_id, :preference, :availability, :container_format_id)
     end
 end

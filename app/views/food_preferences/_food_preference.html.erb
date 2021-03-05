@@ -1,1 +1,9 @@
-<big><%= food_preference.food.name %></big><br>
+<big><%= food_preference.food.name %></big>
+<% if food_preference.in_stock? %>
+  <%= form_with(model: food_preference, local: true, class: 'inline') do |form| %>
+    <%= form.collection_select :container_format_id, ContainerFormat.order(:name).all, :id, :name, {include_blank: true} %>
+    <%= form.submit %>
+  <% end %>
+<% end %>
+<%= link_to 'x', food_preference_path(food_preference), method: :delete, data: {confirm: 'Are you sure?'} %>
+<br>

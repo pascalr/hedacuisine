@@ -7,6 +7,7 @@ fr-CA:
       foods: "Aliments"
       units: "Unités"
       unit_systems: "Systèmes d'unité"
+      container_formats: "Formats de contenant"
       robot: "Robot"
       about: "À propos"
     my_account: "Mon compte"

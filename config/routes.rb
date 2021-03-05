@@ -4,6 +4,7 @@ end
 
 Rails.application.routes.draw do
 
+  resources :container_formats
   resources :food_preferences
   resources :foods
   get 'meta/index'

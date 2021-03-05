@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Container Formats</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @container_formats.each do |container_format| %>
+      <tr>
+        <td><%= container_format.name %></td>
+        <td><%= link_to 'Show', container_format %></td>
+        <td><%= link_to 'Edit', edit_container_format_path(container_format) %></td>
+        <td><%= link_to 'Destroy', container_format, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Container Format', new_container_format_path %>
