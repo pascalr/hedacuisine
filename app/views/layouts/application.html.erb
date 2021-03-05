@@ -54,10 +54,10 @@
 
     <% unless flash.empty? %>
       <script type="text/javascript">
-         <% flash.each do |f| %>
-       <% type = f[0].to_s.gsub('alert', 'error').gsub('notice', 'info') %>
-      	 toastr['<%= type %>']('<%= f[1] %>');
-      <% end %>
+        <% flash.each do |f| %>
+          <% type = f[0].to_s.gsub('alert', 'error').gsub('notice', 'info') %>
+      	  toastr['<%= type %>']('<%= (simple_format f[1]).gsub(/[\n\r]/, '').html_safe %>');
+        <% end %>
       </script>
     <% end %>
     <div class="mx-2">
