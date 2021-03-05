@@ -5,6 +5,10 @@ class Recipe < ApplicationRecord
   belongs_to :user
   has_many :ingredients, foreign_key: 'recipe_id'
   has_many :foods, through: :ingredients
+
+  before_save do
+    instructions.try :gsub!, /[\u2018\u2019]/, "'"
+  end
   
   #has_one_attached :source_image
 

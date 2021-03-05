@@ -24,12 +24,16 @@ class RecipesController < ApplicationController
   # Somehow process is an invalid method name in a Rails controller.
   def do_process
     load Rails.root().join("lib").join("recipe_preprocessor.rb")
-    RecipeProcessor.new.process(@recipe)
-    redirect_to recipe_path(@recipe)
-  rescue => e
-    raise if Rails.env.development?
-    puts "#{e.message} !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!".red
-    redirect_to recipe_path(@recipe), alert: e.message
+    begin
+      RecipeProcessor.new.process(@recipe)
+      redirect_to recipe_path(@recipe)
+    rescue MissingFoodError => e # FIXME: Temporary
+      redirect_to new_food_path, alert: "Missing food #{e.food}"
+    rescue => e
+      raise if Rails.env.development?
+      puts "#{e.message} !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!".red
+      redirect_to recipe_path(@recipe), alert: e.message
+    end
   end
 
   def update

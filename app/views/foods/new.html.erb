@@ -1,0 +1,13 @@
+<%= form_with(model: @food, local: true) do |form| %>
+  <%= form.label :name %>
+  <%= form.text_field :name, size: 15 %>
+  <%= form.label :color %>
+  <%= form.color_field :color_string %>
+  <%= form.label :unit_weight %>
+  <%= form.number_field :unit_weight, precision: 2, size: 3 %>
+  <%= form.label :density %>
+  <%= form.number_field :density, precision: 2, size: 3 %>
+  <%= form.label :is_liquid %>
+  <%= form.check_box :is_liquid %>
+  <%= form.submit %>
+<% end %>

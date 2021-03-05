@@ -1,6 +1,10 @@
 class FoodsController < ApplicationController
   before_action :set_food, only: %i[ show edit update destroy ]
 
+  def new
+    @food = Food.new
+  end
+
   def index
     @foods = Food.all
   end

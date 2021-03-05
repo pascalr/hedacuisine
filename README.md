@@ -3,28 +3,13 @@ http://www.responsinator.com/?url=hedacuisine.com
 
 TODO: Additionner les même ingrédients ensemble.
 
-FIXME: Les apostrophes dans les noms d'ingrédients ne fonctionne pas. Ça doit être à cause du collate lowercase...
-
 TODO: Put much of application layout inside partials for performance reason I believe.
-
-TODO: Remove unit systems at some point when I am sure it is useless.
-Pretty sure it is useless, the way it is working right now at least
-
-TODO: Unit system. c. à thé, c. à table, t.
-Unit systems:
-- weight (g)
-- volume (mL)
-- volume solide: (c. à thé, c. à table, t) liquide: 
 
 TODO: Change the database password before sharing git.
 
 TODO: Add missing indexes in database one day.
 
-FIXME: Links and categories.
-
 TODO: Create user Heda. This is way easier this way rather than doing something special.
-
-Big TODO: Add security. Currently, any user can destroy any menu, any recipe...
 
 TODO: Add language to unit systems
 

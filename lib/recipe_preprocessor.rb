@@ -1,5 +1,13 @@
 require Rails.root().join("lib").join("utils.rb")
 
+class MissingFoodError < StandardError
+  attr_reader :food
+  def initialize(food)
+    super()
+    @food = food
+  end
+end
+
 def parseIngredient(quantity, unit_or_ingredient_name, ingredient_name)
     
   raise "Invalid quantity #{quantity}" unless quantity.is_a? Numeric
@@ -11,7 +19,7 @@ def parseIngredient(quantity, unit_or_ingredient_name, ingredient_name)
 
   ingredient_name = ingredient_name || unit_or_ingredient_name
   food = Food.where('name = ? or plural = ?', ingredient_name, ingredient_name).first
-  raise "Invalid ingredient #{ingredient_name}" unless food
+  raise MissingFoodError.new(ingredient_name) unless food
 
   Ingredient.build(quantity, unit, food)
 end
