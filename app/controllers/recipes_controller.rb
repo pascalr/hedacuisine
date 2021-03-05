@@ -27,6 +27,7 @@ class RecipesController < ApplicationController
     RecipeProcessor.new.process(@recipe)
     redirect_to recipe_path(@recipe)
   rescue => e
+    raise if Rails.env.development?
     puts "#{e.message} !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!".red
     redirect_to recipe_path(@recipe), alert: e.message
   end
