@@ -1,6 +1,7 @@
 <% if @recipe.owned_by?(current_user) %>
   <%= link_to 'Edit', edit_recipe_path(@recipe) %> |
   <%= link_to 'Process', do_process_recipe_path(@recipe), method: :patch %> |
+  <%= link_to 'Cheat', cheat_recipe_path(@recipe), method: :patch %> |
 <% end %>
 <%= link_to 'Back', recipes_path %>
 <%# form_with(url: 'TODO', local: true, class: 'inline') do |form| %>

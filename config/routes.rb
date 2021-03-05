@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   resources :recipes, param: 'slug' do
     member do
       patch 'do_process', param: 'slug'
+      patch 'cheat', param: 'slug'
     end
   end
   resources :recipe_comments, only: [:create, :update, :destroy]

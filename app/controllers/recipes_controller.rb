@@ -1,5 +1,5 @@
 class RecipesController < ApplicationController
-  before_action :set_recipe, only: [:do_process, :edit, :update, :destroy, :rate]
+  before_action :set_recipe, only: [:do_process, :edit, :update, :destroy, :rate, :cheat]
   skip_before_action :authenticate_user!, only: [:show]
   skip_before_action :only_admin!
 
@@ -8,6 +8,19 @@ class RecipesController < ApplicationController
     #@tags = Tag.order(priority: :desc)
     @recipes = Recipe.order(:name).all
     @items = Item.order(:name).all
+  end
+
+  def cheat
+    instructions = ""
+    @recipe.instructions.each_line do |l|
+      next if l.strip.length == 0
+      line = ""
+      line += "ajouter " unless l.starts_with? "ajouter"
+      line += l
+      instructions += line.squeeze(' ')
+    end
+    @recipe.update! instructions: instructions
+    redirect_to recipe_path(@recipe)
   end
 
   def show
