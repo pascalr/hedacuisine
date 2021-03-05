@@ -10,6 +10,8 @@
 <div class="responsive-margins-lg">
   <h1><%= @recipe.name %></h1>
 
+  <div class="mb-2"><%= link_to @recipe.source, @recipe.source, style: "color: gray;" %></div>
+
   <% unless @recipe.ingredients.blank? %>
     <strong>Ingredients:</strong>
     <ul>
@@ -29,9 +31,7 @@
   <% end %>
 
   <strong>Instructions:</strong>
-  <p>
-    <%= simple_format @recipe.instructions %>
-  </p>
+  <%= simple_format @recipe.instructions %>
   
   <br>
 </div>

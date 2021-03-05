@@ -22,15 +22,15 @@ class MenusController < ApplicationController
   def edit
     #@description = @menu.descriptions.find_by locale: 
     @category = Category.new
-    @recipes = Link.order(:name).all # OPTIMIZE: I only need the name. No need to load everything.
+    @recipes = Recipe.order(:name).all # OPTIMIZE: I only need the name. No need to load everything.
   end
 
   def add_or_create_recipe
     category = Category.find params[:category_id]
-    link = Link.find_by name: params[:recipe_name]
+    recipe = Recipe.find_by name: params[:recipe_name]
     ActiveRecord::Base.transaction do
-      link = Link.create!(name: params[:recipe_name], source: params[:link], user: current_user) unless link
-      Item.create!(category: category, menu: category.menu, link: link)
+      recipe = Recipe.create!(name: params[:recipe_name], source: params[:recipe], user: current_user) unless recipe
+      Item.create!(category: category, menu: category.menu, recipe: recipe)
     end
     redirect_to edit_menu_path(category.menu)
   end

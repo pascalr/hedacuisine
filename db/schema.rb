@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_05_121802) do
+ActiveRecord::Schema.define(version: 2021_03_05_144456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,15 +91,6 @@ ActiveRecord::Schema.define(version: 2021_03_05_121802) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "links", force: :cascade do |t|
-    t.string "name"
-    t.string "source"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.integer "user_id"
-    t.text "instructions"
-  end
-
   create_table "menus", force: :cascade do |t|
     t.string "name"
     t.boolean "is_cookable"
@@ -130,10 +121,11 @@ ActiveRecord::Schema.define(version: 2021_03_05_121802) do
 
   create_table "recipes", force: :cascade do |t|
     t.string "name"
-    t.text "instructions"
+    t.string "source"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "user_id"
+    t.text "instructions"
   end
 
   create_table "unit_system_items", force: :cascade do |t|
@@ -183,12 +175,11 @@ ActiveRecord::Schema.define(version: 2021_03_05_121802) do
   add_foreign_key "food_preferences", "foods"
   add_foreign_key "food_preferences", "users"
   add_foreign_key "ingredients", "foods"
-  add_foreign_key "ingredients", "recipes"
-  add_foreign_key "items", "links", column: "recipe_id"
   add_foreign_key "items", "menus"
-  add_foreign_key "recipe_comments", "links", column: "recipe_id"
+  add_foreign_key "items", "recipes"
+  add_foreign_key "recipe_comments", "recipes"
   add_foreign_key "recipe_comments", "users"
-  add_foreign_key "recipe_ratings", "links", column: "recipe_id"
+  add_foreign_key "recipe_ratings", "recipes"
   add_foreign_key "recipe_ratings", "users"
   add_foreign_key "unit_system_items", "unit_systems"
   add_foreign_key "unit_system_items", "units"

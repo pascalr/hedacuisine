@@ -31,10 +31,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     options.data.push({"text": v[1], "link": "/recipes/"+v[0]+"_"+v[1]})
     //options.data.push({"text": v[1], "link": "/"+locale+"/recipes/"+v[0]+"_"+v[1]})
   })
-  elem.data("links").forEach((v) => {
-    options.data.push({"text": v[1] + " (link)", "link": v[0]})
-    //options.data.push({"text": v[1], "link": "/"+locale+"/recipes/"+v[0]+"_"+v[1]})
-  })
   elem.easyAutocomplete(options);
 
 });
