@@ -31,6 +31,7 @@ module RecipeCommands
   def ajouter(quantity, unit_or_ingredient_name, ingredient_name=nil)
     ing = parseIngredient(quantity, unit_or_ingredient_name, ingredient_name)
     @current_recipe.ingredients << ing
+    ing.save!
     #if ing.ingredient.is_external
     #  c = "insert_jar #{ing.weight}, #{ing.food.name}"
     #  @steps.unshift Step.new(action_required: true, command: c)

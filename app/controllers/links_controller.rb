@@ -1,5 +1,5 @@
 class LinksController < ApplicationController
-  before_action :set_recipe, only: [:edit, :update, :destroy, :rate]
+  before_action :set_recipe, only: [:do_process, :edit, :update, :destroy, :rate]
   skip_before_action :authenticate_user!, only: [:show]
   skip_before_action :only_admin!
 
@@ -19,6 +19,16 @@ class LinksController < ApplicationController
   end
 
   def edit
+  end
+  
+  # Somehow process is an invalid method name in a Rails controller.
+  def do_process
+    load Rails.root().join("lib").join("recipe_preprocessor.rb")
+    RecipeProcessor.new.process(@recipe)
+    redirect_to link_path(@recipe)
+  rescue => e
+    puts "#{e.message} !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!".red
+    redirect_to link_path(@recipe), alert: e.message
   end
 
   def update
@@ -43,13 +53,6 @@ class LinksController < ApplicationController
 
   private
 
-    def parse_recipe(id)
-      #system("#{Rails.root}/../invention/bin/parse_recipe #{id}")
-      require 'open3'
-      cmd = "#{Rails.root}/../invention/bin/recipe_parser #{Rails.root}/db/development.sqlite3 #{id}"
-      Open3.capture3(cmd)
-    end
-
     # Use callbacks to share common setup or constraints between actions.
     def set_recipe
       @recipe = current_user.links.find(params[:slug].split('-')[0])
@@ -57,7 +60,7 @@ class LinksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def recipe_params
-      p = params.require(:link).permit(:name, :source)
-      p[:image_id] == "on" ? p.except(:image_id) : p
+      p = params.require(:link).permit(:name, :source, :instructions)
+      #p[:image_id] == "on" ? p.except(:image_id) : p
     end
 end

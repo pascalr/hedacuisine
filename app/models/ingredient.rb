@@ -1,5 +1,5 @@
 class Ingredient < ApplicationRecord
-  belongs_to :recipe
+  belongs_to :recipe, class_name: "Link"
   belongs_to :food
 
   delegate :name, to: :food

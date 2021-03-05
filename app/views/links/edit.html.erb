@@ -26,6 +26,11 @@
     <%= form.text_field :source, size: 80 %>
   </div>
 
+  <div class="field">
+    <%= form.label :instructions %><br>
+    <%= form.text_area :instructions, cols: 100, rows: 10 %>
+  </div>
+
   <%# select_radio_image(form, :recipe, :image_id) %>
   
   <!--
@@ -41,10 +46,6 @@
   </div>
     <div id='paste-div' contenteditable='true' style="border: 1px solid black; width: 400px; height: 300px;">Paste an image here...</div>
 
-  <div class="field">
-    <%# form.label :instructions %>
-    <%# form.text_area :instructions, cols: 80, rows: 30 %>
-  </div>
 
   <div class="field">
     <%# form.label :tags %>

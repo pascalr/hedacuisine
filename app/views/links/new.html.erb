@@ -23,6 +23,11 @@
     <%= form.text_field :source, size: 80 %>
   </div>
 
+  <div class="field">
+    <%= form.label :instructions %>
+    <%= form.text_area :instructions, cols: 100, rows: 10 %>
+  </div>
+
   <div class="actions">
     <%= form.submit "Créer" %>
   </div>

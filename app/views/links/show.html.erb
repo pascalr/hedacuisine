@@ -1,5 +1,39 @@
-<h2>Il n'y a pas encore d'information pour cette recette.</h2>
+<% if @recipe.owned_by?(current_user) %>
+  <%= link_to 'Edit', edit_link_path(@recipe) %> |
+  <%= link_to 'Process', do_process_link_path(@recipe), method: :patch %> |
+<% end %>
+<%= link_to 'Back', recipes_path %>
+<%# form_with(url: 'TODO', local: true, class: 'inline') do |form| %>
+  <%# form.collection_select :unit_system, UnitSystem.all, :id, :name, selected: params[:unit_system_id], class: 'inline' %>
+<%# end %>
 
-<h2>Créer un lien</h2>
+<div class="responsive-margins-lg">
+  <h1><%= @recipe.name %></h1>
 
-<h2>Créer ma propre recette</h2>
+  <% unless @recipe.ingredients.blank? %>
+    <strong>Ingredients:</strong>
+    <ul>
+      <% @recipe.ingredients.each do |ingredient| %>
+        <li>
+          <% if ingredient.is_unitary? %>
+            <%= pretty_fraction ingredient.nb_units %>
+            <%= (ingredient.nb_units >= 2) ? ingredient.plural.downcase : ingredient.name.downcase %>
+          <% else %>
+            <%= pretty_volume(ingredient) %>
+            <%= ingredient.name.downcase %>
+            <%= pretty_base_unit(ingredient) %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <strong>Instructions:</strong>
+  <p>
+    <%= simple_format @recipe.instructions %>
+  </p>
+  
+  <br>
+</div>
+
+<%# javascript_pack_tag "recipe" %>

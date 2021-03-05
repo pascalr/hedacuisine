@@ -22,7 +22,11 @@ Rails.application.routes.draw do
 #  post 'users/toggle_favorite_menu'
 
   resources :descriptions, only: [:create, :update, :destroy]
-  resources :links, param: 'slug'
+  resources :links, param: 'slug' do
+    member do
+      patch 'do_process', param: 'slug'
+    end
+  end
   resources :recipe_comments, only: [:create, :update, :destroy]
   resources :recipe_ratings, only: [:create]
   delete 'recipe_ratings', to: 'recipe_ratings#destroy'
