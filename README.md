@@ -6,6 +6,30 @@ TODO: Rechecker toutes les recettes de tofu et comprendre c'est quoi les ingréd
 
 TODO: Garder les majuscules dans les ingrédients. Par exemple: poivre de Sichuan.
 
+ingrédient 1
+# ou ingrédient oignon
+sois 1, oignon
+sois 2, c. à table, flocons d'oignon déshydraté
+
+ajouter ingrédient 1
+# ou ajouter ingrédient oignon
+
+ingredient 1
+either 1, onion
+either 2, tbsp, dried onion flakes
+add ingredient 1
+
+=> Ajouter avec 1 seul paramètre: ajouter un ingrédient
+
+Un autre modèle ou pas pour faire ça?
+
+# t.bigint "recipe_id", null: false, oui!
+# t.bigint "food_id", null: false, oui!
+# t.float "weight", oui!
+
+ajouter ingredient_name qui est facultatif et sert à regrouper les aliments
+
+
 TODO: MetaIngredient
 Oeuf peut être: oeuf petit, oeuf moyen, oeuf gros, oeuf extra gros
 Huile végétale peut être:
