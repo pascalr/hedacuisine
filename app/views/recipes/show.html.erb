@@ -1,3 +1,37 @@
+<style>
+.subnav-link {
+  display: block;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+</style>
+
+<div class="mx-n2">
+  <ul class="nav nav-tabs">
+    <li class="nav-item dropdown">
+    <a class="subnav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Versions</a>
+    <div class="dropdown-menu">
+      <div class="dropdown-item" href="#">
+        Cette version: <%= render partial: 'rating', locals: {recipe: @recipe} %>
+      </div>
+      <div class="dropdown-divider"></div>
+      <div class="dropdown-item" href="#">
+        (sans oeufs ni lait): <%= render partial: 'rating', locals: {recipe: @recipe} %>
+      </div>
+      <div class="dropdown-item" href="#">
+        (avec poudre): <%= render partial: 'rating', locals: {recipe: @recipe} %>
+      </div>
+      <div class="dropdown-item" href="#">
+        (Ricardo): <%= render partial: 'rating', locals: {recipe: @recipe} %>
+      </div>
+    </div>
+    </li>
+    <li class="nav-item">
+      <a class="subnav-link" href="#">Nouvelle version</a>
+    </li>
+  </ul>
+</div>
+
 <% if @recipe.owned_by?(current_user) %>
   <%= link_to 'Edit', edit_recipe_path(@recipe) %> |
   <%= link_to 'Process', do_process_recipe_path(@recipe), method: :patch %> |
@@ -38,3 +72,9 @@
 </div>
 
 <%# javascript_pack_tag "recipe" %>
+
+<% if current_user %>
+  <%= javascript_pack_tag "recipe_rating" %>
+<% else %>
+  <%= javascript_pack_tag "recipe_rating_read_only" %>
+<% end %>

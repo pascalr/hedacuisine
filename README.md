@@ -6,28 +6,65 @@ TODO: Rechecker toutes les recettes de tofu et comprendre c'est quoi les ingréd
 
 TODO: Garder les majuscules dans les ingrédients. Par exemple: poivre de Sichuan.
 
-ingrédient 1
-# ou ingrédient oignon
-sois 1, oignon
-sois 2, c. à table, flocons d'oignon déshydraté
+TODO: Rajouter version_name to Recipes (c'est ça qui va être afficher dans la barre en haut.)
+(Poudre ou Sans oeufs ni lait ou selon Loounie)
 
-ajouter ingrédient 1
-# ou ajouter ingrédient oignon
+TODO: 0.5 onion => 1 petit onion, 1.5 onion => 1 gros onion
 
-ingredient 1
-either 1, onion
-either 2, tbsp, dried onion flakes
-add ingredient 1
+- ingrédient 1
+- # ou ingrédient oignon
+- sois 1, oignon
+- sois 2, c. à table, flocons d'oignon déshydraté
+- 
+- ajouter ingrédient 1
+- # ou ajouter ingrédient oignon
+- 
+- => Ajouter avec 1 seul paramètre: ajouter un ingrédient
+- 
+- Noooooooooooooon ark.
+- 
+- Un autre modèle ou pas pour faire ça?
+- 
+- # t.bigint "recipe_id", null: false, oui!
+- # t.bigint "food_id", null: false, oui!
+- # t.float "weight", oui!
+- 
+- ajouter ingredient_name qui est facultatif et sert à regrouper les aliments
 
-=> Ajouter avec 1 seul paramètre: ajouter un ingrédient
+- choisir 1, oignon, oignon en poudre # syntaxe 1
+- choisir 1, oignon, 2, c. à table, oignon en poudre # syntaxe 2
 
-Un autre modèle ou pas pour faire ça?
+Waiiiiiiiiiiiiiiiiiiiiiiiiiit!
 
-# t.bigint "recipe_id", null: false, oui!
-# t.bigint "food_id", null: false, oui!
-# t.float "weight", oui!
+Ça ne se cuisine pas de la même manière des onions en poudre et des onions frais!!!!
 
-ajouter ingredient_name qui est facultatif et sert à regrouper les aliments
+revenir oignon si pas onion en poudre???????
+
+Pourquoi ne pas tout simplement faire une autre recette et partir de zéro. Sure, mais là toi tu est là et tu veux deux versions. Tu veux avec oignons en poudre la semaine et avec oignons frais la fin de semaine. C'est 2 recettes différentes. Mais là tu as des versions. Rajouter des tabs en haut avec des versions.
+
+Au lieu de rajouter Version à Recipe. Rajouter Group à Recipe. Recipes belongs_to :group
+
+Group name
+
+Ok, mais quoi faire avec huile neutre?
+
+C'est un MetaFood qui fait référence à d'autre Food. Moi, par défault, je fais par exemple huile neutre = huile de canola. Mais là l'utilisateur peut faire huile neutre = huile de maïs
+
+Ou bien, Food belongs to MetaFood. Huile neutre has_many foods (huile de canola, huile de mais, ...)
+
+ajouter 1, oignon ou oignon en poudre # syntaxe 3
+
+Wait, this means there cannot be 'or' or 'and' in a recipe?
+
+ajouter 1, oignon | oignon en poudre # syntaxe 3
+
+OK, quand tu parses une recette:
+Commande et 0, 1 ou plusieurs statements (séparés par des conjonctions (et, ou, ...))
+Les statements sont ensuites séparés par virgules pour les paramètres.
+
+Ok, mais ça ne règle par mes macros. Quoi faire pour huile neutre?
+huile neutre: "huile de canola | huile de maïs | ..."
+
 
 
 TODO: MetaIngredient
