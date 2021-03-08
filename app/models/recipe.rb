@@ -34,6 +34,10 @@ class Recipe < ApplicationRecord
   def to_param
     "#{id}-#{name}"
   end
+
+  def fullname
+    version_name ? "#{name} (#{version_name})" : name
+  end
   
   def missing_ingredients_for(user)
     #ingredients.filter {|i| user.food_preferences.in_stock.not.where(food_id: i.food_id).exists? }

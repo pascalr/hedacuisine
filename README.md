@@ -1,6 +1,8 @@
 https://aqueous-fortress-30634.herokuapp.com/
 http://www.responsinator.com/?url=hedacuisine.com
 
+TODO: easyautocomplete json data provider
+
 TODO: Always add all ingredients, if I don't know the quantity, write 999, so it is clear it is made up
 TODO: Rechecker toutes les recettes de tofu et comprendre c'est quoi les ingrédients manquants.
 

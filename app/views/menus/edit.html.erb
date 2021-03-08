@@ -77,7 +77,7 @@
   <% end %>
 </div>
 
-<span id="autocomplete-data" data-recipes="<%= Recipe.all.map {|v| [v.id, v.name] } %>"/>
+<span id="autocomplete-data" data-recipes="<%= Recipe.all.map {|v| [v.id, v.fullname] } %>"/>
 
 <% @menu.categories.each do |category| %>
   <h2>
@@ -97,6 +97,7 @@
       Nom: <%= form.text_field :recipe_name, id: "autocomplete-search-recipe-#{category.id}", class: 'autocomplete-search-recipe', placeholder: "Recette...", size: "40" %><br>
       Lien: <%= form.text_field :source, size: 40 %><br>
       <%= hidden_field_tag :category_id, category.id %>
+      <%= hidden_field_tag :recipe_id, nil, id: "autocomplete-search-recipe-#{category.id}-id" %>
       <%= form.submit "Ajouter ou créer" %>
     <% end %>
   </div>
