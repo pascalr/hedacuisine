@@ -24,14 +24,26 @@ class RecipesController < ApplicationController
   end
 
   def show
+    # FIXME: This allows any user to read any recipe. Ensure permission
+    # if I allow private recipes.
     @recipe = Recipe.find(params[:slug].split('-')[0])
   end
 
   def new
-    @recipe = Recipe.new
+    # FIXME: This allows any user to read any recipe. Ensure permission
+    # if I allow private recipes.
+    @recipe = params[:clone_id] ? Recipe.find(params[:clone_id]).dup : Recipe.new
+    @recipe.version_name = nil
   end
 
   def edit
+  end
+
+  def create
+    @recipe = Recipe.new(recipe_params)
+    @recipe.user = current_user
+    @recipe.save!
+    redirect_to @recipe
   end
   
   # Somehow process is an invalid method name in a Rails controller.
@@ -78,7 +90,7 @@ class RecipesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def recipe_params
-      p = params.require(:recipe).permit(:name, :source, :instructions)
+      p = params.require(:recipe).permit(:name, :source, :instructions, :version_name, :group_id)
       #p[:image_id] == "on" ? p.except(:image_id) : p
     end
 end

@@ -15,24 +15,19 @@
 <div class="mx-n2">
   <ul class="nav nav-tabs">
     <li class="subnav-item"><%= @recipe.name %></li>
-    <li class="nav-item dropdown">
-      <a class="subnav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Versions</a>
-      <div class="dropdown-menu">
-        <div class="dropdown-item" href="#">
-          Cette version: <%= render partial: 'rating', locals: {recipe: @recipe} %>
+    <% if @recipe.group and @recipe.group.recipes.count > 1 %>
+      <li class="nav-item dropdown">
+        <a class="subnav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Versions</a>
+        <div class="dropdown-menu">
+          <% (@recipe.group.recipes.to_a - [@recipe]).each_with_index do |version, i| %>
+            <div class="dropdown-item" href="#">
+              <%= link_to version.version_name.blank? ? "Version #{i+1}" : version.version_name, version %>
+              <%= render partial: 'rating', locals: {recipe: version} %>
+            </div>
+          <% end %>
         </div>
-        <div class="dropdown-divider"></div>
-        <div class="dropdown-item" href="#">
-          (sans oeufs ni lait): <%= render partial: 'rating', locals: {recipe: @recipe} %>
-        </div>
-        <div class="dropdown-item" href="#">
-          (avec poudre): <%= render partial: 'rating', locals: {recipe: @recipe} %>
-        </div>
-        <div class="dropdown-item" href="#">
-          (Ricardo): <%= render partial: 'rating', locals: {recipe: @recipe} %>
-        </div>
-      </div>
-    </li>
+      </li>
+    <% end %>
     <li class="nav-item dropdown">
       <a class="subnav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Menus</a>
       <div class="dropdown-menu">
@@ -46,7 +41,7 @@
       </div>
     </li>
     <li class="nav-item">
-      <a class="subnav-link" href="#">Nouvelle version</a>
+      <%= link_to "Nouvelle version", new_recipe_path(clone_id: @recipe.id), class: "subnav-link" %>
     </li>
   </ul>
 </div>
