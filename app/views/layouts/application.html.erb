@@ -38,7 +38,18 @@
             <%= link_to 'FR', url_for(locale: 'fr-CA'), class: 'nav-item nav-link' %>
           <% end %>
           <% if user_signed_in? %>
-            <%= link_to t("hedacuisine.my_account"), users_modify_path, class: "nav-item nav-link" %>
+            <div class="dropdown nav-item">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <%= t("hedacuisine.my_account") %>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <%= link_to t("hedacuisine.modify"), users_modify_path, class: "dropdown-item" %>
+                <%= link_to_active 'Mes recettes', recipes_path, class: "dropdown-item" %>
+                <%= link_to_active 'Mes menus', menus_path, class: "dropdown-item" %>
+                <%= link_to_active 'Liens', menus_path, class: "dropdown-item" %>
+                <%= link_to_active 'Ingrédients', food_preferences_path, class: "dropdown-item" %>
+              </div>
+            </div>
             <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "nav-item nav-link"  %>
           <% else %>
             <%= link_to t("devise.shared.links.sign_up"), new_user_registration_path, class: "nav-item nav-link" %>
@@ -47,10 +58,6 @@
         </div>
       </div>
     </nav>
-
-    <% if current_user %>
-      <%= render partial: 'users/nav' %>
-    <% end %>
 
     <% unless flash.empty? %>
       <script type="text/javascript">

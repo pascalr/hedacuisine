@@ -1,30 +1,49 @@
 <style>
 .subnav-link {
   display: block;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.9rem;
+}
+.subnav-item {
+  display: block;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.9rem;
+  font-weight: bold;
 }
 </style>
 
 <div class="mx-n2">
   <ul class="nav nav-tabs">
+    <li class="subnav-item"><%= @recipe.name %></li>
     <li class="nav-item dropdown">
-    <a class="subnav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Versions</a>
-    <div class="dropdown-menu">
-      <div class="dropdown-item" href="#">
-        Cette version: <%= render partial: 'rating', locals: {recipe: @recipe} %>
+      <a class="subnav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Versions</a>
+      <div class="dropdown-menu">
+        <div class="dropdown-item" href="#">
+          Cette version: <%= render partial: 'rating', locals: {recipe: @recipe} %>
+        </div>
+        <div class="dropdown-divider"></div>
+        <div class="dropdown-item" href="#">
+          (sans oeufs ni lait): <%= render partial: 'rating', locals: {recipe: @recipe} %>
+        </div>
+        <div class="dropdown-item" href="#">
+          (avec poudre): <%= render partial: 'rating', locals: {recipe: @recipe} %>
+        </div>
+        <div class="dropdown-item" href="#">
+          (Ricardo): <%= render partial: 'rating', locals: {recipe: @recipe} %>
+        </div>
       </div>
-      <div class="dropdown-divider"></div>
-      <div class="dropdown-item" href="#">
-        (sans oeufs ni lait): <%= render partial: 'rating', locals: {recipe: @recipe} %>
+    </li>
+    <li class="nav-item dropdown">
+      <a class="subnav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Menus</a>
+      <div class="dropdown-menu">
+        <% if @recipe.menus.blank? %>
+          <div class="dropdown-item" href="#">Ne se retrouve dans aucun menu.</div>
+        <% else %>
+          <% @recipe.menus.each do |menu| %>
+            <%= link_to menu.name, menu, class: "dropdown-item" %>
+          <% end %>
+        <% end %>
       </div>
-      <div class="dropdown-item" href="#">
-        (avec poudre): <%= render partial: 'rating', locals: {recipe: @recipe} %>
-      </div>
-      <div class="dropdown-item" href="#">
-        (Ricardo): <%= render partial: 'rating', locals: {recipe: @recipe} %>
-      </div>
-    </div>
     </li>
     <li class="nav-item">
       <a class="subnav-link" href="#">Nouvelle version</a>
