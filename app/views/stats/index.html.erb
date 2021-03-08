@@ -1,0 +1,48 @@
+<%= render partial: 'meta/nav' %>
+
+<h2>Food</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Total</th>
+      <th>In pantry</th>
+      <th>Can be made</th>
+      <th>Not in pantry and cannot be made</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= Food.count %></td>
+      <td><%= Food.where(in_pantry: true).count %></td>
+      <td><%= '?' %></td>
+      <td><%= '?' %></td>
+    </tr>
+  </tfoot>
+</table>
+
+<h2>Recettes</h2>
+
+<% total = Recipe.count %>
+<% without_ingredients = Recipe.left_outer_joins(:ingredients).where(ingredients: {recipe_id: nil}).count %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Total</th>
+      <th>Liens</th>
+      <th>Avec ingrédients</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= total %></td>
+      <td><%= without_ingredients %></td>
+      <td><%= total - without_ingredients %></td>
+    </tr>
+  </tfoot>
+</table>
+
+<h2>Users</h2>
+
+<p>Il y a <%= User.count %> utilisateurs inscrits.</p>

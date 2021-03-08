@@ -11,6 +11,7 @@
       <th>Poids unitaire</th>
       <th>Densité<br/>(g/mL)</th>
       <th>Liq</th>
+      <th>Pantry</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -25,6 +26,7 @@
           <td><%= form.number_field :unit_weight, precision: 2, size: 3 %></td>
           <td><%= form.number_field :density, precision: 2, size: 3 %></td>
           <td><%= form.check_box :is_liquid %></td>
+          <td><%= form.check_box :in_pantry %></td>
           <td><%= form.submit "Mettre à jour" %></td>
           <td><%= link_to 'Show', food %></td>
           <td><%= link_to 'Destroy', food, method: :delete, data: { confirm: 'Are you sure?' } %></td>

@@ -4,6 +4,7 @@ end
 
 Rails.application.routes.draw do
 
+  get 'stats/index'
   resources :container_formats
   resources :food_preferences
   resources :foods
