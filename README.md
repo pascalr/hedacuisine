@@ -1,6 +1,25 @@
 https://aqueous-fortress-30634.herokuapp.com/
 http://www.responsinator.com/?url=hedacuisine.com
 
+Career research company 80,000 Hours estimates that founders going through the Y Combinator accelerator program pay themselves about $50,000. If they go on to raise more money, that salary can double. If the startup flops, $50,000 could be the highest salary a founder makes.
+
+"During the Y Combinator program, they use only a one-off seed investment from Y Combinator of US$120,000 to pay living and business expenses," 8,000 Hours' Ryan Carey writes. The investment is expected to cover everything, including a small salary for the founder. "If they go on to receive angel investment [they] can pay themselves about $50,000 per year. With venture capital funding, this tends to increase to about US$100,000 per year."
+
+Manifesto: (requirements for the company)
+- The company shall operate in the best interest of humanity (e.g. no planned obsolescence)
+- The company shall follow moral guidelines of the time (égalité des genres, ...)
+
+How to pitch to an angel investor
+
+An angel investor may be more interested in your startup's ideas or team than its immediate potential for profit.
+
+Pitch an angel investor on what makes your team a winning gamble, but also present key business factors such as your market size, product or service offerings, competitors and their flaws and, if applicable, your current sales.
+How to pitch to a venture capitalist
+
+When pitching a venture capitalist, present the solution your company provides to a common problem consumers have and how many customers need that problem solved. Prepare a business plan and pitch deck for your meeting.
+
+During your pitch meeting, you'll present a four-year projection of your company's income and expenses. Your goal is to show the venture capitalist that their long-term return on investment mitigates their short-term risk.
+
 TODO: easyautocomplete json data provider
 
 TODO: Always add all ingredients, if I don't know the quantity, write 999, so it is clear it is made up
