@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 
   get 'home', to: 'home#index'
 
+  resources :items, only: [:destroy]
   resources :menus
   resources :categories, only: [:create, :update, :destroy]
   post 'menus/add_or_create_recipe'

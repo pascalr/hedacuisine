@@ -1,13 +1,48 @@
 https://aqueous-fortress-30634.herokuapp.com/
 http://www.responsinator.com/?url=hedacuisine.com
 
+Manifesto: (requirements for the company)
+- The company shall operate in the best interest of humanity (e.g. no planned obsolescence)
+- The company shall follow moral guidelines of the time (égalité des genres, ...)
+
+TODO: optional ingredients
+
+Pour l'instant des recettes stupides, et juste les copier. Peut-être un jour rajouter des
+recettes intelligentes avec des ingrédients optionels et des choix d'ingrédients, mais
+pas pour l'instant ce n'est pas une priorité.
+
+Sherbrooke Innopole:
+Je ne peux pas avoir droit au Fonds Nouvel entrepreneur. Prérequis entre autres: phase de commercialisation.
+
+Fonds amorçage OOOOOOUUUUIIIIIIIIIIIIIIIIIII
+Le fonds Amorçage  (FA), offert en syndication de partenaires, est destiné aux entreprises misant sur l’innovation en phase de prédémarrage/amorçage. L’investissement de Sherbrooke Innopole peut atteindre 50 000 $, sous forme d’équité ou quasi-équité.
+Fonds d’investissement pour entreprises innovantes
+Le Fonds d’investissement pour entreprises innovantes (FIEI) vise à soutenir les entreprises innovantes sherbrookoises dans leur phase de démarrage/commercialisation (1 ou 2 clients) en offrant, sous différentes formes, du financement ou de l’investissement direct d’un maximum de 250 000 $ ou plus lorsqu’en syndication avec des partenaires.
+
+Devenez mentoré
+Vous êtes admissible au mentorat pour entrepreneurs si votre entreprise est située dans la ville de Sherbrooke et que vous êtes en affaires depuis au moins un an et avez des employés.
+
+Contactez votre expert
+Marie-France Audet, B.A.A.
+Directrice, Services aux entreprises – Financement
+mfaudet@sherbrooke-innopole.com
+819 821-5577, poste 203
+819 570-0653
+
+Prix des terrains à Sherbrooke:
+https://sherbrooke-innopole.com/wp-content/uploads/2020/01/2020-Tableau-comparatif-Parcs-industriels-technologiques-et-scientifiques-de-Sherbrooke-Qu%C3%A9bec-Canada.pdf
+
+https://espace-inc.org/contact/
+
+https://sherbrooke-innopole.com/financement-dentreprises/
+
+
 Career research company 80,000 Hours estimates that founders going through the Y Combinator accelerator program pay themselves about $50,000. If they go on to raise more money, that salary can double. If the startup flops, $50,000 could be the highest salary a founder makes.
 
 "During the Y Combinator program, they use only a one-off seed investment from Y Combinator of US$120,000 to pay living and business expenses," 8,000 Hours' Ryan Carey writes. The investment is expected to cover everything, including a small salary for the founder. "If they go on to receive angel investment [they] can pay themselves about $50,000 per year. With venture capital funding, this tends to increase to about US$100,000 per year."
 
-Manifesto: (requirements for the company)
-- The company shall operate in the best interest of humanity (e.g. no planned obsolescence)
-- The company shall follow moral guidelines of the time (égalité des genres, ...)
+La première version va avoir un bac de vaisselle à la place du mini-lavevaisselle! Ça va être un
+must pour le client d'avoir un lave-vaisselle!
 
 How to pitch to an angel investor
 

@@ -88,7 +88,10 @@
   </h3>
   <ul>
     <% category.items.each do |item| %>
-      <li><%= link_to item.recipe.name, edit_recipe_path(item.recipe) %></li>
+      <li>
+        <%= link_to item.recipe.fullname, edit_recipe_path(item.recipe) %>
+        <%= link_to "🗑️", item_path(item), method: :delete, data: {confirm: 'Are you sure?'} %>
+      </li>
     <% end %>
   </ul>
 
