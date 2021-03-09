@@ -5,6 +5,11 @@ Manifesto: (requirements for the company)
 - The company shall operate in the best interest of humanity (e.g. no planned obsolescence)
 - The company shall follow moral guidelines of the time (égalité des genres, ...)
 
+TODO: Merge les ingrédients pareils ensemble.
+
+TODO: Utiliser in_pantry au lieu de par user et l'afficher pour tout le monde
+TODO: Rajouter la case in_pantry quand l'ingrédient est manquant, mettre le manquant dans le field déjà
+
 TODO: optional ingredients
 
 Pour l'instant des recettes stupides, et juste les copier. Peut-être un jour rajouter des

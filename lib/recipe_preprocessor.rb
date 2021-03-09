@@ -26,20 +26,17 @@ end
 
 # Defines specific rules for some instructions.
 module RecipeCommands
-  #def faire(quantity, ingredient_name) # could that a unit too
-  #  ingredient = Ingredient.where('lower(name) = ?', ingredient_name).first
-  #  raise "Invalid ingredient #{ingredient_name}" unless ingredient and ingredient.recipe
-  #  ingredient.recipe.ingredient_quantities.each do |ing_qty|
-  #    new_ing_qty = ing_qty.dup
-  #    new_ing_qty.recipe = @current_recipe
-  #    new_ing_qty.save!
-  #  end
-  #end
   #Class.new.extend(RecipeCommands).ajouter
   def ajouter(quantity, unit_or_ingredient_name, ingredient_name=nil)
     ing = parseIngredient(quantity, unit_or_ingredient_name, ingredient_name)
-    @current_recipe.ingredients << ing
-    ing.save!
+    # OPTIMIZE: Don't use the database to find...
+    same = @current_recipe.ingredients.find_by food_id: ing.food_id
+    if same
+      same.update!(weight: same.weight+ing.weight)
+    else
+      @current_recipe.ingredients << ing
+      ing.save!
+    end
     #if ing.ingredient.is_external
     #  c = "insert_jar #{ing.weight}, #{ing.food.name}"
     #  @steps.unshift Step.new(action_required: true, command: c)
