@@ -7,6 +7,21 @@ Valeurs de la compagnie:
 - ??? (The company shall follow moral guidelines of the time (égalité des genres, ...)
 - Transparence
 
+Le moyen le plus simple de faire de l'argent je crois (hors publicités qui ne m'intéresse pas trop)
+c'est de vraiment n'être qu'un simple moteur de recherche. Ne pas offrir la possibilité aux
+utilisateurs de créer des recettes (descriptions). Ainsi, je serais l'allié des créateurs de contenus
+(bloggeurs, sites de recettes) je serais neutre et impartial. Je serais un intermédiaire. Un peu comme Google. En fait, je recommanderais les gens à créer leur propre blog de cuisine s'il veule partager leur recette et faire de l'argent! Et là simplement m'allier avec un autre site qui lui me paierais pour que j'envoie du monde sur son site de blog. Le site de blog se fait de l'argent en partageant les revenus publicitaires avec la personne qui a fait le blog.
+
+Demander la permissions aux sites de pouvoir hotlinker les images de leurs recettes.
+
+Mon site serait un peu comme un livre de recette, et donnerait un lien vers les recettes de d'autres sites.
+
+TODO: Handle: ½ unicodes et œ
+TODO: Handle 1 1/2
+TODO: Aliases: bicarbonate de soude, bicarbonate de sodium
+
+Un jour il y aura mes recettes programmé pour le robot, mais ce n'est rien à comparé d'une recette qu'une personne a été tout comment faire et donner des petits trucs.
+
 TODO: Une grosse flèche à gauche et à droite des ingrédients pour se déplacer d'une version à une autre.
 
 Publicité: Dans un magasin. Offrir de la nourriture vraiment pas faire et faire de la publicité avec. Mais ce que ça ne dit pas, c'est que la nourriture est vraiment mauvaise. Essayer de faire la nourriture la plus mauvaise possible avec le mélange de nourriture le plus dégoutant possible. Si la personne ne vomi pas elle a droit à un petit quelque chose.
