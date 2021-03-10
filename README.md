@@ -9,6 +9,8 @@ Valeurs de la compagnie:
 
 TODO: Une grosse flèche à gauche et à droite des ingrédients pour se déplacer d'une version à une autre.
 
+Publicité: Dans un magasin. Offrir de la nourriture vraiment pas faire et faire de la publicité avec. Mais ce que ça ne dit pas, c'est que la nourriture est vraiment mauvaise. Essayer de faire la nourriture la plus mauvaise possible avec le mélange de nourriture le plus dégoutant possible. Si la personne ne vomi pas elle a droit à un petit quelque chose.
+
 TODO: En bas des recettes, afficher la description d'une personne qui a créé la recette.
 TODO: En bas des recettes, afficher des commentaires des utilisateurs.
 

@@ -1,5 +1,7 @@
 class GroupsController < ApplicationController
   before_action :set_group, only: %i[ show edit update destroy ]
+  skip_before_action :authenticate_user!, only: [:show]
+  skip_before_action :only_admin!, only: [:show]
 
   # GET /groups or /groups.json
   def index
