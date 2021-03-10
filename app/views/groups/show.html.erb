@@ -35,6 +35,44 @@
           <%= link_to "Nouvelle version", new_recipe_path(clone_id: recipe.id), class: "subnav-link" %>
         </li>
       </ul>
+      
+      <% if recipe.owned_by?(current_user) %>
+        <%= link_to 'Edit', edit_recipe_path(recipe) %> |
+        <%= link_to 'Process', do_process_recipe_path(recipe), method: :patch %> |
+        <%= link_to 'Cheat', cheat_recipe_path(recipe), method: :patch %> |
+      <% end %>
+
+      <div class="responsive-margins-lg">
+        <h1>
+          <%= recipe.name %>
+          <span style="font-size: 1.5rem;"><%= "(#{recipe.version_name})" if recipe.version_name %></span>
+        </h1>
+      
+        <div class="mb-2"><%= link_to recipe.source, recipe.source, style: "color: gray;" if recipe.source %></div>
+      
+        <% unless recipe.ingredients.blank? %>
+          <strong>Ingredients:</strong>
+          <ul>
+            <% recipe.ingredients.each do |ingredient| %>
+              <li>
+                <% if ingredient.is_unitary? %>
+                  <%= pretty_fraction ingredient.nb_units %>
+                  <%= (ingredient.nb_units >= 2) ? ingredient.plural.downcase : ingredient.name.downcase %>
+                <% else %>
+                  <%= pretty_volume(ingredient) %>
+                  <%= ingredient.name.downcase %>
+                  <%= pretty_base_unit(ingredient) %>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        <% end %>
+      
+        <strong>Instructions:</strong>
+        <%= simple_format recipe.instructions %>
+        
+        <br>
+      </div>
 
       <div style="text-align: center;">
         <%= recipe.fullname %>
@@ -42,5 +80,6 @@
     </div>
   <% end %>
 </div>
+
 
 <%= javascript_pack_tag "versions_slider" %>

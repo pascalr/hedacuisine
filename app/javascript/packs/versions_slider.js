@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     //gutter: 10,
     nav: false,
     center: true,
-    loop: false,
+    loop: true,
     swipeAngle: false,
     speed: 400
     //prevButton: document.getElementById('prev-tag-'+elements[i].dataset.tagid),
