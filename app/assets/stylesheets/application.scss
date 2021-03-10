@@ -42,6 +42,31 @@
   display: inline-block;
 }
 
+.slider-button {
+  position: fixed;
+  top: 50%;
+  z-index: 2;
+  font-size: 3rem;
+  cursor: pointer;
+  /*background-color: white;*/
+}
+
+#add_comment_form {
+  border: 1px solid black;
+  position: absolute;
+  background-color: white;
+}
+.add_recipe_comment {
+  cursor: pointer;
+}
+.show_item_source > a, .show_item_source {
+  color: #777777;
+}
+.show_item_source {
+  color: #777777;
+  font-size: 0.8em;
+}
+
 // xs: phones, sm: tablets, md: small laptop, lg: laptops and desktops
 // Bootstrap: xs: 768 ou moins, sm: 768 à 992, md: 992 à 1200, lg: 1200 et plus
 

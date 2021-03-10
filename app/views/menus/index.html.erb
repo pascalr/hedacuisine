@@ -1,24 +1,32 @@
 <%= link_to 'Nouveau menu', new_menu_path if current_user %>
 
 <div class="responsive-margins-sm">
-  <% if current_user %>
-    <h2 style="font-size: 2em;">Mes menus 🧑‍🍳</h2>
-    <hr>
-    <%= render partial: current_user.menus %>
-    <% unless true and current_user.favorite_menus.blank? %>
-      <h2 style="font-size: 2em;">Mes favoris ❤️</h2>
-      <hr>
-      <%= render partial: current_user.favorite_menus %>
+
+  <h1 style="font-size: 2em;">Menus Heda 🦾</h1>
+  <hr>
+
+  <div id="versions-slider">
+    <% @menus.each do |menu| %>
+      <%= render partial: menu %>
     <% end %>
-  <% else %>
-  
-    <h2 style="font-size: 2em;">Menus Heda 🦾</h2>
-    <hr>
-    <% user = User.first # FIXME: Temporary %>
-    <%= render partial: user.menus %>
-  <% end %>
+  </div>
 </div>
 
-<%# render partial: @menus %>
+<% if current_user %>
+  <h2 style="font-size: 2em;">Mes menus 🧑‍🍳</h2>
+  <hr>
+  <h2 style="font-size: 2em;">Mes favoris ❤️</h2>
+  <hr>
+<% end %>
 
-<%# javascript_pack_tag "recipe_slider_pack" %>
+<div id="prev-button" class="slider-button" style="left: 1%;">&laquo;</div>
+<div id="next-button" class="slider-button" style="right: 1%;">&raquo;</div>
+
+<%= javascript_pack_tag "versions_slider" %>
+
+<% if current_user %>
+  <%= javascript_pack_tag "recipe_rating" %>
+  <%= javascript_pack_tag "recipe_commentor" %>
+<% else %>
+  <%= javascript_pack_tag "recipe_rating_read_only" %>
+<% end %>

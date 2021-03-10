@@ -27,6 +27,7 @@ class RecipesController < ApplicationController
     # FIXME: This allows any user to read any recipe. Ensure permission
     # if I allow private recipes.
     @recipe = Recipe.find(params[:slug].split('-')[0])
+    redirect_to @recipe.group
   end
 
   def new

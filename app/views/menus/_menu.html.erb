@@ -1,5 +1,33 @@
-<span class="tagname">
-  <%= menu.is_cookable ? image_tag("logo.png", size: "24x24") : "" %>
-  <%= link_to menu.name, menu, class: 'not-link' %>
-</span>
-<%# render file: "/menus/_recipe_list", locals: {tag_id: menu.id, recipes: menu.recipes.select(&:image)} %><br>
+<!-- TODO: Rajouter une limite d'éléments afficher par menu, et avoir un bon voir plus... ou simplement cliquer sur le titre du menu-->
+
+<div class="responsive-margins-lg">
+  <h1 id="show_item_title"><%= menu.name %></h1>
+
+  <% unless menu.descriptions.blank? %>
+    <%= menu.descriptions.first.content %>
+  <% end %>
+
+  <% menu.categories.each do |category| %>
+
+    <h2><%= category.name %></h2>
+    <% category.recipes.each do |recipe| %>
+      <div>
+        <div class="inline-block">
+          <%= render partial: 'recipes/rating', locals: {recipe: recipe} %>
+          <%= render partial: 'recipes/item', locals: {recipe: recipe} %>
+        </div>
+        <div class="responsive-side-sm">
+          <span class="show_item_source">
+            <% if recipe.ingredients.blank? %>
+              <%= link_to recipe.source, recipe.source if recipe.source %>
+            <% else %>
+              <% ms = recipe.missing_ingredients %>
+              <%= ms.blank? ? "(100%)" : "(#{ms.map(&:name).join(', ')})" %>
+            <% end %>
+          </span>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
