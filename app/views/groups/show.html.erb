@@ -1,9 +1,46 @@
-<p id="notice"><%= notice %></p>
+<style>
+.subnav-link {
+  display: block;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.9rem;
+}
+.subnav-item {
+  display: block;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+</style>
 
-<p>
-  <strong>Name:</strong>
-  <%= @group.name %>
-</p>
 
-<%= link_to 'Edit', edit_group_path(@group) %> |
-<%= link_to 'Back', groups_path %>
+<div id="versions-slider">
+  <% @group.recipes.each do |recipe| %>
+
+    <div>
+      <ul class="nav nav-tabs">
+        <li class="subnav-item"><%= @group.name %></li>
+        <li class="nav-item dropdown">
+          <a class="subnav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Menus</a>
+          <div class="dropdown-menu">
+            <% if recipe.menus.blank? %>
+              <div class="dropdown-item" href="#">Ne se retrouve dans aucun menu.</div>
+            <% else %>
+              <% recipe.menus.each do |menu| %>
+                <%= link_to menu.name, menu, class: "dropdown-item" %>
+              <% end %>
+            <% end %>
+          </div>
+        </li>
+        <li class="nav-item">
+          <%= link_to "Nouvelle version", new_recipe_path(clone_id: recipe.id), class: "subnav-link" %>
+        </li>
+      </ul>
+
+      <div style="text-align: center;">
+        <%= recipe.fullname %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<%= javascript_pack_tag "versions_slider" %>

@@ -1,5 +1,5 @@
 <span>
-  <%= link_to recipe.name, recipe %>
+  <%= link_to recipe.name, group_path(id: recipe.group.id, recipe_id: recipe.id) %>
   <% if recipe.user_comment(current_user) %>
     <span style='cursor: pointer;' onclick='alert("<%= recipe.user_comment(current_user).content %>");'>🗒️</span>
   <% else %>

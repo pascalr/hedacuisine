@@ -12,14 +12,6 @@
 }
 </style>
 
-<div id="versions-slider">
-  <% @recipe.group.recipes.each do |recipe| %>
-    <div>
-      <%= recipe.fullname %>
-    </div>
-  <% end %>
-</div>
-
 <div class="mx-n2">
   <ul class="nav nav-tabs">
     <li class="subnav-item"><%= @recipe.name %></li>
@@ -103,5 +95,3 @@
 <% else %>
   <%= javascript_pack_tag "recipe_rating_read_only" %>
 <% end %>
-
-<%= javascript_pack_tag "versions_slider" %>
