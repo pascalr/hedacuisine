@@ -46,3 +46,26 @@
 <h2>Users</h2>
 
 <p>Il y a <%= User.count %> utilisateurs inscrits.</p>
+
+<% if current_user %>
+  <h1>Current user</h1>
+
+  <% formats = ContainerFormat.all %>
+  <h2>Container formats</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <% formats.each do |format| %>
+          <th><%= format.name %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <% formats.each do |format| %>
+          <td><%= format.food_preferences.where(user_id: current_user.id).count %></td>
+        <% end %>
+      </tr>
+    </tfoot>
+  </table>
+<% end %>
