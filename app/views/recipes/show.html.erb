@@ -89,9 +89,4 @@
 </div>
 
 <%# javascript_pack_tag "recipe" %>
-
-<% if current_user %>
-  <%= javascript_pack_tag "recipe_rating" %>
-<% else %>
-  <%= javascript_pack_tag "recipe_rating_read_only" %>
-<% end %>
+<%= javascript_pack_tag current_user ? "recipe_rating" : "recipe_rating_read_only" %>
