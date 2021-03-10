@@ -39,14 +39,17 @@ class Recipe < ApplicationRecord
     version_name ? "#{name} (#{version_name})" : name
   end
   
-  def missing_ingredients_for(user)
-    #ingredients.filter {|i| user.food_preferences.in_stock.not.where(food_id: i.food_id).exists? }
+def missing_ingredients
     ingredients.map(&:food).reject(&:in_pantry)
-    #ingredients.select {|i|
-    #  f = user.food_preferences.find_by(food_id: i.food_id)
-    #  f.nil? || !f.in_stock?
-    #}
   end
+  
+  #def missing_ingredients_for(user)
+  #  #ingredients.filter {|i| user.food_preferences.in_stock.not.where(food_id: i.food_id).exists? }
+  #  #ingredients.select {|i|
+  #  #  f = user.food_preferences.find_by(food_id: i.food_id)
+  #  #  f.nil? || !f.in_stock?
+  #  #}
+  #end
 
   #def get_image_width
   #  if picture.attached? and image_width.blank?

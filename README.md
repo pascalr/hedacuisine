@@ -5,6 +5,10 @@ Manifesto: (requirements for the company)
 - The company shall operate in the best interest of humanity (e.g. no planned obsolescence)
 - The company shall follow moral guidelines of the time (égalité des genres, ...)
 
+Vendre des armoires de cuisine
+Faire un site de recettes avec des publicités
+Service de livraison aliments en vrac
+
 TODO: Merge les ingrédients pareils ensemble.
 
 TODO: Utiliser in_pantry au lieu de par user et l'afficher pour tout le monde
