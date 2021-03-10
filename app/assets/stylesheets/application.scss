@@ -33,6 +33,11 @@
   width: 70%;
 }
 
+.responsive-margins-50-lg, .responsive-margins-50-sm {
+  margin: auto;
+  width: 50%;
+}
+
 .responsive-side-sm {
   display: inline-block;
 }
@@ -41,13 +46,13 @@
 // Bootstrap: xs: 768 ou moins, sm: 768 à 992, md: 992 à 1200, lg: 1200 et plus
 
 @media screen and (max-width: 1200px) {
-  .responsive-margins-lg {
+  .responsive-margins-lg, .responsive-margins-50-lg {
     width: 100%; /* The width is 100%, when the viewport is 800px or smaller */
   }
 }
 
 @media screen and (max-width: 768px) {
-  .responsive-margins-sm {
+  .responsive-margins-sm, .responsive-margins-50-sm {
     width: 100%; /* The width is 100%, when the viewport is 800px or smaller */
   }
 //  .responsive-side-sm {
