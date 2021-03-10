@@ -1,3 +1,23 @@
+=== FIXME: TODO: OPTIMIZE: MUST: avant de release: Avoir les bonnes densités pour les aliments
+
+=== Quand tu cliques sur une recette dans un menu, aller sur le groupe, mais sur la recette
+précise que tu as cliqué dessus.
+
+=== Un jour, faire une application. En fait, regarder premièrement c'est quoi que les compétiteurs ont fait.
+
+=== Pretty union between units and ingredients "de ou bien d'" En anglais ce n'est pas un problème, il n'y a pas d'union à mettre!!! Ouaisssss
+
+=== TODO: Mettre le site bilingue. Mais commencer avec juste le français.
+
+=== Déterminer comment gérer les groupes et les recettes dans la barre de recherche. Seulement
+montrer la recette la plus populaire pour chaque groupe? Non parce que parfois le nom n'a
+pas vraiment rapport avec le groupe et tu veux pouvoir chercher. Par exemple, groupe tofu
+à la levure vivante, mais tu veux chercher tofu magique, pas le nom du groupe. Afficher le 
+fullname de toutes les recettes dans le search, et on s'en fou des groupes dans le search.
+
+=== Rajouter une page de recherche quand la personne ne trouve pas directement le exact match
+dans la barre de recherche en haut.
+
 === Rajouter les flèches à gauche et à droite des recettes.
 
 === Demander la permissions aux sites de pouvoir hotlinker les images de leurs recettes.

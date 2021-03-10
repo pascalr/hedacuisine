@@ -10,6 +10,13 @@
   font-size: 0.9rem;
   font-weight: bold;
 }
+.slider-button {
+  position: fixed;
+  top: 50%;
+  z-index: 2;
+  font-size: 3rem;
+  cursor: pointer;
+  /*background-color: white;*/
 </style>
 
 
@@ -65,7 +72,7 @@
                     <%= pretty_fraction ingredient.nb_units %>
                     <%= (ingredient.nb_units >= 2) ? ingredient.plural.downcase : ingredient.name.downcase %>
                   <% else %>
-                    <%= pretty_volume(ingredient) %>
+                    <%= pretty_volume(ingredient) %> - 
                     <%= ingredient.name.downcase %>
                     <%= pretty_base_unit(ingredient) %>
                   <% end %>
@@ -86,6 +93,9 @@
     </div>
   <% end %>
 </div>
+
+<div id="prev-button" class="slider-button" style="left: 1%;">&laquo;</div>
+<div id="next-button" class="slider-button" style="right: 1%;">&raquo;</div>
 
 <%= javascript_pack_tag current_user ? "recipe_rating" : "recipe_rating_read_only" %>
 <%= javascript_pack_tag "versions_slider" %>

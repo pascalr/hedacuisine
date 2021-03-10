@@ -54,7 +54,8 @@ module ApplicationHelper
     return "#{pretty_fraction(ing.volume/1000.0)} L" if ing.food.is_liquid? && ing.volume >= 1000.0
     return "#{pretty_fraction(ing.volume/250.0)} t" if ing.volume >= 250.0 or (ing.volume > 30.0 and close_to_fraction?(ing.volume/250.0))
     return "#{pretty_fraction(ing.volume/15.0)} c. à soupe" if ing.volume >= 15.0
-    "#{pretty_fraction(ing.volume/5.0)} c. à thé"
+    return "#{pretty_fraction(ing.volume/5.0)} c. à thé" if ing.volume >= 5.0/8.0
+    "#{pretty_fraction(ing.volume/0.31)} pincée"
   end
 
   def pretty_base_unit(ing)

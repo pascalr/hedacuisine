@@ -10,10 +10,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
     nav: false,
     center: true,
     loop: true,
-    swipeAngle: false,
+    prevButton: '#prev-button',
+    nextButton: '#next-button',
     speed: 200
-    //prevButton: document.getElementById('prev-tag-'+elements[i].dataset.tagid),
-    //nextButton: document.getElementById('next-tag-'+elements[i].dataset.tagid),
     //lazyload: true,
     //controlsText: ["🡨", "🡪"],
   });
