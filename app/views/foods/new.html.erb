@@ -7,7 +7,9 @@
   <%= form.number_field :unit_weight, precision: 2, size: 3 %>
   <%= form.label :density %>
   <%= form.number_field :density, precision: 2, size: 3 %>
-  <%= form.label :is_liquid %>
   <%= form.check_box :is_liquid %>
+  <%= form.label :is_liquid %>
+  <%= form.check_box :in_pantry %>
+  <%= form.label :in_pantry%>
   <%= form.submit %>
 <% end %>

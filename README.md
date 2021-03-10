@@ -1,11 +1,17 @@
 https://aqueous-fortress-30634.herokuapp.com/
 http://www.responsinator.com/?url=hedacuisine.com
 
-Manifesto: (requirements for the company)
-- The company shall operate in the best interest of humanity (e.g. no planned obsolescence)
-- The company shall follow moral guidelines of the time (égalité des genres, ...)
+Valeurs de la compagnie:
+- Environnement
+- Humanité (The company shall operate in the best interest of humanity (e.g. no planned obsolescence))
+- ??? (The company shall follow moral guidelines of the time (égalité des genres, ...)
+- Transparence
 
-TODO: Merge les ingrédients pareils ensemble.
+TODO: Déterminer le nombre de pots nécessaires. Probablement 1.5 fois le nombre de mes ingrédients pour pouvoir faire du roulement. Aussi, ça prend des contenant pour cuisiner.
+
+TODO: Déterminer la grandeur de l'armoire nécessaire. Sans lave-vaiselle pour au début.
+
+J'aurais probablement une armoire 30" sans lave-vaisselle et une armoire 40" avec lave-vaisselle. Mais est-ce que 30" c'est suffisant?
 
 TODO: Utiliser in_pantry au lieu de par user et l'afficher pour tout le monde
 TODO: Rajouter la case in_pantry quand l'ingrédient est manquant, mettre le manquant dans le field déjà
