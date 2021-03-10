@@ -58,7 +58,7 @@ module ApplicationHelper
   end
 
   def pretty_base_unit(ing)
-    ing.food.is_liquid? ? "(#{ing.volume} mL)" : "(#{ing.weight} g)"
+    ing.food.is_liquid? ? "(#{ing.volume.round(1)} mL)" : "(#{ing.weight.round(1)} g)"
   end
 
 end
