@@ -9,6 +9,11 @@ Valeurs de la compagnie:
 
 TODO: Une grosse flèche à gauche et à droite des ingrédients pour se déplacer d'une version à une autre.
 
+TODO: En bas des recettes, afficher la description d'une personne qui a créé la recette.
+TODO: En bas des recettes, afficher des commentaires des utilisateurs.
+
+TODO: Trouver des images pour chaque groupe (Recettes uniques)
+
 Si j'essaie de simplement faire un site internet, simplement faire une text field pour les ingrédients (donc pareil comme présentement, mais sans le mot ajouter)
 
 Sur le site internet possiblement faire de la publicité simplement en affichant les marques dans les
