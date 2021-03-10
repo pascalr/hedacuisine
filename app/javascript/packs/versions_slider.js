@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     center: true,
     loop: true,
     swipeAngle: false,
-    speed: 400
+    speed: 200
     //prevButton: document.getElementById('prev-tag-'+elements[i].dataset.tagid),
     //nextButton: document.getElementById('next-tag-'+elements[i].dataset.tagid),
     //lazyload: true,
