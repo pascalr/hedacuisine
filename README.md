@@ -13,6 +13,12 @@ TODO: Déterminer la grandeur de l'armoire nécessaire. Sans lave-vaiselle pour 
 
 J'aurais probablement une armoire 30" sans lave-vaisselle et une armoire 40" avec lave-vaisselle. Mais est-ce que 30" c'est suffisant?
 
+Vendre des armoires de cuisine
+Faire un site de recettes avec des publicités
+Service de livraison aliments en vrac
+
+TODO: Merge les ingrédients pareils ensemble.
+
 TODO: Utiliser in_pantry au lieu de par user et l'afficher pour tout le monde
 TODO: Rajouter la case in_pantry quand l'ingrédient est manquant, mettre le manquant dans le field déjà
 

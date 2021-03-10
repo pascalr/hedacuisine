@@ -73,10 +73,10 @@
         </div>
         <div class="responsive-side-sm">
           <span class="show_item_source">
-            <% if recipe.ingredients.blank? || !current_user %>
+            <% if recipe.ingredients.blank? %>
               <%= link_to recipe.source, recipe.source if recipe.source %>
             <% else %>
-              <% ms = recipe.missing_ingredients_for(current_user) %>
+              <% ms = recipe.missing_ingredients %>
               <%= ms.blank? ? "(100%)" : "(#{ms.map(&:name).join(', ')})" %>
             <% end %>
           </span>
