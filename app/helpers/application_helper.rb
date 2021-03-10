@@ -31,6 +31,14 @@ module ApplicationHelper
   #  #value.to_r.rationalize(0.125)
   #end
   
+  def close_to_fraction?(value)
+    fractions = [1/8r, 1/4r, 1/3r, 1/2r, 2/3r, 3/4r, 1]
+    fractions.select { |f|
+      return true if (value.to_f - f).abs < 0.02
+    }
+    false
+  end
+  
   def pretty_fraction(value)
     fractions = [0, 1/8r, 1/4r, 1/3r, 1/2r, 2/3r, 3/4r, 1]
     i_part = value.to_i
@@ -44,7 +52,7 @@ module ApplicationHelper
 
   def pretty_volume(ing)
     return "#{pretty_fraction(ing.volume/1000.0)} L" if ing.food.is_liquid? && ing.volume >= 1000.0
-    return "#{pretty_fraction(ing.volume/250.0)} t" if ing.volume >= 250.0
+    return "#{pretty_fraction(ing.volume/250.0)} t" if ing.volume >= 250.0 or (ing.volume > 30.0 and close_to_fraction?(ing.volume/250.0))
     return "#{pretty_fraction(ing.volume/15.0)} c. à soupe" if ing.volume >= 15.0
     "#{pretty_fraction(ing.volume/5.0)} c. à thé"
   end

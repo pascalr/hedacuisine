@@ -16,6 +16,9 @@ Demander la permissions aux sites de pouvoir hotlinker les images de leurs recet
 
 Mon site serait un peu comme un livre de recette, et donnerait un lien vers les recettes de d'autres sites.
 
+TODO: Check out other food agregattors: https://kk.org/cooltools/recipe-aggregat/
+Foodbuzz especially. Epicurious. Cookstr. Food52. Serious Eats.
+
 TODO: Handle: ½ unicodes et œ
 TODO: Handle 1 1/2
 TODO: Aliases: bicarbonate de soude, bicarbonate de sodium
