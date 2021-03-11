@@ -1,6 +1,55 @@
-=== FIXME: TODO: OPTIMIZE: MUST: avant de release: Avoir les bonnes densités pour les aliments
+=== FIXMkE: TODO: OPTIMIZE: MUST: avant de release: Avoir les bonnes densités pour les aliments
 
-=== Quand tu cliques sur une recette dans un menu, aller sur le groupe, mais sur la recette
+=== Lister toutes les tâches, les mettre sur mon site internet et les catégoriser:
+- Qu'est-ce que je voudrais être en charge.
+- Qu'est-ce que je voudrait que mon partenaire sois en charge.
+- Ou bien les deux
+
+=== Pour parcourir les menus, faire un arbre à gauche pour les menus. Par exemple:
+-Nos coups de coeurs
+-Plus populaires
+-- Végane
+-- Tofu
+-- Oeufs
+-- Bizarre
+-En saison
+-- Été
+-- Hiver
+-Entrée
+--Soupe
+--Salade
+-Repas
+--Pizza
+--Hamburger
+--Pâtes
+-Brevages
+--Lait végétal
+-Autre
+--Sauce
+--Condiments
+--Accompagnement
+--Épices
+-Déjeuner
+-Diner
+-Souper
+-Collation
+-Déssert
+--Muffins
+--Gâteaux
+--Biscuits
+-Ingrédients
+--Tofu
+-Pays/Régions
+--Français
+--Québéecois
+--Italien
+--Grec
+--Indien
+--Chinois
+Ingrédients: Tofu, ...
+
+K
+=== ,mmkQuand tu cliques sur une recette dans un menu, aller sur le groupe, mais sur la recette
 précise que tu as cliqué dessus.
 
 === Un jour, faire une application. En fait, regarder premièrement c'est quoi que les compétiteurs ont fait.

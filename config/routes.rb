@@ -4,6 +4,7 @@ end
 
 Rails.application.routes.draw do
 
+  resources :tasks
   resources :groups
   get 'stats/index'
   resources :container_formats

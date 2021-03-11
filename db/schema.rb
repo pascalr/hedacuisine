@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_08_165554) do
+ActiveRecord::Schema.define(version: 2021_03_11_142103) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -144,6 +144,16 @@ ActiveRecord::Schema.define(version: 2021_03_08_165554) do
     t.string "version_name"
   end
 
+  create_table "tasks", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.bigint "user_id", null: false
+    t.float "estimated_hours"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_tasks_on_user_id"
+  end
+
   create_table "unit_system_items", force: :cascade do |t|
     t.bigint "unit_id", null: false
     t.bigint "unit_system_id", null: false
@@ -180,6 +190,7 @@ ActiveRecord::Schema.define(version: 2021_03_08_165554) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "admin"
+    t.string "name"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -197,6 +208,7 @@ ActiveRecord::Schema.define(version: 2021_03_08_165554) do
   add_foreign_key "recipe_comments", "users"
   add_foreign_key "recipe_ratings", "recipes"
   add_foreign_key "recipe_ratings", "users"
+  add_foreign_key "tasks", "users"
   add_foreign_key "unit_system_items", "unit_systems"
   add_foreign_key "unit_system_items", "units"
   add_foreign_key "units", "languages"
