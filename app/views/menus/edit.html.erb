@@ -18,8 +18,8 @@
 </h1>
 
 <%= form_with(model: @menu, local: true) do |form| %>
-  <%= form.label :parent_id %>
-  <%= form.collection_select :parent_id, Menu.order(:name).all, :id, :name, include_blank: true %>
+  <%= form.label :listing_id %>
+  <%= form.collection_select :listing_id, Listing.order(:name).all, :id, :name, include_blank: true %>
   <%= form.submit %>
 <% end %>
 

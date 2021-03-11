@@ -1,6 +1,11 @@
 Au lieu de tiny-slider, utiliser bootstrap carousel:
 https://getbootstrap.com/docs/5.0/components/carousel/
 
+Mettre des emojis en avant de chaque menu. Emoji pizza, hamburger. Aussi, mettre les emojis avec
+les drapeaux des nationalités.
+
+Ce qui me prendrait. Ce qui m'aiderait beaucoup. C'est d'avoir un client. Un client pas difficile. Qui n'en demande pas beaucoup, et là je commencerais avec lui et je lui ferais plaisir. Ensuite un autre client pas difficile que je satisferais en effectuant quelques petites modifications, et ainsi de suite.
+
 Pour le multilinguisme, les groupes de recettes pourraient être multilingues. Mais pas les recettes
 parce qu'elles sont un lien vers une recette dans une langue. Les menus non plus puisqu'ils pointent
 vers des recettes et non des groupes. Mais les menus sont trivials à refaire si les recettes sont linker par rapport aux bons groupes de recettes.
