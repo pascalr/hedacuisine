@@ -6,6 +6,10 @@ liens. Non, en fait ce sont les toasts de bootstrap que je dois regarder!
 
 Utiliser accordions pour les menus à gauches.
 
+Un search bar juste pour les menus à gauche.
+
+Le search bar en haut c'est juste pour les recettes. Ou bien les deux ce n'est pas tant grave.
+
 Regarder pour les breadcrumbs pour voir où est-ce qu'on est dans le menu. Pour les recettes ça ne fonctionne pas parce que ça se retrouve dans beaucoup de menus.
 
 Utiliser bootstrap collapse au lieu de mon collapse à moi.

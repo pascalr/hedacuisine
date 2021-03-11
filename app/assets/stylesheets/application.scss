@@ -20,6 +20,13 @@
 @import "toastr/toastr";
 @import "tiny-slider/src/tiny-slider";
 
+/* Wrapper for the sidebar and the main content */
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
 .inline {
   display: inline;
 }
