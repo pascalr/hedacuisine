@@ -72,15 +72,18 @@
       <!-- TODO: Put this is a partial -->
       <nav id="sidebar" class="mx-1 pr-3 border-right">
         <h2>Menus</h2>
-        Mes menus 🧑‍🍳<br>
+        <strong class="text-center">Mes menus 🧑‍🍳</strong><br>
         <div class="ml-3">
           Aucun<br>
         </div>
-        Mes favoris ❤️<br>
+        <strong class="text-center">Mes favoris ❤️</strong><br>
         <div class="ml-3">
         Aucun<br>
         </div>
-        <hr class="my-1">
+        <strong class="text-center">Mes proches 👪</strong><br>
+        <div class="ml-3">
+        Aucun<br>
+        </div>
         <strong class="text-center">Menus Heda 🦾</strong><br>
         <% Listing.order(:order).each do |listing| %>
           <div style="size: 1.3em; color: gray;"><%= listing.name %></div>
