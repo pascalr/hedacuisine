@@ -34,3 +34,33 @@ Je sais que c'est controversé acheté au Bulk Barn parce qu'ils ne sont pas zé
 Vendre des armoires de cuisine
 Faire un site de recettes avec des publicités
 Service de livraison aliments en vrac
+
+Déterminer comment gérer les groupes et les recettes dans la barre de recherche. Seulement
+montrer la recette la plus populaire pour chaque groupe? Non parce que parfois le nom n'a
+pas vraiment rapport avec le groupe et tu veux pouvoir chercher. Par exemple, groupe tofu
+à la levure vivante, mais tu veux chercher tofu magique, pas le nom du groupe. Afficher le 
+fullname de toutes les recettes dans le search, et on s'en fou des groupes dans le search.
+
+TODO: Trouver des images pour chaque groupe (Recettes uniques)
+
+Si j'essaie de simplement faire un site internet, simplement faire une text field pour les ingrédients (donc pareil comme présentement, mais sans le mot ajouter)
+
+TODO: Ajouter un attribut available in bulk
+
+Priorités:
+- Compléter le modèle d'affaires
+- Trouver du financement
+- Trouver un cofondateur
+- Faire une demande de brevet
+- Sortir la première version du site internet de recettes de base
+et bien d'autres...
+
+Cofondateur:
+Je veux qu'il s'occupe du côté business.
+Je veux qu'il n'ait pas peur de se salir les mains et puisse faire des tâches pour m'aider si c'est la
+priorité. Au début les ressources sont limités.
+On doit partager la même vision pour la compagnie. Les même valeurs.
+
+Mon titre moi serait simplement Foundateur. Je ne voudrais pas vraiment d'autres titres.
+
+In some countries, there is a dual board system with two separate boards, one executive board for the day-to-day business and one supervisory board for control purposes (selected by the shareholders). In these countries, the CEO presides over the executive board and the chairman presides over the supervisory board, and these two roles will always be held by different people. This ensures a distinction between management by the executive board and governance by the supervisory board. This allows for clear lines of authority. The aim is to prevent a conflict of interest and too much power being concentrated in the hands of one person. 
