@@ -1,8 +1,14 @@
 Au lieu de tiny-slider, utiliser bootstrap carousel:
 https://getbootstrap.com/docs/5.0/components/carousel/
 
+Pour le multilinguisme, les groupes de recettes pourraient être multilingues. Mais pas les recettes
+parce qu'elles sont un lien vers une recette dans une langue. Les menus non plus puisqu'ils pointent
+vers des recettes et non des groupes. Mais les menus sont trivials à refaire si les recettes sont linker par rapport aux bons groupes de recettes.
+
 Utiliser bootstrap alerts au lieu de toastr. Ça m'énerve en haut à droite de toute façon ça bloque les
 liens. Non, en fait ce sont les toasts de bootstrap que je dois regarder!
+
+Au lieu de parent_id pour les menus, je crois simplement rajouter label:string.
 
 Utiliser accordions pour les menus à gauches.
 

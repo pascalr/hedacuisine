@@ -22,7 +22,7 @@ module Hedacuisine
     config.i18n.default_locale = 'fr-CA'
 
     config.to_prepare do
-      Devise::SessionsController.skip_before_action :only_admin!
+      Devise::SessionsController.skip_before_action :only_admin!, raise: false
     end
 
     # Settings in config/environments/* take precedence over those specified here.

@@ -4,8 +4,9 @@ class Menu < ApplicationRecord
   has_many :items
   has_many :favorite_menus
   has_many :descriptions, as: :described
-  belongs_to :parent, class_name: "Menu", optional: true
-  has_many :children, class_name: "Menu", foreign_key: 'parent_id'
+  belongs_to :parent, class_name: "Menu", optional: true # deprecated
+  has_many :children, class_name: "Menu", foreign_key: 'parent_id' # deprecated
+  belongs_to :listing
 
   def recipes
     categories.map(&:recipes).flatten
