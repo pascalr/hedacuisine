@@ -73,16 +73,15 @@
       <nav id="sidebar" class="mx-1 pr-3 border-right">
         <h2>Menus</h2>
         Mes menus 🧑‍🍳<br>
-        Aucun<br>
-        <hr>
+        <div class="ml-3">
+          Aucun<br>
+        </div>
         Mes favoris ❤️<br>
+        <div class="ml-3">
         Aucun<br>
-        <hr>
-        Heda 🦾<br>
-        <% User.first.menus.where(listing_id: nil).each do |menu| # FIXME
-          %>
-          <%= link_to menu.name, edit_menu_path(menu), style: "color: black;" %><br>
-        <% end %>
+        </div>
+        <hr class="my-1">
+        <strong class="text-center">Menus Heda 🦾</strong><br>
         <% Listing.order(:order).each do |listing| %>
           <div style="size: 1.3em; color: gray;"><%= listing.name %></div>
           <div class="ml-3">
@@ -91,6 +90,13 @@
             <% end %>
           </div>
         <% end %>
+        <div style="size: 1.3em; color: gray;">Autres</div> <!-- TODO: Remove this -->
+        <div class="ml-3">
+          <% User.first.menus.where(listing_id: nil).each do |menu| # FIXME
+            %>
+            <%= link_to menu.name, edit_menu_path(menu), style: "color: black;" %><br>
+          <% end %>
+        </div>
       </nav>
     
       <div id="content" class="mx-2">
