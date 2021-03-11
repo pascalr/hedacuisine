@@ -21,6 +21,10 @@ module Hedacuisine
     # Set the default locale to French canada
     config.i18n.default_locale = 'fr-CA'
 
+    config.to_prepare do
+      Devise::SessionsController.skip_before_filter :only_admin!
+    end
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
