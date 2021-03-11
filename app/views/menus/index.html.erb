@@ -2,7 +2,7 @@
 
 <div class="responsive-margins-sm">
   <% @menus.each do |menu| %>
-    <%= link_to menu.name, menu %><br>
+    <%= link_to menu.name, edit_menu_path(menu) %><br>
   <% end %>
 </div>
 

@@ -17,6 +17,12 @@
   <span class="title_icon">🗑️</span>
 </h1>
 
+<%= form_with(model: @menu, local: true) do |form| %>
+  <%= form.label :parent_id %>
+  <%= form.collection_select :parent_id, Menu.order(:name).all, :id, :name, include_blank: true %>
+  <%= form.submit %>
+<% end %>
+
 <h2>
   Description
   <span class="toggle-link title_icon" data-toggle_id="add_description_form">✏️</span>
@@ -29,7 +35,7 @@
 <% end %>
 
 <div id='add_description_form'>
-  <%= form_with(model: Description.new) do |form| %>
+  <%= form_with(model: Description.new, local: true) do |form| %>
     <div><%= form.collection_select :language_id, Language.order(:name).all, :id, :name %></div>
     <div><%= form.text_area :content, rows: 10, cols: 120 %></div>
     <%= form.hidden_field :described_id, value: @menu.id %>

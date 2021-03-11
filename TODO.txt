@@ -1,3 +1,29 @@
+Au lieu de tiny-slider, utiliser bootstrap carousel:
+https://getbootstrap.com/docs/5.0/components/carousel/
+
+Utiliser bootstrap alerts au lieu de toastr. Ça m'énerve en haut à droite de toute façon ça bloque les
+liens. Non, en fait ce sont les toasts de bootstrap que je dois regarder!
+
+Utiliser accordions pour les menus à gauches.
+
+Regarder pour les breadcrumbs pour voir où est-ce qu'on est dans le menu. Pour les recettes ça ne fonctionne pas parce que ça se retrouve dans beaucoup de menus.
+
+Utiliser bootstrap collapse au lieu de mon collapse à moi.
+
+Regarder les modals pour intéragir avec l'utilisateur. Par exemple pour créer des commentaires peut-être?
+
+Rajouter de la pagination pour indiquer qu'il y a d'autres recettes
+
+Regarder les popovers pour donner plus d'information à l'utilisateur. Les tooltips aussi.
+
+Regarder les icons bootstrap.
+https://icons.getbootstrap.com/
+
+Regarder les spinner pour quand le site load quelque chose.
+
+Tout le temps avoir le menu des menus à gauche.
+Le menu se cacherait sur le côtés et se décacherait comment?
+
 TODO: Déterminer le nombre de pots nécessaires. Probablement 1.5 fois le nombre de mes ingrédients pour pouvoir faire du roulement. Aussi, ça prend des contenant pour cuisiner.
 
 TODO: Déterminer la grandeur de l'armoire nécessaire. Sans lave-vaiselle pour au début.
