@@ -6,6 +6,8 @@ liens. Non, en fait ce sont les toasts de bootstrap que je dois regarder!
 
 Utiliser accordions pour les menus à gauches.
 
+Do you need to pass user to partials? Otherwise can they use something cached for another user?
+
 Un search bar juste pour les menus à gauche.
 
 Le search bar en haut c'est juste pour les recettes. Ou bien les deux ce n'est pas tant grave.

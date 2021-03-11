@@ -80,8 +80,8 @@
         <hr>
         Heda 🦾<br>
         <% User.first.menus.where(parent_id: nil).each do |menu| # FIXME
-      %>
-          <%= link_to menu.name, edit_menu_path(menu) %><br>
+          %>
+          <%= render partial: 'menus/branch', locals: {menu: menu, depth: 0} %>
         <% end %>
       </nav>
     

@@ -1,0 +1,31 @@
+<div style="margin-left: <%= 30*(depth) %>px;">
+  <% if menu.children.any? %>
+    <%= link_to menu.name, "#collapse-menu-#{menu.id}", role: "button", "data-bs-toggle": "collapse" %><br>
+    <%# link_to menu.name, "#collapse-menu-#{menu.id}", role: "button", "aria-expanded": "false", "data-bs-toggle": "collapse", 'aria-controls': "collapse-menu-#{menu.name}" %>
+    <div id="collapse-menu-<%= menu.id %>">
+      <% menu.children.each do |child| %>
+        <%= render partial: 'menus/branch', locals: {menu: child, depth: depth+1} %>
+      <% end %>
+    </div>
+  <% else %>
+    <%= link_to menu.name, edit_menu_path(menu) %><br>
+  <% end %>
+</div>
+
+<!-- TODO: A hack. Save every (+) into a input type checkbox that is hidden. -->
+<!-- When loading check those input box to see if they should be hidden or not. -->
+<!-- Firefox remembers the state of inputs when you reload the page. -->
+<!--<div>
+  <input type="checkbox">
+  <div style="display: inline-block; min-width: 50px;"><%# sub_command.nb %></div>
+  <%# if sub_command.sub_commands.blank? %>
+    <span style="margin-left: <%# 30*(sub_command.depth||0) %>px;"><%# sub_command.command %></span>
+  <%# else %>
+    <span class="caret" style="margin-left: <%# 30*(sub_command.depth||0) %>px;">
+      <%# sub_command.command %>
+    </span>
+    <div class="nested">
+      <%# render sub_command.sub_commands %>
+    </div>
+  <%# end %>
+</div-->
