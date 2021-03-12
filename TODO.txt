@@ -1,6 +1,10 @@
 Au lieu de tiny-slider, utiliser bootstrap carousel:
 https://getbootstrap.com/docs/5.0/components/carousel/
 
+Must: Séparer les recettes françaises et les recettes anglaises.
+Commencer simplement avec les recettes en français.
+Aye! Je sais! Écrire une tâche qui va dupliquer les menus et séparer les recettes français anglais
+
 Mettre des emojis en avant de chaque menu. Emoji pizza, hamburger. Aussi, mettre les emojis avec
 les drapeaux des nationalités.
 

@@ -64,3 +64,10 @@ On doit partager la même vision pour la compagnie. Les même valeurs.
 Mon titre moi serait simplement Foundateur. Je ne voudrais pas vraiment d'autres titres.
 
 In some countries, there is a dual board system with two separate boards, one executive board for the day-to-day business and one supervisory board for control purposes (selected by the shareholders). In these countries, the CEO presides over the executive board and the chairman presides over the supervisory board, and these two roles will always be held by different people. This ensures a distinction between management by the executive board and governance by the supervisory board. This allows for clear lines of authority. The aim is to prevent a conflict of interest and too much power being concentrated in the hands of one person. 
+
+Je n'ose pas trop pour les images parce que je me dis que ça va coûter cher. Ben je vais faire le calcul voir.
+
+ la tarification du stockage, la tarification des requêtes et de l’extraction des données, la tarification du transfert des données et de l’accélération du transfert des données et la tarification des fonctions de gestion des données.
+
+Storage: 0,023 USD par Go
+

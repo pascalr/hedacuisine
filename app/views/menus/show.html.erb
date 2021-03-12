@@ -56,7 +56,7 @@
 </div>
 
 <div class="responsive-margins-lg">
-  <h1 id="show_item_title"><%= @menu.name %></h1>
+  <h1><%= @menu.name %></h1>
 
   <% unless @menu.descriptions.blank? %>
     <%= @menu.descriptions.first.content %>
@@ -64,7 +64,7 @@
 
   <% @menu.categories.each do |category| %>
 
-    <h2><%= category.name %></h2>
+    <h2 style="color: #666666; font-size: 1.25rem;" class="mt-3 mb-0"><%= category.name %></h2>
     <% category.recipes.each do |recipe| %>
       <div>
         <div class="inline-block">
