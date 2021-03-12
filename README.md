@@ -105,3 +105,5 @@ Et ça c'est sans compter Heroku...
 
 On va faire une petite preuve de concept avec des images statique pour les hamburgers.
 300X210
+
+Afficher les listings en recipe slider?
