@@ -71,3 +71,37 @@ Je n'ose pas trop pour les images parce que je me dis que ça va coûter cher. B
 
 Storage: 0,023 USD par Go
 
+J'ai télécharger une image: Très grande. Très belle.
+https://lovingitvegan.com/wp-content/uploads/2016/09/Vegan-Chickpea-Burgers-6.jpg
+Taille du fichier: 56K
+
+200 000 recettes(images) * 56K == 11 200 000K == 11.2 Go
+11.2 Go * 0.023 USD == 0.258$
+
+Donc, le stockage n'est vraiment pas cher. Donc stocker beaucoup de version différente est l'idéal. L'objecti ainsi va être de minimiser le coût de transfert.
+
+Requêtes et extraction des données
+
+Pour insérer 200 000 images, je devrais vais 200K POST, facturé à 0.005 USD == 1 USD
+
+S'il y a 50 000 visiteurs uniques par jours et qu'un visiteur visite en moyenne 10 pages, et qu'il
+regarde en moyenne 5 images par page. Ça fait en moyenne 2.5 millions d'images vue par jour.
+2.5 millions == 2500K: 2500K * 0,0004 USD / K == 1$ par jour, donc 30$ par mois, pour 1.5 millions
+de visites par mois? c'est excellent!!!
+
+Mais attend, il manque la bande passante...
+
+2.5 millions d'images vues * 56K == 140 millions de K == 140 Go
+140 Go à 0,09 USD$ / Go * 30 jours == 378$ par mois
+
+Ah fuck ça c'est beaucoup d'argent...
+Pour l'instant ce serait à peu près 400 USD$ par mois pour 1.5 millions de visites par mois.
+13.33 USD$ par jour pour 50 000 visiteurs
+1 USD$ par jour par 4 425 visiteurs
+Donc 1$ canadien par jour pour chaque 3000$ visiteurs.
+Probablement plus 1$ par jour pour Heroku.
+
+Et ça c'est sans compter Heroku...
+
+On va faire une petite preuve de concept avec des images statique pour les hamburgers.
+300X210
