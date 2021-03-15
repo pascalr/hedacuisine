@@ -67,39 +67,7 @@
     <% end %>
 
     <div class="wrapper">
-      <!-- TODO: Put this is a partial -->
-      <nav id="sidebar" class="pl-1 pr-3 border-right" style="background-color: #F4F4F4;">
-        <!--<h2 style="text-align: center; border-bottom: 1px solid black;">Menus</h2>-->
-        <strong class="text-center">Mes menus 🧑‍🍳</strong><br>
-        <div class="ml-3">
-          Aucun<br>
-        </div>
-        <strong class="text-center">Mes favoris ❤️</strong><br>
-        <div class="ml-3">
-        Aucun<br>
-        </div>
-        <strong class="text-center">Mes proches 👪</strong><br>
-        <div class="ml-3">
-        Aucun<br>
-        </div>
-        <strong class="text-center">Menus Heda 🦾</strong><br>
-        <% Listing.order(:order).each do |listing| %>
-          <div style="size: 1.3em; color: gray;"><%= listing.name %></div>
-          <div class="ml-3">
-            <% listing.menus.each do |m| %>
-              <%= link_to m.name, m, style: "color: black;" %><br>
-            <% end %>
-          </div>
-        <% end %>
-        <div style="size: 1.3em; color: gray;">Autres</div> <!-- TODO: Remove this -->
-        <div class="ml-3">
-          <% User.first.menus.where(listing_id: nil).each do |menu| # FIXME
-            %>
-            <%= link_to menu.name, menu, style: "color: black;" %><br>
-          <% end %>
-        </div>
-      </nav>
-    
+      <%= render partial: "layouts/sidebar" %>
       <div id="content" class="mx-2" style="width: 100%">
         <%= yield %>
       </div>
