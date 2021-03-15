@@ -8,6 +8,12 @@ Enlever group show et seulement garder recipe show. Pour la recipe tu as ses sib
 Faire un plan sommaire d'un socio-financement.
 Design d'une belle armoire de cuisine.
 Regarder où est-ce que je pourrais engager quelqu'un pour m'aider dans le socio-financement.
+Un autre git pour le management Heda.
+Mettre tous les fichiers par rapport à Heda dedans. Faire une application rails pour le management dedans.
+
+Sociofinancement:
+Offrir des plans d'armoires.
+Offrir le bras robotique (inclus des plans d'armoires exclus).
 
 Vendre des plans pour les armoires?
 
