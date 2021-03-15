@@ -1,6 +1,16 @@
 https://aqueous-fortress-30634.herokuapp.com/
 http://www.responsinator.com/?url=hedacuisine.com
 
+Plan de la semaine:
+Rendre le site fonctionnel pour moi et Céline. Gros minimum de base. Plus aucune nouvelle fonctionnalité.
+Afficher les groupes de recettes correctement peut-être.
+Enlever group show et seulement garder recipe show. Pour la recipe tu as ses sibblings.
+Faire un plan sommaire d'un socio-financement.
+Design d'une belle armoire de cuisine.
+Regarder où est-ce que je pourrais engager quelqu'un pour m'aider dans le socio-financement.
+
+Vendre des plans pour les armoires?
+
 Valeurs de la compagnie:
 - Environnement
 - Humanité (The company shall operate in the best interest of humanity (e.g. no planned obsolescence))
@@ -107,3 +117,17 @@ On va faire une petite preuve de concept avec des images statique pour les hambu
 300X210
 
 Afficher les listings en recipe slider?
+
+L'ambition est que la compagnie grossisse et sois énorme style Samsung et non est acheté par Samsung/Google/... S'assurer que les investisseurs ont la même vision des choses.
+Je veux faire une grande compagnie Québécoise et compétionner avec les autres. Je ne souhaite pas être acheté...
+
+Settings DNS actuel:
+ALIAS Record 	
+@
+experimental-everglades-pe93pssy4fee6c1lo1omnypc.herokudns.com.
+5 min
+
+CNAME Record 	
+www
+still-rattlesnake-77n1uyhwo6hf0u6alcz5ifkz.herokudns.com.
+Automatic
