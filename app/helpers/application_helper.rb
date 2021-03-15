@@ -50,6 +50,10 @@ module ApplicationHelper
     "#{i_part} #{f}"
   end
 
+  def t_no_span(e)
+    strip_tags(t(e))
+  end
+
   def pretty_volume(ing)
     return "#{pretty_fraction(ing.volume/1000.0)} L" if ing.food.is_liquid? && ing.volume >= 1000.0
     return "#{pretty_fraction(ing.volume/250.0)} t" if ing.volume >= 250.0 or (ing.volume > 30.0 and close_to_fraction?(ing.volume/250.0))

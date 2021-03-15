@@ -20,7 +20,7 @@
       </button>
       <div class="collapse navbar-collapse" style="flex-grow: unset;">
         <div class="navbar-nav">
-          <%= link_to_active t("hedacuisine.menu.home"), home_path, class: "nav-item nav-link" %>
+          <%= link_to_active t("heda.menu.home"), home_path, class: "nav-item nav-link" %>
           <% if current_user_admin? %>
             <%= link_to_active 'Meta', meta_index_path, class: "nav-item nav-link" %>
           <% end %>
@@ -38,10 +38,10 @@
           <% if user_signed_in? %>
             <div class="dropdown nav-item">
               <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <%= t("hedacuisine.my_account") %>
+                <%= t("heda.my_account") %>
               </a>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <%= link_to t("hedacuisine.modify"), users_modify_path, class: "dropdown-item" %>
+                <%= link_to t("heda.modify"), users_modify_path, class: "dropdown-item" %>
                 <%= link_to_active 'Mes recettes', recipes_path, class: "dropdown-item" %>
                 <%= link_to_active 'Mes menus', menus_path, class: "dropdown-item" %>
                 <%= link_to_active 'Liens', menus_path, class: "dropdown-item" %>
@@ -50,7 +50,7 @@
             </div>
             <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "nav-item nav-link"  %>
           <% else %>
-            <%= link_to t("devise.shared.links.sign_up"), new_user_registration_path, class: "nav-item nav-link" %>
+            <%# link_to t("devise.shared.links.sign_up"), new_user_registration_path, class: "nav-item nav-link" %>
             <%= link_to t("devise.sessions.new.sign_in"), new_user_session_path, class: "nav-item nav-link" %>
           <% end %>
         </div>
