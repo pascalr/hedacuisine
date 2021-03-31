@@ -1,3 +1,11 @@
+TODO: Cacher le menu de gauche pour le téléphone cellulaire.
+
+C'est bien de trouver des recettes et continuer de faire mes menus, peut-être une heure par jour. Ça me trouve des recettes et c'est génial, mais continuer mon robot pour qu'il me les fasse les recettes et que je les modifie. Par exemple, ne pas utilise de samba oelek, remplacer par chili broyé et autre.
+
+TODO: Rajouter une validation Heda aux recettes et n'afficher que les recettes valides Heda.
+
+Ne pas offrir d'enregistrer ses propres listes de recettes au début.
+
 Ce site est un recueil de recettes et est composé principalement de lien vers d'autres sites internet.
 Quelques recettes sont sur ce site, ce sont mes recettes.
 Les ingrédients et l'essentielles des instructions sont possiblement pris sur les sites internet dans le but de pouvoir comparer les recettes, et dans le but d'un jour être cuisiner par notre robot de cuisine, Heda.

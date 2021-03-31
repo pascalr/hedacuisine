@@ -90,13 +90,13 @@
     <%= category.name %>
     <span class="title_icon">✏️</span>
     <span class="toggle-link title_icon" data-toggle_id="add_recipe_<%= category.id %>">➕</span>
-    <span class="title_icon">🗑️</span>
+    <%= link_to "🗑️", category, method: :delete, data: {confirm: 'Are you sure?'}, class: "title_icon" %>
   </h3>
   <ul>
     <% category.items.each do |item| %>
       <li>
         <%= link_to item.recipe.fullname, edit_recipe_path(item.recipe) %>
-        <%= link_to "🗑️", item_path(item), method: :delete, data: {confirm: 'Are you sure?'} %>
+        <%= link_to "🗑️", item, method: :delete, data: {confirm: 'Are you sure?'} %>
       </li>
     <% end %>
   </ul>

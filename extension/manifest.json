@@ -1,0 +1,10 @@
+{
+  "name": "Heda Recipe Bookmark",
+  "version": "1.0",
+  "description": "Extension for personal use for bookmarking recipes.",
+  "permissions": ["activeTab"],
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+  "manifest_version": 2
+}
