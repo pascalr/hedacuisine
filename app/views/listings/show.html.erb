@@ -1,23 +1,25 @@
 <p id="notice"><%= notice %></p>
 
-<h1><%= @listing.name %></h1>
-
-<% @listing.menus.each do |menu| %>
-  <h2><%= link_to menu.name, menu %></h2>
-  <% if menu.id == 24 %>
-    <span id="prev-recipe" class="my-tns-control"><%= image_tag "left_arrow.svg", size: "24x24" %></span>
-    <span id="next-recipe" class="my-tns-control"><%= image_tag "right_arrow.svg", size: "24x24" %></span>
-    <div id="recipe_slider_items">
-        <div style="display: inline-block;"><%= image_tag("hamburgers/smaller-burger-poulet-ricardo.jpg", height: '210') %></div>
-        <div style="display: inline-block;"><%= image_tag("hamburgers/smaller-burger-ricardo.jpg", height: '210') %></div>
-        <div style="display: inline-block;"><%= image_tag("hamburgers/smaller-blc-burger-vege-msn.jpg", height: '210') %></div>
-        <div style="display: inline-block;"><%= image_tag("hamburgers/smaller-Vegan-Black-Bean-Burgers-12.jpg", height: '210') %></div>
-        <div style="display: inline-block;"><%= image_tag("hamburgers/smaller-Vegan-Chickpea-Burgers-6.jpg", height: '210') %></div>
-    </div>
+<div class="responsive-margins-lg">
+  <h1><%= @listing.name %></h1>
+  
+  <% @listing.menus.each do |menu| %>
+    <h2><%= link_to menu.name, menu %></h2>
+    <% if menu.id == 24 %>
+      <span id="prev-recipe" class="my-tns-control"><%= image_tag "left_arrow.svg", size: "24x24" %></span>
+      <span id="next-recipe" class="my-tns-control"><%= image_tag "right_arrow.svg", size: "24x24" %></span>
+      <div id="recipe_slider_items">
+          <div style="display: inline-block;"><%= image_tag("hamburgers/smaller-burger-poulet-ricardo.jpg", height: '210') %></div>
+          <div style="display: inline-block;"><%= image_tag("hamburgers/smaller-burger-ricardo.jpg", height: '210') %></div>
+          <div style="display: inline-block;"><%= image_tag("hamburgers/smaller-blc-burger-vege-msn.jpg", height: '210') %></div>
+          <div style="display: inline-block;"><%= image_tag("hamburgers/smaller-Vegan-Black-Bean-Burgers-12.jpg", height: '210') %></div>
+          <div style="display: inline-block;"><%= image_tag("hamburgers/smaller-Vegan-Chickpea-Burgers-6.jpg", height: '210') %></div>
+      </div>
+    <% end %>
   <% end %>
-<% end %>
-
-<%= link_to 'Edit', edit_listing_path(@listing) %> |
-<%= link_to 'Back', listings_path %>
+  
+  <%= link_to 'Edit', edit_listing_path(@listing) %> |
+  <%= link_to 'Back', listings_path %>
+</div>
 
 <%= javascript_pack_tag "recipe_slider_pack" %>
