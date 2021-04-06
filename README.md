@@ -1,3 +1,5 @@
+TODO: La page pour les thèmes (listings), faire une page comme pour netflix avec des images en carrousel pour chaque sous-catégories.
+
 TODO: Cacher le menu de gauche pour le téléphone cellulaire.
 
 C'est bien de trouver des recettes et continuer de faire mes menus, peut-être une heure par jour. Ça me trouve des recettes et c'est génial, mais continuer mon robot pour qu'il me les fasse les recettes et que je les modifie. Par exemple, ne pas utilise de samba oelek, remplacer par chili broyé et autre.

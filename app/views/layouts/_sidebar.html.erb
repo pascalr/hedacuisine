@@ -15,7 +15,7 @@
   <strong class="text-center"><%# t("heda.heda_menus") %> 🦾</strong><br>
   -->
   <% Listing.order(:order).each do |listing| %>
-    <div style="size: 1.3em; color: gray;"><%= listing.name %></div>
+    <div><%= link_to listing.name, listing, style: "size: 1.3em; color: gray;" %></div>
     <div class="ml-3">
       <% listing.menus.each do |m| %>
         <%= link_to m.name, m, style: "color: black;" %><br>
