@@ -1,3 +1,5 @@
+TODO: Pour faire apparaître et disparaître le menu sur la gauche sur les cellulaires, c'est un bouton qui suit l'écran en bas, comme sur une vrai application, comme Daniel fait.
+
 TODO: La page pour les thèmes (listings), faire une page comme pour netflix avec des images en carrousel pour chaque sous-catégories.
 
 TODO: Cacher le menu de gauche pour le téléphone cellulaire.
