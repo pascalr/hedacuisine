@@ -8,10 +8,10 @@ class DescriptionsController < ApplicationController
 
     respond_to do |format|
       if @description.save
-        format.html { redirect_to edit_menu_path(@description.menu), notice: 'Category was successfully created.' }
+        format.html { redirect_back fallback_location: @description.described, notice: 'Category was successfully created.' }
         format.json { render :show, status: :created, location: @description }
       else
-        format.html { render :new }
+        format.html { redirect_back fallback_location: @description.described}
         format.json { render json: @description.errors, status: :unprocessable_entity }
       end
     end
@@ -20,10 +20,10 @@ class DescriptionsController < ApplicationController
   def update
     respond_to do |format|
       if @description.update(category_params)
-        format.html { redirect_to edit_menu_path(@description.menu), notice: 'Category was successfully updated.' }
+        format.html { redirect_back fallback_location: @description.described, notice: 'Category was successfully updated.' }
         format.json { render :show, status: :ok, location: @description }
       else
-        format.html { render :edit }
+        format.html { redirect_back fallback_location: @description.described}
         format.json { render json: @description.errors, status: :unprocessable_entity }
       end
     end

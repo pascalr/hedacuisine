@@ -37,3 +37,5 @@ yarn-debug.log*
 
 *.swp
 *.autosave
+
+**.dump

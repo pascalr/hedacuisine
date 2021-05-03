@@ -2,6 +2,8 @@ class Food < ApplicationRecord
 
   has_many :ingredients
   has_many :recipes, through: :ingredients
+  
+  has_many :descriptions, as: :described
 
   validates :name, presence: true, uniqueness: true
 

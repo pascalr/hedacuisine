@@ -1,0 +1,29 @@
+<%= link_to 'Show', @food%>
+
+<h1>Modifier aliment</h1>
+
+<%= form_with(model: @food, local: true) do |form| %>
+  <%= form.text_field :name %>
+  <%= form.submit %>
+<% end %>
+
+<h2>Descriptions</h2>
+
+<% @food.descriptions.each do |desc| %>
+  <h3><%= desc.language.name %></h3>
+  <%= form_with(model: desc, local: true) do |form| %>
+    <div><%= form.text_area :content, rows: 10, cols: 120 %></div>
+    <div><%= form.submit %></div>
+  <% end %>
+<% end %>
+
+<h3>Nouvelle description</h3>
+<div id='add_description_form'>
+  <%= form_with(model: Description.new, local: true) do |form| %>
+    <div><%= form.collection_select :language_id, Language.order(:name).all, :id, :name %></div>
+    <div><%= form.text_area :content, rows: 10, cols: 120 %></div>
+    <%= form.hidden_field :described_id, value: @food.id %>
+    <%= form.hidden_field :described_type, value: 'Food' %>
+    <div><%= form.submit %></div>
+  <% end %>
+</div>

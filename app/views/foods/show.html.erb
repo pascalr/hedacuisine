@@ -1,0 +1,15 @@
+<div class="responsive-margins-lg">
+
+  <%= link_to 'edit', edit_food_path(@food) if current_user_admin?  %>
+
+  <h1><%= @food.name %></h1>
+
+  <% @description = @food.descriptions.where(language_id: current_language.id).first if current_language %>
+  <%= current_language.name %>
+  <% if @description %>
+    <%= @description.content %>
+  <% end %>
+  
+  <p>TODO: Recipes that use this ingredient...</p>
+
+</div>
