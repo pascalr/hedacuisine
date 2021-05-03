@@ -33,7 +33,7 @@
             <%= link_to 'EN', url_for(locale: 'en'), class: 'nav-item nav-link' %>
             <%# url_for(params.merge({:your_new_parameter => value})) maybe this is above does not work %>
           <% else %>
-            <%= link_to 'FR', url_for(locale: 'fr-CA'), class: 'nav-item nav-link' %>
+            <%= link_to 'FR', url_for(locale: 'fr'), class: 'nav-item nav-link' %>
           <% end %>
           <% if user_signed_in? %>
             <div class="dropdown nav-item">

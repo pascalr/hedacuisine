@@ -19,7 +19,8 @@ module Hedacuisine
     config.load_defaults 6.0
 
     # Set the default locale to French canada
-    config.i18n.default_locale = 'fr-CA'
+    #config.i18n.default_locale = 'fr-CA'
+    config.i18n.default_locale = 'fr'
 
     config.to_prepare do
       Devise::SessionsController.skip_before_action :only_admin!, raise: false
