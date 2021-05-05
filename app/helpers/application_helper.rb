@@ -17,6 +17,22 @@ module ApplicationHelper
     link_to name, path, options
   end
 
+  def article_for(name)
+    sanitized = name.gsub(/[^0-9A-Za-z]/, '_')
+    if current_language
+      locale_file = Rails.root.join("articles").join(sanitized).join("#{current_language.locale}.html")
+      #puts "Checking for path = #{locale_file}"
+      # FIXME: How to do it properly?
+      return render inline: File.read(locale_file), layout: false if locale_file.exist?
+      #return render file: locale_file.to_s, layout: false
+    end
+
+    index = Rails.root.join("articles").join(sanitized).join("index.html")
+    # FIXME: How to do it properly?
+    render inline: File.read(index), layout: false if index.exist?
+    #render file: index.to_s, layout: false if index.exist?
+  end
+
   #def pretty_ingredient_value(value, unit)
   #  return number_with_precision value, precision: 2, strip_insignificant_zeros: true if unit.blank? or not unit.show_fraction
   #  #fractions = [1/8r, 1/4r, 1/3r, 3/8r, 1/2r, 5/8r, 2/3r, 3/4r, 7/8r]

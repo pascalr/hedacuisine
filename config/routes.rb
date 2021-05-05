@@ -16,6 +16,8 @@ Rails.application.routes.draw do
   devise_for :users
 
   get 'home', to: 'home#index'
+  
+  get 'article_images/:article_name/:filename/:extension', to: 'article_images#show'
 
   resources :items, only: [:destroy]
   resources :menus

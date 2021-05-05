@@ -2,13 +2,15 @@
 
   <%= link_to 'edit', edit_food_path(@food) if current_user_admin?  %>
 
-  <h1><%= @food.name %></h1>
+  <h1><%= @food.name.capitalize %></h1>
 
-  <% @description = @food.descriptions.where(language_id: current_language.id).first if current_language %>
-  <% if @description %>
-    <p><%= @description.content %></p>
-  <% end %>
+  <h2>Voir les recettes qui l'utilise</h2>
+
+  <p>TODO: Un slider avec les recettes de cet ingrédient.</p>
+  <p>TODO. Aucune recette pour l'instant.</p>
   
-  <p>TODO: Recipes that use this ingredient...</p>
+  <hr>
+
+  <%= article_for @food.name %>
 
 </div>
