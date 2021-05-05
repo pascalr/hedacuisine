@@ -1,3 +1,5 @@
+TODO: Pour les ingrédients, rajouter un slider pour les recettes qui utilisent cet ingrédient.
+
 Fuck off avec FR-CA et FR tout court... je me complique beaucoup trop la vie...
 
 TODO: Pour faire apparaître et disparaître le menu sur la gauche sur les cellulaires, c'est un bouton qui suit l'écran en bas, comme sur une vrai application, comme Daniel fait.

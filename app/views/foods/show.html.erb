@@ -4,12 +4,15 @@
 
   <h1><%= @food.name.capitalize %></h1>
 
-  <h2>Voir les recettes qui l'utilise</h2>
+  <h2>Recettes</h2>
 
-  <p>TODO: Un slider avec les recettes de cet ingrédient.</p>
-  <p>TODO. Aucune recette pour l'instant.</p>
-  
-  <hr>
+  <% if @food.recipes.blank? %>
+    <p>Aucune recette pour l'instant.</p>
+  <% else %>
+    <% @food.recipes.each do |recipe| %>
+      <%= link_to recipe.name, recipe %>
+    <% end %>
+  <% end %>
 
   <%= article_for @food.name %>
 

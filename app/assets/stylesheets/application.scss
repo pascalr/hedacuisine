@@ -24,6 +24,10 @@
 .wrapper {
   display: flex;
 }
+  
+.img-thumbnail {
+  max-height: 100%;
+}
 
 .inline {
   display: inline;
