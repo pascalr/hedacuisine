@@ -29,7 +29,7 @@
       <%= render partial: 'layouts/top_search', locals: {user: current_user} %>
       <div class="collapse navbar-collapse" style="flex-grow: unset;">
         <div class="navbar-nav">
-          <% if params[:locale] and params[:locale][0..1] == 'fr' %>
+          <% if (params[:locale] && params[:locale][0..1] == 'fr') || (params[:locale].blank? && I18n.default_locale[0..1] == 'fr') %>
             <%= link_to 'EN', url_for(locale: 'en'), class: 'nav-item nav-link' %>
             <%# url_for(params.merge({:your_new_parameter => value})) maybe this is above does not work %>
           <% else %>

@@ -1,7 +1,7 @@
 module ApplicationHelper
 
   def current_language
-    @current_language ||= Language.find_by(locale: params[:locale])
+    @current_language ||= Language.find_by(locale: params[:locale] || I18n.default_locale)
   end
 
   def current_user_admin?
