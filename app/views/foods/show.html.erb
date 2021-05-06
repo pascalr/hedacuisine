@@ -1,19 +1,21 @@
 <div class="responsive-margins-lg">
 
   <%= link_to 'edit', edit_food_path(@food) if current_user_admin?  %>
+  
+  <div class="article">
+    <h1><%= @food.name.capitalize %></h1>
 
-  <h1><%= @food.name.capitalize %></h1>
+    <h2>Recettes</h2>
 
-  <h2>Recettes</h2>
-
-  <% if @food.recipes.blank? %>
-    <p>Aucune recette pour l'instant.</p>
-  <% else %>
-    <% @food.recipes.each do |recipe| %>
-      <%= link_to recipe.name, recipe %>
+    <% if @food.recipes.blank? %>
+      <p>Aucune recette pour l'instant.</p>
+    <% else %>
+      <% @food.recipes.each do |recipe| %>
+        <%= link_to recipe.name, recipe %>
+      <% end %>
     <% end %>
-  <% end %>
 
-  <%= article_for @food.name %>
+    <%= article_for @food.name %>
+  </div>
 
 </div>

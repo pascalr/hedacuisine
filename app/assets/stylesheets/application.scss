@@ -11,6 +11,7 @@
  * It is generally better to create a new file per style scope.
  *
  * require_tree .
+ *= require articles.css
  *= require star-rating-svg
  *= require easy-autocomplete
  *= require_self
@@ -23,10 +24,6 @@
 /* Wrapper for the sidebar and the main content */
 .wrapper {
   display: flex;
-}
-  
-.img-thumbnail {
-  max-height: 100%;
 }
 
 .inline {
