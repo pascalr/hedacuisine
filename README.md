@@ -1,3 +1,6 @@
+
+TODO: Afficher les recettes seulement selon la langue. Ah je le sais pas... Probablement tout traduire les recettes et prendre les ingrédients et étapes.
+
 TODO: Pour les ingrédients, rajouter un slider pour les recettes qui utilisent cet ingrédient.
 
 Fuck off avec FR-CA et FR tout court... je me complique beaucoup trop la vie...
