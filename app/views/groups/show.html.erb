@@ -63,10 +63,10 @@
                 <li>
                   <% if ingredient.is_unitary? %>
                     <%= pretty_fraction ingredient.nb_units %>
-                    <%= (ingredient.nb_units >= 2) ? ingredient.plural.downcase : ingredient.name.downcase %>
+                    <%= (ingredient.nb_units >= 2) ? translated(ingredient.plural.downcase) : translated(ingredient.name.downcase) %>
                   <% else %>
                     <%= pretty_volume(ingredient) %> - 
-                    <%= ingredient.name.downcase %>
+                    <%= translated(ingredient.name.downcase) %>
                     <%= pretty_base_unit(ingredient) %>
                   <% end %>
                 </li>
