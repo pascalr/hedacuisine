@@ -15,7 +15,7 @@ class TranslationsController < ApplicationController
       @to_translate = Listing.all.map(&:name) + Ingredient.all.map(&:name) + Ingredient.all.map(&:plural) + Menu.all.map(&:name) + Recipe.all.map(&:name)
       @to_translate.uniq!
       by_original = Translation.by_original
-      @to_translate.reject! {|t| by_original[t.downcase] && by_original[t.downcase].from == @from.id && by_original[t.downcase].to == @to.id }
+      @to_translate.reject! {|t| t.blank? || (by_original[t.downcase] && by_original[t.downcase].from == @from.id && by_original[t.downcase].to == @to.id) }
     end
   end
 
