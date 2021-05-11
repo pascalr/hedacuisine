@@ -1,4 +1,4 @@
-<nav id="sidebar" class="pl-1 pr-3 border-right" style="background-color: #F4F4F4;">
+<nav id="sidebar" class="pl-2 border-right" style="background-color: #F4F4F4;">
   <!--<h2 style="text-align: center; border-bottom: 1px solid black;">Menus</h2>-->
   <!--<strong class="text-center"><%# t("heda.my_menus") %> 🧑‍🍳</strong><br>
   <div class="ml-3">
@@ -18,7 +18,7 @@
     <div><%= link_to listing.name, listing, style: "size: 1.3em; color: gray;" %></div>
     <div class="ml-3">
       <% listing.menus.each do |m| %>
-        <%= link_to ((m.emoji || '') + ' ' + m.name).lstrip, m, style: "color: black;" %><br>
+        <%= link_to ((m.emoji || '') + ' ' + translated(m.name).capitalize).lstrip, m, style: "color: black;" %><br>
       <% end %>
     </div>
   <% end %>
@@ -26,7 +26,7 @@
   <div class="ml-3">
     <% User.first.menus.where(listing_id: nil).each do |menu| # FIXME
       %>
-      <%= link_to ((menu.emoji || '') + ' ' + menu.name).lstrip, menu, style: "color: black;" %><br>
+      <%= link_to ((menu.emoji || '') + ' ' + translated(menu.name).capitalize).lstrip, menu, style: "color: black;" %><br>
     <% end %>
   </div>
 </nav>

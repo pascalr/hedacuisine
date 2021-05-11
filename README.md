@@ -1,3 +1,6 @@
+TODO: Cache all translations. Only load at startup.
+
+TODO: Modifier les traductions quand le nom des trucs sont modifiés
 
 TODO: Afficher les recettes seulement selon la langue. Ah je le sais pas... Probablement tout traduire les recettes et prendre les ingrédients et étapes.
 

@@ -12,6 +12,14 @@ module ApplicationHelper
     params[:unit_system_id] ? UnitSystem.find(params[:unit_system_id]) : UnitSystem.default
   end
 
+  def translated(text)
+    return text unless current_language
+    @translations = Translation.all
+    r = @translations.find_by(original: text.downcase, to: current_language.id)
+    return r.translated if r
+    text
+  end
+
   def link_to_active(name, path, options={})
     options[:class] += " active" if current_page?(path)
     link_to name, path, options
