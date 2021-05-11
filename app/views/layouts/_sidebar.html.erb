@@ -15,7 +15,7 @@
   <strong class="text-center"><%# t("heda.heda_menus") %> 🦾</strong><br>
   -->
   <% Listing.order(:order).each do |listing| %>
-    <div><%= link_to listing.name, listing, style: "size: 1.3em; color: gray;" %></div>
+    <div><%= link_to translated(listing.name).capitalize, listing, style: "size: 1.3em; color: gray;" %></div>
     <div class="ml-3">
       <% listing.menus.each do |m| %>
         <%= link_to ((m.emoji || '') + ' ' + translated(m.name).capitalize).lstrip, m, style: "color: black;" %><br>
