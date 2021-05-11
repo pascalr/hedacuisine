@@ -1,0 +1,55 @@
+<%= render partial: 'meta/nav' %>
+
+<h2>Translations</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Original</th>
+      <th>From</th>
+      <th>To</th>
+      <th>Translated</th>
+      <th colspan="1"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @translations.each do |translation| %>
+      <tr>
+        <td><%= translation.original %></td>
+        <td><%= translation.from_language.name %></td>
+        <td><%= translation.to_language.name %></td>
+        <td><%= translation.translated %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h2>Missing translations</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Original</th>
+      <th>From</th>
+      <th>To</th>
+      <th>Translated</th>
+      <th colspan="1"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @to_translate.each do |name| %>
+      <tr>
+        <%= form_with model: Translation.new(original: name.downcase) do |form| %>
+          <td><%= form.text_field :original %></td>
+          <td><%= form.collection_select :from, @languages, :id, :name %></td>
+          <td><%= form.collection_select :to, @languages, :id, :name %></td>
+          <td><%= form.text_field :translated %></td>
+          <td><%= form.submit %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

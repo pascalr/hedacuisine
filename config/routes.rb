@@ -5,6 +5,7 @@ end
 Rails.application.routes.draw do
 
   resources :listings
+  resources :translations
   resources :tasks
   resources :groups
   get 'stats/index'

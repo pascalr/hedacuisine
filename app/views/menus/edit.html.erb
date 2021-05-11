@@ -47,6 +47,9 @@
 <div id="edit_menu_name_form" hidden>
   <%= form_with(model: @menu, local: true) do |form| %>
     <div class="field">
+      Emoji: <%= form.text_field :emoji %>
+    </div>
+    <div class="field">
       Nom: <%= form.text_field :name %>
     </div>
     <div class="field">
