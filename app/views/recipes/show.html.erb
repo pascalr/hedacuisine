@@ -14,7 +14,7 @@
 
 <div class="mx-n2">
   <ul class="nav nav-tabs">
-    <li class="subnav-item"><%= @recipe.name %></li>
+    <li class="subnav-item"><%= translated(@recipe.name).capitalize %></li>
     <% if @recipe.group and @recipe.group.recipes.count > 1 %>
       <li class="nav-item dropdown">
         <a class="subnav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Versions</a>
@@ -35,7 +35,7 @@
           <div class="dropdown-item" href="#">Ne se retrouve dans aucun menu.</div>
         <% else %>
           <% @recipe.menus.each do |menu| %>
-            <%= link_to menu.name, menu, class: "dropdown-item" %>
+            <%= link_to translated(menu.name).capitalize, menu, class: "dropdown-item" %>
           <% end %>
         <% end %>
       </div>
@@ -58,7 +58,7 @@
 
 <div class="responsive-margins-lg">
   <h1>
-    <%= @recipe.name %>
+    <%= translated(@recipe.name).capitalize %>
     <span style="font-size: 1.5rem;"><%= "(#{@recipe.version_name})" if @recipe.version_name %></span>
   </h1>
 
@@ -71,10 +71,10 @@
         <li>
           <% if ingredient.is_unitary? %>
             <%= pretty_fraction ingredient.nb_units %>
-            <%= (ingredient.nb_units >= 2) ? ingredient.plural.downcase : ingredient.name.downcase %>
+            <%= (ingredient.nb_units >= 2) ? ingredient.plural.downcase : translated(ingredient.name.downcase) %>
           <% else %>
             <%= pretty_volume(ingredient) %>
-            <%= ingredient.name.downcase %>
+            <%= translated(ingredient.name.downcase) %>
             <%= pretty_base_unit(ingredient) %>
           <% end %>
         </li>
@@ -86,6 +86,9 @@
   <%= simple_format @recipe.instructions %>
   
   <br>
+  
+  <h2>Recettes similaires</h2>
+
 </div>
 
 <%# javascript_pack_tag "recipe" %>

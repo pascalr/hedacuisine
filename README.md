@@ -1,3 +1,7 @@
+TODO: Fuck i18n, utiliser seulement mon translation. Rajouter le model Sentence content:string, après faire translate_sentence("Similar recipes"), qui s'assure que le contenu sois dans les sentences.
+
+TODO: In translated, check both ways. Original Fr->En AND Translated En->Fr
+
 TODO: Remove group. Replace with SimilarRecipe
 TODO: Un algorithme pour détecter les recettes simillaires selon le nom et les ingrédients.
 
