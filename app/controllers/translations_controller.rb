@@ -12,7 +12,7 @@ class TranslationsController < ApplicationController
     if params[:from] && params[:to]
       @from = Language.find(params[:from])
       @to = Language.find(params[:to])
-      @to_translate = Listing.all.map(&:name) + Ingredient.all.map(&:name) + Ingredient.all.map(&:plural) + Menu.all.map(&:name) + Recipe.all.map(&:name)
+      @to_translate = Category.all.map(&:name) + Listing.all.map(&:name) + Ingredient.all.map(&:name) + Ingredient.all.map(&:plural) + Menu.all.map(&:name) + Recipe.all.map(&:name)
       @to_translate.uniq!
       by_original = Translation.by_original
       @to_translate.reject! {|t| t.blank? || (by_original[t.downcase] && by_original[t.downcase].from == @from.id && by_original[t.downcase].to == @to.id) }

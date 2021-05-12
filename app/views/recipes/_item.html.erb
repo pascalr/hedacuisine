@@ -1,5 +1,5 @@
 <span>
-  <%= link_to recipe.name, recipe, style: "color: black;" %>
+  <%= link_to translated(recipe.name).capitalize, recipe, style: "color: black;" %>
   <% if recipe.user_comment(current_user) %>
     <span style='cursor: pointer;' onclick='alert("<%= recipe.user_comment(current_user).content %>");'>🗒️</span>
   <% else %>
