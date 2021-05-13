@@ -1,3 +1,43 @@
+<%
+def pretty_ingredient(ingredient)
+  result = "<li>"
+  if ingredient.is_unitary?
+    result += (pretty_fraction ingredient.nb_units)
+    str = (ingredient.nb_units >= 2) ? ingredient.plural : ingredient.name
+    result += " #{link_to translated(str.downcase), ingredient.food}"
+  else
+    result += pretty_volume(ingredient)
+    result += " #{link_to translated(ingredient.name.downcase), ingredient.food}"
+    result += " #{pretty_base_unit(ingredient)}"
+  end
+  result += "</li>"
+  result
+end
+# Afficher des encadrés avec des ingrédients qui peuvent être cuisiné.
+def pretty_before_recipe(recipe)
+end
+def pretty_print_recipe(recipe)
+  result = "<ol>"
+  recipe.instructions.downcase.lines.map(&:strip).map do |sentence|
+    if sentence.start_with?("contenant") && !recipe.ingredients.blank?
+      result += "<li>Dans un contenant, ajouter:<ul>"
+      recipe.ingredients.each do |ing| # TODO: Only ingredients for this container (add container_id to ingredients)
+        result += pretty_ingredient(ing)
+      end
+      result += "</ul></li>"
+    elsif sentence.start_with?("mélanger")
+      result += "<li>Bien mélanger à l'aide d'un mélangeur à main.</li>"
+    elsif sentence.start_with?("#.")
+      result += "<li>#{sentence[2..-1].strip.capitalize}</li>"
+    end
+  end
+  @listing_ingredients = false
+  result += "</ol>"
+  result.html_safe
+end
+%>
+
+
 <style>
 .subnav-link {
   display: block;
@@ -64,25 +104,26 @@
 
   <div class="mb-2"><%= link_to @recipe.source, @recipe.source, style: "color: gray;" if @recipe.source %></div>
 
+  <!-- TODO: Si un ingrédient se retrouve plusieurs fois dans la recette, afficher un avertissement et la quantité totale comme ça le monde peuvent savoir s'ils en ont assez -->
+
   <% unless @recipe.ingredients.blank? %>
-    <strong>Ingredients:</strong>
-    <ul>
-      <% @recipe.ingredients.each do |ingredient| %>
-        <li>
-          <% if ingredient.is_unitary? %>
-            <%= pretty_fraction ingredient.nb_units %>
-            <%= (ingredient.nb_units >= 2) ? ingredient.plural.downcase : translated(ingredient.name.downcase) %>
-          <% else %>
-            <%= pretty_volume(ingredient) %>
-            <%= link_to translated(ingredient.name.downcase), ingredient.food %>
-            <%= pretty_base_unit(ingredient) %>
-          <% end %>
-        </li>
-      <% end %>
-    </ul>
+
+    <div style="border: solid 1px black; border-radius: 5px; padding: 5px;">
+      <b>Comment faire ses pois chiches sois mêmes</b><br>
+
+      <p>TODO: Instructions recettes de pois chiches
+      </p>
+    </div>
+
+    <h3>Recette</h3>
+
+    <%= pretty_print_recipe(@recipe) %>
+
   <% end %>
 
-  <strong>Instructions:</strong>
+  <br><br><br>
+
+  <strong>Code:</strong>
   <%= simple_format @recipe.instructions %>
   
   <br>

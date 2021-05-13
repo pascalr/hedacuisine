@@ -263,6 +263,9 @@ module Utils
     ParsedCommand.new(cmd, args)
   end
 
+  # Removes comments (from # to EOL)
+  # Extracts the first token which is the command name
+  # Converts the arguments from string to their types.
   def parse_instructions(input)
     input.downcase.lines.map(&:strip).map do |sentence|
       next if sentence.blank? or sentence.start_with?("#")

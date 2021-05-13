@@ -1,4 +1,12 @@
-A recipe belongs_to an ingredient it can make. An ingredient has_many recipes that can make it. WAIT, a recipe can make many ingredient too... Pois chiches cuits pour produire pois chiches cuits et boite de conserve de pois chiches...
+TODO: Faire un fichier de nomenclature pour le language de programmation de recettes.
+
+TODO: Add boolean to ingredients, whether to show how to make ingredient or not. show_make_ingredient:boolean
+
+TODO: Add container_id to ingredients
+
+TODO: Translate units
+
+TODO: When there are mulitple times the same ingredient show a warning and show how much total ingredient is required.
 
 TODO: Aliases
 

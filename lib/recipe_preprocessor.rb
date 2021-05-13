@@ -43,6 +43,7 @@ module RecipeCommands
     #end
   end
   alias verser ajouter
+  alias ajouter_ou_faire ajouter
   def use(real_object_name) # prendre
     real_object = RealObject.find_by(name: real_object_name)
     raise "Error prendre. Unkown object #{real_object_name}" unless real_object

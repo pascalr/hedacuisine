@@ -8,6 +8,7 @@ class Ingredient < ApplicationRecord
   delegate :is_unitary, to: :food
 
   def self.weight_of(value, unit, food)
+    raise "Missing food (#{food.name}) unit weight." if unit.nil? && food.unit_weight.nil?
     return value * food.unit_weight unless unit
     return value * unit.value if unit.is_weight
     return value * food.density * unit.value if unit.is_volume
