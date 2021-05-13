@@ -1,4 +1,8 @@
 class Recipe < ApplicationRecord
+
+  has_many :food_recipes
+  has_many :produced_foods, through: :food_recipes, source: :food
+
   has_many :items, foreign_key: 'recipe_id'
   has_many :categories, through: "items"
   has_many :menus, through: "items"

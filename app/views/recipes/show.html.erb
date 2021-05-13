@@ -13,10 +13,8 @@ def pretty_ingredient(ingredient)
   result += "</li>"
   result
 end
-# Afficher des encadrés avec des ingrédients qui peuvent être cuisiné.
-def pretty_before_recipe(recipe)
-end
 def pretty_print_recipe(recipe)
+  notes = []
   result = "<ol>"
   recipe.instructions.downcase.lines.map(&:strip).map do |sentence|
     if sentence.start_with?("contenant") && !recipe.ingredients.blank?
@@ -25,14 +23,21 @@ def pretty_print_recipe(recipe)
         result += pretty_ingredient(ing)
       end
       result += "</ul></li>"
+    elsif sentence.start_with?("mijoter")
+      result += "<li>Faire mijoter pendant ? minutes.</li>"
+    elsif sentence.start_with?("tremper")
+      result += "<li>Laisser tremper pendant ? heures.</li>"
     elsif sentence.start_with?("mélanger")
       result += "<li>Bien mélanger à l'aide d'un mélangeur à main.</li>"
     elsif sentence.start_with?("#.")
       result += "<li>#{sentence[2..-1].strip.capitalize}</li>"
+    elsif sentence.start_with?("##")
+      notes << "<i>#{sentence[2..-1].strip.capitalize}</i>"
     end
   end
   @listing_ingredients = false
   result += "</ol>"
+  result += notes.join('<br>')
   result.html_safe
 end
 %>
@@ -99,7 +104,7 @@ end
 <div class="responsive-margins-lg">
   <h1>
     <%= translated(@recipe.name).capitalize %>
-    <span style="font-size: 1.5rem;"><%= "(#{@recipe.version_name})" if @recipe.version_name %></span>
+    <!--<span style="font-size: 1.5rem;"><%# "(#{@recipe.version_name})" if @recipe.version_name %></span>-->
   </h1>
 
   <div class="mb-2"><%= link_to @recipe.source, @recipe.source, style: "color: gray;" if @recipe.source %></div>
@@ -108,18 +113,28 @@ end
 
   <% unless @recipe.ingredients.blank? %>
 
-    <div style="border: solid 1px black; border-radius: 5px; padding: 5px;">
-      <b>Comment faire ses pois chiches sois mêmes</b><br>
+    <% ings = @recipe.ingredients.reject {|ing| ing.food.food_recipes.blank?} %>
+    <% ings.each do |ing| %>
 
-      <p>TODO: Instructions recettes de pois chiches
-      </p>
-    </div>
+      <div style="border: solid 1px black; border-radius: 5px; padding: 5px; margin-bottom: 20px;">
+        <b>Comment faire maison: <%= link_to ing.name, ing.food.producing_recipes.first %></b><br>
+        
+        <%= pretty_print_recipe(ing.food.producing_recipes.first) %>
+      </div>
+
+    <% end %>
 
     <h3>Recette</h3>
 
     <%= pretty_print_recipe(@recipe) %>
 
   <% end %>
+  
+  <h2>Recettes similaires</h2>
+
+  <p>TODO</p>
+
+  <p>Ou bien, remplacer ... par ...</p>
 
   <br><br><br>
 
@@ -127,8 +142,6 @@ end
   <%= simple_format @recipe.instructions %>
   
   <br>
-  
-  <h2>Recettes similaires</h2>
 
 </div>
 
