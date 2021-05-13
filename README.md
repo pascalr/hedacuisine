@@ -1,3 +1,21 @@
+A recipe belongs_to an ingredient it can make. An ingredient has_many recipes that can make it. WAIT, a recipe can make many ingredient too... Pois chiches cuits pour produire pois chiches cuits et boite de conserve de pois chiches...
+
+FoodRecipe food:references recipe:references
+
+TODO: Quand un des ingrédients peut être fabriquer à l'aide d'une recette, afficher la recette dans un encadré en premier. Cuire ses pois chiches sois-même... Faire sa chapelure assaisonnée à l'italienne sois-même... Mais je préfère que ce soit explicit qu'implicit, parce qu'après il peut y avoir des problèmes, je ne veux pas expliquer aux gens comment moudre leur poivre par exemple ou comment faire leur ail en poudre eux-autres même, etc...
+
+Donc, une nouvelle commande. ajouter_ou_faire 1, boîte de conserve de pois chiches, ça ça génère un encadré.
+
+Pour recettes similaire, afficher le nom et les ingrédients d'une recette similaire et des flèches pour naviguer les recettes similaires.
+
+TODO: Faire la recette de boulette de pois chiches, mais végane. Elle doit apparaître dans les recettes recettes similaires.
+
+TODO: Faire la recette de boulette de pois chiches, mais végane sans gluten. Elle doit apparaître dans les recettes recettes similaires.
+
+TODO: Faire la recette de boulette de pois chiches, mais sans gluten. Elle doit apparaître dans les recettes recettes similaires.
+
+La langue principale est le français? Tout est en français et doit être traduit en anglais?
+
 TODO: Fuck i18n, utiliser seulement mon translation. Rajouter le model Sentence content:string, après faire translate_sentence("Similar recipes"), qui s'assure que le contenu sois dans les sentences.
 
 TODO: In translated, check both ways. Original Fr->En AND Translated En->Fr

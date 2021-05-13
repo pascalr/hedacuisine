@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   resources :listings
   resources :translations
+  resources :food_recipes
   resources :tasks
   resources :groups
   get 'stats/index'

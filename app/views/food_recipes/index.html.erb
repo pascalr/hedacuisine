@@ -1,0 +1,30 @@
+<%= render partial: 'meta/nav' %>
+
+<h1>Food recipes</h1>
+
+<%= form_with model: FoodRecipe.new, local: true do |form| %>
+  Food: <%= form.collection_select :food_id, Food.all.order(:name), :id, :name %>
+  Recipe: <%= form.collection_select :recipe_id, Recipe.all.order(:name), :id, :name %>
+  <%= form.submit %>
+<% end %>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Food</th>
+      <th>Recipe</th>
+      <th colspan="1"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @food_recipes.each do |food_recipe| %>
+      <tr>
+        <td><%= link_to food_recipe.food.name, food_recipe.food %></td>
+        <td><%= link_to food_recipe.recipe.name, food_recipe.recipe %></td>
+        <td></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

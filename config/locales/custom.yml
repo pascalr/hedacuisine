@@ -7,6 +7,8 @@ fr:
       foods: "Aliments"
       units: "Unités"
       unit_systems: "Systèmes d'unité"
+      translations: "Traductions"
+      food_recipes: "Recettes d'aliments"
       container_formats: "Formats de contenant"
       robot: "Robot"
       about: "À propos"
