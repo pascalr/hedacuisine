@@ -8,7 +8,7 @@ class MissingFoodError < StandardError
   end
 end
 
-def parseIngredient(quantity, unit_or_ingredient_name, ingredient_name)
+def parseIngredient(quantity, unit_or_ingredient_name, ingredient_name, active_container)
     
   raise "Invalid quantity #{quantity}" unless quantity.is_a? Numeric
 
@@ -21,14 +21,17 @@ def parseIngredient(quantity, unit_or_ingredient_name, ingredient_name)
   food = Food.where('name = ? or plural = ?', ingredient_name, ingredient_name).first
   raise MissingFoodError.new(ingredient_name) unless food
 
-  Ingredient.build(quantity, unit, food)
+  Ingredient.build(quantity, unit, food, active_container)
 end
 
 # Defines specific rules for some instructions.
 module RecipeCommands
+  def contenant(nb)
+    @active_container = nb
+  end
   #Class.new.extend(RecipeCommands).ajouter
   def ajouter(quantity, unit_or_ingredient_name, ingredient_name=nil)
-    ing = parseIngredient(quantity, unit_or_ingredient_name, ingredient_name)
+    ing = parseIngredient(quantity, unit_or_ingredient_name, ingredient_name, @active_container)
     # OPTIMIZE: Don't use the database to find...
     same = @current_recipe.ingredients.find_by food_id: ing.food_id
     if same
