@@ -74,7 +74,7 @@
             <%= (ingredient.nb_units >= 2) ? ingredient.plural.downcase : translated(ingredient.name.downcase) %>
           <% else %>
             <%= pretty_volume(ingredient) %>
-            <%= translated(ingredient.name.downcase) %>
+            <%= link_to translated(ingredient.name.downcase), ingredient.food %>
             <%= pretty_base_unit(ingredient) %>
           <% end %>
         </li>

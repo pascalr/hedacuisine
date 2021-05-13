@@ -1,6 +1,6 @@
 A recipe belongs_to an ingredient it can make. An ingredient has_many recipes that can make it. WAIT, a recipe can make many ingredient too... Pois chiches cuits pour produire pois chiches cuits et boite de conserve de pois chiches...
 
-FoodRecipe food:references recipe:references
+TODO: Aliases
 
 TODO: Quand un des ingrédients peut être fabriquer à l'aide d'une recette, afficher la recette dans un encadré en premier. Cuire ses pois chiches sois-même... Faire sa chapelure assaisonnée à l'italienne sois-même... Mais je préfère que ce soit explicit qu'implicit, parce qu'après il peut y avoir des problèmes, je ne veux pas expliquer aux gens comment moudre leur poivre par exemple ou comment faire leur ail en poudre eux-autres même, etc...
 
