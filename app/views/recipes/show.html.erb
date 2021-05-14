@@ -5,6 +5,22 @@ def parse_args(sentence)
   args = (words[1] || '').split(',').map(&:strip).map {|a| parse_arg(a)}
 end
 # FIXME DUPLICATED IN LIB/UTILS
+def parse_ingredient(quantity, unit_or_ingredient_name, ingredient_name, active_container)
+    
+  raise "Invalid quantity #{quantity}" unless quantity.is_a? Numeric
+
+  if (ingredient_name)
+    unit = Unit.find_by(name: unit_or_ingredient_name)
+    raise "Invalid unit #{unit_or_ingredient_name}" unless unit
+  end
+
+  ingredient_name = ingredient_name || unit_or_ingredient_name
+  food = Food.where('name = ? or plural = ?', ingredient_name, ingredient_name).first
+  raise MissingFoodError.new(ingredient_name) unless food
+
+  Ingredient.build(quantity, unit, food, active_container)
+end
+# FIXME DUPLICATED IN LIB/UTILS
 def parse_arg(arg)
   return arg.to_i if arg.to_i.to_s == arg
   return arg.to_r if arg.to_r.to_s == arg
@@ -12,7 +28,7 @@ def parse_arg(arg)
   return arg
 end
 def pretty_ingredient(ingredient)
-  result = "<li>"
+  result = ""
   if ingredient.is_unitary?
     result += (pretty_fraction ingredient.nb_units)
     str = (ingredient.nb_units >= 2) ? ingredient.plural : ingredient.name
@@ -22,40 +38,74 @@ def pretty_ingredient(ingredient)
     result += " #{link_to translated(ingredient.name.downcase), ingredient.food}"
     result += " #{pretty_base_unit(ingredient)}"
   end
-  result += "</li>"
   result
+end
+# Remove all the comments except the ones the special ones
+# Strip the sentence
+def preprocess_sentence(sentence)
+  sentence.strip.gsub(/#[^\.].*/, '')
 end
 def pretty_print_recipe(recipe)
   notes = []
   result = "<ol>"
-  recipe.instructions.downcase.lines.map(&:strip).map do |sentence|
-    if sentence.start_with?("contenant")
-      nb = parse_args(sentence)[0]
-      ings = recipe.ingredients.filter {|ing| ing.container_nb == nb}
-      next if ings.blank?
-      result += "<li>Dans un contenant, ajouter:<ul>"
-      ings.each do |ing| # TODO: Only ingredients for this container (add container_id to ingredients)
-        result += pretty_ingredient(ing)
+  ingredient_list_started = false
+  sentences = recipe.instructions.downcase.lines.map {|l| preprocess_sentence(l)}
+  sentences.each_with_index do |sentence, i|
+    next if sentence.blank?
+    next_sentence = sentences[i+1] if sentences.length > i+1
+
+    # Handle ingredient list so they are grouped together
+    if sentence.start_with?("ajouter")
+      unless ingredient_list_started
+        result += "<ul>"
+        ingredient_list_started = true
       end
-      result += "</ul></li>"
-    elsif sentence.start_with?("mijoter")
-      result += "<li>Faire mijoter pendant #{parse_args(sentence)[0]} minutes.</li>"
-    elsif sentence.start_with?("tremper")
-      result += "<li>Laisser tremper pendant #{parse_args(sentence)[0]} heures.</li>"
-    elsif sentence.start_with?("mélanger")
-      result += "<li>Bien mélanger à l'aide d'un mélangeur à main.</li>"
-    elsif sentence.start_with?("battre")
-      result += "<li>Bien mélanger à l'aide d'un batteur à main.</li>"
-    elsif sentence.start_with?("remuer")
-      result += "<li>Remuer.</li>"
-    elsif sentence.start_with?("#.")
-      result += "<li>#{sentence[2..-1].strip.capitalize}</li>"
-    elsif sentence.start_with?("##")
-      notes << "<i>#{sentence[2..-1].strip.capitalize}</i>"
+      args = parse_args(sentence)
+      result += "<li>#{pretty_ingredient(parse_ingredient(args[0], args[1], args[2], nil))}</li>"
+
+    # Handle everything else
+    else
+      result += "</ul>" if ingredient_list_started
+      ingredient_list_started = false
+
+      cmd = ""
+      if sentence.start_with?("contenant")
+        nb = parse_args(sentence)[0]
+        ings = recipe.ingredients.filter {|ing| ing.container_nb == nb}
+        next if ings.blank?
+        cmd = "Prendre le contenant ##{parse_args(sentence)[0]}"
+        #ingredient_list_started
+        #ings.each do |ing| # TODO: Only ingredients for this container (add container_id to ingredients)
+        #  result += pretty_ingredient(ing)
+        #end
+      elsif sentence.start_with?("mijoter")
+        cmd = "Faire mijoter pendant #{parse_args(sentence)[0]} minutes"
+      elsif sentence.start_with?("tremper")
+        cmd = "Laisser tremper pendant #{parse_args(sentence)[0]} heures"
+      elsif sentence.start_with?("brasser")
+        cmd = "Brasser"
+      elsif sentence.start_with?("incorporer")
+        args = parse_args(sentence)
+        cmd = "Ajouter le contenu du contenant ##{args[0]} dans le contenant ##{args[1]}"
+      elsif sentence.start_with?("mélanger")
+        cmd = "Mélanger"
+      elsif sentence.start_with?("battre")
+        cmd = "Battre"
+      elsif sentence.start_with?("remuer")
+        cmd = "Remuer"
+      elsif sentence.start_with?("#.")
+        cmd = "#{sentence[2..-1].strip.capitalize}"
+      elsif sentence.start_with?("##")
+        notes << "<i>#{sentence[2..-1].strip.capitalize}</i>"
+      end
+      to_add = (next_sentence && next_sentence.start_with?("ajouter")) ? ", puis ajouter:" : "."
+      result += "<li>#{cmd}#{to_add}</li>" if cmd
     end
+
   end
   @listing_ingredients = false
   result += "</ol>"
+  puts result
   result += notes.join('<br>')
   result.html_safe
 end
