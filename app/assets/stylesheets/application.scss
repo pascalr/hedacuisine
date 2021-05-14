@@ -21,6 +21,10 @@
 @import "toastr/toastr";
 @import "tiny-slider/src/tiny-slider";
 
+body {
+  padding-bottom: 30px;
+}
+
 /* Wrapper for the sidebar and the main content */
 .wrapper {
   display: flex;
