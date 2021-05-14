@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_13_192323) do
+ActiveRecord::Schema.define(version: 2021_05_14_165024) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -164,6 +164,14 @@ ActiveRecord::Schema.define(version: 2021_05_13_192323) do
     t.string "version_name"
   end
 
+  create_table "similar_recipes", force: :cascade do |t|
+    t.bigint "recipe_id", null: false
+    t.integer "similar_recipe_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["recipe_id"], name: "index_similar_recipes_on_recipe_id"
+  end
+
   create_table "tasks", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -240,6 +248,7 @@ ActiveRecord::Schema.define(version: 2021_05_13_192323) do
   add_foreign_key "recipe_comments", "users"
   add_foreign_key "recipe_ratings", "recipes"
   add_foreign_key "recipe_ratings", "users"
+  add_foreign_key "similar_recipes", "recipes"
   add_foreign_key "tasks", "users"
   add_foreign_key "unit_system_items", "unit_systems"
   add_foreign_key "unit_system_items", "units"

@@ -1,5 +1,10 @@
 class Recipe < ApplicationRecord
 
+  def similar_recipes
+    SimilarRecipe.where(recipe_id: self.id).map(&:similar_recipe) +
+      SimilarRecipe.where(similar_recipe_id: self.id).map(&:recipe)
+  end
+
   has_many :food_recipes
   has_many :produced_foods, through: :food_recipes, source: :food
 

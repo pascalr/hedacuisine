@@ -204,12 +204,13 @@ end
     <%= pretty_print_recipe(@recipe) %>
 
   <% end %>
-  
-  <h2>Recettes similaires</h2>
 
-  <p>TODO</p>
+  <% unless @recipe.similar_recipes.blank? %>
+    <h2>Recettes similaires</h2>
 
-  <p>Ou bien, remplacer ... par ...</p>
+    <h3><%= link_to translated(@recipe.similar_recipes.first.name).capitalize, @recipe.similar_recipes.first %></h3>
+    <%= pretty_print_recipe(@recipe.similar_recipes.first) %>
+  <% end %>
 
   <br><br><br>
 
