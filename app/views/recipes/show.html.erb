@@ -43,7 +43,7 @@ end
 # Remove all the comments except the ones the special ones
 # Strip the sentence
 def preprocess_sentence(sentence)
-  sentence.strip.gsub(/#[^\.].*/, '')
+  sentence.strip.gsub(/[^#]#[^\.#].*/, '')
 end
 def pretty_print_recipe(recipe)
   notes = []
@@ -51,17 +51,23 @@ def pretty_print_recipe(recipe)
   ingredient_list_started = false
   sentences = recipe.instructions.downcase.lines.map {|l| preprocess_sentence(l)}
   sentences.each_with_index do |sentence, i|
+    puts sentence
     next if sentence.blank?
     next_sentence = sentences[i+1] if sentences.length > i+1
 
     # Handle ingredient list so they are grouped together
-    if sentence.start_with?("ajouter")
+    if sentence.start_with?("ajouter") || sentence.start_with?("incorporer")
       unless ingredient_list_started
         result += "<ul>"
         ingredient_list_started = true
       end
-      args = parse_args(sentence)
-      result += "<li>#{pretty_ingredient(parse_ingredient(args[0], args[1], args[2], nil))}</li>"
+      if sentence.start_with?("incorporer")
+        args = parse_args(sentence)
+        result += "<li>Le contenu du contenant ##{args[0]}.</li>"
+      else
+        args = parse_args(sentence)
+        result += "<li>#{pretty_ingredient(parse_ingredient(args[0], args[1], args[2], nil))}</li>"
+      end
 
     # Handle everything else
     else
@@ -80,13 +86,14 @@ def pretty_print_recipe(recipe)
         #end
       elsif sentence.start_with?("mijoter")
         cmd = "Faire mijoter pendant #{parse_args(sentence)[0]} minutes"
+      elsif sentence.start_with?("pétrir")
+        cmd = "Pétrir la pâte pendant #{parse_args(sentence)[0]} minutes"
+      elsif sentence.start_with?("lever")
+        cmd = "Laisser lever pendant #{parse_args(sentence)[0]} minutes"
       elsif sentence.start_with?("tremper")
         cmd = "Laisser tremper pendant #{parse_args(sentence)[0]} heures"
       elsif sentence.start_with?("brasser")
         cmd = "Brasser"
-      elsif sentence.start_with?("incorporer")
-        args = parse_args(sentence)
-        cmd = "Ajouter le contenu du contenant ##{args[0]} dans le contenant ##{args[1]}"
       elsif sentence.start_with?("mélanger")
         cmd = "Mélanger"
       elsif sentence.start_with?("battre")
@@ -96,17 +103,16 @@ def pretty_print_recipe(recipe)
       elsif sentence.start_with?("#.")
         cmd = "#{sentence[2..-1].strip.capitalize}"
       elsif sentence.start_with?("##")
-        notes << "<i>#{sentence[2..-1].strip.capitalize}</i>"
+        notes << "<p><i>#{sentence[2..-1].strip.capitalize}</i></p>"
       end
-      to_add = (next_sentence && next_sentence.start_with?("ajouter")) ? ", puis ajouter:" : "."
-      result += "<li>#{cmd}#{to_add}</li>" if cmd
+      to_add = (next_sentence && (next_sentence.start_with?("ajouter") || next_sentence.start_with?("incorporer"))) ? ", puis ajouter:" : "."
+      result += "<li>#{cmd}#{to_add}</li>" unless cmd.blank?
     end
 
   end
   @listing_ingredients = false
   result += "</ol>"
-  puts result
-  result += notes.join('<br>')
+  result += notes.join('')
   result.html_safe
 end
 %>

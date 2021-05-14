@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     getValue: "n",
     data: [],
     list: {
-      maxNumberOfElements: 12,
+      maxNumberOfElements: 30,
       match: {
         enabled: true
       },

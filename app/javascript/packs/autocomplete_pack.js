@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       }
     },
     list: {
-      maxNumberOfElements: 12,
+      maxNumberOfElements: 30,
       match: {
         enabled: true
       }
