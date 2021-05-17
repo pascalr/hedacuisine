@@ -17,8 +17,8 @@ module ApplicationHelper
     is_capitalized = (not text[0].match /[[:lower:]]/)
     @translations = Translation.all
     r = @translations.find_by(original: text.downcase, to: current_language.id)
-    return r.translated if r
-    is_capitalized ? text.capitalize : text
+    return is_capitalized ? r.translated.capitalize : r.translated if r
+    text
   end
 
   def link_to_active(name, path, options={})
@@ -40,28 +40,6 @@ module ApplicationHelper
     # FIXME: How to do it properly?
     render inline: File.read(index), layout: false if index.exist?
     #render file: index.to_s, layout: false if index.exist?
-  end
-
-  #def pretty_ingredient_value(value, unit)
-  #  return number_with_precision value, precision: 2, strip_insignificant_zeros: true if unit.blank? or not unit.show_fraction
-  #  #fractions = [1/8r, 1/4r, 1/3r, 3/8r, 1/2r, 5/8r, 2/3r, 3/4r, 7/8r]
-  #  fractions = [0, 1/4r, 1/3r, 1/2r, 2/3r, 3/4r, 7/8r, 1]
-  #  f_part = value.modulo(1)
-  #  i = fractions.index { |f| (f.to_f-f_part).abs < 0.04 }
-  #  return number_with_precision value, precision: 2, strip_insignificant_zeros: true if i == nil
-  #  return value.to_i.to_s if i == 0
-  #  return (value.to_i+1).to_s if i == fractions.size - 1
-  #  return fractions[i] if value.to_i == 0
-  #  "#{value.to_i} #{fractions[i]}"
-  #  #value.to_r.rationalize(0.125)
-  #end
-  
-  def close_to_fraction?(value)
-    fractions = [1/8r, 1/4r, 1/3r, 1/2r, 2/3r, 3/4r, 1]
-    fractions.select { |f|
-      return true if (value.to_f - f).abs < 0.02
-    }
-    false
   end
 
   def t_no_span(e)

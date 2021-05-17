@@ -1,7 +1,15 @@
 module IngredientsHelper
+  def close_to_fraction?(value)
+    fractions = [1/8r, 1/4r, 1/3r, 1/2r, 2/3r, 3/4r, 1]
+    fractions.select { |f|
+      return true if (value.to_f - f).abs < 0.02
+    }
+    false
+  end
+
   def pretty_volume(ing)
     return "#{pretty_fraction(ing.volume/1000.0)} #{translated("L")}" if ing.food.is_liquid? && ing.volume >= 1000.0
-    return "#{pretty_fraction(ing.volume/250.0)} #{translated("t")}" if ing.volume >= 250.0 or (ing.volume > 30.0 and close_to_fraction?(ing.volume/250.0))
+    return "#{pretty_fraction(ing.volume/250.0)} #{translated("t")}" if ing.volume >= 60.0# or (ing.volume > 30.0 and close_to_fraction?(ing.volume/250.0))
     return "#{pretty_fraction(ing.volume/15.0)} #{translated("c. à soupe")}" if ing.volume >= 15.0
     return "#{pretty_fraction(ing.volume/5.0)} #{translated("c. à thé")}" if ing.volume >= 5.0/8.0
     "#{pretty_fraction(ing.volume/0.31)} #{translated"pincée"}"
@@ -77,4 +85,19 @@ module IngredientsHelper
     s += "</div>"
     s.html_safe
   end
+
+  #def pretty_ingredient_value(value, unit)
+  #  return number_with_precision value, precision: 2, strip_insignificant_zeros: true if unit.blank? or not unit.show_fraction
+  #  #fractions = [1/8r, 1/4r, 1/3r, 3/8r, 1/2r, 5/8r, 2/3r, 3/4r, 7/8r]
+  #  fractions = [0, 1/4r, 1/3r, 1/2r, 2/3r, 3/4r, 7/8r, 1]
+  #  f_part = value.modulo(1)
+  #  i = fractions.index { |f| (f.to_f-f_part).abs < 0.04 }
+  #  return number_with_precision value, precision: 2, strip_insignificant_zeros: true if i == nil
+  #  return value.to_i.to_s if i == 0
+  #  return (value.to_i+1).to_s if i == fractions.size - 1
+  #  return fractions[i] if value.to_i == 0
+  #  "#{value.to_i} #{fractions[i]}"
+  #  #value.to_r.rationalize(0.125)
+  #end
+  
 end
