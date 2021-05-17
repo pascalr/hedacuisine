@@ -27,20 +27,6 @@ def parse_arg(arg)
   return arg.to_f if arg.to_f.to_s == arg
   return arg
 end
-def pretty_ingredient(ingredient)
-  return nil unless ingredient
-  result = ""
-  if ingredient.is_unitary?
-    result += (pretty_fraction ingredient.nb_units)
-    str = (ingredient.nb_units >= 2) ? ingredient.plural : ingredient.name
-    result += " #{link_to translated(str.downcase), ingredient.food}"
-  else
-    result += pretty_volume(ingredient)
-    result += " #{link_to translated(ingredient.name.downcase), ingredient.food}"
-    result += " #{pretty_base_unit(ingredient)}"
-  end
-  result
-end
 # Remove all the comments except the ones the special ones
 # Strip the sentence
 def preprocess_sentence(sentence)
@@ -168,11 +154,8 @@ end
 </div>
 
 <% if @recipe.owned_by?(current_user) %>
-  <%= link_to 'Edit', edit_recipe_path(@recipe) %> |
-  <%= link_to 'Process', do_process_recipe_path(@recipe), method: :patch %> |
-  <%= link_to 'Cheat', cheat_recipe_path(@recipe), method: :patch %> |
+  <%= link_to 'Edit', edit_recipe_path(@recipe) %>
 <% end %>
-<%= link_to 'Back', recipes_path %>
 <%# form_with(url: 'TODO', local: true, class: 'inline') do |form| %>
   <%# form.collection_select :unit_system, UnitSystem.all, :id, :name, selected: params[:unit_system_id], class: 'inline' %>
 <%# end %>
@@ -202,7 +185,9 @@ end
 
     <h3>Recette</h3>
 
-    <%= pretty_print_recipe(@recipe) %>
+    <div class="recipe-instructions">
+      <%= pretty_print_recipe(@recipe) %>
+    </div>
 
   <% end %>
 

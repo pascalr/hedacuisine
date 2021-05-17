@@ -1,8 +1,48 @@
 <%= link_to 'Show', recipe_path(@recipe) %> |
+<%= link_to 'Process', do_process_recipe_path(@recipe), method: :patch %> |
+<%= link_to 'Cheat', cheat_recipe_path(@recipe), method: :patch %> |
 <%= link_to 'Back', recipes_path %>
 
 <h1>Editing Recipe</h1>
 
-<%= render partial: 'form', locals: {recipe: @recipe} %>
+<%= form_with(model: @recipe, local: true) do |form| %>
+  <% if @recipe.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@recipe.errors.count, "error") %> prohibited this recipe from being saved:</h2>
+
+      <ul>
+        <% @recipe.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :source %>
+    <%= form.text_field :source, size: 80 %>
+  </div>
+
+  <div>
+    <h3>Ingredients</h3>
+    <% @recipe.ingredients.each_with_index do |ingredient, i| %>
+      <%= i+1 %>. <%= pretty_ingredient(ingredient) %><br>
+    <% end %>
+  </div>
+  
+  <div class="field">
+    <%= form.label :instructions %><br>
+    <%= form.text_area :instructions, cols: 100, rows: 10 %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
 
 <%# javascript_pack_tag "recipe_editor.js" %>
