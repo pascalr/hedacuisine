@@ -16,7 +16,7 @@ def parse_ingredient(quantity, unit_or_ingredient_name, ingredient_name, active_
 
   ingredient_name = ingredient_name || unit_or_ingredient_name
   food = Food.where('name = ? or plural = ?', ingredient_name, ingredient_name).first
-  raise MissingFoodError.new(ingredient_name) unless food
+  return nil unless food
 
   Ingredient.build(quantity, unit, food, active_container)
 end
@@ -28,6 +28,7 @@ def parse_arg(arg)
   return arg
 end
 def pretty_ingredient(ingredient)
+  return nil unless ingredient
   result = ""
   if ingredient.is_unitary?
     result += (pretty_fraction ingredient.nb_units)
