@@ -51,6 +51,10 @@ class Recipe < ApplicationRecord
 def missing_ingredients
     ingredients.map(&:food).reject(&:in_pantry)
   end
+
+  def last_ingredient_number
+    ingredients.blank? ? 0 : ingredients.maximum(:nb)
+  end
   
   #def missing_ingredients_for(user)
   #  #ingredients.filter {|i| user.food_preferences.in_stock.not.where(food_id: i.food_id).exists? }

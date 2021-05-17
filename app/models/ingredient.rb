@@ -17,7 +17,7 @@ class Ingredient < ApplicationRecord
     return value * food.unit_weight * unit.value
   end
 
-  def self.build(value, unit, food, container_nb)
+  def self.build(value, unit, food, container_nb=nil)
     Ingredient.new(weight: weight_of(value, unit, food), food: food, container_nb: container_nb)
   end
 

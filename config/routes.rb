@@ -5,6 +5,7 @@ end
 Rails.application.routes.draw do
 
   resources :listings
+  resources :ingredients
   resources :translations
   resources :food_recipes
   resources :tasks

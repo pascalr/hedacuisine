@@ -3,7 +3,30 @@
 <%= link_to 'Cheat', cheat_recipe_path(@recipe), method: :patch %> |
 <%= link_to 'Back', recipes_path %>
 
-<h1>Editing Recipe</h1>
+<h1>Editing <%= @recipe.name %></h1>
+
+<div>
+  <b>Ingredients</b><br>
+  <% if @recipe.ingredients.blank? %>
+    Il n'y a pas encore d'ingrédients.
+  <% else %>
+    <% @recipe.ingredients.each_with_index do |ingredient, i| %>
+      <%= i+1 %>. <%= pretty_ingredient(ingredient) %> <%= link_to 'x', ingredient, method: :delete, data: {confirm: 'Are you sure?'} %><br>
+    <% end %>
+  <% end %>
+</div>
+
+<span id="autocomplete-data" data-foods="<%= Food.all.map {|v| [v.id, v.name] } %>"/>
+
+<%= form_with(model: Ingredient.new, local: true) do |form| %>
+  Qty: <%= text_field_tag :qty %>
+  Food: <%= form.text_field :food_name, id: "autocomplete-food", placeholder: "Food..." %>
+  <%= hidden_field_tag :recipe_id, @recipe.id %>
+  <%= hidden_field_tag :food_id, nil, id: "autocomplete-food-id" %>
+  <%= form.submit "Ajouter" %>
+<% end %>
+
+<br><br>
 
 <%= form_with(model: @recipe, local: true) do |form| %>
   <% if @recipe.errors.any? %>
@@ -19,24 +42,13 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :name %>
+    <b><%= form.label :name %></b>
     <%= form.text_field :name %>
   </div>
 
   <div class="field">
-    <%= form.label :source %>
+    <b><%= form.label :source %></b>
     <%= form.text_field :source, size: 80 %>
-  </div>
-
-  <div>
-    <b>Ingredients</b><br>
-    <% if @recipe.ingredients.blank? %>
-      Il n'y a pas encore d'ingrédients.
-    <% else %>
-      <% @recipe.ingredients.each_with_index do |ingredient, i| %>
-        <%= i+1 %>. <%= pretty_ingredient(ingredient) %><br>
-      <% end %>
-    <% end %>
   </div>
   
   <div class="field">
@@ -55,3 +67,4 @@
 <% end %>
 
 <%# javascript_pack_tag "recipe_editor.js" %>
+<%= javascript_pack_tag "ingredient_editor" %>
