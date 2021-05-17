@@ -36,4 +36,45 @@ module IngredientsHelper
     end
     result.html_safe
   end
+
+  def pretty_complete_instructions(recipe)
+    s = ""
+    i = 0
+    range_started = false
+    range = ""
+    sanitize(recipe.complete_instructions).each_char do |c|
+      if range_started
+        raise "Syntax error. Range already started. {...{" if c == '{'
+        if c == '}'
+          # TODO: Split by comma first
+          splited = range.split('-')
+          if splited.length > 1
+            ings = recipe.ingredients.where(nb: (splited[0].to_i)..(splited[1].to_i))
+            raise "Invalid ingredients range. Is blank..." if ings.blank?
+            s += "<ul>"
+            ings.each do |ing|
+              s += "<li>#{pretty_ingredient(ing)}</li>"
+            end
+            s += "</ul>"
+          else
+            s += pretty_ingredient(recipe.ingredients.find_by(nb: range.to_i))
+          end
+          range = ""
+          range_started = false
+        else
+          range += c
+        end
+      else
+        s += case c
+             when '#' then "#{(i += 1)}."
+             when '{' then range_started = true; ''
+             when '}' then raise "Syntax error. Missing range start. ?...}"
+             when "\n" then "<br>"
+             else c
+             end
+      end
+    end
+    s.gsub!(/\<\/ul\>\s.\<br\>/, '</ul>')
+    s.html_safe
+  end
 end

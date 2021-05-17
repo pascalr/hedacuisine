@@ -29,14 +29,23 @@
   </div>
 
   <div>
-    <h3>Ingredients</h3>
-    <% @recipe.ingredients.each_with_index do |ingredient, i| %>
-      <%= i+1 %>. <%= pretty_ingredient(ingredient) %><br>
+    <b>Ingredients</b><br>
+    <% if @recipe.ingredients.blank? %>
+      Il n'y a pas encore d'ingrédients.
+    <% else %>
+      <% @recipe.ingredients.each_with_index do |ingredient, i| %>
+        <%= i+1 %>. <%= pretty_ingredient(ingredient) %><br>
+      <% end %>
     <% end %>
   </div>
   
   <div class="field">
-    <%= form.label :instructions %><br>
+    <b><%= form.label :complete_instructions %></b><br>
+    <%= form.text_area :complete_instructions, cols: 100, rows: 10 %>
+  </div>
+  
+  <div class="field">
+    <b><%= form.label :instructions %></b><br>
     <%= form.text_area :instructions, cols: 100, rows: 10 %>
   </div>
 

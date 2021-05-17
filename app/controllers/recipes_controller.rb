@@ -65,7 +65,7 @@ class RecipesController < ApplicationController
   def update
     respond_to do |format|
       if @recipe.update(recipe_params)
-        format.html { redirect_to recipe_path(@recipe), notice: 'Recipe was successfully updated.' }
+        format.html { redirect_to edit_recipe_path(@recipe), notice: 'Recipe was successfully updated.' }
         format.json { render :show, status: :ok, location: @recipe }
       else
         format.html { render :edit }
@@ -91,7 +91,7 @@ class RecipesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def recipe_params
-      p = params.require(:recipe).permit(:name, :source, :instructions, :version_name, :group_id)
+      p = params.require(:recipe).permit(:name, :source, :instructions, :version_name, :group_id, :complete_instructions)
       #p[:image_id] == "on" ? p.except(:image_id) : p
     end
 end
