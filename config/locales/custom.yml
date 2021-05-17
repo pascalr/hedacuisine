@@ -6,6 +6,7 @@ fr:
       ingredients: "Ingrédients"
       foods: "Aliments"
       units: "Unités"
+      logout: "Déconnexion"
       unit_systems: "Systèmes d'unité"
       translations: "Traductions"
       food_recipes: "Recettes d'aliments"

@@ -23,7 +23,7 @@
         <div class="navbar-nav">
           <div class="dropdown nav-item">
             <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <%= "Recipes" %>
+              <%= t("heda.menu.recipes") %>
             </a>
             <div class="dropdown-menu pl-2" aria-labelledby="dropdownMenuButton" style="width: 13em;">
               <% Listing.order(:order).each do |listing| %>
@@ -71,7 +71,7 @@
                 <%= link_to_active 'Ingrédients', food_preferences_path, class: "dropdown-item" %>
               </div>
             </div>
-            <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "nav-item nav-link"  %>
+            <%= link_to t("heda.menu.logout"), destroy_user_session_path, method: :delete, class: "nav-item nav-link"  %>
           <% else %>
             <%# link_to t("devise.shared.links.sign_up"), new_user_registration_path, class: "nav-item nav-link" %>
             <%= link_to t("devise.sessions.new.sign_in"), new_user_session_path, class: "nav-item nav-link" %>
