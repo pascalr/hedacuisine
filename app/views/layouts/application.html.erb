@@ -21,6 +21,28 @@
       </button>
       <div class="collapse navbar-collapse" style="flex-grow: unset;">
         <div class="navbar-nav">
+          <div class="dropdown nav-item">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <%= "Recipes" %>
+            </a>
+            <div class="dropdown-menu pl-2" aria-labelledby="dropdownMenuButton">
+              <% Listing.order(:order).each do |listing| %>
+                <div><%= link_to translated(listing.name).capitalize, listing, style: "size: 1.3em; color: gray;" %></div>
+                <div class="ml-3">
+                  <% listing.menus.each do |m| %>
+                    <%= link_to ((m.emoji || '') + ' ' + translated(m.name).capitalize).lstrip, m, style: "color: black;" %><br>
+                  <% end %>
+                </div>
+              <% end %>
+              <div style="size: 1.3em; color: gray;">Autres</div> <!-- TODO: Remove this -->
+              <div class="ml-3">
+                <% User.first.menus.where(listing_id: nil).each do |menu| # FIXME
+                  %>
+                  <%= link_to ((menu.emoji || '') + ' ' + translated(menu.name).capitalize).lstrip, menu, style: "color: black;" %><br>
+                <% end %>
+              </div>
+            </div>
+          </div>
           <%= link_to_active t("heda.menu.home"), home_path, class: "nav-item nav-link" %>
           <% if current_user_admin? %>
             <%= link_to_active 'Meta', meta_index_path, class: "nav-item nav-link" %>
@@ -68,7 +90,7 @@
     <% end %>
 
     <div class="wrapper">
-      <%= render partial: "layouts/sidebar" %>
+      <%# render partial: "layouts/sidebar" %>
       <div id="content" class="mx-2" style="width: 100%">
         <%= yield %>
       </div>
