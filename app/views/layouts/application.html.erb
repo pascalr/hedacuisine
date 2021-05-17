@@ -25,7 +25,7 @@
             <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <%= "Recipes" %>
             </a>
-            <div class="dropdown-menu pl-2" aria-labelledby="dropdownMenuButton">
+            <div class="dropdown-menu pl-2" aria-labelledby="dropdownMenuButton" style="width: 13em;">
               <% Listing.order(:order).each do |listing| %>
                 <div><%= link_to translated(listing.name).capitalize, listing, style: "size: 1.3em; color: gray;" %></div>
                 <div class="ml-3">

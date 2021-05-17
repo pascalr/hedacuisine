@@ -38,6 +38,7 @@ module IngredientsHelper
   end
 
   def pretty_complete_instructions(recipe)
+    return nil if recipe.complete_instructions.blank?
     s = "<div>"
     i = 0
     range_started = false
