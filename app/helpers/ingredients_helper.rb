@@ -38,7 +38,7 @@ module IngredientsHelper
   end
 
   def pretty_complete_instructions(recipe)
-    s = ""
+    s = "<div>"
     i = 0
     range_started = false
     range = ""
@@ -66,15 +66,14 @@ module IngredientsHelper
         end
       else
         s += case c
-             when '#' then "#{(i += 1)}."
+             when '#' then "</div><div>#{(i += 1)}."
              when '{' then range_started = true; ''
              when '}' then raise "Syntax error. Missing range start. ?...}"
-             when "\n" then "<br>"
              else c
              end
       end
     end
-    s.gsub!(/\<\/ul\>\s.\<br\>/, '</ul>')
+    s += "</div>"
     s.html_safe
   end
 end
