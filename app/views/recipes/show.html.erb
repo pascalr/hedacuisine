@@ -88,9 +88,9 @@ def pretty_print_recipe(recipe)
       elsif sentence.start_with?("remuer")
         cmd = "Remuer"
       elsif sentence.start_with?("#.")
-        cmd = "#{sentence[2..-1].strip.capitalize}"
+        cmd = "#{sentence[2..-1].strip}"
       elsif sentence.start_with?("##")
-        notes << "<p><i>#{sentence[2..-1].strip.capitalize}</i></p>"
+        notes << "<p><i>#{sentence[2..-1].strip}</i></p>"
       end
       to_add = (next_sentence && (next_sentence.start_with?("ajouter") || next_sentence.start_with?("incorporer"))) ? ", puis ajouter:" : "."
       result += "<li>#{cmd}#{to_add}</li>" unless cmd.blank?
@@ -121,7 +121,7 @@ end
 
 <div class="mx-n2">
   <ul class="nav nav-tabs">
-    <li class="subnav-item"><%= translated(@recipe.name).capitalize %></li>
+    <li class="subnav-item"><%= translated(@recipe.name) %></li>
     <% if @recipe.group and @recipe.group.recipes.count > 1 %>
       <li class="nav-item dropdown">
         <a class="subnav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Versions</a>
@@ -142,7 +142,7 @@ end
           <div class="dropdown-item" href="#">Ne se retrouve dans aucun menu.</div>
         <% else %>
           <% @recipe.menus.each do |menu| %>
-            <%= link_to translated(menu.name).capitalize, menu, class: "dropdown-item" %>
+            <%= link_to translated(menu.name), menu, class: "dropdown-item" %>
           <% end %>
         <% end %>
       </div>
@@ -162,7 +162,7 @@ end
 
 <div class="responsive-margins-lg">
   <h1>
-    <%= translated(@recipe.name).capitalize %>
+    <%= translated(@recipe.name) %>
     <!--<span style="font-size: 1.5rem;"><%# "(#{@recipe.version_name})" if @recipe.version_name %></span>-->
   </h1>
 
@@ -187,7 +187,7 @@ end
 
     <div class="recipe-instructions">
 
-      <h2><%= @recipe.name %></h2>
+      <h2><%= translated(@recipe.name) %></h2>
 
       <%= pretty_complete_instructions(@recipe) %>
       <%# pretty_print_recipe(@recipe) %>
@@ -198,7 +198,7 @@ end
   <% unless @recipe.similar_recipes.blank? %>
     <h2>Recettes similaires</h2>
 
-    <h3><%= link_to translated(@recipe.similar_recipes.first.name).capitalize, @recipe.similar_recipes.first %></h3>
+    <h3><%= link_to translated(@recipe.similar_recipes.first.name), @recipe.similar_recipes.first %></h3>
     <%= pretty_print_recipe(@recipe.similar_recipes.first) %>
   <% end %>
 

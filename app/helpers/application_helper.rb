@@ -13,11 +13,12 @@ module ApplicationHelper
   end
 
   def translated(text)
-    return text unless current_language
+    return text if current_language.nil? or text.blank?
+    is_capitalized = (not text[0].match /[[:lower:]]/)
     @translations = Translation.all
     r = @translations.find_by(original: text.downcase, to: current_language.id)
     return r.translated if r
-    text
+    is_capitalized ? text.capitalize : text
   end
 
   def link_to_active(name, path, options={})
