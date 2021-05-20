@@ -6,17 +6,11 @@ class TranslationsController < ApplicationController
   #skip_before_action :only_admin!, only: [:show]
 
   def index
-    @languages = Language.all.order(:name)
     @translations = Translation.all
 
-    if params[:from] && params[:to]
-      @from = Language.find(params[:from])
-      @to = Language.find(params[:to])
-      @to_translate = Unit.all.map(&:name) + Category.all.map(&:name) + Listing.all.map(&:name) + Ingredient.all.map(&:name) + Ingredient.all.map(&:plural) + Menu.all.map(&:name) + Recipe.all.map(&:name)
-      @to_translate.uniq!
-      by_original = Translation.by_original
-      @to_translate.reject! {|t| t.blank? || (by_original[t.downcase] && by_original[t.downcase].from == @from.id && by_original[t.downcase].to == @to.id) }
-    end
+    @from = Language.default
+    @to = Language.find_by(locale: 'en')
+    @to_translate = MissingTranslation.all
   end
 
   def create

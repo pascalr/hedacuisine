@@ -23,17 +23,17 @@
     <%= translated(@menu.name).capitalize %>
   </div>
   <div>
-    <% if current_user %>
-      <% if @menu.is_user_favorite(current_user) %>
-        <%= link_to "❤️ Enlever de mes favoris", users_toggle_favorite_menu_path(menu_id: @menu.id), method: :post %> |
-      <% else %>
-        <%= link_to "♡ Ajouter à mes favoris", users_toggle_favorite_menu_path(menu_id: @menu.id), method: :post %> |
-      <% end %>
-    <% end %>
-    Imprimer |
-    Télécharger
+    <%# if current_user %>
+      <%# if @menu.is_user_favorite(current_user) %>
+        <%# link_to "❤️ Enlever de mes favoris", users_toggle_favorite_menu_path(menu_id: @menu.id), method: :post %>
+      <%# else %>
+        <%# link_to "♡ Ajouter à mes favoris", users_toggle_favorite_menu_path(menu_id: @menu.id), method: :post %>
+      <%# end %>
+    <%# end %>
+    <!--Imprimer |
+      Télécharger-->
     <% if current_user and @menu.user_id == current_user.id %>
-      | <%= link_to 'Edit', edit_menu_path(@menu) %>
+      <%= link_to 'Edit', edit_menu_path(@menu) %>
     <% end %>
   </div>
 </div>

@@ -14,20 +14,7 @@
 
 <div class="mx-n2">
   <ul class="nav nav-tabs">
-    <li class="subnav-item"><%= translated(@recipe.name) %></li>
-    <% if @recipe.group and @recipe.group.recipes.count > 1 %>
-      <li class="nav-item dropdown">
-        <a class="subnav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Versions</a>
-        <div class="dropdown-menu">
-          <% (@recipe.group.recipes.to_a - [@recipe]).each_with_index do |version, i| %>
-            <div class="dropdown-item" href="#">
-              <%= link_to version.version_name.blank? ? "Version #{i+1}" : version.version_name, version %>
-              <%= render partial: 'rating', locals: {recipe: version} %>
-            </div>
-          <% end %>
-        </div>
-      </li>
-    <% end %>
+    <li class="subnav-item"><%= translated("Catégories") %></li>
     <li class="nav-item dropdown">
       <a class="subnav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Menus</a>
       <div class="dropdown-menu">
@@ -40,9 +27,9 @@
         <% end %>
       </div>
     </li>
-    <li class="nav-item">
-      <%= link_to "Nouvelle version", new_recipe_path(clone_id: @recipe.id), class: "subnav-link" %>
-    </li>
+    <!--<li class="nav-item">
+      <%# link_to "Nouvelle version", new_recipe_path(clone_id: @recipe.id), class: "subnav-link" %>
+    </li>-->
   </ul>
 </div>
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_17_143535) do
+ActiveRecord::Schema.define(version: 2021_05_20_145553) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -132,6 +132,12 @@ ActiveRecord::Schema.define(version: 2021_05_17_143535) do
     t.integer "parent_id"
     t.integer "listing_id"
     t.string "emoji"
+  end
+
+  create_table "missing_translations", force: :cascade do |t|
+    t.string "content"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "recipe_comments", force: :cascade do |t|

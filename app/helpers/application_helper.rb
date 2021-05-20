@@ -13,11 +13,12 @@ module ApplicationHelper
   end
 
   def translated(text)
-    return text if current_language.nil? or text.blank?
+    return text if current_language.nil? or text.blank? or current_language == Language.default
     is_capitalized = (not text[0].match /[[:lower:]]/)
     @translations = Translation.all
     r = @translations.find_by(original: text.downcase, to: current_language.id)
     return is_capitalized ? r.translated.capitalize : r.translated if r
+    MissingTranslation.create(content: text)
     text
   end
 

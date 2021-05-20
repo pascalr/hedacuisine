@@ -1,28 +1,10 @@
-TODO: Faire un fichier de nomenclature pour le language de programmation de recettes.
-
-TODO: Add boolean to ingredients, whether to show how to make ingredient or not. show_make_ingredient:boolean
-
-TODO: Add container_id to ingredients
-
-TODO: Translate units
+Add language to recipes. Everything else in french. (Food, units, menus, ...) Why only recipes? Because it is the only thing that users are able to create. Mais pour l'instant je veux rédiger les recettes en français de toute façon... Ok tout en français pour l'instant.
 
 TODO: When there are mulitple times the same ingredient show a warning and show how much total ingredient is required.
 
 TODO: Aliases
 
-TODO: Quand un des ingrédients peut être fabriquer à l'aide d'une recette, afficher la recette dans un encadré en premier. Cuire ses pois chiches sois-même... Faire sa chapelure assaisonnée à l'italienne sois-même... Mais je préfère que ce soit explicit qu'implicit, parce qu'après il peut y avoir des problèmes, je ne veux pas expliquer aux gens comment moudre leur poivre par exemple ou comment faire leur ail en poudre eux-autres même, etc...
-
-Donc, une nouvelle commande. ajouter_ou_faire 1, boîte de conserve de pois chiches, ça ça génère un encadré.
-
 Pour recettes similaire, afficher le nom et les ingrédients d'une recette similaire et des flèches pour naviguer les recettes similaires.
-
-TODO: Faire la recette de boulette de pois chiches, mais végane. Elle doit apparaître dans les recettes recettes similaires.
-
-TODO: Faire la recette de boulette de pois chiches, mais végane sans gluten. Elle doit apparaître dans les recettes recettes similaires.
-
-TODO: Faire la recette de boulette de pois chiches, mais sans gluten. Elle doit apparaître dans les recettes recettes similaires.
-
-La langue principale est le français? Tout est en français et doit être traduit en anglais?
 
 TODO: Fuck i18n, utiliser seulement mon translation. Rajouter le model Sentence content:string, après faire translate_sentence("Similar recipes"), qui s'assure que le contenu sois dans les sentences.
 

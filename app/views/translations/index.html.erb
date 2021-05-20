@@ -1,38 +1,53 @@
 <%= render partial: 'meta/nav' %>
 
 <h2>Missing translations</h2>
-
-<%= form_with url: translations_url, method: :get, local: true do |form| %>
-  From: <%= form.collection_select :from, @languages, :id, :name, selected: params[:from] %>
-  To: <%= form.collection_select :to, @languages, :id, :name, selected: params[:to] %>
-  <%= form.submit "Find" %>
-<% end %>
   
-<% unless @to_translate.blank? %>
+<table>
+  <thead>
+    <tr>
+      <th>Original</th>
+      <th>Translated</th>
+      <th colspan="1"></th>
+    </tr>
+  </thead>
 
-  <table>
-    <thead>
+  <tbody>
+    <% @to_translate.each do |missing| %>
       <tr>
-        <th>Original</th>
-        <th>Translated</th>
-        <th colspan="1"></th>
+        <%= form_with model: Translation.new(original: missing.content.downcase) do |form| %>
+          <%= form.hidden_field :from, value: @from.id %>
+          <%= form.hidden_field :to, value: @to.id %>
+          <td><%= form.text_field :original %></td>
+          <td><%= form.text_field :translated %></td>
+          <td><%= form.submit %></td>
+        <% end %>
       </tr>
-    </thead>
-  
-    <tbody>
-      <% @to_translate.each do |name| %>
-        <tr>
-          <%= form_with model: Translation.new(original: name.downcase) do |form| %>
-            <%= form.hidden_field :from, value: @from.id %>
-            <%= form.hidden_field :to, value: @to.id %>
-            <td><%= form.text_field :original %></td>
-            <td><%= form.text_field :translated %></td>
-            <td><%= form.submit %></td>
-          <% end %>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% end %>
+    <% end %>
+  </tbody>
+</table>
 
+<h2>Translations</h2>
 
+<table>
+  <thead>
+    <tr>
+      <th>Original</th>
+      <th>Translated</th>
+      <th colspan="1"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @translations.each do |translation| %>
+      <tr>
+        <%= form_with model: translation do |form| %>
+          <%= form.hidden_field :from, value: @from.id %>
+          <%= form.hidden_field :to, value: @to.id %>
+          <td><%= form.text_field :original %></td>
+          <td><%= form.text_field :translated %></td>
+          <td><%= form.submit %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
