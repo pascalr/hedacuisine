@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   resources :listings
   resources :ingredients
+  resources :recipe_steps
   resources :translations
   resources :food_recipes
   resources :tasks

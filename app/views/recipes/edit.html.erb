@@ -18,6 +18,13 @@
 
 <div>
   <b>Steps</b><br>
+  <% if @recipe.steps.blank? %>
+    Il n'y a pas encore d'étapes.
+  <% else %>
+    <% @recipe.recipe_steps.each_with_index do |recipe_step, i| %>
+      <%= i+1 %>. <%= recipe_step..step.content %> <%= link_to 'x', recipe_step, method: :delete, data: {confirm: 'Are you sure?'} %><br>
+    <% end %>
+  <% end %>
 </div>
 <span id="autocomplete-data" data-foods="<%= Food.all.map {|v| [v.id, v.name] } %>"/>
 

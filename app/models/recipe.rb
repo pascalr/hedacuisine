@@ -5,6 +5,9 @@ class Recipe < ApplicationRecord
       SimilarRecipe.where(similar_recipe_id: self.id).map(&:recipe)
   end
 
+  has_many :recipe_steps
+  has_many :steps, through: :recipe_steps
+
   has_many :food_recipes
   has_many :produced_foods, through: :food_recipes, source: :food
 
