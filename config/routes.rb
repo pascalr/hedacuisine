@@ -1,6 +1,6 @@
-def lazy_resources(name)
-  resources name, controller: 'database'
-end
+#def lazy_resources(name)
+#  resources name, controller: 'database'
+#end
 
 Rails.application.routes.draw do
 

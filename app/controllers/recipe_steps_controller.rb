@@ -7,20 +7,11 @@ class RecipeStepsController < ApplicationController
   #end
 
   def create
-    #recipe = Recipe.find(params[:recipe_id])
-    #food = Food.find(params[:food_id])
-    #qty = params[:qty].split(',')
-    #quantity = qty[0].to_i
-    #unit = nil
-    #unless qty[1].blank?
-    #  unit = Unit.find_by(name: qty[1].strip) 
-    #  raise "Invalid unit #{qty[1]}" unless unit
-    #end
-    #ing = RecipeStep.build(quantity, unit, food)
-    #ing.recipe = recipe
-    #ing.nb = recipe.last_recipe_step_number + 1
-    #ing.save!
-    #redirect_to edit_recipe_path(recipe)
+    recipe = Recipe.find(params[:recipe_id])
+    step = Step.find_by(id: params[:step_id])
+    step ||= Step.create!(content: params[:recipe_step][:step_content])
+    recipe_step = recipe.recipe_steps.create!(step: step)
+    redirect_to edit_recipe_path(recipe_step.recipe)
   end
 
   def update
@@ -29,9 +20,9 @@ class RecipeStepsController < ApplicationController
   end
 
   def destroy
-    #recipe_step = RecipeStep.find(params[:id])
-    #recipe_step.destroy!
-    #redirect_to edit_recipe_path(recipe_step.recipe)
+    recipe_step = RecipeStep.find(params[:id])
+    recipe_step.destroy!
+    redirect_to edit_recipe_path(recipe_step.recipe)
   end
 
   private
@@ -39,7 +30,7 @@ class RecipeStepsController < ApplicationController
     #  @recipe_step = current_user.recipe_steps.find(params[:id])
     #end
 
-    #def recipe_step_params
-    #  params.require(:recipe_step).permit(:food_id, :preference, :availability, :container_format_id)
-    #end
+    def recipe_step_params
+      params.require(:recipe_step).permit(:content)
+    end
 end

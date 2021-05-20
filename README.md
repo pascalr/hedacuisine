@@ -1,3 +1,5 @@
+Les RecipeStep peuvent aussi être des notes. Rajouter un boolean pour des notes?
+
 Add language to recipes. Everything else in french. (Food, units, menus, ...) Why only recipes? Because it is the only thing that users are able to create. Mais pour l'instant je veux rédiger les recettes en français de toute façon... Ok tout en français pour l'instant.
 
 TODO: When there are mulitple times the same ingredient show a warning and show how much total ingredient is required.
