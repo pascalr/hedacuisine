@@ -14,10 +14,12 @@ class TranslationsController < ApplicationController
   end
 
   def create
+    missing = MissingTranslation.find(params[:missing_translation_id])
     @translation = Translation.new(translation_params)
 
     respond_to do |format|
       if @translation.save
+        missing.destroy!
         format.html { redirect_to @translation, notice: "Translation was successfully created." }
         format.json { render :show, status: :created, location: @translation }
       else

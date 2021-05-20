@@ -15,10 +15,16 @@
     <% @to_translate.each do |missing| %>
       <tr>
         <%= form_with model: Translation.new(original: missing.content.downcase) do |form| %>
+          <%= hidden_field_tag :missing_translation_id, missing.id %>
           <%= form.hidden_field :from, value: @from.id %>
           <%= form.hidden_field :to, value: @to.id %>
-          <td><%= form.text_field :original %></td>
-          <td><%= form.text_field :translated %></td>
+          <% if missing.content.size > 80 %>
+            <td><%= form.text_area :original, cols: 60, rows: 12 %></td>
+            <td><%= form.text_area :translated, cols: 60, rows: 12 %></td>
+          <% else %>
+            <td><%= form.text_field :original, size: 60 %></td>
+            <td><%= form.text_field :translated, size: 60 %></td>
+          <% end %>
           <td><%= form.submit %></td>
         <% end %>
       </tr>
@@ -33,7 +39,7 @@
     <tr>
       <th>Original</th>
       <th>Translated</th>
-      <th colspan="1"></th>
+      <th colspan="2"></th>
     </tr>
   </thead>
 
@@ -43,10 +49,16 @@
         <%= form_with model: translation do |form| %>
           <%= form.hidden_field :from, value: @from.id %>
           <%= form.hidden_field :to, value: @to.id %>
-          <td><%= form.text_field :original %></td>
-          <td><%= form.text_field :translated %></td>
-          <td><%= form.submit %></td>
+          <% if translation.original.size > 80 %>
+            <td><%= form.text_area :original, cols: 60, rows: 12 %></td>
+            <td><%= form.text_area :translated, cols: 60, rows: 12 %></td>
+          <% else %>
+            <td><%= form.text_field :original, size: 60 %></td>
+            <td><%= form.text_field :translated, size: 60 %></td>
+          <% end %>
+          <td><%= form.submit "Update" %></td>
         <% end %>
+        <td><%= button_to "Delete", translation, method: :delete, data: {confirm: 'Are you sure?'} %></td>
       </tr>
     <% end %>
   </tbody>

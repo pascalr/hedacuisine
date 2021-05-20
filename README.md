@@ -1,3 +1,5 @@
+Once in a while, do a cleanup and remove all the translations that are not used anymore. (Either changed or a spelling mistake fixed.)
+
 Les RecipeStep peuvent aussi être des notes. Rajouter un boolean pour des notes?
 
 Add language to recipes. Everything else in french. (Food, units, menus, ...) Why only recipes? Because it is the only thing that users are able to create. Mais pour l'instant je veux rédiger les recettes en français de toute façon... Ok tout en français pour l'instant.

@@ -45,13 +45,23 @@ module IngredientsHelper
     result.html_safe
   end
 
+  # Translated everything at once because it is easier to translate and it is pretty quick with google translate.
+  def translate_complete_instructions(recipe)
+    translated(recipe.complete_instructions)
+    #steps = recipe.complete_instructions.split('#').map(&:strip).reject(&:blank?).map {|s|
+    #  translated(s)
+    #}
+    #"##{steps.join('#')}"
+  end
+
   def pretty_complete_instructions(recipe)
     return nil if recipe.complete_instructions.blank?
+    translated = translate_complete_instructions(recipe)
     s = "<div>"
     i = 0
     range_started = false
     range = ""
-    sanitize(recipe.complete_instructions).each_char do |c|
+    sanitize(translated).each_char do |c|
       if range_started
         raise "Syntax error. Range already started. {...{" if c == '{'
         if c == '}'
