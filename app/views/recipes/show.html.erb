@@ -15,18 +15,11 @@
 <div class="mx-n2">
   <ul class="nav nav-tabs">
     <li class="subnav-item"><%= translated("Catégories") %></li>
-    <li class="nav-item dropdown">
-      <a class="subnav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Menus</a>
-      <div class="dropdown-menu">
-        <% if @recipe.menus.blank? %>
-          <div class="dropdown-item" href="#">Ne se retrouve dans aucun menu.</div>
-        <% else %>
-          <% @recipe.menus.each do |menu| %>
-            <%= link_to translated(menu.name), menu, class: "dropdown-item" %>
-          <% end %>
-        <% end %>
-      </div>
-    </li>
+    <% @recipe.categories.each do |category| %>
+      <li class="subnav-item">
+        <%= link_to translated(category.fullpath), category.menu %>
+      </li>
+    <% end %>
     <!--<li class="nav-item">
       <%# link_to "Nouvelle version", new_recipe_path(clone_id: @recipe.id), class: "subnav-link" %>
     </li>-->

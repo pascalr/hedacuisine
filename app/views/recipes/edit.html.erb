@@ -16,6 +16,9 @@
   <% end %>
 </div>
 
+<div>
+  <b>Steps</b><br>
+</div>
 <span id="autocomplete-data" data-foods="<%= Food.all.map {|v| [v.id, v.name] } %>"/>
 
 <%= form_with(model: Ingredient.new, local: true) do |form| %>
