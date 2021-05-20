@@ -17,7 +17,7 @@
     <li class="subnav-item"><%= translated("Catégories") %></li>
     <% @recipe.categories.each do |category| %>
       <li class="subnav-item">
-        <%= link_to translated(category.fullpath), category.menu %>
+        <%= link_to "#{translated category.menu.name}/#{translated category.name}", category.menu %>
       </li>
     <% end %>
     <!--<li class="nav-item">

@@ -16,6 +16,7 @@ class TranslationsController < ApplicationController
   def create
     missing = MissingTranslation.find(params[:missing_translation_id])
     @translation = Translation.new(translation_params)
+    @translation.original.downcase!
 
     respond_to do |format|
       if @translation.save

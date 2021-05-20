@@ -14,7 +14,7 @@
   <tbody>
     <% @to_translate.each do |missing| %>
       <tr>
-        <%= form_with model: Translation.new(original: missing.content.downcase) do |form| %>
+        <%= form_with model: Translation.new(original: missing.content) do |form| %>
           <%= hidden_field_tag :missing_translation_id, missing.id %>
           <%= form.hidden_field :from, value: @from.id %>
           <%= form.hidden_field :to, value: @to.id %>
