@@ -26,6 +26,7 @@ module ApplicationHelper
     MissingTranslation.create(content: text)
     text
   end
+  alias tr translated
 
   def link_to_active(name, path, options={})
     options[:class] += " active" if current_page?(path)

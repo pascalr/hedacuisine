@@ -22,11 +22,4 @@
       <% end %>
     </div>
   <% end %>
-  <div style="size: 1.3em; color: gray;">Autres</div> <!-- TODO: Remove this -->
-  <div class="ml-3">
-    <% User.first.menus.where(listing_id: nil).each do |menu| # FIXME
-      %>
-      <%= link_to ((menu.emoji || '') + ' ' + translated(menu.name).capitalize).lstrip, menu, style: "color: black;" %><br>
-    <% end %>
-  </div>
 </nav>

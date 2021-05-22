@@ -4,6 +4,7 @@
 
 Rails.application.routes.draw do
 
+  get 'search/index'
   resources :listings
   resources :ingredients
   resources :recipe_steps

@@ -1,3 +1,5 @@
+Dans l'edit de recette, afficher les traductions ou du moins un warning si jamais modifier la recette, ça demande si on modifie la traduction, on crée une nouvelle traduction, ou....
+
 Once in a while, do a cleanup and remove all the translations that are not used anymore. (Either changed or a spelling mistake fixed.)
 
 Les RecipeStep peuvent aussi être des notes. Rajouter un boolean pour des notes?
