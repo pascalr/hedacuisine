@@ -1,5 +1,3 @@
-Todo: Cacher les menus cachés dans les menus en haut des recettes
-
 Faire une vidéo sur les muffins. C'est quoi qui les différencies des autres choses. Faire une recette en brassant beaucoup et une autre simplement en incorporant pour humidifier.
 
 FIXME: Menu index

@@ -15,7 +15,7 @@
 <div class="mx-n2">
   <ul class="nav nav-tabs">
     <li class="subnav-item"><%= translated("Catégories") %></li>
-    <% @recipe.categories.each do |category| %>
+    <% @recipe.categories.reject {|c| c.menu.listing_id.nil? }.each do |category| %>
       <li class="subnav-item">
         <%= link_to "#{translated category.menu.name}/#{translated category.name}", category.menu %>
       </li>
