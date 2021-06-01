@@ -1,10 +1,6 @@
 Faire une vidéo sur les muffins. C'est quoi qui les différencies des autres choses. Faire une recette en brassant beaucoup et une autre simplement en incorporant pour humidifier.
 
-FIXME: Menu index
-
-TODO: Enlever les journées.
-
-TODO: Range avec virgule.
+FIXME: Menu index, Style Netflix?
 
 TODO: Séparer la cuisson des instructions peut-être? Le temps de cuisson devrait être dans la database du moins probablement. Pas important pour l'instant. Dire de préchauffé le four à la première instruction ou non?
 

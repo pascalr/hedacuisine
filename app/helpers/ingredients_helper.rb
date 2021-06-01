@@ -54,6 +54,23 @@ module IngredientsHelper
     #"##{steps.join('#')}"
   end
 
+  # {1,3-4,6} => [1,3,4,6]
+  def extract_range_indices(range)
+    indices = []
+    list = range.split(',')
+    list.each do |elem|
+      splited = elem.split('-')
+      if splited.size > 1
+        ((splited[0].to_i)..(splited[1].to_i)).each do |i|
+          indices << i
+        end
+      else
+        indices << elem.to_i
+      end
+    end
+    indices
+  end
+
   def pretty_complete_instructions(recipe)
     return nil if recipe.blank? || recipe.complete_instructions.blank?
     translated = translate_complete_instructions(recipe)
@@ -65,18 +82,16 @@ module IngredientsHelper
       if range_started
         raise "Syntax error. Range already started. {...{" if c == '{'
         if c == '}'
-          # TODO: Split by comma first
-          splited = range.split('-')
-          if splited.length > 1
-            ings = recipe.ingredients.where(nb: (splited[0].to_i)..(splited[1].to_i))
-            raise "Invalid ingredients range. Is blank..." if ings.blank?
+          indices = extract_range_indices(range)
+          if indices.length > 1
+            ings = recipe.ingredients.where(nb: indices)
             s += "<ul>"
-            ings.each do |ing|
-              s += "<li>#{pretty_ingredient(ing)}</li>"
+            indices.each do |idx|
+              s += "<li>#{pretty_ingredient(ings.find {|ing| ing.nb == idx})}</li>"
             end
             s += "</ul>"
-          else
-            s += pretty_ingredient(recipe.ingredients.find_by(nb: range.to_i))
+          elsif indices.size == 1
+            s += pretty_ingredient(recipe.ingredients.find_by(nb: indices[0]))
           end
           range = ""
           range_started = false
