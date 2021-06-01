@@ -55,7 +55,7 @@ module IngredientsHelper
   end
 
   def pretty_complete_instructions(recipe)
-    return nil if recipe.complete_instructions.blank?
+    return nil if recipe.blank? || recipe.complete_instructions.blank?
     translated = translate_complete_instructions(recipe)
     s = "<div>"
     i = 0
