@@ -5,6 +5,8 @@
 
 <h1>Editing <%= @recipe.name %></h1>
 
+<span id="autocomplete-data" data-foods="<%= Food.all.map {|v| [v.id, v.name] } %>"/>
+
 <div>
   <b>Ingredients</b><br>
   <% if @recipe.ingredients.blank? %>
