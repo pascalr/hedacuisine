@@ -1,3 +1,17 @@
+Todo: Cacher les menus cachés dans les menus en haut des recettes
+
+Faire une vidéo sur les muffins. C'est quoi qui les différencies des autres choses. Faire une recette en brassant beaucoup et une autre simplement en incorporant pour humidifier.
+
+FIXME: Menu index
+
+TODO: Enlever les journées.
+
+TODO: Range avec virgule.
+
+TODO: Séparer la cuisson des instructions peut-être? Le temps de cuisson devrait être dans la database du moins probablement. Pas important pour l'instant. Dire de préchauffé le four à la première instruction ou non?
+
+TODO: En cliquant sur un ingrédient, rajouter un popup. Dans le popup informatif, une image, des suggestions de remplacer l'ingrédient par et un bouton plus d'informations qui va vers l'article de l'ingrédient.
+
 Dans l'edit de recette, afficher les traductions ou du moins un warning si jamais modifier la recette, ça demande si on modifie la traduction, on crée une nouvelle traduction, ou....
 
 Once in a while, do a cleanup and remove all the translations that are not used anymore. (Either changed or a spelling mistake fixed.)
