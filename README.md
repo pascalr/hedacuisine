@@ -1,3 +1,5 @@
+TODO: Validate Food. Plural exist for unitary foods. Density also.
+
 Faire une vidéo sur les muffins. C'est quoi qui les différencies des autres choses. Faire une recette en brassant beaucoup et une autre simplement en incorporant pour humidifier.
 
 FIXME: Menu index, Style Netflix?
