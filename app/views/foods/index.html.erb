@@ -44,7 +44,7 @@
     <%= form.label :color %>
     <%= form.color_field :color_string %>
     <%= form.label :unit_weight %>
-    <%= form.number_field :unit_weight, precision: 2, step: 0.01, size: 3 %>
+    <%= form.number_field :unit_weight, step: 0.01, size: 3 %>
     <%= form.label :density %>
     <%= form.number_field :density, value: 1.0, step: 0.01, size: 3 %>
     <%= form.check_box :is_liquid %>
