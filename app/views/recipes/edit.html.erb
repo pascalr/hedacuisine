@@ -1,6 +1,7 @@
 <%= link_to 'Show', recipe_path(@recipe) %> |
 <%= link_to 'Process', do_process_recipe_path(@recipe), method: :patch %> |
 <%= link_to 'Cheat', cheat_recipe_path(@recipe), method: :patch %> |
+<%= link_to 'Fix ingredient numbers', 'TODO', method: :patch %> |
 <%= link_to 'Back', recipes_path %>
 
 <h1>Editing <%= @recipe.name %></h1>
@@ -12,9 +13,25 @@
   <% if @recipe.ingredients.blank? %>
     Il n'y a pas encore d'ingrédients.
   <% else %>
-    <% @recipe.ingredients.each_with_index do |ingredient, i| %>
-      <%= i+1 %>. <%= pretty_ingredient(ingredient) %> <%= link_to 'x', ingredient, method: :delete, data: {confirm: 'Are you sure?'} %><br>
-    <% end %>
+    <table class="table table-striped table-sm w-auto">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>ingredient</th>
+          <th colspan="1"></th>
+        </tr>
+      </thead>
+    
+      <tbody>
+        <% @recipe.ingredients.each do |ingredient| %>
+          <tr>
+            <td><%= ingredient.nb %></td>
+            <td><%= pretty_ingredient(ingredient) %></td>
+            <td><%= link_to 'x', ingredient, method: :delete, data: {confirm: 'Are you sure?'} %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   <% end %>
 </div>
 

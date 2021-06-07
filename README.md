@@ -1,3 +1,7 @@
+TODO: Pas nécessaire d'avoir des quantités pour tous les ingrédients. Par exemple. Relish, ketchup, dans un hamburger... sel, poivre...
+
+TODO: Pas de nom ambigu. Par exemple, cannelle en bâton et cannelle moulue, pas simplement cannelle. Haricots rouges cuits, haricots rouges secs, pas seulement haricots rouges.
+
 TODO: Validate Food. Plural exist for unitary foods. Density also.
 
 Faire une vidéo sur les muffins. C'est quoi qui les différencies des autres choses. Faire une recette en brassant beaucoup et une autre simplement en incorporant pour humidifier.

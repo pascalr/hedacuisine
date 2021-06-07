@@ -18,7 +18,7 @@ class Ingredient < ApplicationRecord
   end
 
   def self.build(value, unit, food, container_nb=nil)
-    Ingredient.new(weight: weight_of(value, unit, food), food: food, container_nb: container_nb)
+    Ingredient.new(weight: value.blank? ? nil : weight_of(value, unit, food), food: food, container_nb: container_nb)
   end
 
   def value_for(unit)
@@ -32,6 +32,7 @@ class Ingredient < ApplicationRecord
   end
 
   def volume
+    return nil if self.weight.blank?
     self.weight * food.density
   end
 end

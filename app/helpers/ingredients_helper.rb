@@ -8,6 +8,7 @@ module IngredientsHelper
   end
 
   def pretty_volume(ing)
+    return "" if ing.weight.blank?
     return "#{pretty_fraction(ing.volume/1000.0)} #{translated("L")}" if ing.food.is_liquid? && ing.volume >= 1000.0
     return "#{pretty_fraction(ing.volume/250.0)} #{translated("t")}" if ing.volume >= 60.0# or (ing.volume > 30.0 and close_to_fraction?(ing.volume/250.0))
     return "#{pretty_fraction(ing.volume/15.0)} #{translated("c. à soupe")}" if ing.volume >= 15.0
@@ -16,6 +17,7 @@ module IngredientsHelper
   end
 
   def pretty_base_unit(ing)
+    return "" if ing.weight.blank?
     ing.food.is_liquid? ? "(#{ing.volume.round(1)} mL)" : "(#{ing.weight.round(1)} g)"
   end
   

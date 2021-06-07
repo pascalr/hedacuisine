@@ -10,7 +10,7 @@ class IngredientsController < ApplicationController
     recipe = Recipe.find(params[:recipe_id])
     food = Food.find(params[:food_id])
     qty = params[:qty].split(',')
-    quantity = qty[0].to_f
+    quantity = qty.blank? ? nil : qty[0].to_f
     unit = nil
     unless qty[1].blank?
       unit = Unit.find_by(name: qty[1].strip) 
