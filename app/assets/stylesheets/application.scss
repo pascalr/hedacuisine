@@ -21,6 +21,18 @@
 @import "toastr/toastr";
 @import "tiny-slider/src/tiny-slider";
 
+.h2 {
+  background-color: #3c5e8c;
+  color: white;
+  padding-left: 1rem;
+  font-size: 1.6rem;
+}
+
+.h2.toggle-link:hover {
+  cursor: pointer;
+  background-color: #6097f3;
+}
+
 .easy-autocomplete {
   display: inline-block;
 }

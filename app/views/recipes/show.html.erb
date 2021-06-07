@@ -44,12 +44,20 @@
   <!-- TODO: Si un ingrédient se retrouve plusieurs fois dans la recette, afficher un avertissement et la quantité totale comme ça le monde peuvent savoir s'ils en ont assez -->
 
   <% unless @recipe.ingredients.blank? %>
+    
+    <h2 class="h2 toggle-link" data-toggle_id="ing_list">+ Liste d'ingrédients</h2>
 
-    <h3>Recette</h3>
+    <ul id="ing_list" hidden>
+      <% @recipe.ingredients.each do |ing| %>
+        <li><%= pretty_ingredient(ing) %></li>
+      <% end %>
+    </ul>
+
+    <h2 class="h2">Recette</h2>
 
     <div class="recipe-instructions">
 
-      <h2><%= translated(@recipe.name) %></h2>
+      <h3><%= translated(@recipe.name) %></h3>
 
       <%= pretty_complete_instructions(@recipe) %>
       <%# pretty_print_recipe(@recipe) %>
@@ -69,4 +77,5 @@
 </div>
 
 <%# javascript_pack_tag "recipe" %>
+<%= javascript_pack_tag "toggle_link" %>
 <%= javascript_pack_tag current_user ? "recipe_rating" : "recipe_rating_read_only" %>

@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     document.getElementById(link.dataset.toggle_id).hidden = true;
     link.addEventListener("click", function(e) {
       var elem = document.getElementById(e.target.dataset.toggle_id);
+      e.target.innerHTML = (elem.hidden ? "-" : "+") + e.target.innerHTML.substring(1)
       elem.hidden = !elem.hidden
     })
   }
