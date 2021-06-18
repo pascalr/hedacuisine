@@ -22,14 +22,22 @@
 @import "tiny-slider/src/tiny-slider";
 
 .h2 {
-  background-color: #3a6795;
-  color: white;
+  background-color: #4b8cb7 ;
+  color: #f0f0f0;
   padding-left: 1rem;
   font-size: 1.6rem;
 }
 
 .bg-dark {
-  background-color: #3a6795 !important;
+  background-color: #4b8cb7 !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: #f0f0f0;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: white;
 }
 
 .h2.toggle-link:hover {
