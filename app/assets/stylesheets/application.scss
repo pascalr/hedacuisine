@@ -22,6 +22,7 @@
 @import "tiny-slider/src/tiny-slider";
 
 h1 {
+  font-size: 2rem;
   color: #353535
 }
 
@@ -61,9 +62,30 @@ body {
   margin: 10px 30px 0px 30px;
 }
 
+/*@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');*/
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Raleway&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
+
+/*font-family: 'Raleway', sans-serif;*/
+
+.recipe-instructions-title {
+  font-family: "Satisfy", cursive;
+  font-weight: bold;
+}
+
+.recipe-ingredient-list {
+  /*font-family: "Caveat";*/
+  font-family: "Satisfy", cursive;
+  /*font-family: 'Raleway', sans-serif;*/
+  font-size: 1rem;
+  margin-bottom: 0rem;
+}
+
 .recipe-instructions {
-  font-family: "Caveat";
-  font-size: 1.4rem;
+  font-family: 'Raleway', sans-serif;
+  /*font-family: 'Dancing Script', cursive;*/
+  /*font-family: "Caveat";*/
+  font-size: 0.8rem;
   /*border: 1px solid black;*/
   /*display: inline-block;*/
   /*padding-right: 20em;*/
