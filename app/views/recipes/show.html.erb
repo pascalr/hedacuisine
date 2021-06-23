@@ -34,12 +34,15 @@
 <%# end %>
 
 <div class="responsive-margins-lg">
-  <h1>
+  <h1 class="recipe-title">
     <%= translated(@recipe.name) %>
     <!--<span style="font-size: 1.5rem;"><%# "(#{@recipe.version_name})" if @recipe.version_name %></span>-->
   </h1>
 
-  <div class="mb-2"><%= link_to @recipe.source, @recipe.source, style: "color: gray;" if @recipe.source %></div>
+  <div class="mb-2" style="margin-top: -1.2em; font-size: 0.8em;">
+    Inspiration:
+    <%= link_to @recipe.source, @recipe.source, style: "color: gray;" if @recipe.source %>
+  </div>
 
   <!-- TODO: Si un ingrédient se retrouve plusieurs fois dans la recette, afficher un avertissement et la quantité totale comme ça le monde peuvent savoir s'ils en ont assez -->
 
@@ -65,8 +68,6 @@
     <h2 class="h2">Instructions</h2>
 
     <div class="recipe-instructions">
-
-      <h3 class="recipe-instructions-title"><%= translated(@recipe.name) %></h3>
 
       <%= pretty_complete_instructions(@recipe) %>
       <%# pretty_print_recipe(@recipe) %>

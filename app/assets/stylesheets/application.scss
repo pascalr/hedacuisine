@@ -30,7 +30,7 @@ h1 {
   background-color: #4b8cb7 ;
   color: #f0f0f0;
   padding-left: 1rem;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
 }
 
 .bg-dark {
@@ -68,9 +68,10 @@ body {
 
 /*font-family: 'Raleway', sans-serif;*/
 
-.recipe-instructions-title {
+.recipe-title {
   font-family: "Satisfy", cursive;
   font-weight: bold;
+  font-size: 2.4rem;
 }
 
 .recipe-ingredient-list {
@@ -81,7 +82,7 @@ body {
   margin-bottom: 0rem;
 }
 
-.recipe-instructions {
+.recipe-instructions, #ing_list {
   font-family: 'Raleway', sans-serif;
   /*font-family: 'Dancing Script', cursive;*/
   /*font-family: "Caveat";*/
