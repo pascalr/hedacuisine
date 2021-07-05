@@ -1,0 +1,57 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" style="flex-grow: unset;">
+    <div class="navbar-nav">
+      <div class="dropdown nav-item">
+        <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <%= t("heda.menu.recipes") %>
+        </a>
+        <div class="dropdown-menu pl-2" aria-labelledby="dropdownMenuButton" style="width: 13em;">
+          <% Listing.order(:order).each do |listing| %>
+            <div><%= link_to translated(listing.name).capitalize, listing, style: "size: 1.3em; color: gray;" %></div>
+            <div class="ml-3">
+              <% listing.menus.each do |m| %>
+                <%= link_to ((m.emoji || '') + ' ' + translated(m.name).capitalize).lstrip, m, style: "color: black;" %><br>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <%= link_to_active t("heda.menu.home"), home_path, class: "nav-item nav-link" %>
+      <% if current_user_admin? %>
+        <%= link_to_active 'Meta', meta_index_path, class: "nav-item nav-link" %>
+      <% end %>
+    </div>
+  </div>
+  <%= render partial: 'layouts/top_search', locals: {user: current_user} %>
+  <div class="collapse navbar-collapse" style="flex-grow: unset;">
+    <div class="navbar-nav">
+      <% if (params[:locale] && params[:locale][0..1] == 'fr') || (params[:locale].blank? && I18n.default_locale[0..1] == 'fr') %>
+        <%= link_to 'EN', url_for(locale: 'en'), class: 'nav-item nav-link' %>
+        <%# url_for(params.merge({:your_new_parameter => value})) maybe this is above does not work %>
+      <% else %>
+        <%= link_to 'FR', url_for(locale: 'fr'), class: 'nav-item nav-link' %>
+      <% end %>
+      <% if user_signed_in? %>
+        <div class="dropdown nav-item">
+          <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <%= t("heda.my_account") %>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <%= link_to t("heda.modify"), users_modify_path, class: "dropdown-item" %>
+            <%= link_to_active 'Mes recettes', recipes_path, class: "dropdown-item" %>
+            <%= link_to_active 'Mes menus', menus_path, class: "dropdown-item" %>
+            <%= link_to_active 'Liens', menus_path, class: "dropdown-item" %>
+            <%= link_to_active 'Ingrédients', food_preferences_path, class: "dropdown-item" %>
+            <%= link_to t("heda.menu.logout"), destroy_user_session_path, method: :delete, class: "dropdown-item"  %>
+          </div>
+        </div>
+      <% else %>
+        <%# link_to t("devise.shared.links.sign_up"), new_user_registration_path, class: "nav-item nav-link" %>
+        <%= link_to t("devise.sessions.new.sign_in"), new_user_session_path, class: "nav-item nav-link" %>
+      <% end %>
+    </div>
+  </div>
+</nav>

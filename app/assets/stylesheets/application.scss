@@ -11,8 +11,6 @@
  * It is generally better to create a new file per style scope.
  *
  * require_tree .
- *= require articles.css
- *= require star-rating-svg
  *= require easy-autocomplete
  *= require_self
  */
@@ -21,17 +19,21 @@
 @import "toastr/toastr";
 @import "tiny-slider/src/tiny-slider";
 
+@import "blue_theme";
+@import "articles";
+@import "star-rating-svg";
+
+/* ----- Bootstrap modifications ----- */
+.row {
+  margin-right: 0px;
+  margin-left: 0px;
+}
+/* ----- End bootstrap modifications ----- */
+
 h1 {
-  font-size: 2rem;
   color: #353535
 }
 
-.h2 {
-  background-color: #4b8cb7 ;
-  color: #f0f0f0;
-  padding-left: 1rem;
-  font-size: 1.3rem;
-}
 
 #top-search {
   background-image: url('search.svg');
@@ -53,8 +55,6 @@ h1 {
 
 .navbar {
   padding: 0.1rem 1rem;
-  margin-left: 14%;
-  margin-right: 14%;
 }
 
 .navbar-dark .navbar-nav .nav-link {
@@ -75,7 +75,8 @@ h1 {
 }
 body {
   padding-bottom: 30px;
-  margin: 10px 30px 0px 30px;
+  margin-top: 5px;
+/*  margin: 10px 30px 0px 30px;*/
 }
 
 /*@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');*/
@@ -109,15 +110,6 @@ body {
   /*padding-right: 20em;*/
 }
 
-/* Wrapper for the sidebar and the main content */
-.wrapper {
-  display: flex;
-}
-
-#sidebar {
-  width: 14em;
-}
-
 .inline {
   display: inline;
 }
@@ -128,7 +120,7 @@ body {
 
 .responsive-margins-lg, .responsive-margins-sm {
   margin: auto;
-  width: 70%;
+  width: 75.75%;
 }
 
 .responsive-margins-50-lg, .responsive-margins-50-sm {
