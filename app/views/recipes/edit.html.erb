@@ -57,7 +57,7 @@
       </ul>
     </div>
   <% end %>
-
+  
   <div class="field">
     <b><%= form.label :name %></b>
     <%= form.text_field :name %>
@@ -68,6 +68,11 @@
     <%= form.text_field :source, size: 80 %>
   </div>
   
+  <div class="field">
+    <b><%= form.label :image_id %></b>
+    <%= form.number_field :image_id %>
+  </div>
+
   <div class="field">
     <b><%= form.label :complete_instructions %></b><br>
     <%= form.text_area :complete_instructions, cols: 100, rows: 10 %>

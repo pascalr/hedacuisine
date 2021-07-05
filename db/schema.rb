@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_20_175739) do
+ActiveRecord::Schema.define(version: 2021_07_05_145928) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -179,6 +179,7 @@ ActiveRecord::Schema.define(version: 2021_05_20_175739) do
     t.integer "group_id"
     t.string "version_name"
     t.text "complete_instructions"
+    t.integer "image_id"
   end
 
   create_table "similar_recipes", force: :cascade do |t|

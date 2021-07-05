@@ -35,7 +35,9 @@
 
 <div class="row" style="margin-bottom: 10px;">
   <div class="col-m-6">
-    <%= image_tag "/images/1_m.jpg", style: "margin-right: 20px;" %>
+    <% if @recipe.image_id %>
+      <%= image_tag "/images/#{@recipe.image_id}_m.jpg", style: "margin-right: 20px;" %>
+    <% end %>
   </div>
   <div class="col-m-6">
     <h1 class="recipe-title">

@@ -75,7 +75,7 @@ h1 {
 }
 body {
   padding-bottom: 30px;
-  margin-top: 5px;
+  margin-top: 10px;
 /*  margin: 10px 30px 0px 30px;*/
 }
 
@@ -162,24 +162,17 @@ body {
   cursor: pointer;
 }
 
-@media screen and (min-width: 1200px) {
-
-  .active {
-    background-color: orange;
-    margin-top: -0.5rem;
-    padding-top: 1rem;
-    margin-bottom: -0.5rem;
-    /*transform: translate(0.0, 0.5rem);*/
-  }
-
-}
-
 // xs: phones, sm: tablets, md: small laptop, lg: laptops and desktops
 // Bootstrap: xs: 768 ou moins, sm: 768 à 992, md: 992 à 1200, lg: 1200 et plus
+
+//@media screen and (min-width: 1200px)
 
 @media screen and (max-width: 1200px) {
   .responsive-margins-lg, .responsive-margins-50-lg {
     width: 100%; /* The width is 100%, when the viewport is 800px or smaller */
+  }
+  body {
+    margin-top: 0px;
   }
 }
 
