@@ -62,9 +62,9 @@
                 <%= link_to_active 'Mes menus', menus_path, class: "dropdown-item" %>
                 <%= link_to_active 'Liens', menus_path, class: "dropdown-item" %>
                 <%= link_to_active 'Ingrédients', food_preferences_path, class: "dropdown-item" %>
+                <%= link_to t("heda.menu.logout"), destroy_user_session_path, method: :delete, class: "dropdown-item"  %>
               </div>
             </div>
-            <%= link_to t("heda.menu.logout"), destroy_user_session_path, method: :delete, class: "nav-item nav-link"  %>
           <% else %>
             <%# link_to t("devise.shared.links.sign_up"), new_user_registration_path, class: "nav-item nav-link" %>
             <%= link_to t("devise.sessions.new.sign_in"), new_user_session_path, class: "nav-item nav-link" %>

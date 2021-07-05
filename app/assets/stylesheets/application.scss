@@ -33,12 +33,28 @@ h1 {
   font-size: 1.3rem;
 }
 
+#top-search {
+  background-image: url('search.svg');
+  background-repeat: no-repeat;
+  background-position: 10px 10px;
+  padding-left: 40px;
+  background-color: #4b8cb7 ;
+  border: none;
+  color: white;
+  box-shadow: none;
+  border-radius: 0px;
+  padding-bottom: 0px;
+  border-bottom: 1px solid white;
+}
+
 .bg-dark {
   background-color: #4b8cb7 !important;
 }
 
 .navbar {
   padding: 0.1rem 1rem;
+  margin-left: 14%;
+  margin-right: 14%;
 }
 
 .navbar-dark .navbar-nav .nav-link {
@@ -71,7 +87,8 @@ body {
 .recipe-title {
   font-family: "Satisfy", cursive;
   font-weight: bold;
-  font-size: 2.4rem;
+  font-size: 3.0rem;
+  margin-top: 0.5rem;
 }
 
 .recipe-ingredient-list {
