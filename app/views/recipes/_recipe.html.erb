@@ -1,19 +1,20 @@
 <div class="row" style="margin-bottom: 10px;">
   <div class="col-m-6">
-    <% if recipe.image_id %>
-      <%= image_tag "/images/#{recipe.image_id}_m.jpg", style: "margin-right: 20px;" %>
+    <%= link_to recipe_path(recipe) do %>
+      <% if recipe.image_id %>
+        <%= image_tag "/images/#{recipe.image_id}_s.jpg", style: "margin-right: 20px;" %>
+      <% else %>
+        <img width="228" height="171" style="margin-right: 20px;"></img>
+      <% end %>
     <% end %>
   </div>
   <div class="col-m-6">
-    <h1 class="recipe-title">
-      <%= translated(recipe.name) %>
-      <!--<span style="font-size: 1.5rem;"><%# "(#{@recipe.version_name})" if @recipe.version_name %></span>-->
-    </h1>
-    <div class="mb-2" style="margin-top: -1.2em; font-size: 0.8em;">
-      Inspiration:
-      <%= link_to recipe.source, recipe.source, style: "color: gray;" if recipe.source %>
-    </div>
-    <div style="margin-top: 1.5rem;">
+    <%= link_to recipe_path(recipe) do %>
+      <div class="recipe-listing-title">
+        <%= translated(recipe.name) %>
+      </div>
+    <% end %>
+    <div>
       <b>Ingrédients:</b>
       <span style="color: gray;">farine, poudre à pâte, sel, oeuf, miel, beurre</span>
     </div>
