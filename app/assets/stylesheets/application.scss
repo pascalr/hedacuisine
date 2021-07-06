@@ -34,19 +34,32 @@ h1 {
   color: #353535
 }
 
+.search-container {
+  border-radius: 5px;
+  border: 1px solid white;
+}
 
-#top-search {
+.search-button {
+  border: none;
+  display: inline-block;
+  background-color: transparent;
   background-image: url('search.svg');
   background-repeat: no-repeat;
-  background-position: 10px 10px;
-  padding-left: 40px;
+  background-size: 20px 20px;
+  background-position: 5px 0px;
+  height: 20px;
+  width: 20px;
+  padding-right: 15px;
+  padding-left: 15px;
+  border-left: 1px solid white;
+}
+
+#top-search {
   background-color: #4b8cb7 ;
   border: none;
   color: white;
   box-shadow: none;
-  border-radius: 0px;
   padding-bottom: 0px;
-  border-bottom: 1px solid white;
 }
 
 .bg-dark {

@@ -1,3 +1,7 @@
-<%= form_with(url: search_index_path, class: "form-inline", local: true, method: :get) do %>
-  <%= search_field_tag :search, nil, id: "top-search", placeholder: "#{t_no_span("heda.search")}...", 'aria-lable': "Search", 'data-menus': Menu.where.not(listing_id: nil).order(:name).map {|m| [m.id, m.name]}.to_json, 'data-recipes': Recipe.all.order(:name).map {|m| [m.id, m.name]}.to_json, 'data-foods': Food.all.order(:name).map {|m| [m.id, m.name]}.to_json, size: 40 %>
+<div class='search-container'>
+  <%= form_with(url: search_index_path, class: "form-inline", local: true, method: :get) do %>
+    <%= search_field_tag :search, nil, id: "top-search", placeholder: "#{t_no_span("heda.search")}...", 'aria-lable': "Search", 'data-menus': Menu.where.not(listing_id: nil).order(:name).map {|m| [m.id, m.name]}.to_json, 'data-recipes': Recipe.all.order(:name).map {|m| [m.id, m.name]}.to_json, 'data-foods': Food.all.order(:name).map {|m| [m.id, m.name]}.to_json, size: 40 %>
+  <button class="search-button">
+  </button>
+</div>
 <% end %>

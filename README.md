@@ -1,3 +1,5 @@
+En payant, les utilisateurs peuvent rendre leur menus privés. Sinon leur menus sont publiques.
+
 Toutes les images originales seront stockés à part de l'application dans un dossier /images qui ne sera pas trackés dans git
 
 TODO: images rsync dans un backup.
