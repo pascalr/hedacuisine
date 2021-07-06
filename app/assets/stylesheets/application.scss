@@ -152,8 +152,14 @@ body {
   margin-bottom: 0rem;
 }
 
-li {
-  list-style-type: square;
+ul.dash {
+    list-style: none;
+}
+ul.dash > li:before {
+    display: inline-block;
+    content: "-";
+    width: 1em;
+    margin-left: 1em;
 }
 
 .step-number {

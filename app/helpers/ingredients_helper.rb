@@ -87,7 +87,7 @@ module IngredientsHelper
           indices = extract_range_indices(range)
           if indices.length > 1
             ings = recipe.ingredients.where(nb: indices)
-            s += "<ul class='recipe-ingredient-list'>"
+            s += "<ul class='recipe-ingredient-list dash'>"
             indices.each do |idx|
               s += "<li>#{pretty_ingredient(ings.find {|ing| ing.nb == idx})}</li>"
             end
