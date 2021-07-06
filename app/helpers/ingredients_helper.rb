@@ -102,7 +102,7 @@ module IngredientsHelper
         end
       else
         s += case c
-             when '#' then "</div><div>#{(i += 1)}."
+             when '#' then "</div><div><span class='step-number'>#{(i += 1)}</span>"
              when '{' then range_started = true; ''
              when '}' then raise "Syntax error. Missing range start. ?...}"
              else c

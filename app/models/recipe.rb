@@ -24,6 +24,14 @@ class Recipe < ApplicationRecord
   end
   
   #has_one_attached :source_image
+  
+  def ingredient_list
+    if ingredients.size > 6
+      ingredients[0..5].map(&:name).join(", ") + ", ..."
+    else
+      ingredients.map(&:name).join(", ")
+    end
+  end
 
   def user_rating(user)
     return nil unless user

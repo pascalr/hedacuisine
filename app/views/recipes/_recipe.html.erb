@@ -15,8 +15,10 @@
       </div>
     <% end %>
     <div>
-      <b>Ingrédients:</b>
-      <span style="color: gray;">farine, poudre à pâte, sel, oeuf, miel, beurre</span>
+      <% unless recipe.ingredients.blank? %>
+        <b>Ingrédients:</b>
+        <span style="color: gray;"><%= recipe.ingredient_list %></span>
+      <% end %>
     </div>
     <div>
       <b>Préparation:</b>

@@ -98,6 +98,37 @@ body {
 
 /*font-family: 'Raleway', sans-serif;*/
 
+/*.recipe-instructions {
+  counter-reset: steps-counter;
+}
+
+.step-number {
+  counter-increment: steps-counter;
+}
+
+.step-number::before {
+  content: counter(steps-counter);
+}*/
+
+/*.recipe-instruction > ol {
+  list-style: none;
+  counter-reset: steps-counter;
+}
+
+.recipe-instruction > ol li {
+  counter-increment: steps-counter;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.recipe-instruction > ol li::before {
+  content: "0" counter(steps-counter);
+  font-weight: bold;
+  font-size: 3rem;
+  margin-right: 0.5rem;
+  line-height: 1;
+}*/
+
 .recipe-listing-title {
   font-family: "Satisfy", cursive;
   font-weight: bold;
@@ -114,17 +145,34 @@ body {
 
 .recipe-ingredient-list {
   /*font-family: "Caveat";*/
-  font-family: "Satisfy", cursive;
+  /*font-family: "Satisfy", cursive;*/
+  font-style: italic;
   /*font-family: 'Raleway', sans-serif;*/
-  font-size: 1rem;
+  /*font-size: 1.4rem;*/
   margin-bottom: 0rem;
+}
+
+li {
+  list-style-type: square;
+}
+
+.step-number {
+  margin-top: 10px;
+  margin-right: 5px;
+  display: inline-block;
+  padding-left: 0.4rem;
+  width: 1.5rem;
+  font-weight: bold;
+  border-radius: 50%;
+  color: white;
+  background-color: black;
 }
 
 .recipe-instructions, #ing_list {
   font-family: 'Raleway', sans-serif;
   /*font-family: 'Dancing Script', cursive;*/
   /*font-family: "Caveat";*/
-  font-size: 0.8rem;
+  font-size: 1rem;
   /*border: 1px solid black;*/
   /*display: inline-block;*/
   /*padding-right: 20em;*/
