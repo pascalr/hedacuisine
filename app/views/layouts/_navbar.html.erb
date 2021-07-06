@@ -1,9 +1,10 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between" style="margin-bottom: 10px;">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" style="flex-grow: unset;">
     <div class="navbar-nav">
+      <%= link_to_active "Heda", home_path, class: "navbar-brand" %>
       <div class="dropdown nav-item">
         <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <%= t("heda.menu.recipes") %>
@@ -19,7 +20,7 @@
           <% end %>
         </div>
       </div>
-      <%= link_to_active t("heda.menu.home"), home_path, class: "nav-item nav-link" %>
+      <%# link_to_active t("heda.menu.home"), home_path, class: "nav-item nav-link" %>
       <% if current_user_admin? %>
         <%= link_to_active 'Meta', meta_index_path, class: "nav-item nav-link" %>
       <% end %>

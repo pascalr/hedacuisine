@@ -1,3 +1,14 @@
-<h1><%= tr "Résultats de recherche" %></h1>
+<div style="font-size: 2em; font-weight: bold;">
+  <%= tr "Résultats de recherche pour" %>: <%= params[:search] %>
+</div>
 
-<p>La fonctionalité de recherche n'est pas encore en fonction.</p>
+<% if @recipes.blank? %>
+  Aucun résultat ne correspond à la recherche.
+<% else %>
+  <div style="margin-top: -10px; margin-bottom: 20px;">
+    <i><%= @results.size %> résultats correspondant trouvés.</i>
+  </div>
+  <% @recipes.each do |recipe| %>
+    <%= render recipe %>
+  <% end %>
+<% end %>
