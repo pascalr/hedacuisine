@@ -23,6 +23,10 @@
 @import "articles";
 @import "star-rating-svg";
 
+/*@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');*/
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Raleway&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
+
 /* ----- Bootstrap modifications ----- */
 .row {
   margin-right: 0px;
@@ -43,7 +47,7 @@ h1 {
   border: none;
   display: inline-block;
   background-color: transparent;
-  background-image: url('search.svg');
+  background-image: url(<%= asset_path 'search.svg' %>);
   background-repeat: no-repeat;
   background-size: 20px 20px;
   background-position: 5px 0px;
@@ -78,11 +82,6 @@ h1 {
   color: white;
 }
 
-.h2.toggle-link:hover {
-  cursor: pointer;
-  background-color: #6097f3;
-}
-
 .easy-autocomplete {
   display: inline-block;
 }
@@ -91,10 +90,6 @@ body {
   margin-top: 10px;
 /*  margin: 10px 30px 0px 30px;*/
 }
-
-/*@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');*/
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Raleway&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
 
 /*font-family: 'Raleway', sans-serif;*/
 
@@ -162,7 +157,17 @@ ul.dash > li:before {
     margin-left: 1em;
 }
 
+.step-number::after {
+  content: ".";
+}
+
 .step-number {
+  font-weight: bold;
+  margin-top: 4px;
+  display: inline-block;
+}
+
+/*.step-number {
   margin-top: 10px;
   margin-right: 5px;
   display: inline-block;
@@ -172,7 +177,7 @@ ul.dash > li:before {
   border-radius: 50%;
   color: white;
   background-color: black;
-}
+}*/
 
 .recipe-instructions, #ing_list {
   font-family: 'Raleway', sans-serif;
@@ -184,8 +189,8 @@ ul.dash > li:before {
   /*padding-right: 20em;*/
 }
 
-.root {
-  width: 70%;
+.recipe-body {
+  width: 50%;
 }
 
 .inline {

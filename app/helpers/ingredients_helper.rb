@@ -73,14 +73,11 @@ module IngredientsHelper
     indices
   end
 
-  def pretty_complete_instructions(recipe)
-    return nil if recipe.blank? || recipe.complete_instructions.blank?
-    translated = translate_complete_instructions(recipe)
-    s = "<div>"
-    i = 0
+  def replace_ingredients(recipe, text)
+    s = ""
     range_started = false
     range = ""
-    sanitize(translated).each_char do |c|
+    text.each_char do |c|
       if range_started
         raise "Syntax error. Range already started. {...{" if c == '{'
         if c == '}'
@@ -102,14 +99,29 @@ module IngredientsHelper
         end
       else
         s += case c
-             when '#' then "</div><div><span class='step-number'>#{(i += 1)}</span>"
              when '{' then range_started = true; ''
              when '}' then raise "Syntax error. Missing range start. ?...}"
              else c
              end
       end
     end
-    s += "</div>"
+    s
+  end
+
+  def pretty_complete_instructions(recipe)
+    return nil if recipe.blank? || recipe.complete_instructions.blank?
+    translated = sanitize(translate_complete_instructions(recipe))
+    s = ""
+    step_nb = 0
+    translated.each_line do |line|
+      if line.starts_with?("_")
+        s += "<h3>#{line[1..-1].strip}</h3>"
+      elsif line.starts_with?("#")
+        s += "<div><span class='step-number'>#{(step_nb += 1)}</span>#{replace_ingredients(recipe, line[1..-1])}</div>"
+      else
+        s += line
+      end
+    end
     s.html_safe
   end
 
