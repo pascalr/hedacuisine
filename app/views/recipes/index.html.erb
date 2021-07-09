@@ -1,17 +1,14 @@
-<%= link_to 'New Recipe', new_recipe_path %>
-<%= link_to 'Nouvelle recette', new_recipe_path %>
+<% if current_user_admin? %>
+  <%= link_to 'New Recipe', new_recipe_path %>
+  <%= link_to 'Nouvelle recette', new_recipe_path %>
+<% end %>
 
 <div class="responsive-margins-lg">
 
   <h1>Recettes</h1>
-
-  <% @recipes.each do |recipe| %>
-    <big><%= link_to recipe.name, recipe %></big>
-    <%= "(N/A)" if recipe.ingredients.blank? %>
-    <% ms = recipe.missing_ingredients_for(current_user) %>
-    <%= ms.blank? ? "" : "(#{ms.map(&:name).join(', ')})" %>
-    <br>
+  
+  <% Recipe.where.not(image_id: nil).limit(5).each do |recipe| %>
+    <%= render recipe %>
   <% end %>
 
-  <br>
 </div>
