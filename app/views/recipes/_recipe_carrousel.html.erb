@@ -2,7 +2,9 @@
   <% tag_id = 1 if local_assigns[:tag_id].nil? %>
   <% title = "" if local_assigns[:title].nil? %>
 
-  <span class="carrousel-title"><%= title %></span>
+  <span style="font-size: 1.4rem; font-weight: bold;"><%= title %></span>
+  
+  
   <span id="prev-tag-<%= tag_id %>" class="my-tns-control"><%= image_tag "left_arrow.svg", size: "15x15" %></span>
   <span id="next-tag-<%= tag_id %>" class="my-tns-control"><%= image_tag "right_arrow.svg", size: "15x15" %></span>
 

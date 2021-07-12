@@ -19,33 +19,67 @@
 @import "toastr/toastr";
 @import "tiny-slider/src/tiny-slider";
 
-@import "blue_theme";
 @import "articles";
 @import "star-rating-svg";
 
-/*@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');*/
+//@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Raleway&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
 
-/* ----- Bootstrap modifications ----- */
+// ----- Bootstrap modifications -----
 .row {
   margin-right: 0px;
   margin-left: 0px;
 }
-/* ----- End bootstrap modifications ----- */
+// ----- End bootstrap modifications -----
+
+.text-color {
+  color: #353535; // I like it better when it is not absolutely white.
+  // color: #f0f0f0;
+}
+
+.bg-dark {
+  //background-color: #4b8cb7 !important;
+}
+
+.nav-link.active, .navbar-brand.active {
+  background-color: orange;
+}
+
+.navbar-brand {
+  padding-right: 1rem;
+  padding-left: 1rem;
+  margin-left: -1rem;
+  margin-right: 0rem;
+}
 
 h1 {
   color: #353535
 }
 
-.carrousel-title {
+h3, .instructions-header {
   font-size: 1.4rem;
   font-weight: bold;
+  margin-top: 1rem;
 }
 
-.search-container {
-  border-radius: 5px;
-  border: 1px solid white;
+.h2, .section-header {
+  //background-color: #4b8cb7 ;
+  background-color: #343a40;
+  color: #f0f0f0;
+  padding-left: 1rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+  font-family: "Satisfy", cursive;
+  padding-top: 0.3rem;
+  line-height: 1.6rem;
+}
+
+.h2.toggle-link:hover, .section-header.toggle-link:hover {
+  cursor: pointer;
+  //background-color: #6097f3;
+  //background-color: #fc7e0f;
+  background-color: #f57b11;
 }
 
 .search-button {
@@ -64,18 +98,15 @@ h1 {
 }
 
 #top-search {
-  background-color: #4b8cb7 ;
+  background-color: #343a40;
   border: none;
   color: white;
   box-shadow: none;
   padding-bottom: 0px;
 }
 
-.bg-dark {
-  background-color: #4b8cb7 !important;
-}
-
 .navbar {
+  height: 40px;
   padding: 0.1rem 1rem;
 }
 
@@ -91,7 +122,7 @@ h1 {
   display: inline-block;
 }
 body {
-  margin-top: 10px;
+  //margin-top: 10px;
 }
 footer {
   margin-top: 30px;

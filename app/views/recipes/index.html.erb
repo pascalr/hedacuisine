@@ -5,8 +5,6 @@
 
 <div class="responsive-margins-lg">
 
-  <h1>Recettes</h1>
-  
   <% Recipe.where.not(image_id: nil).limit(5).each do |recipe| %>
     <%= render recipe %>
   <% end %>
