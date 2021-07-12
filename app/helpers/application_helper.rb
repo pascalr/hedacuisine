@@ -27,6 +27,11 @@ module ApplicationHelper
     text
   end
   alias tr translated
+  
+  def link_to_active_controller(name, path, ctrl_name, options={})
+    options[:class] += " active" if ctrl_name == controller_name
+    link_to name, path, options
+  end
 
   def link_to_active(name, path, options={})
     options[:class] += " active" if current_page?(path)
