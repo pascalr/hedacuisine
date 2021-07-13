@@ -4,7 +4,7 @@
   </button>
   <div class="collapse navbar-collapse" style="flex-grow: unset;">
     <div class="navbar-nav">
-      <%= link_to_active "Heda", home_path, class: "navbar-brand" %>
+      <%= link_to_active_controller "Heda", home_path, "home", class: "navbar-brand" %>
       <%= link_to_active_controller t("heda.menu.recipes"), recipes_path, "recipes", class: "nav-item nav-link" %>
       <% if current_user_admin? %>
         <div class="dropdown nav-item">

@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   resources :units
   devise_for :users
 
+  get 'ecological', to: 'home#ecological'
   get 'home', to: 'home#index'
   
   get 'article_images/:article_name/:filename/:extension', to: 'article_images#show'

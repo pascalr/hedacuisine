@@ -10,6 +10,14 @@
     .home-section {
       margin-top: 8rem;
       margin-bottom: 8rem;
+      font-size: 1.5rem;
+    }
+    .home-section > div > h2 {
+      font-size: 3rem;
+      font-weight: bold;
+    }
+    .know-more {
+      color: grey;
     }
   </style>
   
@@ -24,116 +32,70 @@
     -->
 
     <div style="margin: auto; filter: blur(2px); height: 613px; width: 920px; background-image: url('<%= asset_path("tmp/pantry_placeholder.webp") %>')"></div>
-    <div style="translate: 0px -400px; z-index: 2; text-shadow: 4px 4px 8px black, 2px 2px 4px black, 1px 1px 2px black; font-weight: bold;">
-      <h1 style="text-align: center; font-size: 3rem; color: #f0f0f0;">Heda</h1>
-      <div style="margin-top: -0.8rem; font-size: 2rem; text-align: center; color: #f0f0f0;">
+    <div style="translate: 0px -400px; z-index: 2; text-shadow: 4px 4px 8px black, 2px 2px 4px black, 1px 1px 2px black; font-weight: bold; text-align: center;">
+      <h1 style="font-size: 3rem; color: #f0f0f0;">Heda</h1>
+      <div style="margin-top: -0.8rem; font-size: 2rem; color: #f0f0f0;">
         Un robot garde-manger
+      </div>
+      <div style="margin: auto; font-size: 1.5rem; border-radius: 5px; width: 12rem; background-color: orange; color: white; text-shadow: none; margin-top: 1rem;">
+        Voir la vidéo 
+      </div>
+    </div>
+
+    <div class="home-section row" style="margin-top: 2rem;">
+      <div class="col-sm-8">
+        <h2>Un aide-cuisinier personnel</h2>
+        <p>
+        Heda sors les ingrédients de la recette et portionne les quantités nécessaires. Éventuellement, elle pourra même faire tremper, couper et mélanger des aliments.
+        </p>
+        <%= link_to "En savoir plus...", "TODO", class: "know-more" %>
+      </div>
+      <div class="col-sm-4" style="background-color:pink;">
+        <p>Une image du robot en train de cuisiner</p>
       </div>
     </div>
   
+    <div class="home-section row">
+      <div class="col-sm-4" style="background-color:pink;">
+        <p>Image</p>
+      </div>
+      <div class="col-sm-8">
+        <h2>Écologique</h2>
+        <p>Heda suggère des recettes pour utiliser les aliments qui sont près d'être périmé pour éviter le gaspillage alimentaire. Aussi, elle cuisine surtout de la nourriture qui peut s'acheter en vrac pour favoriser le zéro-déchet.</p>
+        <%= link_to "En savoir plus...", ecological_path, class: "know-more" %>
+      </div>
+    </div>
+    
     <div class="home-section row" style="margin-top: 2rem;">
       <div class="col-sm-8">
-        <h2>Inventaire automatique</h2>
-        <ul>
-          <li>Avertit lorsqu'un aliment est pres d'etre périmé et suggere des recettes pour l'utiliser.</li>
-          <li>Genere une liste d'épicerie automatiquement selon les habitudes et l'inventaire.</li>
-          <li>Suggere de recettes avec des ingrédients que vous avez sous la main.</li>
-        </ul>
+        <h2>Liste d'épicerie</h2>
+        <p>Heda surveille l'inventaire et génère une liste d'épicerie selon vos habitudes et les recettes planifiées.
+        Elle peut même commander automatiquement!
+        </p>
+        <%= link_to "En savoir plus...", "TODO", class: "know-more" %>
       </div>
       <div class="col-sm-4" style="background-color:pink;">
         <p>Image de l'application inventaire automatique</p>
       </div>
     </div>
-  
+    
     <div class="home-section row">
       <div class="col-sm-4" style="background-color:pink;">
         <p>Image</p>
       </div>
-      <div class="col-sm-8">
-        <h2>Favoriser l'alimentation écologique</h2>
-        <p>
-          Contrairement aux croyances populaires, ce qu'on mange a un plus grand impact écologique que sa provencance. Par exemple, une alimentation végétarienne est beaucoup plus écologique qu'une alimentation carnivore. 23% des terres agricoles qui ne sont pas pour les animaux produisent 82% des calories et 63% des protéines.
-
-Les etres humains ont tendance a faire ce qui est le plus facile. Il faut que cuisiner végétarien sois plus facile que de cuisiner de la viande. On ne peut pas changer facilement les habitudes alimentaires des gens. Mais avec Heda, ca se fait tout seul. La spécialité d'Heda est la cuisine de recettes écologique. Un soir de semaine que tu rentres tard du boulot, fatigué, tu as le choix entre cuisiner de la viande ou manger un repas végétarien sans cuisiner, qu'est-ce que tu choisis?
-        </p>
-      </div>
-    </div>
-
-    <div class="home-section row">
       <div class="col-sm-8">
         <h2>Open source</h2>
-      </div>
-      <div class="col-sm-4" style="background-color:pink;">
-        <p>Image</p>
-      </div>
-    </div>
-  
-    <div class="home-section row">
-      <div class="col-sm-4" style="background-color:pink;">
-        <p>Image</p>
-      </div>
-      <div class="col-sm-8">
-        <h2>Template</h2>
-      </div>
-    </div>
-
-    <div class="home-section row">
-      <div class="col-sm-8">
-        <h2>Cuisiner des produits de bases</h2>
-        <p>Heda simplifie la cuisine d'ingrédients de base. Au lieu d'acheter des aliments transformés avec des ingrédients que vous ne savez pas prononcé, c'est tellement simple de les faire maisons à la place. Par exemple, faire de la mayonnaise prends 30 secondes. Et c'est bien meilleur!</p>
-      </div>
-      <div class="col-sm-4" style="background-color:pink;">
-        <p>Image</p>
-      </div>
-    </div>
-  
-    <div class="home-section row">
-      <div class="col-sm-4" style="background-color:pink;">
-        <p>Image</p>
-      </div>
-      <div class="col-sm-8">
-        <h2>Pro zéro-déchet</h2>
-        <ul>
-          <li>Cuisiner des aliments du garde-manger, c'est cuisiner des aliments qui peuvent s'acheter en vrac</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="home-section row">
-      <div class="col-sm-8">
-        <h2>Diminue gaspillage alimentaire</h2>
-        <ul>
-          <li>cuisinant des petites portions tous les jours au lieu de grandes portions qu'on peut gaspiller</li>
-          <li>suggérant des recettes avec les aliments pres d'etre périmés qui doivent etre cuisinés</li>
-          <li>favorisant l'utilisation d'aliments du garde-manger qui se conserve beaucoup plus facilement</li>
-        </ul>
-      </div>
-      <div class="col-sm-4" style="background-color:pink;">
-        <p>Image</p>
-      </div>
-    </div>
-  
-    <div class="home-section row">
-      <div class="col-sm-4" style="background-color:pink;">
-        <p>Image</p>
-      </div>
-      <div class="col-sm-8">
-        <h2>Économisez de l'argent</h2>
-        <p>
-          En plus d'etre écologique, cuisiner des aliments primaires représente un autre avantage énorme: c'est économique! Un Canadien moyen pourrait économiser **1434$** par année **(1)**, principalement, parce que le prix des aliments transformés est souvent grandement supérieur aux aliments de base.
+        <p>Heda est vendu sous forme de kit à assembler. Toute la documentation pour en fabriquer une est disponible librement et gratuitement. Vous pouvez lire le code et le modifier à votre guise.
         </p>
-        <ul>
-          <li>Cuisiner des aliments du garde-manger, c'est cuisiner des aliments qui peuvent s'acheter en vrac</li>
-        </ul>
       </div>
     </div>
-
+    
     <div class="home-section">
       <h2>Une bibliothèque de recettes gratuites</h2>
       
       <%= render file: "/recipes/_recipe_carrousel", locals: {title: "Dernières recettes ajoutées", recipes: Recipe.where.not(image_id: nil)} %>
     </div>
-  
+    
     <div class="home-section row">
       <div class="col-sm-8">
         <h2>Sauver du temps</h2>
@@ -146,23 +108,35 @@ Les etres humains ont tendance a faire ce qui est le plus facile. Il faut que cu
         <p>Image</p>
       </div>
     </div>
-  
+    
     <div class="home-section row">
       <div class="col-sm-4" style="background-color:pink;">
         <p>Image</p>
       </div>
       <div class="col-sm-8">
-        <h2>Inventaire automatique</h2>
-        <ul>
-          <li>Avertit lorsqu'un aliment est pres d'etre périmé et suggere des recettes pour l'utiliser.</li>
-          <li>Genere une liste d'épicerie automatiquement selon les habitudes et l'inventaire.</li>
-          <li>Suggere de recettes avec des ingrédients que vous avez sous la main.</li>
-        </ul>
+        <h2>Économisez de l'argent</h2>
+        <p>
+          En plus d'etre écologique, cuisiner des aliments primaires représente un autre avantage énorme: c'est économique! Un Canadien moyen pourrait économiser **1434$** par année **(1)**, principalement, parce que le prix des aliments transformés est souvent grandement supérieur aux aliments de base.
+        </p>
       </div>
     </div>
   
+    <div class="home-section row" style="margin-top: 2rem;">
+      <div class="col-sm-8">
+        <h2>Missing</h2>
+        <ul>
+          <li>Recommendations de recettes avec ce que vous avez sous la main</li>
+        </ul>
+        <h2>Cuisiner des produits de bases</h2>
+        <p>Heda simplifie la cuisine d'ingrédients de base. Au lieu d'acheter des aliments transformés avec des ingrédients que vous ne savez pas prononcé, c'est tellement simple de les faire maisons à la place. Par exemple, faire de la mayonnaise prends 30 secondes. Et c'est bien meilleur!</p>
     <!--<p>Vous pouvez aussi vous <%# link_to "connecter", new_user_session_path %> ou vous <%# link_to "inscrire", new_user_session_path %> pour gérer vos propres listes de recettes!</p>
   -->
+      </div>
+      <div class="col-sm-4" style="background-color:pink;">
+        <p>Image de l'application inventaire automatique</p>
+      </div>
+    </div>
+
   </div>
 
   <%= javascript_pack_tag "recipe_slider_pack" %>
