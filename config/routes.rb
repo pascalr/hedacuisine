@@ -20,6 +20,8 @@ Rails.application.routes.draw do
   resources :units
   devise_for :users
 
+  get 'sim/get_state'
+
   get 'ecological', to: 'home#ecological'
   get 'home', to: 'home#index'
   
