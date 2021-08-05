@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_05_145928) do
+ActiveRecord::Schema.define(version: 2021_08_05_202218) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,16 @@ ActiveRecord::Schema.define(version: 2021_07_05_145928) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "containers", force: :cascade do |t|
+    t.bigint "container_format_id", null: false
+    t.bigint "machine_id", null: false
+    t.integer "jar_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["container_format_id"], name: "index_containers_on_container_format_id"
+    t.index ["machine_id"], name: "index_containers_on_machine_id"
   end
 
   create_table "descriptions", force: :cascade do |t|
@@ -119,6 +129,12 @@ ActiveRecord::Schema.define(version: 2021_07_05_145928) do
   create_table "listings", force: :cascade do |t|
     t.string "name"
     t.integer "order"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "machines", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -258,6 +274,8 @@ ActiveRecord::Schema.define(version: 2021_07_05_145928) do
   end
 
   add_foreign_key "categories", "menus"
+  add_foreign_key "containers", "container_formats"
+  add_foreign_key "containers", "machines"
   add_foreign_key "descriptions", "languages"
   add_foreign_key "favorite_menus", "menus"
   add_foreign_key "favorite_menus", "users"

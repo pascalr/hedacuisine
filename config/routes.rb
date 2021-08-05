@@ -4,6 +4,7 @@
 
 Rails.application.routes.draw do
 
+  resources :machines
   get 'search/index'
   resources :listings
   resources :ingredients
@@ -21,6 +22,7 @@ Rails.application.routes.draw do
   devise_for :users
 
   get 'sim/get_state'
+  get 'sim/get_current_user'
 
   get 'ecological', to: 'home#ecological'
   get 'home', to: 'home#index'
@@ -30,6 +32,7 @@ Rails.application.routes.draw do
   resources :items, only: [:destroy]
   resources :menus
   resources :categories, only: [:create, :update, :destroy]
+  resources :containers, only: [:create, :update, :destroy]
   post 'menus/add_or_create_recipe'
 
   post 'users/toggle_favorite_menu'
