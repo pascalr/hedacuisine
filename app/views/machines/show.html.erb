@@ -14,21 +14,23 @@
       <th>Jar format</th>
       <th>Filled</th>
       <th>Content</th>
+      <th>Position</th>
       <th colspan="3"></th>
     </tr>
   </thead>
 
   <tbody>
-    <% @machine.containers.each do |unit| %>
-      <%= form_with(model: unit, local: true) do |form| %>
+    <% @machine.containers.each do |container| %>
+      <%= form_with(model: container, local: true) do |form| %>
         <tr>
           <td><%= form.text_field :jar_id, size: 10 %></td>
           <td><%= form.collection_select :container_format_id, ContainerFormat.all, :id, :name, include_blank: true %></td>
           <td></td>
           <td></td>
+          <td>(<%= number_with_precision container.pos_x, separator: ".", precision: 2 %>, <%= number_with_precision container.pos_y, separator: ".", precision: 2 %>, <%= number_with_precision container.pos_z, separator: ".", precision: 2 %>)</td>
           <td><%= form.submit "Mettre à jour" %></td>
-          <td><%= link_to 'Show', unit %></td>
-          <td><%= link_to 'Destroy', unit, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to 'Show', container%></td>
+          <td><%= link_to 'Destroy', container, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         </tr>
       <% end %>
     <% end %>

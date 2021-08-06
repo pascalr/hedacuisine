@@ -23,6 +23,8 @@ Rails.application.routes.draw do
 
   get 'sim/get_state'
   get 'sim/get_current_user'
+  get 'sim/pull_machine'
+  post 'sim/push_machine'
 
   get 'ecological', to: 'home#ecological'
   get 'home', to: 'home#index'
