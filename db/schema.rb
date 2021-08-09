@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_06_145837) do
+ActiveRecord::Schema.define(version: 2021_08_09_130823) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,16 @@ ActiveRecord::Schema.define(version: 2021_08_06_145837) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "container_ingredients", force: :cascade do |t|
+    t.bigint "container_id", null: false
+    t.bigint "food_id", null: false
+    t.float "weight"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["container_id"], name: "index_container_ingredients_on_container_id"
+    t.index ["food_id"], name: "index_container_ingredients_on_food_id"
   end
 
   create_table "containers", force: :cascade do |t|
@@ -277,6 +287,8 @@ ActiveRecord::Schema.define(version: 2021_08_06_145837) do
   end
 
   add_foreign_key "categories", "menus"
+  add_foreign_key "container_ingredients", "containers"
+  add_foreign_key "container_ingredients", "foods"
   add_foreign_key "containers", "container_formats"
   add_foreign_key "containers", "machines"
   add_foreign_key "descriptions", "languages"

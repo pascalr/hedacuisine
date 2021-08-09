@@ -14,24 +14,28 @@ class SimController < ApplicationController
   end
 
   def pull_machine
-    data = {}
-    machine = Machine.first
-    data[:jars] = machine.containers
-    data[:foods] = Food.all
-    render json: data
+    #data = {}
+    @machine = Machine.first
+    @foods = Food.all
+    #data[:jars] = machine.containers
+    #data[:foods] = Food.all
+    #render json: data
   end
   
   def push_machine
+    ContainerIngredient.destroy_all
     data = JSON.parse request.body.read()
     data["jar_data_list"].each do |jar_data|
       container = Container.find_by(jar_id: jar_data["jar_id"])
+      jar_data["ingredients"].each do |ing|
+        container.container_ingredients.create!(food_id: ing["food_id"], weight: ing["weight"])
+      end
       container.pos_x = jar_data["pos_x"]
       container.pos_y = jar_data["pos_y"]
       container.pos_z = jar_data["pos_z"]
       container.save!
       #jar_data["ingredients"]
     end
-    {"class"=>"JarData", "ingredients"=>[], "jar_format"=>"Big", "jar_id"=>1, "pos_x"=>902.89386, "pos_y"=>882.650024, "pos_z"=>62.519653}
     render json: {status: "OK"}
   end
 
