@@ -15,25 +15,31 @@
 
   <body>
 
-    <div class="responsive-margins-lg">
-      <%= render partial: 'layouts/navbar' %>
+    <div id="body">
+      <div class="responsive-margins-lg">
+        <%= render partial: 'layouts/navbar' %>
 
-      <% unless flash.empty? %>
-        <script type="text/javascript">
-          <% flash.each do |f| %>
-            <% type = f[0].to_s.gsub('alert', 'error').gsub('notice', 'info') %>
-        	  toastr['<%= type %>']('<%= (simple_format f[1]).gsub(/[\n\r\']/, '').html_safe %>');
-          <% end %>
-        </script>
-      <% end %>
+        <% unless flash.empty? %>
+          <script type="text/javascript">
+            <% flash.each do |f| %>
+              <% type = f[0].to_s.gsub('alert', 'error').gsub('notice', 'info') %>
+          	  toastr['<%= type %>']('<%= (simple_format f[1]).gsub(/[\n\r\']/, '').html_safe %>');
+            <% end %>
+          </script>
+        <% end %>
 
-      <div class="root">
-        <%= yield %>
+        <div class="root">
+          <%= yield %>
+        </div>
+
+        
       </div>
-
-      <footer><small>&copy; Copyright <%= Date.current.year%>, Heda</small> </footer>
-      
     </div>
+    <footer>
+      <div class="responsive-margins-lg">
+        <small style="margin-left: 1rem;">&copy; Copyright <%= Date.current.year%>, Heda</small>
+      </div>
+    </footer>
     <%# javascript_pack_tag 'autocomplete_pack' %>
   </body>
   <%= content_for :render_async %>

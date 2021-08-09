@@ -38,6 +38,12 @@ module ApplicationHelper
     link_to name, path, options
   end
 
+  def link_to_active_tab(name, nb, options={})
+    # TODO: Allow a different param name than active_tab
+    options[:class] += " active" if (params[:active_tab].to_i == nb) ||  (params[:active_tab].blank? && nb == 1)
+    link_to name, url_for(active_tab: nb), options
+  end
+
   def article_for(name)
     sanitized = name.gsub(/[^0-9A-Za-z]/, '_')
     if current_language

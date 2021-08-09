@@ -1,0 +1,14 @@
+<ul class="nav nav-tabs">
+  <span class="nav-item navbar-brand"><b><%= machine.name %></b></span>
+  <%= link_to_active_tab "Inventaire", 1, class: "nav-item nav-link" %>
+  <%= link_to_active_tab "Contenants", 2, class: "nav-item nav-link" %>
+  <%= link_to_active_tab "Format de contenants", 3, class: "nav-item nav-link" %>
+</ul>
+
+<% if params[:active_tab].to_i == 1 %>
+<% elsif params[:active_tab].to_i == 2 %>
+  <%= render partial: "containers", locals: {machine: machine} %>
+<% elsif params[:active_tab].to_i == 3 %>
+<% end %>
+
+<br>

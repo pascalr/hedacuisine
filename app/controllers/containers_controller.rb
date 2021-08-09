@@ -1,22 +1,24 @@
 class ContainersController < ApplicationController
   before_action :set_container, only: [:update, :destroy]
   #skip_before_action :only_admin!
-
+  
   def create
     @container = Container.new(container_params)
+    @container.jar_id = Container.maximum(:jar_id).next if @container.jar_id.nil?
 
     @container.save!
-    redirect_back fallback_location: @container.machine
+    #redirect_to machines_path({active_tab: params[:active_tab], last_container_format_id: @container.container_format_id})
+    redirect_back fallback_location: machines_path
   end
 
   def update
     @container.update!(container_params)
-    redirect_back fallback_location: @container.machine
+    redirect_back fallback_location: machines_path
   end
 
   def destroy
     @container.destroy!
-    redirect_back fallback_location: @container.machine
+    redirect_back fallback_location: machines_path
   end
 
   private

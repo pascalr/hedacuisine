@@ -1,26 +1,8 @@
-<%= render partial: 'meta/nav' %>
+<h1>Mes machines</h1>
 
-<h1>Machines</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @machines.each do |machine| %>
-      <tr>
-        <td><%= machine.name %></td>
-        <td><%= link_to 'Show', machine %></td>
-        <td><%= link_to 'Edit', edit_machine_path(machine) %></td>
-        <td><%= link_to 'Destroy', machine, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<% @machines.each do |machine| %>
+  <%= render partial: machine %>
+<% end %>
 
 <br>
 
