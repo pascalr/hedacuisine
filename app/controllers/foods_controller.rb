@@ -12,6 +12,13 @@ class FoodsController < ApplicationController
   def edit
   end
 
+  def change_tag
+    @food = Food.find(params[:food_id])
+    @food.food_tag = FoodTag.find(params[:food_tag_id])
+    @food.save!
+    redirect_to @food.tag
+  end
+
   def index
     @foods = Food.all
   end

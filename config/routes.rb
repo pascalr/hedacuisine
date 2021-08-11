@@ -22,6 +22,8 @@ Rails.application.routes.draw do
   resources :units
   devise_for :users
 
+  post 'change_food_tag', to: 'foods#change_tag'
+
   get 'sim/get_state'
   get 'sim/get_current_user'
   get 'sim/pull_machine'

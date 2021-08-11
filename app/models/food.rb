@@ -11,12 +11,16 @@ class Food < ApplicationRecord
   validates :name, presence: true, uniqueness: true
 
   has_many :food_tag_items
-  has_many :food_tag, through: :food_tag_items
+  has_many :food_tags, through: :food_tag_items
+
+  belongs_to :food_tag, optional: true
 
   before_save do
     name.downcase!
     plural.try(:downcase!)
   end
+
+  alias tag food_tag
   
   def color_string
     return nil if color.nil?

@@ -5,5 +5,11 @@
   <%= @food_tag.name %>
 </p>
 
+<% Food.all.each do |food| %>
+  <% if food.tag != @food_tag %>
+    <%= link_to food.name, change_food_tag_path(food_id: food.id, food_tag_id: @food_tag.id), method: :post %><br>
+  <% end %>
+<% end %>
+
 <%= link_to 'Edit', edit_food_tag_path(@food_tag) %> |
 <%= link_to 'Back', food_tags_path %>
