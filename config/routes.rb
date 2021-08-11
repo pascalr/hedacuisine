@@ -4,6 +4,7 @@
 
 Rails.application.routes.draw do
 
+  resources :food_tags
   resources :machines
   get 'search/index'
   resources :listings

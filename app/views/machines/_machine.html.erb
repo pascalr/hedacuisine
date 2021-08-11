@@ -5,7 +5,8 @@
   <%= link_to_active_tab "Format de contenants", 3, class: "nav-item nav-link" %>
 </ul>
 
-<% if params[:active_tab].to_i == 1 %>
+<% if params[:active_tab].nil? or params[:active_tab].to_i == 1 %>
+  <%= render partial: "inventory", locals: {machine: machine} %>
 <% elsif params[:active_tab].to_i == 2 %>
   <%= render partial: "containers", locals: {machine: machine} %>
 <% elsif params[:active_tab].to_i == 3 %>

@@ -64,6 +64,6 @@ class ContainerFormatsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def container_format_params
-      params.require(:container_format).permit(:name)
+      params.require(:container_format).permit(:name, :diameter, :height_with_lid, :lid_height, :max_content_height, :body_weight, :lid_weight, :volume)
     end
 end

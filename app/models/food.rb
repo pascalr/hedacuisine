@@ -10,6 +10,9 @@ class Food < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
 
+  has_many :food_tag_items
+  has_many :food_tag, through: :food_tag_items
+
   before_save do
     name.downcase!
     plural.try(:downcase!)

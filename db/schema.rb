@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_09_142222) do
+ActiveRecord::Schema.define(version: 2021_08_11_121839) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,13 @@ ActiveRecord::Schema.define(version: 2021_08_09_142222) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.float "diameter"
+    t.float "height_with_lid"
+    t.float "lid_height"
+    t.float "max_content_height"
+    t.float "body_weight"
+    t.float "lid_weight"
+    t.float "volume"
   end
 
   create_table "container_ingredients", force: :cascade do |t|
@@ -90,6 +97,21 @@ ActiveRecord::Schema.define(version: 2021_08_09_142222) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["food_id"], name: "index_food_recipes_on_food_id"
     t.index ["recipe_id"], name: "index_food_recipes_on_recipe_id"
+  end
+
+  create_table "food_tag_items", force: :cascade do |t|
+    t.bigint "food_tag_id", null: false
+    t.bigint "food_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["food_id"], name: "index_food_tag_items_on_food_id"
+    t.index ["food_tag_id"], name: "index_food_tag_items_on_food_tag_id"
+  end
+
+  create_table "food_tags", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "foods", force: :cascade do |t|
@@ -308,6 +330,8 @@ ActiveRecord::Schema.define(version: 2021_08_09_142222) do
   add_foreign_key "food_preferences", "users"
   add_foreign_key "food_recipes", "foods"
   add_foreign_key "food_recipes", "recipes"
+  add_foreign_key "food_tag_items", "food_tags"
+  add_foreign_key "food_tag_items", "foods"
   add_foreign_key "ingredients", "foods"
   add_foreign_key "items", "menus"
   add_foreign_key "items", "recipes"
