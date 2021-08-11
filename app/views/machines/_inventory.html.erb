@@ -31,12 +31,15 @@
       <% foods_by_tag_id[f.food_tag_id] = (foods_by_tag_id[f.food_tag_id] || []) + [f.id] %>
     <% end %>
     <% FoodTag.all.each do |food_tag| %>
-      <tr>
-        <th colspan="6" style="color: #fff; background-color: #343a40; border-color: #454d55;"><%= food_tag.name %></th>
-      </tr>
-      <% (foods_by_tag_id[food_tag.id] || []).each do |food_id| %>
-        <% containers = machine.containers_by_food_id[food_id] %>
-        <%= render partial: 'inventory_food_item', locals: {containers: containers, food_id: food_id} %>
+      <% foods = foods_by_tag_id[food_tag.id] %>
+      <% unless foods.blank? %>
+        <tr>
+          <th colspan="6" style="color: #fff; background-color: #343a40; border-color: #454d55;"><%= food_tag.name %></th>
+        </tr>
+        <% (foods_by_tag_id[food_tag.id] || []).each do |food_id| %>
+          <% containers = machine.containers_by_food_id[food_id] %>
+          <%= render partial: 'inventory_food_item', locals: {containers: containers, food_id: food_id} %>
+        <% end %>
       <% end %>
     <% end %>
     <tr>

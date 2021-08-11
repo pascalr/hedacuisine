@@ -24,11 +24,11 @@
     <% machine.containers.each do |container| %>
       <%= form_with(model: container, local: true) do |form| %>
         <tr>
-          <td><%= form.text_field :jar_id, size: 10 %></td>
+          <td><%= link_to container.jar_id, container %></td>
           <td><%= form.collection_select :container_format_id, ContainerFormat.all, :id, :name, include_blank: true %></td>
           <td><%= container.ingredients.map(&:food).map(&:name).join(", ") %></td>
           <td></td>
-          <td>(<%= number_with_precision container.pos_x, separator: ".", precision: 2 %>, <%= number_with_precision container.pos_y, separator: ".", precision: 2 %>, <%= number_with_precision container.pos_z, separator: ".", precision: 2 %>)</td>
+          <td><%= container.pretty_position %></td>
           <td><%= form.submit "Mettre à jour" %></td>
           <td><%= link_to 'Show', container%></td>
           <td><%= link_to 'Destroy', container, method: :delete, data: { confirm: 'Are you sure?' } %></td>

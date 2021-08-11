@@ -7,6 +7,7 @@
     <tr>
       <th>Nom</th>
       <th>Pluriel</th>
+      <th>Tag</th>
       <th>Col</th>
       <th>Poids unitaire</th>
       <th>Densité<br/>(g/mL)</th>
@@ -17,11 +18,13 @@
   </thead>
 
   <tbody>
+    <% @food_tags = FoodTag.all %>
     <% @foods.each do |food| %>
       <%= form_with(model: food, local: true) do |form| %>
         <tr>
           <td><%= form.text_field :name, size: 15 %></td>
           <td><%= form.text_field :plural, size: 15 %></td>
+          <td><%= form.collection_select :food_tag_id, @food_tags, :id, :name, include_blank: true %></td>
           <td><%= form.color_field :color_string %></td>
           <td><%= form.number_field :unit_weight, step: 0.01, size: 3 %></td>
           <td><%= form.number_field :density, step: 0.01, size: 3 %></td>

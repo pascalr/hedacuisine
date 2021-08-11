@@ -37,7 +37,7 @@ Rails.application.routes.draw do
   resources :items, only: [:destroy]
   resources :menus
   resources :categories, only: [:create, :update, :destroy]
-  resources :containers, only: [:create, :update, :destroy]
+  resources :containers, only: [:create, :update, :destroy, :show]
   post 'menus/add_or_create_recipe'
 
   post 'users/toggle_favorite_menu'

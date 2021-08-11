@@ -19,5 +19,9 @@ class Container < ApplicationRecord
     container_format.volume
   end
 
+  def pretty_position
+    '(%.2f, %.2f, %.2f)' % [pos_x, pos_y, pos_z]
+  end
+
   alias ingredients container_ingredients
 end

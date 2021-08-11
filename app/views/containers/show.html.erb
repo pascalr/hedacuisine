@@ -1,0 +1,11 @@
+<h1>Containant <%= @container.jar_id %></h1>
+
+<h2>Détails</h2>
+
+<b>Format: </b><%= @container.container_format.name %><br>
+<b>Position: </b><%= @container.pretty_position %><br>
+
+<h2>Contenu</h2>
+
+<% @container.ingredients.each do |ing| %>
+<% end %>
