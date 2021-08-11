@@ -35,79 +35,16 @@
         <th colspan="6" style="color: #fff; background-color: #343a40; border-color: #454d55;"><%= food_tag.name %></th>
       </tr>
       <% (foods_by_tag_id[food_tag.id] || []).each do |food_id| %>
-        <%
-            containers = machine.containers_by_food_id[food_id]
-            food = Food.find(food_id)
-            total_content_weight = containers.map(&:single_content_weight).inject(&:+)
-            total_full_volume = containers.map(&:full_volume).inject(&:+)
-            total_content_volume = containers.map(&:single_content_volume).inject(&:+)
-            ratio_filled = total_content_volume / total_full_volume
-            color = ""
-            if ratio_filled <= 0.40
-              color = "#db0d0d"
-            elsif ratio_filled <= 0.60
-              color = "#f8f800"
-            else
-              color = "#37a600"
-            end
-
-            #red = ratio_filled <= 0.5 ? 255 : ((1.0-ratio_filled-0.5)*255.0).to_i
-            #green = ratio_filled >= 0.5 ? 255 : ((1.0-ratio_filled-0.5)*255.0).to_i
-            #color = "rgb(#{((1.0-ratio_filled)*255.0).to_i},#{(ratio_filled*255.0).to_i},0)"
-            #color = "rgb(#{red},#{green},0)"
-        %>
-        <tr>
-          <td><%= food.name.capitalize %></td>
-          <td><%= containers.map(&:jar_id).join(', ') %></td>
-          <td>
-            <div style="width: 100px; display: flex; height: 1rem; margin-top: 4px;">
-              <div style="width: <%= ratio_filled*100.0 %>%; background-color: <%= color %>;"></div>
-              <div></div>
-            </div>
-          </td>
-          <td><%= total_content_weight %></td>
-          <td><%= total_content_volume %></td>
-          <td><%= total_full_volume %></td>
-        </tr>
+        <% containers = machine.containers_by_food_id[food_id] %>
+        <%= render partial: 'inventory_food_item', locals: {containers: containers, food_id: food_id} %>
       <% end %>
     <% end %>
     <tr>
       <th colspan="6" style="color: #fff; background-color: #343a40; border-color: #454d55;">Autres</th>
     </tr>
-    <% machine.containers_by_food_id.each do |food_id, containers| %>
-      <%
-          food = Food.find(food_id)
-          total_content_weight = containers.map(&:single_content_weight).inject(&:+)
-          total_full_volume = containers.map(&:full_volume).inject(&:+)
-          total_content_volume = containers.map(&:single_content_volume).inject(&:+)
-          ratio_filled = total_content_volume / total_full_volume
-          color = ""
-          if ratio_filled <= 0.40
-            color = "#db0d0d"
-          elsif ratio_filled <= 0.60
-            color = "#f8f800"
-          else
-            color = "#37a600"
-          end
-
-          #red = ratio_filled <= 0.5 ? 255 : ((1.0-ratio_filled-0.5)*255.0).to_i
-          #green = ratio_filled >= 0.5 ? 255 : ((1.0-ratio_filled-0.5)*255.0).to_i
-          #color = "rgb(#{((1.0-ratio_filled)*255.0).to_i},#{(ratio_filled*255.0).to_i},0)"
-          #color = "rgb(#{red},#{green},0)"
-      %>
-      <tr>
-        <td><%= food.name.capitalize %></td>
-        <td><%= containers.map(&:jar_id).join(', ') %></td>
-        <td>
-          <div style="width: 100px; display: flex; height: 1rem; margin-top: 4px;">
-            <div style="width: <%= ratio_filled*100.0 %>%; background-color: <%= color %>;"></div>
-            <div></div>
-          </div>
-        </td>
-        <td><%= total_content_weight %></td>
-        <td><%= total_content_volume %></td>
-        <td><%= total_full_volume %></td>
-      </tr>
+    <% (foods_by_tag_id[nil] || []).each do |food_id| %>
+      <% containers = machine.containers_by_food_id[food_id] %>
+      <%= render partial: 'inventory_food_item', locals: {containers: containers, food_id: food_id} %>
     <% end %>
   </tbody>
 </table>
