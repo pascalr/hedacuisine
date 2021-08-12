@@ -17,6 +17,7 @@ class SimController < ApplicationController
     #data = {}
     @machine = Machine.first
     @foods = Food.all
+    #@jar_formats = Food.all
     #data[:jars] = machine.containers
     #data[:foods] = Food.all
     #render json: data
