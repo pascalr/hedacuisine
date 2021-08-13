@@ -13,4 +13,7 @@ class User < ApplicationRecord
   has_many :recipe_ratings
   has_many :recipe_comments
   has_many :food_preferences
+
+  has_many :machine_users
+  has_many :machines, through: :machine_users
 end

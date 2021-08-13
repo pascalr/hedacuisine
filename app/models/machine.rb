@@ -2,6 +2,9 @@ class Machine < ApplicationRecord
   has_many :containers
   has_many :weighings
   has_many :machine_foods
+  
+  has_many :machine_users
+  has_many :users, through: :machine_users
 
   def containers_by_food_id
     r = {}

@@ -4,12 +4,21 @@
   </button>
   <div class="collapse navbar-collapse" style="flex-grow: unset;">
     <div class="navbar-nav">
-      <% if user_signed_in? %>
-        <%= link_to_active_controller "Heda", machines_path, "machines", class: "navbar-brand" %>
-      <% else %>
-        <%= link_to_active_controller "Heda", home_path, "home", class: "navbar-brand" %>
-      <% end %>
+      <%= link_to_active_controller "Heda", home_path, "home", class: "navbar-brand" %>
       <%= link_to_active_controller t("heda.menu.recipes"), recipes_path, "recipes", class: "nav-item nav-link" %>
+      <% if user_signed_in? %>
+        <div class="dropdown nav-item">
+          <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Mes appareils
+          </a>
+          <div class="dropdown-menu pl-2" aria-labelledby="dropdownMenuButton" style="width: 13em;">
+            <% current_user.machine_users.each do |machine_user| %>
+              <div><%= link_to machine_user.nickname, machine_user.machine %></div>
+            <% end %>
+            <div><%= link_to "Enregistrer un apparreil", new_machine_user_path %></div>
+          </div>
+        </div>
+      <% end %>
       <% if current_user_admin? %>
         <div class="dropdown nav-item">
           <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

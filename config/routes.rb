@@ -20,6 +20,8 @@ Rails.application.routes.draw do
   get 'meta/index'
   resources :units
   devise_for :users
+  
+  resources :machine_users, only: [:create, :update, :destroy, :new]
 
   post 'change_food_tag', to: 'foods#change_tag'
   
