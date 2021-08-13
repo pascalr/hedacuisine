@@ -35,6 +35,7 @@ class ContainersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def container_params
+      # FIXME: Ensure machine belongs to current user...
       params.require(:container).permit(:container_format_id, :jar_id, :machine_id)
     end
 end
