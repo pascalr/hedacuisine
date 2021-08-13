@@ -34,4 +34,5 @@ class Container < ApplicationRecord
   end
 
   alias ingredients container_ingredients
+  alias format container_format
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_13_144713) do
+ActiveRecord::Schema.define(version: 2021_08_13_184424) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -167,6 +167,17 @@ ActiveRecord::Schema.define(version: 2021_08_13_144713) do
     t.integer "order"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "machine_foods", force: :cascade do |t|
+    t.bigint "machine_id", null: false
+    t.bigint "food_id", null: false
+    t.float "grocery_threshold"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.float "full_weight"
+    t.index ["food_id"], name: "index_machine_foods_on_food_id"
+    t.index ["machine_id"], name: "index_machine_foods_on_machine_id"
   end
 
   create_table "machine_users", force: :cascade do |t|
@@ -346,6 +357,8 @@ ActiveRecord::Schema.define(version: 2021_08_13_144713) do
   add_foreign_key "ingredients", "foods"
   add_foreign_key "items", "menus"
   add_foreign_key "items", "recipes"
+  add_foreign_key "machine_foods", "foods"
+  add_foreign_key "machine_foods", "machines"
   add_foreign_key "machine_users", "machines"
   add_foreign_key "machine_users", "users"
   add_foreign_key "recipe_comments", "recipes"

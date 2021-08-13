@@ -23,17 +23,8 @@ Rechercher...-->
       <th>Ingredient</th>
       <th>Jars</th>
       <th>Filled</th>
-      <th>Weight</th>
-      <th>Volume</th>
+      <th>Inventory</th>
       <th>Full volume</th>
-    </tr>
-    <tr>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th>(g)</th>
-      <th>(mL)</th>
-      <th>(mL)</th>
     </tr>
   </thead>
   <tbody>
@@ -62,7 +53,7 @@ Rechercher...-->
       <% end %>
     <% end %>
     <tr>
-      <th colspan="6" style="color: #fff; background-color: #343a40; border-color: #454d55;">Autres</th>
+      <th colspan="5" style="color: #fff; background-color: #343a40; border-color: #454d55;">Autres</th>
     </tr>
     <% (foods_by_tag_id[nil] || []).each do |food_id| %>
       <% containers = machine.containers_by_food_id[food_id] %>

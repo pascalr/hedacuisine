@@ -22,17 +22,22 @@
   <td><%= food.name.capitalize %></td>
   <td><%= containers.map(&:jar_id).join(', ') %></td>
   <td>
+    <% containers.each do |container| %>
+      <%= image_tag "JarIcon#{container.format.name}.png", size: "24x24" %>
+    <% end %>
+  </td>
+  <!--<td>
     <div style="width: 100px; display: flex; height: 1rem; margin-top: 4px;">
       <div style="width: <%= ratio_filled*100.0 %>%; background-color: <%= color %>;"></div>
       <div></div>
     </div>
-  </td>
-  <td><%= total_content_weight %></td>
-  <td><%= total_content_volume %></td>
+    </td>
+  -->
+  <td><%= total_content_volume %> mL (<%= total_content_weight %> g)</td>
   <td><%= total_full_volume %></td>
 </tr>
 <tr>
-  <td colspan="6">
+  <td colspan="5">
     <div>
       <%
           weighings = food.weighings.order(:created_at)
