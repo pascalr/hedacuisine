@@ -10,7 +10,7 @@
   </thead>
 
   <tbody>
-    <% machine.machine_foods.each do |machine_food| %>
+    <% machine.machine_foods.order(:current_weight).each do |machine_food| %>
       <tr>
         <td><%= link_to machine_food.food.name, machine_food.food %></td>
         <td>
