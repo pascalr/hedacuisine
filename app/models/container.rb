@@ -6,7 +6,6 @@ class Container < ApplicationRecord
 
   has_many :container_ingredients
 
-
   def single_content_weight
     ingredients.first.weight
   end

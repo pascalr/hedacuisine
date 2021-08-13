@@ -31,3 +31,13 @@ json.weighings @machine.weighings do |weighing|
   json.food_id weighing.food_id 
   
 end
+
+json.machine_foods @machine.machine_foods do |machine_food|
+
+  json.id machine_food.id
+  json.food_id machine_food.food_id
+  json.grocery_threshold machine_food.grocery_threshold
+  json.current_weight machine_food.current_weight
+  json.full_weight machine_food.full_weight
+
+end

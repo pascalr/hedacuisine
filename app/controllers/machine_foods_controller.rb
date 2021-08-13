@@ -28,6 +28,6 @@ class MachineFoodsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def machine_food_params
       # FIXME: Ensure machine belongs to current user...
-      params.require(:machine_food).permit(:food_id, :machine_id)
+      params.require(:machine_food).permit(:food_id, :machine_id, :current_weight, :grocery_threshold, :full_weight)
     end
 end
