@@ -1,5 +1,6 @@
 class Machine < ApplicationRecord
   has_many :containers
+  has_many :weighings
 
   def containers_by_food_id
     r = {}

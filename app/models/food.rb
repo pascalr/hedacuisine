@@ -15,6 +15,8 @@ class Food < ApplicationRecord
 
   belongs_to :food_tag, optional: true
 
+  has_many :weighings
+
   before_save do
     name.downcase!
     plural.try(:downcase!)

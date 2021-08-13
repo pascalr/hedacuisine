@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_11_151846) do
+ActiveRecord::Schema.define(version: 2021_08_13_144713) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -319,6 +319,16 @@ ActiveRecord::Schema.define(version: 2021_08_11_151846) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "weighings", force: :cascade do |t|
+    t.bigint "machine_id", null: false
+    t.bigint "food_id", null: false
+    t.float "weight"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["food_id"], name: "index_weighings_on_food_id"
+    t.index ["machine_id"], name: "index_weighings_on_machine_id"
+  end
+
   add_foreign_key "categories", "menus"
   add_foreign_key "container_ingredients", "containers"
   add_foreign_key "container_ingredients", "foods"
@@ -349,4 +359,6 @@ ActiveRecord::Schema.define(version: 2021_08_11_151846) do
   add_foreign_key "unit_system_items", "unit_systems"
   add_foreign_key "unit_system_items", "units"
   add_foreign_key "units", "languages"
+  add_foreign_key "weighings", "foods"
+  add_foreign_key "weighings", "machines"
 end

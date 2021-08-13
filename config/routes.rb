@@ -5,7 +5,6 @@
 Rails.application.routes.draw do
 
   resources :food_tags
-  resources :machines
   get 'search/index'
   resources :listings
   resources :ingredients
@@ -23,11 +22,14 @@ Rails.application.routes.draw do
   devise_for :users
 
   post 'change_food_tag', to: 'foods#change_tag'
-
-  get 'sim/get_state'
-  get 'sim/get_current_user'
-  get 'sim/pull_machine'
-  post 'sim/push_machine'
+  
+  resources :machines do
+    get 'get_state', to: 'sim#get_state'
+    get 'get_current_user', to: 'sim#get_current_user'
+    get 'pull_machine', to: 'sim#pull_machine'
+    post 'push_machine', to: 'sim#push_machine'
+    post 'push_modifications', to: 'sim#push_modifications'
+  end
 
   get 'ecological', to: 'home#ecological'
   get 'home', to: 'home#index'
