@@ -28,6 +28,15 @@ td:last-child {
   text-align: center;
 }
 
+.containers {
+  height: 48px;
+}
+
+.containers div div:last-child {
+  text-align: center;
+  transform: translate(0px, -30px);
+}
+
 table { border-collapse: separate; border-spacing: 0; }
 tr:first-child td:first-child { border-top-left-radius: 5px; }
 tr:first-child td:last-child { border-top-right-radius: 5px; }
@@ -61,10 +70,24 @@ tr:last-child td:last-child { border-bottom-right-radius: 5px; }
     <% low_foods.each do |low_food| %>
       <tr>
         <td>
-          <%= image_tag "JarIconPetit.png", size: "32x32" %>
-          <%= image_tag "JarIconPetit.png", size: "32x32" %>
-          <%= image_tag "JarIconPetit.png", size: "32x32" %>
-          16, 32, 24
+          <div class="containers" style="display: flex;">
+            <div>
+              <div><%= image_tag "JarIconGrand.png", size: "48x48" %></div>
+              <div>16</div>
+            </div>
+            <div>
+              <div><%= image_tag "JarIconMoyen.png", size: "48x48" %></div>
+              <div>24</div>
+            </div>
+            <div>
+              <div><%= image_tag "JarIconPetit.png", size: "48x48" %></div>
+              <div>48</div>
+            </div>
+            <div>
+              <div><%= image_tag "JarIconÉpice.png", size: "48x48" %></div>
+              <div>48</div>
+            </div>
+          </div>
         </td>
         <td>
           <%= low_food.name %> &nbsp &nbsp - &nbsp &nbsp
@@ -75,30 +98,3 @@ tr:last-child td:last-child { border-bottom-right-radius: 5px; }
     <% end %>
   </tbody>
 </table>
-
-<br><br>
-
-<ul class="list-group">
-  <li class="list-group-item">
-    <%= form_with(model: [machine, GroceryItem.new], local: true) do |form| %>
-      <%= form.text_field :description %>
-      <%= form.submit "Ajouter un item" %>
-    <% end %>
-  </li>
-  <% machine.grocery_items.each do |item| %>
-    <li class="list-group-item">
-      <%= item.description %>
-    </li>
-  <% end %>
-  <% low_foods.each do |low_food| %>
-    <li class="list-group-item">
-      <%= low_food.name %> &nbsp &nbsp - &nbsp &nbsp
-      <%= pretty_volume_and_weight(Ingredient.food_grams(low_food.food, low_food.full_weight - low_food.current_weight)) %> &nbsp &nbsp - &nbsp &nbsp
-      <%= image_tag "JarIconPetit.png", size: "32x32" %>
-      <%= image_tag "JarIconPetit.png", size: "32x32" %>
-      <%= image_tag "JarIconPetit.png", size: "32x32" %>
-      16, 32, 24
-    </li>
-  <% end %>
-
-</ul>
