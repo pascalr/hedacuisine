@@ -59,7 +59,7 @@ class MachinesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_machine
-      @machine = Machine.find(params[:id])
+      @machine = current_user.machines.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

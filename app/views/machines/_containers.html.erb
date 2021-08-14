@@ -1,5 +1,5 @@
 <h3>Add a container</h3>
-<%= form_with(model: Container.new, local: true) do |form| %>
+<%= form_with(model: [@machine, Container.new], local: true) do |form| %>
   <%= form.label :jar_id %>
   <%= form.text_field :jar_id %>
   <%= form.hidden_field :machine_id, value: machine.id %>
@@ -22,16 +22,16 @@
 
   <tbody>
     <% machine.containers.each do |container| %>
-      <%= form_with(model: container, local: true) do |form| %>
+      <%= form_with(model: [@machine, container], local: true) do |form| %>
         <tr>
-          <td><%= link_to container.jar_id, container %></td>
+          <td><%= link_to container.jar_id, [@machine, container] %></td>
           <td><%= form.collection_select :container_format_id, ContainerFormat.all, :id, :name, include_blank: true %></td>
           <td><%= container.ingredients.map(&:food).map(&:name).join(", ") %></td>
           <td></td>
           <td><%= container.pretty_position %></td>
           <td><%= form.submit "Mettre à jour" %></td>
-          <td><%= link_to 'Show', container%></td>
-          <td><%= link_to 'Destroy', container, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to 'Show', [@machine, container] %></td>
+          <td><%= link_to 'Destroy', [@machine, container], method: :delete, data: { confirm: 'Are you sure?' } %></td>
         </tr>
       <% end %>
     <% end %>

@@ -31,6 +31,9 @@ Rails.application.routes.draw do
     get 'pull_machine', to: 'sim#pull_machine'
     post 'push_machine', to: 'sim#push_machine'
     post 'push_modifications', to: 'sim#push_modifications'
+  
+    resources :containers, only: [:create, :update, :destroy, :show]
+    resources :machine_foods, only: [:create, :update, :destroy]
   end
 
   get 'ecological', to: 'home#ecological'
@@ -41,8 +44,6 @@ Rails.application.routes.draw do
   resources :items, only: [:destroy]
   resources :menus
   resources :categories, only: [:create, :update, :destroy]
-  resources :containers, only: [:create, :update, :destroy, :show]
-  resources :machine_foods, only: [:create, :update, :destroy]
   post 'menus/add_or_create_recipe'
 
   post 'users/toggle_favorite_menu'

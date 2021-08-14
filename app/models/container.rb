@@ -19,6 +19,7 @@ class Container < ApplicationRecord
   end
 
   def pretty_position
+    return nil if pos_x.nil? or pos_y.nil? or pos_z.nil?
     '(%.2f, %.2f, %.2f)' % [pos_x, pos_y, pos_z]
   end
 
