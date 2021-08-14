@@ -7,6 +7,18 @@ module IngredientsHelper
     false
   end
 
+  def pretty_volume_and_weight(ing)
+    return nil if ing.weight.nil?
+    "#{pretty_volume(ing)} (#{pretty_weight(ing.weight)})"
+  end
+
+  def pretty_weight(weight)
+    #return "%.2f kg" % [weight/1000.0] if weight >= 1000.0
+    #"%.1f g" % [weight]
+    return sprintf("%g kg", (weight/1000.0).round(2)) if weight >= 1000.0
+    sprintf("%.1f g", weight.round(1))
+  end
+
   def pretty_volume(ing)
     return "" if ing.weight.blank?
     return "#{pretty_fraction(ing.volume/1000.0)} #{translated("L")}" if ing.food.is_liquid? && ing.volume >= 1000.0

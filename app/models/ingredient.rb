@@ -9,6 +9,30 @@ class Ingredient < ApplicationRecord
 
   validates_presence_of :nb
 
+  def self.parse_quantity_and_unit_given_food(raw, food)
+    qty = nil
+    #qty_s = raw.match(/^\d+([,.\/]\d+)?/)
+    qty_s = raw[/^\d+([,.\/]\d+)?/]
+    raise "Invalid quantity #{qty_s}" if qty_s.blank?
+    #qty_s = raw[/^\d+[,./]\d+/]
+    if qty_s.include?("/")
+      qty = qty_s.to_r.to_f
+    else
+      qty = qty_s.to_f
+    end
+    unit_s = raw[qty_s.length..-1].strip
+    unit = Unit.find_by(name: unit_s)
+    raise "Invalid unit #{unit_s}" unless unit
+    self.build(qty, unit, food)
+  end
+
+  def self.food_grams(food, grams)
+    i = Ingredient.new
+    i.food = food
+    i.weight = grams
+    return i
+  end
+
   def self.weight_of(value, unit, food)
     raise "Missing food (#{food.name}) unit weight." if unit.nil? && food.unit_weight.nil?
     return value * food.unit_weight unless unit

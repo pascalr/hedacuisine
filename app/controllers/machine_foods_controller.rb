@@ -22,12 +22,12 @@ class MachineFoodsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_machine_food
       @machine_food = MachineFood.find(params[:id])
-      raise "Invalid user exception" unless @machine_food.menu.user_id == current_user.id
+      # FIXME: Ensure machine belongs to current user...
     end
 
     # Only allow a list of trusted parameters through.
     def machine_food_params
       # FIXME: Ensure machine belongs to current user...
-      params.require(:machine_food).permit(:food_id, :machine_id, :current_weight, :grocery_threshold, :full_weight)
+      params.require(:machine_food).permit(:food_id, :machine_id, :current_weight, :grocery_threshold, :full_weight, :manual_grocery_threshold, :manual_full_weight)
     end
 end

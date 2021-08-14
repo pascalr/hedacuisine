@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_13_192531) do
+ActiveRecord::Schema.define(version: 2021_08_14_144146) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -177,6 +177,8 @@ ActiveRecord::Schema.define(version: 2021_08_13_192531) do
     t.datetime "updated_at", precision: 6, null: false
     t.float "full_weight"
     t.float "current_weight"
+    t.string "manual_grocery_threshold"
+    t.string "manual_full_weight"
     t.index ["food_id"], name: "index_machine_foods_on_food_id"
     t.index ["machine_id"], name: "index_machine_foods_on_machine_id"
   end

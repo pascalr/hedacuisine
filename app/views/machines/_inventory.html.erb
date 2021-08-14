@@ -18,13 +18,9 @@
             <%= image_tag "JarIcon#{container.format.name}.png", size: "24x24" %>
           <% end %>
         </td>
-        <td>
-          <% unless machine_food.current_weight.nil? %>
-            <%= machine_food.current_weight %> mL (<%= machine_food.current_weight %> g)
-          <% end %>
-        </td>
-        <td><%= machine_food.grocery_threshold %></td>
-        <td><%= machine_food.full_weight %></td>
+        <td><%= pretty_volume_and_weight(Ingredient.food_grams(machine_food.food, machine_food.current_weight)) %></td>
+        <td><%= pretty_volume_and_weight(Ingredient.food_grams(machine_food.food, machine_food.grocery_threshold)) %></td>
+        <td><%= pretty_volume_and_weight(Ingredient.food_grams(machine_food.food, machine_food.full_weight)) %></td>
       </tr>
     <% end %>
   </tbody>
