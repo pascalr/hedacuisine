@@ -5,6 +5,8 @@ class MachineFood < ApplicationRecord
 
   before_save :set_grocery_threshold_from_manual
   before_save :set_full_weight_from_manual
+
+  delegate :name, to: :food
   
   def set_from_dict(dict)
     self.grocery_threshold = dict["grocery_threshold"]

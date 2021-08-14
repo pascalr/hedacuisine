@@ -34,6 +34,10 @@ Rails.application.routes.draw do
   
     resources :containers, only: [:create, :update, :destroy, :show]
     resources :machine_foods, only: [:create, :update, :destroy]
+    resources :grocery_items, only: [:create, :update, :destroy]
+
+    delete 'clear_grocery_items', to: 'grocery_items#clear', as: 'clear_grocery_items'
+
   end
 
   get 'ecological', to: 'home#ecological'

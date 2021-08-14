@@ -1,0 +1,104 @@
+<%= link_to "print", "TODO_CLEAR" %> | 
+<%= link_to "clear", machine_clear_grocery_items_path(machine), method: :delete, data: {confirm: "Are you sure?"} %>
+
+<h1 style="font-size: 1.5rem; margin-top: 1.5rem;">Grocery list</h1>
+
+<% low_foods = machine.machine_foods.where("current_weight < grocery_threshold").to_a.sort_by {|f| f.food.name} %>
+
+<style>
+table {
+  width: 100%;
+  border: 1px solid #eaeaea;
+  border-radius: 5px;
+}
+td {
+  border: 1px solid #eaeaea;
+  padding: 0.75rem 1.25rem;
+}
+td:first-child {
+  width: 150px;
+}
+
+td:nth-child(2) {
+  border-right: 0;
+}
+
+td:last-child {
+  border-left: 0;
+  text-align: center;
+}
+
+table { border-collapse: separate; border-spacing: 0; }
+tr:first-child td:first-child { border-top-left-radius: 5px; }
+tr:first-child td:last-child { border-top-right-radius: 5px; }
+tr:last-child td:first-child { border-bottom-left-radius: 5px; }
+tr:last-child td:last-child { border-bottom-right-radius: 5px; }
+</style>
+
+<table>
+  <tbody>
+    <tr>
+      <td></td>
+      <td>
+        <%= form_with(model: [machine, GroceryItem.new], local: true) do |form| %>
+          <%= form.text_field :description %>
+          <%= form.submit "Ajouter un item" %>
+        <% end %>
+      </td>
+      <td></td>
+    </tr>
+    <% machine.grocery_items.each do |item| %>
+      <tr>
+        <td></td>
+        <td>
+          <%= item.description %>
+        </td>
+        <td>
+          <%= link_to "X", [machine, item], method: :delete, data: {confirm: 'Are you sure?'} %>
+        </td>
+      </tr>
+    <% end %>
+    <% low_foods.each do |low_food| %>
+      <tr>
+        <td>
+          <%= image_tag "JarIconPetit.png", size: "32x32" %>
+          <%= image_tag "JarIconPetit.png", size: "32x32" %>
+          <%= image_tag "JarIconPetit.png", size: "32x32" %>
+          16, 32, 24
+        </td>
+        <td>
+          <%= low_food.name %> &nbsp &nbsp - &nbsp &nbsp
+          <%= pretty_volume_and_weight(Ingredient.food_grams(low_food.food, low_food.full_weight - low_food.current_weight)) %>
+        </td>
+        <td></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br><br>
+
+<ul class="list-group">
+  <li class="list-group-item">
+    <%= form_with(model: [machine, GroceryItem.new], local: true) do |form| %>
+      <%= form.text_field :description %>
+      <%= form.submit "Ajouter un item" %>
+    <% end %>
+  </li>
+  <% machine.grocery_items.each do |item| %>
+    <li class="list-group-item">
+      <%= item.description %>
+    </li>
+  <% end %>
+  <% low_foods.each do |low_food| %>
+    <li class="list-group-item">
+      <%= low_food.name %> &nbsp &nbsp - &nbsp &nbsp
+      <%= pretty_volume_and_weight(Ingredient.food_grams(low_food.food, low_food.full_weight - low_food.current_weight)) %> &nbsp &nbsp - &nbsp &nbsp
+      <%= image_tag "JarIconPetit.png", size: "32x32" %>
+      <%= image_tag "JarIconPetit.png", size: "32x32" %>
+      <%= image_tag "JarIconPetit.png", size: "32x32" %>
+      16, 32, 24
+    </li>
+  <% end %>
+
+</ul>

@@ -1,18 +1,21 @@
 <ul class="nav nav-tabs">
   <span class="nav-item navbar-brand"><b><%= @machine.name %></b></span>
   <%= link_to_active_tab "Inventaire", 1, class: "nav-item nav-link" %>
-  <%= link_to_active_tab "MachineFoods", 2, class: "nav-item nav-link" %>
-  <%= link_to_active_tab "Contenants", 3, class: "nav-item nav-link" %>
-  <%= link_to_active_tab "Format de contenants", 4, class: "nav-item nav-link" %>
+  <%= link_to_active_tab "Grocery list", 2, class: "nav-item nav-link" %>
+  <%= link_to_active_tab "MachineFoods", 3, class: "nav-item nav-link" %>
+  <%= link_to_active_tab "Contenants", 4, class: "nav-item nav-link" %>
+  <%= link_to_active_tab "Format de contenants", 5, class: "nav-item nav-link" %>
 </ul>
 
 <% if params[:active_tab].nil? or params[:active_tab].to_i == 1 %>
   <%= render partial: "inventory", locals: {machine: @machine} %>
 <% elsif params[:active_tab].to_i == 2 %>
-  <%= render partial: "machine_foods", locals: {machine: @machine} %>
+  <%= render partial: "grocery_list", locals: {machine: @machine} %>
 <% elsif params[:active_tab].to_i == 3 %>
-  <%= render partial: "containers", locals: {machine: @machine} %>
+  <%= render partial: "machine_foods", locals: {machine: @machine} %>
 <% elsif params[:active_tab].to_i == 4 %>
+  <%= render partial: "containers", locals: {machine: @machine} %>
+<% elsif params[:active_tab].to_i == 5 %>
 <% end %>
 
 <br>
