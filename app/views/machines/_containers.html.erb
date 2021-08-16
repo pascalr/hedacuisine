@@ -1,5 +1,6 @@
 <% @containers = machine.containers.includes(:container_ingredients).order(:jar_id) %>
 <% @container_formats = ContainerFormat.all %>
+<% @foods = Food.where(in_pantry: true).all %>
 
 <h3>Add a container</h3>
 <%= form_with(model: [@machine, Container.new], local: true) do |form| %>
@@ -16,6 +17,7 @@
     <tr>
       <th>#</th>
       <th>Jar format</th>
+      <th>Food</th>
       <th>Content</th>
       <th>Filled</th>
       <th>Position</th>
@@ -29,6 +31,8 @@
         <tr>
           <td><%= link_to container.jar_id, [@machine, container] %></td>
           <td><%= form.collection_select :container_format_id, @container_formats, :id, :name, include_blank: true %></td>
+          <td><%= form.collection_select :food_id, @foods, :id, :name, include_blank: true %></td>
+          <td><%= container.food.name if container.food %></td>
           <td><%= container.ingredients.map(&:food).map(&:name).join(", ") %></td>
           <td></td>
           <td><%= container.pretty_position %></td>

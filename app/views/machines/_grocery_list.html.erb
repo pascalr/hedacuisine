@@ -1,5 +1,5 @@
 <% @machine_foods = machine.machine_foods.includes(:container_quantities, :food).order('foods.name') %>
-<% @containers = machine.containers %>
+<% @containers = machine.containers.left_outer_joins(:container_ingredients).where(container_ingredients: { id: nil }).where.not(food_id: nil) %>
 
 <%= link_to "print", "TODO_CLEAR" %> | 
 <%= link_to "clear", machine_clear_grocery_items_path(machine), method: :delete, data: {confirm: "Are you sure?"} %>
@@ -70,33 +70,20 @@ tr:last-child td:last-child { border-bottom-right-radius: 5px; }
         </td>
       </tr>
     <% end %>
-    <% @machine_foods.each do |machine_food| %>
+    <% @containers.group_by(&:food).each do |food, containers| %>
       <tr>
         <td>
-          <% machine_food.container_quantities.each do |container_quantity| %>
-            <%# current_containers = @containers.select {|c| c.container_quantity} %>
-          <% end %>
           <div class="containers" style="display: flex;">
-            <div>
-              <div><%= image_tag "JarIconGrand.png", size: "48x48" %></div>
-              <div>16</div>
-            </div>
-            <div>
-              <div><%= image_tag "JarIconMoyen.png", size: "48x48" %></div>
-              <div>24</div>
-            </div>
-            <div>
-              <div><%= image_tag "JarIconPetit.png", size: "48x48" %></div>
-              <div>48</div>
-            </div>
-            <div>
-              <div><%= image_tag "JarIconÉpice.png", size: "48x48" %></div>
-              <div>48</div>
-            </div>
+            <% containers.each do |container| %>
+              <div>
+                <div><%= image_tag "JarIcon#{container.container_format.name}.png", size: "48x48" %></div>
+                <div><%= container.jar_id %></div>
+              </div>
+            <% end %>
           </div>
         </td>
         <td>
-          <%= machine_food.name %>
+          <%= food.name %>
           <%# pretty_volume_and_weight(Ingredient.food_grams(low_food.food, low_food.full_weight - low_food.current_weight)) %>
         </td>
         <td></td>

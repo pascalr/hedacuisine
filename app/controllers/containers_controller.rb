@@ -35,6 +35,6 @@ class ContainersController < ApplicationController
     end
 
     def container_params
-      params.require(:container).permit(:container_format_id, :jar_id)
+      params.require(:container).permit(:container_format_id, :jar_id, :food_id)
     end
 end

@@ -2,6 +2,8 @@ class Container < ApplicationRecord
   belongs_to :container_format
   belongs_to :machine
 
+  belongs_to :food, optional: true
+
   validates :jar_id, uniqueness: true
 
   has_many :container_ingredients

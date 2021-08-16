@@ -18,7 +18,9 @@ class Food < ApplicationRecord
   has_many :weighings
 
   has_many :container_ingredients
-  has_many :containers, through: :container_ingredients
+  has_many :actual_containers, through: :container_ingredients
+
+  has_many :containers
 
   before_save do
     name.downcase!

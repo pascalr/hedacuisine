@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_16_145521) do
+ActiveRecord::Schema.define(version: 2021_08_16_182803) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 2021_08_16_145521) do
     t.float "pos_x"
     t.float "pos_y"
     t.float "pos_z"
+    t.integer "food_id"
     t.index ["container_format_id"], name: "index_containers_on_container_format_id"
     t.index ["machine_id"], name: "index_containers_on_machine_id"
   end
