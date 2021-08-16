@@ -29,6 +29,6 @@ class MachineFoodsController < ApplicationController
     end
 
     def machine_food_params
-      params.require(:machine_food).permit(:food_id, :current_weight, :grocery_threshold, :full_weight, :manual_grocery_threshold, :manual_full_weight, container_quantities_attributes: [:id, :full_qty, :grocery_qty, :container_format_id])
+      params.require(:machine_food).permit(:food_id, :current_weight, container_quantities_attributes: [:id, :full_qty, :grocery_qty, :container_format_id])
     end
 end

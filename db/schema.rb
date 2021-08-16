@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_16_140212) do
+ActiveRecord::Schema.define(version: 2021_08_16_145521) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,15 +48,12 @@ ActiveRecord::Schema.define(version: 2021_08_16_140212) do
   end
 
   create_table "container_quantities", force: :cascade do |t|
-    t.string "qty"
     t.bigint "container_format_id", null: false
-    t.integer "containable_id"
-    t.string "containable_type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "grocery_qty"
-    t.integer "full_qty"
     t.integer "machine_food_id"
+    t.integer "full_qty_quarters"
+    t.integer "grocery_qty_quarters"
     t.index ["container_format_id"], name: "index_container_quantities_on_container_format_id"
   end
 

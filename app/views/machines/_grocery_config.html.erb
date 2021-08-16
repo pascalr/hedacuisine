@@ -10,6 +10,7 @@
     <tr>
       <th>Food</th>
       <th>Full</th>
+      <th>Grocery</th>
       <th colspan="2"></th>
     </tr>
   </thead>
@@ -19,19 +20,17 @@
   <tbody>
     <% machine.machine_foods.includes(:container_quantities, :food, container_quantities: :container_format).each do |machine_food| %>
       <%= form_with(model: [@machine, machine_food], local: true) do |form| %>
-
-        <% qties = machine_food.container_quantities.to_a %>
-        <% @container_formats.each do |f| %>
-          <% unless machine_food.container_quantities.to_a.find {|c| c.container_format_id == f.id } %>
-            <% machine_food.container_quantities.build(container_format: f) %>
-          <% end %>
-        <% end %>
         <tr>
           <td style="vertical-align: middle;"><%= link_to machine_food.food.name.capitalize, machine_food.food %></td>
           <td>
+            <% machine_food.container_quantities.each do |container_quantity| %>
+              <span style="font-size: 1.5rem; vertical-align: middle;"><%= container_quantity.full_qty %></span>
+              <%= image_tag "JarIcon#{container_quantity.container_format.name}.png", size: "48x48" %>
+            <% end %>
+          </td>
+          <td>
             <%= form.fields_for :container_quantities do |quantities_form| %>
-              <%= quantities_form.number_field :full_qty, size: 2, step: 0.25 %>
-              <%= quantities_form.hidden_field :container_format_id %>
+              <%= quantities_form.number_field :grocery_qty, size: 2, step: 0.25 %>
               <%= image_tag "JarIcon#{quantities_form.object.container_format.name}.png", size: "48x48" %>
             <% end %>
           </td>

@@ -4,7 +4,7 @@
   <%= link_to_active_tab "Grocery list", 2, class: "nav-item nav-link" %>
   <%= link_to_active_tab "MachineFoods", 3, class: "nav-item nav-link" %>
   <%= link_to_active_tab "Contenants", 4, class: "nav-item nav-link" %>
-  <%= link_to_active_tab "Format de contenants", 5, class: "nav-item nav-link" %>
+  <%= link_to_active_tab "Grocery config", 5, class: "nav-item nav-link" %>
 </ul>
 
 <% if params[:active_tab].nil? or params[:active_tab].to_i == 1 %>
@@ -16,6 +16,7 @@
 <% elsif params[:active_tab].to_i == 4 %>
   <%= render partial: "containers", locals: {machine: @machine} %>
 <% elsif params[:active_tab].to_i == 5 %>
+  <%= render partial: "grocery_config", locals: {machine: @machine} %>
 <% end %>
 
 <br>
