@@ -1,9 +1,35 @@
+<% @machine_foods = machine.machine_foods.includes(:container_quantities, :food, container_quantities: :container_format)%>
+<% @container_formats = ContainerFormat.where.not(icon: [nil, '']).order(volume: :desc) %>
+
 <h3>Add a food</h3>
 <%= form_with(model: [@machine, MachineFood.new], local: true) do |form| %>
   <%= form.label :food_id %>
   <%= form.collection_select :food_id, Food.where(in_pantry: true), :id, :name %>
   <%= form.submit %>
 <% end %>
+
+<h3>Foods (<%= @machine_foods.size %>)</h3>
+
+<div style="display: flex; margin-bottom: 5px; justify-content: space-between;">
+  <div>
+    <b><span style="display: inline-block; font-size: 1.5rem; transform: translate(0px, 8px);">Assigned:</span></b>
+    <% @container_formats.each do |container_format| %>
+      <span style="display: inline-block; font-size: 1.5rem; transform: translate(0px, 8px);">
+        <%= container_format.container_quantities.where(id: @machine_foods.map(&:id)).count %>
+      </span>
+      <%= image_tag "JarIcon#{container_format.name}.png", size: "48x48" %>
+    <% end %>
+  </div>
+  <div>
+    <b><span style="display: inline-block; font-size: 1.5rem; transform: translate(0px, 8px);">Available:</span></b>
+    <% @container_formats.each do |container_format| %>
+      <span style="display: inline-block; font-size: 1.5rem; transform: translate(0px, 8px);">
+        <%= @machine.containers.where(container_format_id: container_format.id).count %>
+      </span>
+      <%= image_tag "JarIcon#{container_format.name}.png", size: "48x48" %>
+    <% end %>
+  </div>
+</div>
 
 <table class="table table-striped table-sm">
   <thead class="thead-dark">
@@ -14,10 +40,8 @@
     </tr>
   </thead>
 
-  <% @container_formats = ContainerFormat.where.not(icon: [nil, '']).order(volume: :desc) %>
-
   <tbody>
-    <% machine.machine_foods.includes(:container_quantities, :food, container_quantities: :container_format).each do |machine_food| %>
+    <% @machine_foods.each do |machine_food| %>
       <%= form_with(model: [@machine, machine_food], local: true) do |form| %>
 
         <% qties = machine_food.container_quantities.to_a %>
