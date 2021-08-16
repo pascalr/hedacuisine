@@ -5,7 +5,7 @@ class MachineFood < ApplicationRecord
 
   before_save :set_grocery_threshold_from_manual
   before_save :set_full_weight_from_manual
-  
+
   has_many :container_ingredients
 
   has_many :container_quantities, dependent: :delete_all
@@ -34,6 +34,28 @@ class MachineFood < ApplicationRecord
   def set_full_weight_from_manual
     unless manual_full_weight.blank?
       self.full_weight = Ingredient.parse_quantity_and_unit_given_food(manual_full_weight, food).weight
+    end
+  end
+
+  def calc_grocery_threshold
+    container_quantities.map {|c| c.grocery_qty * c.container_format.volume}.inject(&:+) * food.density
+  end
+
+  def update_grocery_threshold
+    threshold = calc_grocery_threshold
+    if grocery_threshold != threshold
+      self.update!(grocery_threshold: threshold)
+    end
+  end
+  
+  def calc_full_weight
+    container_quantities.map {|c| c.full_qty * c.container_format.volume}.inject(&:+) * food.density
+  end
+  
+  def update_full_weight
+    full = calc_full_weight
+    if full_weight != full
+      self.update!(full_weight: full)
     end
   end
 

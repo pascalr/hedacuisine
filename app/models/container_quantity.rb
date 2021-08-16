@@ -2,6 +2,8 @@ class ContainerQuantity < ApplicationRecord
   belongs_to :container_format
   belongs_to :machine_food
 
+  after_save :update_grocery_threshold, :update_full_weight
+
   #belongs_to :containable, polymorphic: true
 
   def full_qty=(val)
@@ -22,5 +24,13 @@ class ContainerQuantity < ApplicationRecord
   end
   def grocery_qty=(val)
     self.grocery_qty_quarters = (val.to_f*4).to_i
+  end
+
+  def update_grocery_threshold
+    machine_food.update_grocery_threshold
+  end
+  
+  def update_full_weight
+    machine_food.update_full_weight
   end
 end

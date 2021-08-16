@@ -1,3 +1,4 @@
+<% machine.generate_grocery_list %>
 <% @machine_foods = machine.machine_foods.includes(:container_quantities, :food).order('foods.name') %>
 <% @containers = machine.containers.left_outer_joins(:container_ingredients).where(container_ingredients: { id: nil }).where.not(food_id: nil) %>
 
