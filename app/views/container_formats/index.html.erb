@@ -6,6 +6,7 @@
   <thead class="thead-dark">
     <tr>
       <th>Name</th>
+      <th>Icon</th>
       <th>Volume</th>
       <th>Diameter</th>
       <th>Height with lid</th>
@@ -23,6 +24,7 @@
       <%= form_with(model: container_format, local: true) do |form| %>
         <tr>
           <td><%= form.text_field :name, size: 15 %></td>
+          <td><%= form.text_field :icon %></td>
           <td><%= form.number_field :volume, precision: 2, step: 0.1, size: 6 %></td>
           <td><%= form.number_field :diameter, precision: 2, step: 0.1, size: 6 %></td>
           <td><%= form.number_field :height_with_lid, precision: 2, step: 0.1, size: 6 %></td>

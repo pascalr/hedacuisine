@@ -9,25 +9,40 @@
   <thead class="thead-dark">
     <tr>
       <th>Food</th>
-      <th>Grocery threshold override</th>
-      <th>Grocery threshold</th>
-      <th>Full weight override</th>
-      <th>Full weight</th>
+      <th>Full</th>
+      <th>Grocery</th>
       <th colspan="2"></th>
     </tr>
   </thead>
 
+  <% @container_formats = ContainerFormat.where.not(icon: [nil, '']).order(volume: :desc) %>
+
   <tbody>
     <% machine.machine_foods.each do |machine_food| %>
+      <% @container_formats.each do |f| %>
+        <% unless machine_food.container_quantities.to_a.find {|c| c.container_format_id == f.id } %>
+          <% machine_food.container_quantities.build(container_format: f) %>
+        <% end %>
+      <% end %>
       <%= form_with(model: [@machine, machine_food], local: true) do |form| %>
         <tr>
-          <td><%= link_to machine_food.food.name, machine_food.food %></td>
-          <td><%= form.text_field :manual_grocery_threshold %></td>
-          <td><%= machine_food.grocery_threshold %></td>
-          <td><%= form.text_field :manual_full_weight %></td>
-          <td><%= pretty_volume_and_weight(Ingredient.food_grams(machine_food.food, machine_food.full_weight)) %></td>
-          <td><%= form.submit "Mettre à jour" %></td>
-          <td><%= link_to 'Destroy', [@machine, machine_food], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td style="vertical-align: middle;"><%= link_to machine_food.food.name.capitalize, machine_food.food %></td>
+          <td>
+            <%= form.fields_for :container_quantities do |quantities_form| %>
+              <%= quantities_form.number_field :full_qty, size: 2, step: 0.25 %>
+              <%= quantities_form.hidden_field :container_format_id %>
+              <%= image_tag "JarIcon#{quantities_form.object.container_format.name}.png", size: "48x48" %>
+            <% end %>
+          </td>
+          <td>
+            <% format = @container_formats.last %>
+            <% unless format.icon.blank? %>
+              <%= form.number_field :tmp, size: 2, step: 0.25 %>
+              <%= image_tag "JarIcon#{format.name}.png", size: "48x48" %>
+            <% end %>
+          </td>
+          <td style="vertical-align: middle;"><%= form.submit "Mettre à jour" %></td>
+          <td style="vertical-align: middle;"><%= link_to 'Destroy', [@machine, machine_food], method: :delete, data: { confirm: 'Are you sure?' } %></td>
         </tr>
       <% end %>
     <% end %>

@@ -90,8 +90,8 @@ tr:last-child td:last-child { border-bottom-right-radius: 5px; }
           </div>
         </td>
         <td>
-          <%= low_food.name %> &nbsp &nbsp - &nbsp &nbsp
-          <%= pretty_volume_and_weight(Ingredient.food_grams(low_food.food, low_food.full_weight - low_food.current_weight)) %>
+          <%= low_food.name %>
+          <%# pretty_volume_and_weight(Ingredient.food_grams(low_food.food, low_food.full_weight - low_food.current_weight)) %>
         </td>
         <td></td>
       </tr>

@@ -6,6 +6,13 @@ class MachineFood < ApplicationRecord
   before_save :set_grocery_threshold_from_manual
   before_save :set_full_weight_from_manual
 
+  has_many :container_quantities
+  accepts_nested_attributes_for :container_quantities, reject_if: lambda {|attributes| attributes['full_qty'].blank?}
+
+  #has_many :grocery_container_quantities, -> { where attachable_type: "ContainerQuantity" }, foreign_key: :containable_id, class_name: "ContainerQuantity", dependent: :destroy
+  #has_many :full_container_quantities, -> { where attachable_type: "ContainerQuantity" }, foreign_key: :containable_id, class_name: "ContainerQuantity", dependent: :destroy
+
+
   delegate :name, to: :food
   
   def set_from_dict(dict)
