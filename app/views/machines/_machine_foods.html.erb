@@ -15,7 +15,7 @@
     <b><span style="display: inline-block; font-size: 1.5rem; transform: translate(0px, 8px);">Assigned:</span></b>
     <% @container_formats.each do |container_format| %>
       <span style="display: inline-block; font-size: 1.5rem; transform: translate(0px, 8px);">
-        <%= container_format.container_quantities.where(id: @machine_foods.map(&:id)).count %>
+        <%= (container_format.container_quantities.where(id: @machine_foods.map(&:id)).sum(:full_qty_quarters) / 4.0).to_i %>
       </span>
       <%= image_tag "JarIcon#{container_format.name}.png", size: "48x48" %>
     <% end %>

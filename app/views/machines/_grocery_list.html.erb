@@ -1,6 +1,7 @@
 <% machine.generate_grocery_list %>
 <% @machine_foods = machine.machine_foods.includes(:container_quantities, :food).order('foods.name') %>
 <% @containers = machine.containers.left_outer_joins(:container_ingredients).where(container_ingredients: { id: nil }).where.not(food_id: nil) %>
+<% @empty_containers = machine.containers.left_outer_joins(:container_ingredients).where(container_ingredients: { id: nil }).where(food_id: nil) %>
 
 <%= link_to "print", "TODO_CLEAR" %> | 
 <%= link_to "clear", machine_clear_grocery_items_path(machine), method: :delete, data: {confirm: "Are you sure?"} %>
@@ -64,7 +65,7 @@ tr:last-child td:last-child { border-bottom-right-radius: 5px; }
 <h3>Liste automatique</h3>
 <table style="width: 100%;">
   <tbody>
-    <% @containers.group_by(&:food).each do |food, containers| %>
+    <% @containers.group_by(&:food).sort_by {|f,cs| f.name}.each do |food, containers| %>
       <tr>
         <td style="width: 220px;">
           <div class="containers" style="display: flex;">
@@ -86,9 +87,22 @@ tr:last-child td:last-child { border-bottom-right-radius: 5px; }
 </table>
 
 <h3>Liste manuelle</h3>
-
-<%= form_with(model: [machine, GroceryItem.new], local: true) do |form| %>
-  <%= form.label :jar_id %><br>
-  <%= form.label :food_id %><br>
-  <%= form.submit "Ajouter un item" %>
-<% end %>
+<table style="width: 100%;">
+  <tbody>
+    <% @empty_containers.order(:jar_id).each do |container| %>
+      <tr>
+        <td style="width: 220px;">
+          <div class="containers" style="display: flex;">
+            <div>
+              <div><%= image_tag "JarIcon#{container.container_format.name}.png", size: "48x48" %></div>
+              <div><%= container.jar_id %></div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <%# pretty_volume_and_weight(Ingredient.food_grams(low_food.food, low_food.full_weight - low_food.current_weight)) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
