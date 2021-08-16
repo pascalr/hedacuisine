@@ -5,6 +5,8 @@ class MachineFood < ApplicationRecord
 
   before_save :set_grocery_threshold_from_manual
   before_save :set_full_weight_from_manual
+  
+  has_many :container_ingredients
 
   has_many :container_quantities, dependent: :delete_all
   #accepts_nested_attributes_for :container_quantities, reject_if: :all_blank

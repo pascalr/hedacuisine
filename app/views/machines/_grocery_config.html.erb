@@ -24,7 +24,7 @@
           <td style="vertical-align: middle;"><%= link_to machine_food.food.name.capitalize, machine_food.food %></td>
           <td>
             <% machine_food.container_quantities.each do |container_quantity| %>
-              <span style="font-size: 1.5rem; vertical-align: middle;"><%= container_quantity.full_qty %></span>
+              <span style="font-size: 1.5rem; vertical-align: middle;"><%= pretty_number container_quantity.full_qty %></span>
               <%= image_tag "JarIcon#{container_quantity.container_format.name}.png", size: "48x48" %>
             <% end %>
           </td>

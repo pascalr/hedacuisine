@@ -12,11 +12,15 @@ module IngredientsHelper
     "#{pretty_volume(ing)} (#{pretty_weight(ing.weight)})"
   end
 
+  def pretty_number(nb, decimals=2)
+    sprintf("%g", nb.round(decimals))
+  end
+
   def pretty_weight(weight)
     #return "%.2f kg" % [weight/1000.0] if weight >= 1000.0
     #"%.1f g" % [weight]
     return sprintf("%g kg", (weight/1000.0).round(2)) if weight >= 1000.0
-    sprintf("%.1f g", weight.round(1))
+    sprintf("%g g", weight.round(1))
   end
 
   def pretty_volume(ing)

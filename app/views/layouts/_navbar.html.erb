@@ -25,7 +25,7 @@
             <%= t("heda.menu.menus") %>
           </a>
           <div class="dropdown-menu pl-2" aria-labelledby="dropdownMenuButton" style="width: 13em;">
-            <% Listing.order(:order).each do |listing| %>
+            <% Listing.includes(:menus).order(:order).each do |listing| %>
               <div><%= link_to translated(listing.name).capitalize, listing, style: "size: 1.3em; color: gray;" %></div>
               <div class="ml-3">
                 <% listing.menus.each do |m| %>
