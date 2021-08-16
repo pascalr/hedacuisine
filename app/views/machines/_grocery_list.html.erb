@@ -10,25 +10,13 @@
 
 <style>
 table {
-  width: 100%;
+  /*width: 100%;*/
   border: 1px solid #eaeaea;
   border-radius: 5px;
 }
 td {
   border: 1px solid #eaeaea;
   padding: 0.75rem 1.25rem;
-}
-td:first-child {
-  width: 150px;
-}
-
-td:nth-child(2) {
-  border-right: 0;
-}
-
-td:last-child {
-  border-left: 0;
-  text-align: center;
 }
 
 .containers {
@@ -47,32 +35,37 @@ tr:last-child td:first-child { border-bottom-left-radius: 5px; }
 tr:last-child td:last-child { border-bottom-right-radius: 5px; }
 </style>
 
+<h3>Liste générale</h3>
 <table>
   <tbody>
     <tr>
-      <td></td>
-      <td>
+      <td style="border-right: 0;">
         <%= form_with(model: [machine, GroceryItem.new], local: true) do |form| %>
           <%= form.text_field :description %>
           <%= form.submit "Ajouter un item" %>
         <% end %>
       </td>
-      <td></td>
+      <td style="border-left: 0;"></td>
     </tr>
     <% machine.grocery_items.each do |item| %>
       <tr>
-        <td></td>
-        <td>
+        <td style="border-right: 0;">
           <%= item.description %>
         </td>
-        <td>
+        <td style="border-left: 0; text-align: center">
           <%= link_to "X", [machine, item], method: :delete, data: {confirm: 'Are you sure?'} %>
         </td>
       </tr>
     <% end %>
+  </tbody>
+</table>
+
+<h3>Liste automatique</h3>
+<table style="width: 100%;">
+  <tbody>
     <% @containers.group_by(&:food).each do |food, containers| %>
       <tr>
-        <td>
+        <td style="width: 220px;">
           <div class="containers" style="display: flex;">
             <% containers.each do |container| %>
               <div>
@@ -86,8 +79,15 @@ tr:last-child td:last-child { border-bottom-right-radius: 5px; }
           <%= food.name %>
           <%# pretty_volume_and_weight(Ingredient.food_grams(low_food.food, low_food.full_weight - low_food.current_weight)) %>
         </td>
-        <td></td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<h3>Liste manuelle</h3>
+
+<%= form_with(model: [machine, GroceryItem.new], local: true) do |form| %>
+  <%= form.label :jar_id %><br>
+  <%= form.label :food_id %><br>
+  <%= form.submit "Ajouter un item" %>
+<% end %>
