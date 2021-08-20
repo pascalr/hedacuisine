@@ -53,7 +53,7 @@
         <tr>
           <td style="vertical-align: middle;"><%= link_to machine_food.food.name.capitalize, machine_food.food %></td>
           <td>
-            <%= form.fields_for :container_quantities do |quantities_form| %>
+            <%= form.fields_for :container_quantities, machine_food.container_quantities.sort_by {|c| c.container_format.volume}.reverse do |quantities_form| %>
               <%= quantities_form.number_field :full_qty, size: 2, step: 0.25 %>
               <%= quantities_form.hidden_field :container_format_id %>
               <%= image_tag "JarIcon#{quantities_form.object.container_format.name}.png", size: "48x48" %>
