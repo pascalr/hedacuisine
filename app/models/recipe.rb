@@ -18,6 +18,8 @@ class Recipe < ApplicationRecord
   has_many :ingredients, foreign_key: 'recipe_id'
   has_many :foods, through: :ingredients
   belongs_to :group, optional: true
+  
+  has_many :recipe_ingredients#, foreign_key: 'recipe_id'
 
   before_save do
     instructions.try :gsub!, /[\u2018\u2019]/, "'"
@@ -26,7 +28,7 @@ class Recipe < ApplicationRecord
   #has_one_attached :source_image
   
   def ingredient_list
-    if ingredients.size > 6
+    if ingredients.order(:weight).size > 6
       ingredients[0..5].map(&:name).join(", ") + ", ..."
     else
       ingredients.map(&:name).join(", ")

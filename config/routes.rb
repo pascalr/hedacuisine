@@ -57,6 +57,9 @@ Rails.application.routes.draw do
 
   resources :descriptions, only: [:create, :update, :destroy]
   resources :recipes, param: 'slug' do
+  
+    resources :recipe_ingredients, only: [:create, :update, :destroy]
+
     member do
       patch 'do_process', param: 'slug'
       patch 'cheat', param: 'slug'

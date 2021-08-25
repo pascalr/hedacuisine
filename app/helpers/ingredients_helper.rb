@@ -24,17 +24,30 @@ module IngredientsHelper
   end
 
   def pretty_volume(ing)
-    return "" if ing.weight.blank?
-    return "#{pretty_fraction(ing.volume/1000.0)} #{translated("L")}" if ing.food.is_liquid? && ing.volume >= 1000.0
-    return "#{pretty_fraction(ing.volume/250.0)} #{translated("t")}" if ing.volume >= 60.0# or (ing.volume > 30.0 and close_to_fraction?(ing.volume/250.0))
-    return "#{pretty_fraction(ing.volume/15.0)} #{translated("c. à soupe")}" if ing.volume >= 15.0
-    return "#{pretty_fraction(ing.volume/5.0)} #{translated("c. à thé")}" if ing.volume >= 5.0/8.0
-    "#{pretty_fraction(ing.volume/0.31)} #{translated"pincée"}"
+    if ing.is_a? RecipeIngredient
+      return "" if ing.quantity.blank?
+      return "#{pretty_fraction(ing.volume/1000.0)} #{translated("L")}" if ing.food.is_liquid? && ing.volume >= 1000.0
+      return "#{pretty_fraction(ing.volume/250.0)} #{translated("t")}" if ing.volume >= 60.0# or (ing.volume > 30.0 and close_to_fraction?(ing.volume/250.0))
+      return "#{pretty_fraction(ing.volume/15.0)} #{translated("c. à soupe")}" if ing.volume >= 15.0
+      return "#{pretty_fraction(ing.volume/5.0)} #{translated("c. à thé")}" if ing.volume >= 5.0/8.0
+      "#{pretty_fraction(ing.volume/0.31)} #{translated"pincée"}"
+    else
+      return "" if ing.weight.blank?
+      return "#{pretty_fraction(ing.volume/1000.0)} #{translated("L")}" if ing.food.is_liquid? && ing.volume >= 1000.0
+      return "#{pretty_fraction(ing.volume/250.0)} #{translated("t")}" if ing.volume >= 60.0# or (ing.volume > 30.0 and close_to_fraction?(ing.volume/250.0))
+      return "#{pretty_fraction(ing.volume/15.0)} #{translated("c. à soupe")}" if ing.volume >= 15.0
+      return "#{pretty_fraction(ing.volume/5.0)} #{translated("c. à thé")}" if ing.volume >= 5.0/8.0
+      "#{pretty_fraction(ing.volume/0.31)} #{translated"pincée"}"
+    end
   end
 
   def pretty_base_unit(ing)
-    return "" if ing.weight.blank?
-    ing.food.is_liquid? ? "(#{ing.volume.round(1)} mL)" : "(#{ing.weight.round(1)} g)"
+    if ing.is_a? RecipeIngredient
+      return ""
+    else
+      return "" if ing.weight.blank?
+      ing.food.is_liquid? ? "(#{ing.volume.round(1)} mL)" : "(#{ing.weight.round(1)} g)"
+    end
   end
   
   def pretty_fraction(value)
@@ -47,20 +60,42 @@ module IngredientsHelper
     return f.to_s if i_part == 0
     "#{i_part} #{f}"
   end
+  
+  #def pretty_recipe_ingredient(ingredient)
+  #  return nil unless ingredient
+  #  result = ""
+  #  if ingredient.is_unitary?
+  #    result += (pretty_fraction ingredient.quantity)
+  #    str = (ingredient.quantity >= 2) ? ingredient.plural : ingredient.name
+  #    result += " #{link_to translated(str.downcase), ingredient.food}"
+  #  else
+  #    result += pretty_volume(ingredient)
+  #    result += " #{link_to translated(ingredient.name.downcase), ingredient.food}"
+  #    result += " #{pretty_base_unit(ingredient)}"
+  #  end
+  #  result.html_safe
+  #end
 
   def pretty_ingredient(ingredient)
-    return nil unless ingredient
-    result = ""
-    if ingredient.is_unitary?
-      result += (pretty_fraction ingredient.nb_units)
-      str = (ingredient.nb_units >= 2) ? ingredient.plural : ingredient.name
-      result += " #{link_to translated(str.downcase), ingredient.food}"
+    if ingredient.is_a? RecipeIngredient
+      result = ingredient.raw_quantity || ""
+      name = ((!ingredient.unit || ingredient.unit.is_unitary) && ingredient.quantity >= 2) ? ingredient.plural : ingredient.name
+      result += " #{link_to translated(name.downcase), ingredient.food}"
+      result.html_safe
     else
-      result += pretty_volume(ingredient)
-      result += " #{link_to translated(ingredient.name.downcase), ingredient.food}"
-      result += " #{pretty_base_unit(ingredient)}"
+      return nil unless ingredient
+      result = ""
+      if ingredient.is_unitary?
+        result += (pretty_fraction ingredient.nb_units)
+        str = (ingredient.nb_units >= 2) ? ingredient.plural : ingredient.name
+        result += " #{link_to translated(str.downcase), ingredient.food}"
+      else
+        result += pretty_volume(ingredient)
+        result += " #{link_to translated(ingredient.name.downcase), ingredient.food}"
+        result += " #{pretty_base_unit(ingredient)}"
+      end
+      result.html_safe
     end
-    result.html_safe
   end
 
   # Translated everything at once because it is easier to translate and it is pretty quick with google translate.
@@ -99,14 +134,14 @@ module IngredientsHelper
         if c == '}'
           indices = extract_range_indices(range)
           if indices.length > 1
-            ings = recipe.ingredients.where(nb: indices)
+            ings = recipe.recipe_ingredients.where(item_nb: indices)
             s += "<ul class='recipe-ingredient-list dash'>"
             indices.each do |idx|
-              s += "<li>#{pretty_ingredient(ings.find {|ing| ing.nb == idx})}</li>"
+              s += "<li>#{pretty_ingredient(ings.find {|ing| ing.item_nb == idx})}</li>"
             end
             s += "</ul>"
           elsif indices.size == 1
-            s += pretty_ingredient(recipe.ingredients.find_by(nb: indices[0]))
+            s += pretty_ingredient(recipe.recipe_ingredients.find_by(item_nb: indices[0]))
           end
           range = ""
           range_started = false
