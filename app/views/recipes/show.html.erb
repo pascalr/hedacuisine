@@ -51,29 +51,8 @@
       <% end %>
     </div>
     <div style="margin-top: 1.5rem;">
-      <% unless @recipe.ingredients.blank? %>
-        <b>Ingrédients:</b>
-        <span style="color: gray;"><%= @recipe.ingredient_list %></span>
-      <% end %>
+      <%= render partial: "details", locals: {recipe: @recipe} %>
     </div>
-    <% unless @recipe.preparation_time.nil? %>
-      <div>
-        <b>Préparation:</b>
-        <span style="color: gray;"><%= @recipe.preparation_time %> minutes</span>
-      </div>
-    <% end %>
-    <% unless @recipe.cooking_time.nil? %>
-      <div>
-        <b>Cuisson:</b>
-        <span style="color: gray;"><%= @recipe.cooking_time %> minutes</span>
-      </div>
-    <% end %>
-    <% unless @recipe.servings_quantity.nil? %>
-      <div>
-        <b>Portions:</b>
-        <span style="color: gray;"><%= @recipe.servings_quantity%> <%= @recipe.servings_name %></span>
-      </div>
-    <% end %>
 
   </div>
 </div>

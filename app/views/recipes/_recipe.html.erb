@@ -14,24 +14,7 @@
         <%= translated(recipe.name) %>
       </div>
     <% end %>
-    <div>
-      <% unless recipe.ingredients.blank? %>
-        <b>Ingrédients:</b>
-        <span style="color: gray;"><%= recipe.ingredient_list %></span>
-      <% end %>
-    </div>
-    <div>
-      <b>Préparation:</b>
-      <span style="color: gray;">20 minutes</span>
-    </div>
-    <div>
-      <b>Cuisson:</b>
-      <span style="color: gray;">8 minutes</span>
-    </div>
-    <div>
-      <b>Portions:</b>
-      <span style="color: gray;">24 madeleines</span>
-    </div>
+    <%= render partial: "details", locals: {recipe: recipe} %>
 
   </div>
 </div>
