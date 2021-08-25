@@ -86,10 +86,17 @@ module IngredientsHelper
   def pretty_article(noun)
     noun.start_with?('a','e','i','o','u','y','é') ? "de l'" : "du "
   end
+  
+  def pretty_ingredient_quantity(ing)
+    return "" if ing.quantity.nil?
+    return ing.raw_quantity || "" unless ing.unit and ing.unit.show_fraction
+    qty_s = pretty_fraction(ing.quantity)
+    ing.unit.nil? ? "#{qty_s}" : "#{qty_s} #{ing.unit.name}"
+  end
 
   def pretty_ingredient(ingredient)
     if ingredient.is_a? RecipeIngredient
-      result = ingredient.raw_quantity || ""
+      result = pretty_ingredient_quantity(ingredient)
       without_unit = (!ingredient.unit || ingredient.unit.is_unitary)
       name = (ingredient.unit && ingredient.unit.is_unitary && ingredient.quantity >= 2) ? ingredient.plural : ingredient.name
       if result.blank?

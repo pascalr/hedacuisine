@@ -117,6 +117,21 @@ Deprecated
     <b><%= form.label :image_id %></b>
     <%= form.number_field :image_id %>
   </div>
+  
+  <div class="field">
+    <b><%= form.label :preparation_time %></b>
+    <%= form.number_field :preparation_time %>
+  </div>
+  
+  <div class="field">
+    <b><%= form.label :cooking_time %></b>
+    <%= form.number_field :cooking_time %>
+  </div>
+  
+  <div class="field">
+    <b><%= form.label :raw_servings %></b>
+    <%= form.text_field :raw_servings %>
+  </div>
 
   <div class="field">
     <b><%= form.label :complete_instructions %></b><br>

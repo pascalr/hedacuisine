@@ -27,6 +27,32 @@ class Recipe < ApplicationRecord
   
   #has_one_attached :source_image
   
+  def self.parse_quantity_and_servings_name(raw)
+    qty = nil
+    #qty_s = raw.match(/^\d+([,.\/]\d+)?/)
+    qty_s = raw[/^\d+([,.\/]\d+)?/]
+    return nil, nil if qty_s.blank?
+    #qty_s = raw[/^\d+[,./]\d+/]
+    if qty_s.include?("/")
+      qty = qty_s.to_r.to_f
+    else
+      qty = qty_s.to_f
+    end
+    name = raw[qty_s.length..-1].strip
+    return qty, name
+  end
+  
+  def raw_servings=(raw_servings)
+    qty, name = Recipe.parse_quantity_and_servings_name(raw_servings)
+    self.servings_quantity = qty
+    self.servings_name = name
+  end
+  def raw_servings
+    return nil if servings_quantity.nil?
+    qty_s = sprintf("%g", servings_quantity.round(2))
+    servings_name.nil? ? "#{qty_s}" : "#{qty_s} #{servings_name}"
+  end
+  
   def ingredient_list
     if ingredients.order(:weight).size > 6
       ingredients[0..5].map(&:name).join(", ") + ", ..."
