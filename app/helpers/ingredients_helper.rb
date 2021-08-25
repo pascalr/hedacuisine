@@ -76,14 +76,31 @@ module IngredientsHelper
   #  result.html_safe
   #end
 
+  # FIXME: H aspiré...
+  def pretty_preposition(noun)
+    noun.start_with?('a','e','i','o','u','y','é') ? "d'" : "de "
+  end
+  
+  # FIXME: H aspiré...
+  # FIXME: Rajouter féminin. de la
+  def pretty_article(noun)
+    noun.start_with?('a','e','i','o','u','y','é') ? "de l'" : "du "
+  end
+
   def pretty_ingredient(ingredient)
     if ingredient.is_a? RecipeIngredient
       result = ingredient.raw_quantity || ""
-      name = ((!ingredient.unit || ingredient.unit.is_unitary) && ingredient.quantity >= 2) ? ingredient.plural : ingredient.name
-      result += " #{link_to translated(name.downcase), ingredient.food}"
+      without_unit = (!ingredient.unit || ingredient.unit.is_unitary)
+      name = (ingredient.unit && ingredient.unit.is_unitary && ingredient.quantity >= 2) ? ingredient.plural : ingredient.name
+      if result.blank?
+        result += " #{pretty_article(name)}"
+      else
+        result += " #{without_unit ? "" : pretty_preposition(name)}"
+      end
+      result += "#{link_to translated(name.downcase), ingredient.food}"
       result.html_safe
     else
-      return nil unless ingredient
+      return "" unless ingredient
       result = ""
       if ingredient.is_unitary?
         result += (pretty_fraction ingredient.nb_units)

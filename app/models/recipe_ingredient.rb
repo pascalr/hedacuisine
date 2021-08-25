@@ -17,11 +17,11 @@ class RecipeIngredient < ApplicationRecord
     end
   end
   
-  def self.parse_quantity_and_unit_given_food(raw, food, unit_required=false)
+  def self.parse_quantity_and_unit_given_food(raw, food)
     qty = nil
     #qty_s = raw.match(/^\d+([,.\/]\d+)?/)
     qty_s = raw[/^\d+([,.\/]\d+)?/]
-    raise "Invalid quantity #{qty_s}" if qty_s.blank?
+    return nil, nil if qty_s.blank?
     #qty_s = raw[/^\d+[,./]\d+/]
     if qty_s.include?("/")
       qty = qty_s.to_r.to_f
@@ -30,7 +30,6 @@ class RecipeIngredient < ApplicationRecord
     end
     unit_s = raw[qty_s.length..-1].strip
     unit = Unit.find_by(name: unit_s)
-    raise "Invalid unit #{unit_s}" if unit.nil? and unit_required
     return qty, unit
   end
  
