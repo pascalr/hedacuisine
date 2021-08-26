@@ -23,6 +23,16 @@ module IngredientsHelper
     sprintf("%g g", weight.round(1))
   end
 
+  def pretty_volume_with_metric(ing)
+    # TODO: The metric part should be rounded to fit with the generic part.
+    "#{pretty_volume(ing)} (#{pretty_metric_volume(ing.volume)})"
+  end
+
+  def pretty_metric_volume(volume)
+    return sprintf("%g L", (volume/1000.0).round(2)) if volume >= 1000.0
+    sprintf("%g mL", volume.round(1))
+  end
+
   def pretty_volume(ing)
     if ing.is_a? RecipeIngredient
       return "" if ing.quantity.blank?
@@ -98,7 +108,7 @@ module IngredientsHelper
     if ingredient.is_a? RecipeIngredient
       result = pretty_ingredient_quantity(ingredient)
       without_unit = (!ingredient.unit || ingredient.unit.is_unitary)
-      name = (ingredient.unit && ingredient.unit.is_unitary && ingredient.quantity >= 2) ? ingredient.plural : ingredient.name
+      name = (without_unit && ingredient.quantity >= 2) ? ingredient.plural : ingredient.name
       if result.blank?
         result += " #{pretty_article(name)}"
       else

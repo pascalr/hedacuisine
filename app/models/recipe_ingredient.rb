@@ -16,6 +16,19 @@ class RecipeIngredient < ApplicationRecord
       return quantity / food.density
     end
   end
+
+  def calc_weight
+    if quantity.nil?
+      self.weight = nil
+    elsif unit.nil? || (unit && unit.is_unitary)
+      self.weight = quantity * food.unit_weight
+    elsif unit.is_volume
+      self.weight = quantity * food.density
+    else
+      self.weight = quantity
+    end
+    self.weight
+  end
   
   def self.parse_quantity_and_unit_given_food(raw, food)
     qty = nil
@@ -37,6 +50,7 @@ class RecipeIngredient < ApplicationRecord
     qty, unit = RecipeIngredient.parse_quantity_and_unit_given_food(raw_qty, self.food)
     self.quantity = qty
     self.unit = unit
+    calc_weight
   end
   def raw_quantity
     return nil if quantity.nil?

@@ -24,7 +24,7 @@
 <h2>Recettes</h2>
 
 <% total = Recipe.count %>
-<% without_ingredients = Recipe.left_outer_joins(:ingredients).where(ingredients: {recipe_id: nil}).count %>
+<% without_ingredients = Recipe.left_outer_joins(:recipe_ingredients).where(recipe_ingredients: {recipe_id: nil}).count %>
 
 <table class="table">
   <thead>

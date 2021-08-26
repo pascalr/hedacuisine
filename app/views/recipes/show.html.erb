@@ -10,6 +10,30 @@
   font-size: 0.9rem;
   font-weight: bold;
 }
+table {
+  /*width: 100%;*/
+  border: 1px solid #eaeaea;
+  border-radius: 5px;
+}
+td {
+  border: 1px solid #eaeaea;
+  padding: 0.75rem 1.25rem;
+}
+
+.containers {
+  height: 48px;
+}
+
+.containers div div:last-child {
+  text-align: center;
+  transform: translate(0px, -30px);
+}
+
+table { border-collapse: separate; border-spacing: 0; }
+tr:first-child td:first-child { border-top-left-radius: 5px; }
+tr:first-child td:last-child { border-top-right-radius: 5px; }
+tr:last-child td:first-child { border-bottom-left-radius: 5px; }
+tr:last-child td:last-child { border-bottom-right-radius: 5px; }
 </style>
 
 <!--<div class="mx-n2">
@@ -73,12 +97,24 @@
     <% end %>
     
     <h2 class="h2 toggle-link" data-toggle_id="ing_list">+ Liste d'ingrédients</h2>
-  
-    <ul id="ing_list" hidden>
-      <% @recipe.ingredients.each do |ing| %>
-        <li><%= pretty_ingredient(ing) %></li>
-      <% end %>
-    </ul>
+
+    <table id="ing_list" class="list-group" hidden>
+      <tbody>
+        <% @recipe.ingredients.each do |ing| %>
+          <tr>
+            <td style="border-right: 0;">
+              <%= pretty_ingredient(ing) %>
+            </td>
+            <td>
+              <%= pretty_volume_with_metric(ing) %>
+            </td>
+            <td>
+              <%= pretty_weight(ing.weight) %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   
     <div class="recipe-instructions">
   

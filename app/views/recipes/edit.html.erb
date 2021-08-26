@@ -50,45 +50,6 @@
 <% end %>
 
 <br><br>
-Deprecated
-<br><br>
-
-<div>
-  <b>Ingredients</b><br>
-  <% if @recipe.ingredients.blank? %>
-    Il n'y a pas encore d'ingrédients.
-  <% else %>
-    <table class="table table-striped table-sm w-auto">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>ingredient</th>
-          <th colspan="1"></th>
-        </tr>
-      </thead>
-    
-      <tbody>
-        <% @recipe.ingredients.each do |ingredient| %>
-          <tr>
-            <td><%= ingredient.nb %></td>
-            <td><%= pretty_ingredient(ingredient) %></td>
-            <td><%= link_to 'x', ingredient, method: :delete, data: {confirm: 'Are you sure?'} %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  <% end %>
-</div>
-
-<%= form_with(model: Ingredient.new, local: true) do |form| %>
-  Qty: <%= text_field_tag :qty %>
-  Food: <%= form.text_field :food_name, id: "autocomplete-food", placeholder: "Food..." %>
-  <%= hidden_field_tag :recipe_id, @recipe.id %>
-  <%= hidden_field_tag :food_id, nil, id: "autocomplete-food-id" %>
-  <%= form.submit "Ajouter" %>
-<% end %>
-
-<br><br>
 
 <%= form_with(model: @recipe, local: true) do |form| %>
   <% if @recipe.errors.any? %>

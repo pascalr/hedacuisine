@@ -1,9 +1,14 @@
 class MachinesController < ApplicationController
   before_action :set_machine, only: %i[ show edit update destroy ]
+  skip_before_action :authenticate_user!, only: [:index]
+  skip_before_action :only_admin!, only: [:index]
 
   # GET /machines or /machines.json
   def index
-    @machines = Machine.all
+    if current_user and current_user.machines.first
+      @machine = current_user.machines.first
+      render :show
+    end
   end
 
   # GET /machines/1 or /machines/1.json

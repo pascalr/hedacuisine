@@ -15,7 +15,7 @@ class Recipe < ApplicationRecord
   has_many :categories, through: "items"
   has_many :menus, through: "items"
   belongs_to :user
-  has_many :ingredients, foreign_key: 'recipe_id'
+  #has_many :ingredients, foreign_key: 'recipe_id'
   has_many :foods, through: :ingredients
   belongs_to :group, optional: true
   
@@ -54,11 +54,12 @@ class Recipe < ApplicationRecord
   end
   
   def ingredient_list
-    if ingredients.order(:weight).size > 6
-      ingredients[0..5].map(&:name).join(", ") + ", ..."
-    else
-      ingredients.map(&:name).join(", ")
+    ings = recipe_ingredients.order(weight: :desc).map(&:name).join(", ")
+    if ings.length > 80
+      ri = ings[0..80].rindex(',')
+      return ings[0..ri]
     end
+    ings
   end
 
   def user_rating(user)
@@ -87,12 +88,12 @@ class Recipe < ApplicationRecord
     version_name ? "#{name} (#{version_name})" : name
   end
   
-def missing_ingredients
-    ingredients.map(&:food).reject(&:in_pantry)
+  def missing_ingredients
+    recipe_ingredients.map(&:food).reject(&:in_pantry)
   end
 
   def last_ingredient_number
-    ingredients.blank? ? 0 : ingredients.maximum(:nb)
+    recipe_ingredients.blank? ? 0 : recipe_ingredients.maximum(:item_nb)
   end
   
   #def missing_ingredients_for(user)
@@ -119,4 +120,6 @@ def missing_ingredients
   #  #end
   #  #return 200
   #end
+  
+  alias ingredients recipe_ingredients
 end
