@@ -1,0 +1,35 @@
+<h1>Mes recettes</h1>
+
+<% UserRecipe.where(user_recipe_category_id: nil).each do |user_recipe| %>
+  <%= user_recipe.recipe.name %>
+  <%= link_to "x", user_recipe, method: :delete, data: {confirm: 'Are you sure?'} %>
+  <br>
+<% end %>
+
+<span id="autocomplete-data" data-recipes="<%= Recipe.all.map {|v| [v.id, v.fullname] } %>"/>
+
+<% UserRecipeCategory.includes(:user_recipes).all.each do |category| %>
+  <h2>
+    <%= category.name %>
+    <%= link_to "x", category, method: :delete, data: {confirm: 'Are you sure?'} %>
+  </h2>
+  <% category.user_recipes.each do |user_recipe| %>
+    <%= link_to user_recipe.recipe.name, user_recipe.recipe %>
+    <%= link_to "x", user_recipe, method: :delete, data: {confirm: 'Are you sure?'} %>
+    <br>
+  <% end %>
+  <%= form_with(model: UserRecipe.new, local: true) do |form| %>
+    <%= form.text_field :recipe_name, id: "autocomplete-search-recipe-#{category.id}", class: 'autocomplete-search-recipe', placeholder: "Recette...", size: "40" %>
+    <%= form.hidden_field :recipe_id, id: "autocomplete-search-recipe-#{category.id}-id" %>
+    <%= form.hidden_field :user_recipe_category_id, value: category.id %>
+    <%= form.submit "Ajouter une recette" %>
+  <% end %>
+  <hr>
+<% end %>
+
+<%= form_with(model: UserRecipeCategory.new, local: true) do |form| %>
+  <%= form.text_field :name %>
+  <%= form.submit "Ajouter une catégorie" %>
+<% end %>
+
+<%= javascript_pack_tag "menu_editor" %>

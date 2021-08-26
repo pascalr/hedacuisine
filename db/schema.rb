@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_25_180223) do
+ActiveRecord::Schema.define(version: 2021_08_25_204929) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -356,6 +356,25 @@ ActiveRecord::Schema.define(version: 2021_08_25_180223) do
     t.index ["language_id"], name: "index_units_on_language_id"
   end
 
+  create_table "user_recipe_categories", force: :cascade do |t|
+    t.string "name"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_user_recipe_categories_on_user_id"
+  end
+
+  create_table "user_recipes", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "recipe_id", null: false
+    t.bigint "user_recipe_category_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["recipe_id"], name: "index_user_recipes_on_recipe_id"
+    t.index ["user_id"], name: "index_user_recipes_on_user_id"
+    t.index ["user_recipe_category_id"], name: "index_user_recipes_on_user_recipe_category_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -417,6 +436,10 @@ ActiveRecord::Schema.define(version: 2021_08_25_180223) do
   add_foreign_key "unit_system_items", "unit_systems"
   add_foreign_key "unit_system_items", "units"
   add_foreign_key "units", "languages"
+  add_foreign_key "user_recipe_categories", "users"
+  add_foreign_key "user_recipes", "recipes"
+  add_foreign_key "user_recipes", "user_recipe_categories"
+  add_foreign_key "user_recipes", "users"
   add_foreign_key "weighings", "foods"
   add_foreign_key "weighings", "machines"
 end

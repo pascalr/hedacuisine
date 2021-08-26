@@ -20,6 +20,9 @@ Rails.application.routes.draw do
   get 'meta/index'
   resources :units
   devise_for :users
+
+  resources :user_recipes, only: [:index, :create, :update, :destroy]
+  resources :user_recipe_categories, only: [:create, :update, :destroy]
   
   resources :machine_users, only: [:create, :update, :destroy, :new]
 

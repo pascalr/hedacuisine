@@ -27,7 +27,8 @@
 </div>-->
 
 <% if @recipe.owned_by?(current_user) %>
-  <%= link_to 'Edit', edit_recipe_path(@recipe) %>
+  <%= link_to 'Edit', edit_recipe_path(@recipe) %> |
+  <%= link_to 'Ajouter à mes recettes', user_recipes_path(user_recipe: {recipe_id: @recipe.id}), method: :post %>
 <% end %>
 <%# form_with(url: 'TODO', local: true, class: 'inline') do |form| %>
   <%# form.collection_select :unit_system, UnitSystem.all, :id, :name, selected: params[:unit_system_id], class: 'inline' %>

@@ -16,4 +16,7 @@ class User < ApplicationRecord
 
   has_many :machine_users
   has_many :machines, through: :machine_users
+
+  has_many :user_recipes
+  has_many :user_recipe_categories
 end
