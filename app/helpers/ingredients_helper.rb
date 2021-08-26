@@ -19,6 +19,7 @@ module IngredientsHelper
   def pretty_weight(weight)
     #return "%.2f kg" % [weight/1000.0] if weight >= 1000.0
     #"%.1f g" % [weight]
+    return nil if weight.nil?
     return sprintf("%g kg", (weight/1000.0).round(2)) if weight >= 1000.0
     sprintf("%g g", weight.round(1))
   end
