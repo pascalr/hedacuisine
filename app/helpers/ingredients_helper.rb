@@ -109,7 +109,7 @@ module IngredientsHelper
     if ingredient.is_a? RecipeIngredient
       result = pretty_ingredient_quantity(ingredient)
       without_unit = (!ingredient.unit || ingredient.unit.is_unitary)
-      name = (without_unit && && ingredient.quantity && ingredient.quantity >= 2) ? ingredient.plural : ingredient.name
+      name = (without_unit && ingredient.quantity && ingredient.quantity >= 2) ? ingredient.plural : ingredient.name
       if result.blank?
         result += " #{pretty_article(name)}"
       else
