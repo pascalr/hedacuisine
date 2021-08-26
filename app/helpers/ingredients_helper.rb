@@ -26,10 +26,12 @@ module IngredientsHelper
 
   def pretty_volume_with_metric(ing)
     # TODO: The metric part should be rounded to fit with the generic part.
+    return nil if ing.quantity.nil?
     "#{pretty_volume(ing)} (#{pretty_metric_volume(ing.volume)})"
   end
 
   def pretty_metric_volume(volume)
+    return nil if volume.nil?
     return sprintf("%g L", (volume/1000.0).round(2)) if volume >= 1000.0
     sprintf("%g mL", volume.round(1))
   end
