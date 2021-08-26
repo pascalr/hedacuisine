@@ -1,11 +1,10 @@
 <%= link_to 'Nouveau menu', new_menu_path if current_user %>
 
-<div class="responsive-margins-sm">
-  <% @menus.each do |menu| %>
-    <%= link_to menu.name, edit_menu_path(menu) %><br>
-  <% end %>
-</div>
-
-<%# render partial: @menus %>
-
-<%# javascript_pack_tag "recipe_slider_pack" %>
+<% Listing.includes(:menus).order(:order).each do |listing| %>
+  <div><%= link_to translated(listing.name).capitalize, listing, style: "size: 1.3em; color: gray;" %></div>
+  <div class="ml-3">
+    <% listing.menus.each do |m| %>
+      <%= link_to ((m.emoji || '') + ' ' + translated(m.name).capitalize).lstrip, m, style: "color: black;" %><br>
+    <% end %>
+  </div>
+<% end %>

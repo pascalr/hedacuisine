@@ -5,25 +5,12 @@
   <div class="collapse navbar-collapse" style="flex-grow: unset;">
     <div class="navbar-nav">
       <%= link_to_active_controller "Heda", home_path, "home", class: "navbar-brand" %>
-      <%= link_to_active_controller t("heda.menu.recipes"), recipes_path, "recipes", class: "nav-item nav-link" %>
-      <%= link_to_active 'Appareils', machines_path, class: "nav-item nav-link" %>
-      <% if current_user_admin? %>
-        <div class="dropdown nav-item">
-          <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <%= t("heda.menu.menus") %>
-          </a>
-          <div class="dropdown-menu pl-2" aria-labelledby="dropdownMenuButton" style="width: 13em;">
-            <% Listing.includes(:menus).order(:order).each do |listing| %>
-              <div><%= link_to translated(listing.name).capitalize, listing, style: "size: 1.3em; color: gray;" %></div>
-              <div class="ml-3">
-                <% listing.menus.each do |m| %>
-                  <%= link_to ((m.emoji || '') + ' ' + translated(m.name).capitalize).lstrip, m, style: "color: black;" %><br>
-                <% end %>
-              </div>
-            <% end %>
-          </div>
-        </div>
+      <% if user_signed_in? %>
+        <%= link_to_active_if ["recipes", "menus", "user_recipes"].include?(controller_name), t("heda.menu.recipes"), user_recipes_path, class: "nav-item nav-link" %>
+      <% else %>
+        <%= link_to_active_if ["recipes", "menus", "user_recipes"].include?(controller_name), t("heda.menu.recipes"), recipes_path, class: "nav-item nav-link" %>
       <% end %>
+      <%= link_to_active 'Appareils', machines_path, class: "nav-item nav-link" %>
       <%# link_to_active t("heda.menu.home"), home_path, class: "nav-item nav-link" %>
       <% if current_user_admin? %>
         <%= link_to_active 'Meta', meta_index_path, class: "nav-item nav-link" %>

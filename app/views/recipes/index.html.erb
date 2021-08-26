@@ -1,12 +1,5 @@
-<% if current_user_admin? %>
-  <%= link_to 'New Recipe', new_recipe_path %>
-  <%= link_to 'Nouvelle recette', new_recipe_path %>
+<%= render partial: "recipes/tabs" %>
+
+<% Recipe.where.not(image_id: nil).limit(5).each do |recipe| %>
+  <%= render recipe %>
 <% end %>
-
-<div class="responsive-margins-lg">
-
-  <% Recipe.where.not(image_id: nil).limit(5).each do |recipe| %>
-    <%= render recipe %>
-  <% end %>
-
-</div>

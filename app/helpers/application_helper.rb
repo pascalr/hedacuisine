@@ -32,6 +32,11 @@ module ApplicationHelper
     options[:class] += " active" if ctrl_name == controller_name
     link_to name, path, options
   end
+  
+  def link_to_active_if(cond, name, path, options={})
+    options[:class] += " active" if cond
+    link_to name, path, options
+  end
 
   def link_to_active(name, path, options={})
     options[:class] += " active" if current_page?(path)

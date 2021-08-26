@@ -1,4 +1,12 @@
-<h1>Mes recettes</h1>
+<%= render partial: "recipes/tabs" %>
+
+<h2>Dernières recettes ajoutées</h2>
+
+<p>TODO: Recipe slider</p>
+
+<p>En voir plus</p>
+
+<h2>Mes recettes</h2>
 
 <% UserRecipe.where(user_recipe_category_id: nil).each do |user_recipe| %>
   <%= user_recipe.recipe.name %>

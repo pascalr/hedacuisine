@@ -4,7 +4,6 @@ class MenusController < ApplicationController
   skip_before_action :only_admin!
 
   def index
-    redirect_to Menu.first
     #@menus = User.first.menus # FIXME: Temporary TODO: Use User.heda.menus
     #@menus = @menus.to_a - current_user.favorite_menus.to_a if current_user
   end
