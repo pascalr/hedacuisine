@@ -9,11 +9,11 @@ class RecipeIngredient < ApplicationRecord
   def volume
     return nil if quantity.nil?
     if unit.nil? || (unit && unit.is_unitary)
-      return (quantity * food.unit_weight) / food.density
+      return (quantity * food.unit_weight * (unit ? unit.value : 1)) / food.density
     elsif unit.is_volume
-      return quantity
+      return quantity * unit.value
     else
-      return quantity / food.density
+      return quantity * unit.value / food.density
     end
   end
 
@@ -21,11 +21,11 @@ class RecipeIngredient < ApplicationRecord
     if quantity.nil?
       self.weight = nil
     elsif unit.nil? || (unit && unit.is_unitary)
-      self.weight = quantity * food.unit_weight
+      self.weight = quantity * food.unit_weight * (unit ? unit.value : 1)
     elsif unit.is_volume
-      self.weight = quantity * food.density
+      self.weight = quantity * unit.value * food.density
     else
-      self.weight = quantity
+      self.weight = quantity * unit.value
     end
     self.weight
   end

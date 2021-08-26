@@ -11,22 +11,14 @@
   font-weight: bold;
 }
 table {
-  /*width: 100%;*/
+  width: 100%;
   border: 1px solid #eaeaea;
   border-radius: 5px;
 }
 td {
   border: 1px solid #eaeaea;
-  padding: 0.75rem 1.25rem;
-}
-
-.containers {
-  height: 48px;
-}
-
-.containers div div:last-child {
-  text-align: center;
-  transform: translate(0px, -30px);
+  padding: 0.75rem 0.00rem;
+  padding-left: 1rem;
 }
 
 table { border-collapse: separate; border-spacing: 0; }
@@ -96,9 +88,9 @@ tr:last-child td:last-child { border-bottom-right-radius: 5px; }
       </div>
     <% end %>
     
-    <h2 class="h2 toggle-link" data-toggle_id="ing_list">+ Liste d'ingrédients</h2>
+    <h2 class="h2 toggle-link-visible" data-toggle_id="ing_list">- Liste d'ingrédients</h2>
 
-    <table id="ing_list" class="list-group" hidden>
+    <table id="ing_list" style="margin-top: -8px; margin-bottom: 8px;">
       <tbody>
         <% @recipe.ingredients.each do |ing| %>
           <tr>
@@ -115,6 +107,8 @@ tr:last-child td:last-child { border-bottom-right-radius: 5px; }
         <% end %>
       </tbody>
     </table>
+    
+    <h2 class="h2">Instructions</h2>
   
     <div class="recipe-instructions">
   

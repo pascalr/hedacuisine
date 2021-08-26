@@ -79,11 +79,11 @@ h3, .instructions-header {
   line-height: 1.6rem;
 }
 
-.toggle-link-active {
+/*.toggle-link-active {
   background-color: #f57b11;
-}
+}*/
 
-.h2.toggle-link:hover, .section-header.toggle-link:hover {
+.h2.toggle-link:hover, .h2.toggle-link-visible:hover, .section-header.toggle-link:hover {
   cursor: pointer;
   //background-color: #6097f3;
   //background-color: #fc7e0f;
@@ -206,7 +206,7 @@ ul.dash > li:before {
 }
 
 .recipe-body {
-  width: 50%;
+  width: 800px;
 }
 
 .inline {
@@ -269,6 +269,9 @@ ul.dash > li:before {
 @media screen and (max-width: 1200px) {
   .responsive-margins-lg, .responsive-margins-50-lg {
     width: 100%; /* The width is 100%, when the viewport is 800px or smaller */
+  }
+  .recipe-body {
+    width: 100%;
   }
   body {
     margin-top: 0px;
