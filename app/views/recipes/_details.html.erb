@@ -1,5 +1,5 @@
 <div>
-  <% unless recipe.ingredients.blank? %>
+  <% unless (defined?(show_ingredient_list) && show_ingredient_list == false) or recipe.ingredients.blank? %>
     <b>Ingrédients:</b>
     <span style="color: gray;"><%= recipe.ingredient_list %></span>
   <% end %>
@@ -14,6 +14,12 @@
   <div>
     <b>Cuisson:</b>
     <span style="color: gray;"><%= recipe.cooking_time %> minutes</span>
+  </div>
+<% end %>
+<% unless recipe.total_time.nil? %>
+  <div>
+    <b>Total:</b>
+    <span style="color: gray;"><%= recipe.total_time %> minutes</span>
   </div>
 <% end %>
 <% unless recipe.servings_quantity.nil? %>
