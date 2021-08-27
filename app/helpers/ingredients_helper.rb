@@ -107,14 +107,25 @@ module IngredientsHelper
     ing.unit.nil? ? "#{qty_s}" : "#{qty_s} #{ing.unit.name}"
   end
 
+  def pretty_inline_ingredient(ingredient)
+    result = pretty_ingredient_quantity(ingredient)
+    without_unit = (!ingredient.unit || ingredient.unit.is_unitary)
+    name = (without_unit && ingredient.quantity && ingredient.quantity >= 2) ? ingredient.plural : ingredient.name
+    if result.blank?
+      result += " #{pretty_article(name)}"
+    else
+      result += " #{without_unit ? "" : pretty_preposition(name)}"
+    end
+    result += "#{link_to translated(name.downcase), ingredient.food}"
+    result.html_safe
+  end
+
   def pretty_ingredient(ingredient)
     if ingredient.is_a? RecipeIngredient
       result = pretty_ingredient_quantity(ingredient)
       without_unit = (!ingredient.unit || ingredient.unit.is_unitary)
       name = (without_unit && ingredient.quantity && ingredient.quantity >= 2) ? ingredient.plural : ingredient.name
-      if result.blank?
-        result += " #{pretty_article(name)}"
-      else
+      unless result.blank?
         result += " #{without_unit ? "" : pretty_preposition(name)}"
       end
       result += "#{link_to translated(name.downcase), ingredient.food}"
@@ -178,7 +189,7 @@ module IngredientsHelper
             end
             s += "</ul>"
           elsif indices.size == 1
-            s += pretty_ingredient(recipe.recipe_ingredients.find_by(item_nb: indices[0]))
+            s += pretty_inline_ingredient(recipe.recipe_ingredients.find_by(item_nb: indices[0]))
           end
           range = ""
           range_started = false

@@ -54,7 +54,7 @@ class Recipe < ApplicationRecord
   end
   
   def ingredient_list
-    ings = recipe_ingredients.order(weight: :desc).map(&:name).join(", ")
+    ings = recipe_ingredients.order(weight: :desc).reject {|ing| ing.weight.nil?}.map(&:name).join(", ")
     if ings.length > 80
       ri = ings[0..80].rindex(',')
       return ings[0..ri]

@@ -92,7 +92,7 @@ tr:last-child td:last-child { border-bottom-right-radius: 5px; }
 
     <table id="ing_list" style="margin-top: -8px; margin-bottom: 8px;">
       <tbody>
-        <% @recipe.ingredients.each do |ing| %>
+        <% @recipe.ingredients.order(:item_nb).each do |ing| %>
           <tr>
             <td style="border-right: 0;">
               <%= pretty_ingredient(ing) %>
@@ -108,7 +108,7 @@ tr:last-child td:last-child { border-bottom-right-radius: 5px; }
       </tbody>
     </table>
     
-    <h2 class="h2">Instructions</h2>
+    <h2 class="h2" style="margin-top: 2rem;">Instructions</h2>
   
     <div class="recipe-instructions">
   
@@ -124,6 +124,10 @@ tr:last-child td:last-child { border-bottom-right-radius: 5px; }
     <h3><%= link_to translated(@recipe.similar_recipes.first.name), @recipe.similar_recipes.first %></h3>
     <%= pretty_print_recipe(@recipe.similar_recipes.first) %>
   <% end %>
+  
+  <h2 class="h2" style="margin-top: 2rem;">Commentaires</h2>
+
+  Aucun commentaires pour l'instant.
 </div>
 
 <br>
