@@ -3,5 +3,5 @@
   <%= link_to_active_if controller_name == "recipes" && action_name == "index", "Nouveautés", recipes_path, class: "nav-item nav-link" %>
   <%= link_to_active_if controller_name == "user_recipes" && action_name == "index", "Mes recettes", user_recipes_path, class: "nav-item nav-link" %>
   <%= link_to_active_if controller_name == "menus" && action_name == "index", "Menus", menus_path, class: "nav-item nav-link" %>
-  <%= link_to_active_if false, "Nouvelle recette", new_recipe_path, class: "nav-item nav-link" %>
+  <%= link_to_active_if controller_name == "recipes" && action_name == "new", "Nouvelle recette", new_recipe_path, class: "nav-item nav-link" %>
 </ul>
