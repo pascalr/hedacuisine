@@ -1,5 +1,5 @@
 <%= render partial: "recipes/tabs" %>
 
-<% Recipe.where.not(image_id: nil).limit(5).each do |recipe| %>
+<% Recipe.where.not(image_id: nil).order(:created_at).each do |recipe| %>
   <%= render recipe %>
 <% end %>

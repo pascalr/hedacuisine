@@ -1,8 +1,12 @@
 <% unless current_user_admin? %>
 
-  <div style="border: 2px solid black; border-radius: 5px; color:red;" class="my-4 p-2">
-    ⚠️ Le site est en construction. Certaines fonctionalités ne sont pas encore disponibles.
-  </div>
+  <style>
+    .responsive-margins-lg {
+      background-color: #dddddd;
+    }
+  </style>
+
+  <div style="width: 100%; margin-top: 20rem; font-weight: bold; font-size: 3rem; text-align: center;">Bientôt<br>disponible</div>
 
 <% else %>
 
@@ -143,6 +147,6 @@
 
 <% end %>
 
-<footer>
+<footer style="margin-top: 30rem;">
   <small style="margin-left: 1rem;">&copy; Copyright <%= Date.current.year%>, Heda</small>
 </footer>
