@@ -13,6 +13,8 @@
 !/log/.keep
 !/tmp/.keep
 
+/data
+
 bin/push.sh
 
 # Ignore pidfiles, but keep the directory.

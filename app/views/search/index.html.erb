@@ -2,12 +2,27 @@
   <%= tr "Résultats de recherche pour" %>: <%= params[:search] %>
 </div>
 
-<% if @recipes.blank? %>
+<% if @results.blank? %>
   Aucun résultat ne correspond à la recherche.
 <% else %>
   <div style="margin-top: -10px; margin-bottom: 20px;">
     <i><%= @results.size %> résultats correspondant trouvés.</i>
   </div>
+<% end %>
+
+<% unless @foods.blank? %>
+
+  <h2>Foods</h2>
+
+  <% @foods.each do |food| %>
+    <%= food.name %><br>
+  <% end %>
+<% end %>
+
+<% unless @recipes.blank? %>
+
+  <h2>Recettes</h2>
+
   <% @recipes.each do |recipe| %>
     <%= render recipe %>
   <% end %>
