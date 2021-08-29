@@ -27,6 +27,8 @@ Rails.application.routes.draw do
   resources :machine_users, only: [:create, :update, :destroy, :new]
 
   post 'change_food_tag', to: 'foods#change_tag'
+
+  get 'recipes/visibility'
   
   resources :machines do
     get 'get_state', to: 'sim#get_state'

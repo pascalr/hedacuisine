@@ -1,0 +1,7 @@
+<% @recipes.each do |recipe| %>
+  <%= form_with(model: recipe) do |form| %>
+    <%= form.check_box :is_public %>
+    <%= link_to recipe.name, recipe %>
+    <%= form.submit %>
+  <% end %>
+<% end %>
