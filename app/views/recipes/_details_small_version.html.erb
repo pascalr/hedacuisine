@@ -22,9 +22,3 @@
     <span style="color: gray;"><%= recipe.total_time %> minutes</span>
   </div>
 <% end %>
-<% unless recipe.servings_quantity.nil? or (recipe.preparation_time && recipe.cooking_time && recipe.total_time) %>
-  <div>
-    <b>Portions:</b>
-    <span style="color: gray;"><%= recipe.servings_quantity%> <%= recipe.servings_name %></span>
-  </div>
-<% end %>
