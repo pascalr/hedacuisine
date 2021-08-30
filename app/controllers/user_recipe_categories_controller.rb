@@ -1,5 +1,6 @@
 class UserRecipeCategoriesController < ApplicationController
   before_action :set_user_recipe_category, only: [:update, :destroy]
+  skip_before_action :only_admin!
 
   def index
   end

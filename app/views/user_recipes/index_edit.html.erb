@@ -2,7 +2,7 @@
 <%= render partial: "user_recipes/pills" %>
 
 <% @user_recipes_without_category.each do |user_recipe| %>
-  <%= user_recipe.recipe.name %>
+  <%= link_to user_recipe.recipe.name, user_recipe.recipe %>
   <%= link_to "x", user_recipe, method: :delete, data: {confirm: 'Are you sure?'} %>
   <br>
 <% end %>
