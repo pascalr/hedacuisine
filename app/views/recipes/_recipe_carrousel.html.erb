@@ -1,3 +1,5 @@
+<% carrousel_id = 1 unless defined?(carrousel_id) %>
+
 <% unless recipes.blank? %>
   <% tag_id = 1 if local_assigns[:tag_id].nil? %>
   <% title = "" if local_assigns[:title].nil? %>
@@ -5,14 +7,14 @@
   <span style="font-size: 1.4rem; font-weight: bold;"><%= title %></span>
   
   
-  <span id="prev-tag-<%= tag_id %>" class="my-tns-control"><%= image_tag "left_arrow.svg", size: "15x15" %></span>
-  <span id="next-tag-<%= tag_id %>" class="my-tns-control"><%= image_tag "right_arrow.svg", size: "15x15" %></span>
+  <span id="prev-recipe-carrousel-<%= carrousel_id %>" class="my-tns-control"><%= image_tag "left_arrow.svg", size: "15x15" %></span>
+  <span id="next-recipe-carrousel-<%= carrousel_id %>" class="my-tns-control"><%= image_tag "right_arrow.svg", size: "15x15" %></span>
 
-  <div id="recipe-carrousel" data-tagid=<%= tag_id %>>
+  <div id="recipe-carrousel-<%= carrousel_id %>" class="recipe-carrousel">
     <% recipes.each do |recipe| %>
-      <div class="recipe">
+      <div class="recipe" style="width: 300px;">
         <%= link_to recipe_path(recipe) do %>
-          <%= image_tag "/images/#{recipe.image_id}_s.jpg", style: "margin-right: 20px;" %>
+          <%= image_tag "/images/#{recipe.image_id}_s.jpg" %>
         <% end %>
       </div>
     <% end %>

@@ -7,7 +7,7 @@
   <% if category.user_recipes.blank? %>
     <p>Aucune recettes pour l'instant.</p>
   <% end %>
-  <%= render partial: "recipes/recipe_carrousel", locals: {title: category.name, recipes: category.user_recipes.map(&:recipe)} %>
+  <%= render partial: "recipes/recipe_carrousel", locals: {carrousel_id: category.id, title: category.name, recipes: category.user_recipes.map(&:recipe)} %>
   <br>
 <% end %>
 
@@ -15,4 +15,4 @@
   <p>Aucune recettes pour l'instant. Ajouter des recettes en cliquant sur l'onglet «Modifier mes recettes»</p>
 <% end %>
 
-<%= javascript_pack_tag "recipe_slider_pack" %>
+<%= javascript_pack_tag "recipe_slider_pack_v2" %>
