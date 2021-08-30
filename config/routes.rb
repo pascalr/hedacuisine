@@ -40,9 +40,15 @@ Rails.application.routes.draw do
     post 'push_machine', to: 'sim#push_machine'
     post 'push_modifications', to: 'sim#push_modifications'
   
-    resources :containers, only: [:create, :update, :destroy, :show]
+    resources :containers, only: [:index, :create, :update, :destroy, :show]
     resources :machine_foods, only: [:create, :update, :destroy]
     resources :grocery_items, only: [:create, :update, :destroy]
+    resources :meals#, only: [:index, :new, :create, :update, :destroy]
+
+    get 'inventory'
+    get 'grocery_list'
+    get 'inventory_config'
+    get 'grocery_config'
 
     delete 'clear_grocery_items', to: 'grocery_items#clear', as: 'clear_grocery_items'
 

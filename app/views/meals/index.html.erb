@@ -1,0 +1,16 @@
+<%= render partial: "machines/tabs" %>
+
+<p id="notice"><%= notice %></p>
+
+<%= month_calendar events: @meals do |date, meals| %>
+  <%= date.day %>
+  <%= link_to '+', new_machine_meal_path(machine_id: @machine.id, day: date.day, month: date.month, year: date.year) %>
+
+  <% meals.each do |meal| %>
+    <div>
+      <%= meal.start_time.strftime("%k:%M") %>: <%= link_to meal.recipe.name, recipe_path(meal.recipe) %> <%= link_to 'x', meal, method: :delete, data: { confirm: 'Are you sure?' } %>
+    </div>
+  <% end %>
+<% end %>
+
+<%= link_to 'New Meal', new_machine_meal_path(machine_id: @machine.id) %>

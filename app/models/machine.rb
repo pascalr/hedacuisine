@@ -3,6 +3,7 @@ class Machine < ApplicationRecord
   has_many :machine_foods
   has_many :containers
   has_many :grocery_items
+  has_many :meals
   
   has_many :machine_users
   has_many :users, through: :machine_users

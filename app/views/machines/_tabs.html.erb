@@ -1,0 +1,9 @@
+<ul class="nav nav-tabs">
+  <span class="nav-item navbar-brand"><b><%= @machine.name %></b></span>
+  <%= link_to_active_tab "Inventaire", 1, class: "nav-item nav-link" %>
+  <%= link_to_active_if controller_name == "meals" && action_name == "index", translated("Calendrier"), machine_meals_path(machine_id: @machine.id), class: "nav-item nav-link" %>
+  <%= link_to_active_tab "Grocery list", 2, class: "nav-item nav-link" %>
+  <%= link_to_active_tab "Inventory config", 3, class: "nav-item nav-link" %>
+  <%= link_to_active_tab "Contenants", 4, class: "nav-item nav-link" %>
+  <%= link_to_active_tab "Grocery config", 5, class: "nav-item nav-link" %>
+</ul>

@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Recipe:</strong>
+  <%= @meal.recipe_id %>
+</p>
+
+<p>
+  <strong>Start time:</strong>
+  <%= @meal.start_time %>
+</p>
+
+<p>
+  <strong>End time:</strong>
+  <%= @meal.end_time %>
+</p>
+
+<%= link_to 'Destroy', @meal, method: :delete, data: { confirm: 'Are you sure?' } %>
+<%= link_to 'Edit', edit_meal_path(@meal) %> |
+<%= link_to 'Back', meals_path %>

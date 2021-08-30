@@ -1,0 +1,16 @@
+<h1>Liste d'épicerie</h1>
+
+<h2>Liste de repas considéré</h2>
+<% @meals.group_by(&:recipe_id).each do |key, val| %>
+  <% if val.size > 1 %>
+    <%= val.size %>X
+  <% end %>
+  <%= val[0].recipe.name %><br>
+<% end %>
+
+<h2>Ingrédients</h2>
+<% (Meal.grocery_list_quantities(Meal.where("start_time > ?", start_time)) || []).each do |ingredient_qty| %>
+  <%= number_with_precision ingredient_qty.value, precision: 2, strip_insignificant_zeros: true %>
+  <%= ingredient_qty.unit.name unless ingredient_qty.unit.blank? %>
+  <%= ingredient_qty.ingredient.name %><br>
+<% end %>
