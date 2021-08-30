@@ -10,24 +10,24 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
      var slider = tns({
        container: '#'+elems.item(i).id,
-       items: 5,
-       responsive: {
-         600: {
-           items: 2
-         },
-         900: {
-           items: 3
-         },
-         1400: {
-           items: 4
-         },
-         1700: {
-           items: 5
-         }
-       },
-       //fixedWidth: 280,
+       //items: 5,
+       //responsive: {
+       //  600: {
+       //    items: 2
+       //  },
+       //  900: {
+       //    items: 3
+       //  },
+       //  1400: {
+       //    items: 4
+       //  },
+       //  1700: {
+       //    items: 5
+       //  }
+       //},
+       fixedWidth: 280,
        //slideBy: 'page',
-       //gutter: 10,
+       //gutter: 50,
        nav: false,
        swipeAngle: false,
        speed: 400,
