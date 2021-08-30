@@ -22,6 +22,9 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :user_recipes, only: [:index, :create, :update, :destroy]
+  get 'user_recipes/index_with_pictures'
+  get 'user_recipes/index_with_details'
+  get 'user_recipes/index_edit'
   resources :user_recipe_categories, only: [:create, :update, :destroy]
   
   resources :machine_users, only: [:create, :update, :destroy, :new]
@@ -55,6 +58,7 @@ Rails.application.routes.draw do
   resources :categories, only: [:create, :update, :destroy]
   post 'menus/add_or_create_recipe'
 
+  get 'users/index'
   post 'users/toggle_favorite_menu'
   get 'users/modify' # devise already use edit
 #  resources 'users', only: [:edit]

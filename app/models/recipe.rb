@@ -84,8 +84,12 @@ class Recipe < ApplicationRecord
     "#{id}-#{name}"
   end
 
+  # DEPRECATED. Version_name is deprecated. Use only name.
+  #def fullname
+  #  version_name ? "#{name} (#{version_name})" : name
+  #end
   def fullname
-    version_name ? "#{name} (#{version_name})" : name
+    name
   end
   
   def missing_ingredients

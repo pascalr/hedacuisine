@@ -3,7 +3,13 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   #devise :database_authenticatable, :registerable,
   #       :recoverable, :rememberable, :validatable
-  devise :database_authenticatable#, :registerable,
+  
+  # NOTE: In order to create a user. Uncomment registerable. Edit config/initializers/devise..., comment
+  # config.scoped_views = true
+  # run $ rails restart
+  # At some point when I allow the creation of users
+
+  devise :database_authenticatable#, :registerable
   #       :recoverable, :rememberable, :validatable
 
   has_many :menus

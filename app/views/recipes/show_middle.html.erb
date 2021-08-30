@@ -52,31 +52,21 @@ tr:last-child td:last-child { border-bottom-right-radius: 5px; }
   <%# form.collection_select :unit_system, UnitSystem.all, :id, :name, selected: params[:unit_system_id], class: 'inline' %>
 <%# end %>
 
-<div class="row" style="margin-bottom: 10px;">
-  <div class="col-m-6">
+<div class="recipe-body">
+
+  <h1 class="recipe-title" style="width: 100%; text-align: center;">
+    <%= translated(@recipe.name) %>
+  </h1>
+  <div style="width: 100%;">
     <% if @recipe.image_id %>
-      <%= image_tag "/images/#{@recipe.image_id}_m.jpg", style: "margin-right: 20px;" %>
+      <%= image_tag "/images/#{@recipe.image_id}_m.jpg", style: "margin: auto; display: block;" %>
     <% end %>
   </div>
-  <div class="col-m-6">
-    <h1 class="recipe-title">
-      <%= translated(@recipe.name) %>
-      <!--<span style="font-size: 1.5rem;"><%# "(#{@recipe.version_name})" if @recipe.version_name %></span>-->
-    </h1>
-    <div class="mb-2" style="margin-top: -1.2em; font-size: 0.8em;">
-      <% unless @recipe.source.blank? %>
-        Inspiration:
-        <%= link_to @recipe.source, @recipe.source, style: "color: gray;" %>
-      <% end %>
-    </div>
-    <div style="margin-top: 1.5rem;">
-      <%= render partial: "details_medium_version", locals: {recipe: @recipe} %>
-    </div>
-
+  <div style="display: flex; justify-content: space-between;">
+    <div>Préparation: 5 min</div>
+    <div>Cuisson: 25 min</div>
+    <div>Portions: 14 crêpes</div>
   </div>
-</div>
-
-<div class="recipe-body">
   <!-- TODO: Si un ingrédient se retrouve plusieurs fois dans la recette, afficher un avertissement et la quantité totale comme ça le monde peuvent savoir s'ils en ont assez -->
   
   <% unless @recipe.ingredients.blank? %>
@@ -90,9 +80,9 @@ tr:last-child td:last-child { border-bottom-right-radius: 5px; }
       </div>
     <% end %>
     
-    <h2 class="h2 toggle-link" data-toggle_id="ing_list">+ Liste d'ingrédients</h2>
+    <h2 class="h2 toggle-link-visible" data-toggle_id="ing_list">- Liste d'ingrédients</h2>
 
-    <table id="ing_list" style="margin-top: -8px; margin-bottom: 8px;" hidden>
+    <table id="ing_list" style="margin-top: -8px; margin-bottom: 8px;">
       <tbody>
         <% @recipe.ingredients.order(:item_nb).each do |ing| %>
           <tr>
@@ -129,7 +119,7 @@ tr:last-child td:last-child { border-bottom-right-radius: 5px; }
   
   <h2 class="h2" style="margin-top: 2rem;">Commentaires</h2>
 
-  <%= translated("Aucun commentaire pour l'instant.") %>
+  Aucun commentaires pour l'instant.
 </div>
 
 <br>

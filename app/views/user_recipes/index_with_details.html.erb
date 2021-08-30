@@ -1,0 +1,23 @@
+<%= render partial: "recipes/tabs" %>
+<%= render partial: "user_recipes/pills" %>
+
+<% @user_recipes_without_category.each do |user_recipe| %>
+  <%= render partial: user_recipe.recipe %>
+<% end %>
+
+<% @user_recipe_categories.each do |category| %>
+  <h2>
+    <%= category.name %>
+  </h2>
+  <% category.user_recipes.each do |user_recipe| %>
+    <%= render partial: user_recipe.recipe %>
+  <% end %>
+  <br>
+<% end %>
+
+<%= form_with(model: UserRecipeCategory.new, local: true) do |form| %>
+  <%= form.text_field :name %>
+  <%= form.submit "Ajouter une catégorie" %>
+<% end %>
+
+<%= javascript_pack_tag "menu_editor" %>

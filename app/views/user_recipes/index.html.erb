@@ -1,43 +1,28 @@
 <%= render partial: "recipes/tabs" %>
+<%= render partial: "user_recipes/pills" %>
 
-<h2>Dernières recettes ajoutées</h2>
-
-<p>TODO: Recipe slider</p>
-
-<p>En voir plus</p>
-
-<h2>Mes recettes</h2>
-
-<% UserRecipe.where(user_recipe_category_id: nil).each do |user_recipe| %>
+<% @user_recipes_without_category.each do |user_recipe| %>
   <%= user_recipe.recipe.name %>
   <%= link_to "x", user_recipe, method: :delete, data: {confirm: 'Are you sure?'} %>
   <br>
 <% end %>
 
-<span id="autocomplete-data" data-recipes="<%= Recipe.all.map {|v| [v.id, v.fullname] } %>"/>
-
-<% UserRecipeCategory.includes(:user_recipes).all.each do |category| %>
-  <h2>
+<% @user_recipe_categories.each do |category| %>
+  <h2 style="font-size: 1.4rem;">
     <%= category.name %>
-    <%= link_to "x", category, method: :delete, data: {confirm: 'Are you sure?'} %>
   </h2>
+  <% if category.user_recipes.blank? %>
+    <p>Aucune recettes pour l'instant.</p>
+  <% end %>
   <% category.user_recipes.each do |user_recipe| %>
     <%= link_to user_recipe.recipe.name, user_recipe.recipe %>
-    <%= link_to "x", user_recipe, method: :delete, data: {confirm: 'Are you sure?'} %>
     <br>
   <% end %>
-  <%= form_with(model: UserRecipe.new, local: true) do |form| %>
-    <%= form.text_field :recipe_name, id: "autocomplete-search-recipe-#{category.id}", class: 'autocomplete-search-recipe', placeholder: "Recette...", size: "40" %>
-    <%= form.hidden_field :recipe_id, id: "autocomplete-search-recipe-#{category.id}-id" %>
-    <%= form.hidden_field :user_recipe_category_id, value: category.id %>
-    <%= form.submit "Ajouter une recette" %>
-  <% end %>
-  <hr>
+  <br>
 <% end %>
 
-<%= form_with(model: UserRecipeCategory.new, local: true) do |form| %>
-  <%= form.text_field :name %>
-  <%= form.submit "Ajouter une catégorie" %>
+<% if @user_recipes_without_category.blank? and @user_recipe_categories.blank? %>
+  <p>Aucune recettes pour l'instant. Ajouter des recettes en cliquant sur l'onglet «Modifier»</p>
 <% end %>
 
 <%= javascript_pack_tag "menu_editor" %>
