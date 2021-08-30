@@ -1,6 +1,6 @@
 <ul class="nav nav-pills" style="margin-bottom: 10px;">
-  <%= link_to_active_if controller_name == "user_recipes" && action_name == "index", translated("Recettes par nom"), user_recipes_path, class: "nav-item nav-link" %>
-  <%= link_to_active_if controller_name == "user_recipes" && action_name == "index_with_pictures", translated("Recettes par image"), user_recipes_index_with_pictures_path, class: "nav-item nav-link" %>
-  <%= link_to_active_if controller_name == "user_recipes" && action_name == "index_with_details", translated("Recettes par description"), user_recipes_index_with_details_path, class: "nav-item nav-link" %>
-  <%= link_to_active_if controller_name == "user_recipes" && action_name == "index_edit", translated("Modifier"), user_recipes_index_edit_path, class: "nav-item nav-link" %>
+  <%= link_to_active_if controller_name == "user_recipes" && action_name == "index", translated("Par nom"), user_recipes_path, class: "nav-item nav-link" %>
+  <%= link_to_active_if controller_name == "user_recipes" && action_name == "index_with_pictures", translated("Par image"), user_recipes_index_with_pictures_path, class: "nav-item nav-link" %>
+  <%= link_to_active_if controller_name == "user_recipes" && action_name == "index_with_details", translated("Par description"), user_recipes_index_with_details_path, class: "nav-item nav-link" %>
+  <%= link_to_active_if controller_name == "user_recipes" && action_name == "index_edit", translated("Modifier mes recettes"), user_recipes_index_edit_path, class: "nav-item nav-link" %>
 </ul>
