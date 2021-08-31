@@ -1,0 +1,13 @@
+<%= render partial: "machines/tabs" %>
+
+<h2>Meals - <%= @day.day %> <%= t('date.month_names')[@day.month] %> <%= @day.year %></h2>
+
+<% @meals.each do |meal| %>
+  <%= meal.start_time.strftime("%k:%M") %>: <%= link_to meal.recipe.name, recipe_path(meal.recipe) %> <%= link_to 'x', [@machine, meal], method: :delete, data: { confirm: 'Are you sure?' } %><br>
+<% end %>
+
+<h3>New Meal</h3>
+
+<%= render 'form', meal: Meal.new %>
+
+<%= link_to 'Back', machine_meals_path(@machine) %>

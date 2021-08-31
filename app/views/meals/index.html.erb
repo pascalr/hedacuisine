@@ -3,14 +3,35 @@
 <p id="notice"><%= notice %></p>
 
 <%= month_calendar events: @meals do |date, meals| %>
-  <%= date.day %>
-  <%= link_to '+', new_machine_meal_path(machine_id: @machine.id, day: date.day, month: date.month, year: date.year) %>
-
-  <% meals.each do |meal| %>
-    <div>
-      <%= meal.start_time.strftime("%k:%M") %>: <%= link_to meal.recipe.name, recipe_path(meal.recipe) %> <%= link_to 'x', meal, method: :delete, data: { confirm: 'Are you sure?' } %>
+  <div class="calendar-day" data-path="<%= daily_machine_meals_path(year: date.year, month: date.month, day: date.day)%>" style="cursor: pointer;" tabindex="1">
+    <div style="width: 100%; text-align: center;"><%= date.day %></div>
+    <div style="min-height: 4rem;">
+      <% meals.each do |meal| %>
+        <div class="inner-link">
+          <%= link_to meal.recipe.name, recipe_path(meal.recipe) %>
+        </div>
+      <% end %>
     </div>
-  <% end %>
+  </div>
 <% end %>
 
 <%= link_to 'New Meal', new_machine_meal_path(machine_id: @machine.id) %>
+
+<%= javascript_pack_tag "calendar" %>
+
+
+<!--<div style="position: relative; width: 100%; height: 100%;">
+  <%# date.day %>
+  <%# meals.each do |meal| %>
+    <div>
+      <%# meal.start_time.strftime("%k:%M") %>: <%# link_to meal.recipe.name, recipe_path(meal.recipe) %> <%# link_to 'x', [@machine, meal], method: :delete, data: { confirm: 'Are you sure?' } %>
+    </div>
+  <%# end %>
+  <div style="position: absolute; right: 0; bottom: 0;">
+    <%# link_to '+', new_machine_meal_path(machine_id: @machine.id, day: date.day, month: date.month, year: date.year) %>
+  </div>
+</div>
+
+  <div class="calendar-day" data-year="<%# date.year %>" data-month="<%# date.month %>" data-day="<%# date.day %>" data-path="<%# daily_meals_path()%>">
+
+-->

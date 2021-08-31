@@ -4,22 +4,39 @@ class MealsController < ApplicationController
   #skip_before_action :only_admin!
   
   def index
-    @meals = @machine.meals
+    @meals = @machine.meals.includes(:recipe)
+  end
+
+  def new
+    @meal = Meal.new
+  end
+
+  def daily
+    @day = DateTime.new(params[:year].to_i, params[:month].to_i, params[:day].to_i, 0, 0, 0)
+    @next_day = @day + 1.day
+    @meals = Meal.where(start_time: @day..@next_day)
   end
 
   def create
-    @machine.meals.create!(meal_params)
-    redirect_back fallback_location: meals_path
+    meal = @machine.meals.build(meal_params)
+    meal.recipe = Recipe.find(params[:meal][:recipe_id])
+    t = meal.start_time
+    meal.start_time = DateTime.new(params[:year].to_i, params[:month].to_i, params[:day].to_i, t.hour, t.min, t.sec, t.zone)
+    meal.save!
+    redirect_back fallback_location: machine_meals_path(@machine)
+    #redirect_to machine_meals_path(@machine)
   end
 
   def update
     @meal.update!(meal_params)
-    redirect_back fallback_location: meals_path
+    redirect_back fallback_location: machine_meals_path(@machine)
+    #redirect_to machine_meals_path(@machine)
   end
 
   def destroy
     @meal.destroy!
-    redirect_back fallback_location: meals_path
+    redirect_back fallback_location: machine_meals_path(@machine)
+    #redirect_to machine_meals_path(@machine)
   end
 
   private
@@ -33,6 +50,6 @@ class MealsController < ApplicationController
     end
 
     def meal_params
-      params.require(:meal).permit(:is_done)
+      params.require(:meal).permit(:is_done, :start_time, :end_time)
     end
 end

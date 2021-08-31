@@ -43,7 +43,11 @@ Rails.application.routes.draw do
     resources :containers, only: [:index, :create, :update, :destroy, :show]
     resources :machine_foods, only: [:create, :update, :destroy]
     resources :grocery_items, only: [:create, :update, :destroy]
-    resources :meals#, only: [:index, :new, :create, :update, :destroy]
+    resources :meals do #, only: [:index, :new, :create, :update, :destroy]
+      collection do
+        get 'daily'
+      end
+    end
 
     member do
       get 'inventory'

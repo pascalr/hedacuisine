@@ -1,4 +1,6 @@
-<%= form_with(model: meal, local: true) do |form| %>
+<span id="autocomplete-data" data-recipes="<%= Recipe.all.map {|v| [v.id, v.fullname] } %>"/>
+
+<%= form_with(model: [@machine, meal], local: true) do |form| %>
   <% if meal.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(meal.errors.count, "error") %> prohibited this meal from being saved:</h2>
@@ -16,8 +18,8 @@
   <%= hidden_field_tag :year, params[:year] %>
 
   <div class="field">
-    <%= form.label :recipe_id %>
-    <%= form.collection_select :recipe_id, Recipe.order(:name), :id, :name %>
+    <%= form.text_field :recipe_name, id: "autocomplete-search-recipe-1", class: 'autocomplete-search-recipe', placeholder: "Recette...", size: "40" %>
+    <%= form.hidden_field :recipe_id, id: "autocomplete-search-recipe-1-id" %>
   </div>
 
   <div class="field">
@@ -29,3 +31,5 @@
     <%= form.submit %>
   </div>
 <% end %>
+
+<%= javascript_pack_tag "menu_editor" %>
