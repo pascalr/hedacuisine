@@ -1,14 +1,16 @@
-<% machine.generate_grocery_list %>
-<% @machine_foods = machine.machine_foods.includes(:container_quantities, :food).order('foods.name') %>
-<% @containers = machine.containers.left_outer_joins(:container_ingredients).where(container_ingredients: { id: nil }).where.not(food_id: nil) %>
-<% @empty_containers = machine.containers.left_outer_joins(:container_ingredients).where(container_ingredients: { id: nil }).where(food_id: nil) %>
+<%= render partial: "machines/tabs" %>
+
+<% @machine.generate_grocery_list %>
+<% @machine_foods = @machine.machine_foods.includes(:container_quantities, :food).order('foods.name') %>
+<% @containers = @machine.containers.left_outer_joins(:container_ingredients).where(container_ingredients: { id: nil }).where.not(food_id: nil) %>
+<% @empty_containers = @machine.containers.left_outer_joins(:container_ingredients).where(container_ingredients: { id: nil }).where(food_id: nil) %>
 
 <%= link_to "print", "TODO_CLEAR" %> | 
-<%= link_to "clear", machine_clear_grocery_items_path(machine), method: :delete, data: {confirm: "Are you sure?"} %>
+<%= link_to "clear", machine_clear_grocery_items_path(@machine), method: :delete, data: {confirm: "Are you sure?"} %>
 
 <h1 style="font-size: 1.5rem; margin-top: 1.5rem;">Grocery list</h1>
 
-<% low_foods = machine.machine_foods.where("current_weight < grocery_threshold").to_a.sort_by {|f| f.food.name} %>
+<% low_foods = @machine.machine_foods.where("current_weight < grocery_threshold").to_a.sort_by {|f| f.food.name} %>
 
 <style>
 table {
@@ -42,20 +44,20 @@ tr:last-child td:last-child { border-bottom-right-radius: 5px; }
   <tbody>
     <tr>
       <td style="border-right: 0;">
-        <%= form_with(model: [machine, GroceryItem.new], local: true) do |form| %>
+        <%= form_with(model: [@machine, GroceryItem.new], local: true) do |form| %>
           <%= form.text_field :description %>
           <%= form.submit "Ajouter un item" %>
         <% end %>
       </td>
       <td style="border-left: 0;"></td>
     </tr>
-    <% machine.grocery_items.each do |item| %>
+    <% @machine.grocery_items.each do |item| %>
       <tr>
         <td style="border-right: 0;">
           <%= item.description %>
         </td>
         <td style="border-left: 0; text-align: center">
-          <%= link_to "X", [machine, item], method: :delete, data: {confirm: 'Are you sure?'} %>
+          <%= link_to "X", [@machine, item], method: :delete, data: {confirm: 'Are you sure?'} %>
         </td>
       </tr>
     <% end %>

@@ -1,0 +1,4 @@
+<ul class="nav nav-pills" style="margin-bottom: 10px;">
+  <%= link_to_active_if controller_name == "machines" && action_name == "inventory_config", translated("Inventory config"), inventory_config_machine_path(@machine), class: "nav-item nav-link" %>
+  <%= link_to_active_if controller_name == "machines" && action_name == "grocery_config", translated("Grocery config"), grocery_config_machine_path(@machine), class: "nav-item nav-link" %>
+</ul>

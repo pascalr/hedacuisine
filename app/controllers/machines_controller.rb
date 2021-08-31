@@ -1,5 +1,5 @@
 class MachinesController < ApplicationController
-  before_action :set_machine, only: %i[ show edit update destroy ]
+  before_action :set_machine, only: %i[ show edit update destroy inventory grocery_list config inventory_config grocery_config ]
   skip_before_action :authenticate_user!, only: [:index]
   skip_before_action :only_admin!, only: [:index]
 
@@ -7,8 +7,14 @@ class MachinesController < ApplicationController
   def index
     if current_user and current_user.machines.first
       @machine = current_user.machines.first
-      render :show
+      redirect_to inventory_machine_path(@machine)
     end
+  end
+
+  def inventory_config
+  end
+
+  def grocery_config
   end
 
   # GET /machines/1 or /machines/1.json

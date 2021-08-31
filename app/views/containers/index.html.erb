@@ -1,4 +1,6 @@
-<% @containers = machine.containers.includes(:container_ingredients).order(:jar_id) %>
+<%= render partial: "machines/tabs" %>
+
+<% @containers = @machine.containers.includes(:container_ingredients).order(:jar_id) %>
 <% @container_formats = ContainerFormat.all %>
 <% @foods = Food.where(in_pantry: true).all %>
 
@@ -6,7 +8,7 @@
 <%= form_with(model: [@machine, Container.new], local: true) do |form| %>
   <%= form.label :jar_id %>
   <%= form.text_field :jar_id %>
-  <%= form.hidden_field :machine_id, value: machine.id %>
+  <%= form.hidden_field :machine_id, value: @machine.id %>
   <%= form.label :container_format_id %>
   <%= form.collection_select :container_format_id, ContainerFormat.all, :id, :name, include_blank: true %>
   <%= form.submit %>

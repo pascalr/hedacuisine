@@ -3,6 +3,9 @@ class ContainersController < ApplicationController
   before_action :set_container, only: [:update, :destroy]
   #skip_before_action :only_admin!
   
+  def index
+  end
+  
   def create
     jar_id = params[:jar_id].nil? ? Container.maximum(:jar_id).next : params[:jar_id]
     @machine.containers.create!(container_params.merge(jar_id: jar_id))

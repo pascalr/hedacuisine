@@ -1,3 +1,6 @@
+<%= render partial: "machines/tabs" %>
+<%= render partial: "machines/pills_config" %>
+
 <h3>Add a food</h3>
 <%= form_with(model: [@machine, MachineFood.new], local: true) do |form| %>
   <%= form.label :food_id %>
@@ -18,7 +21,7 @@
   <% @container_formats = ContainerFormat.where.not(icon: [nil, '']).order(volume: :desc) %>
 
   <tbody>
-    <% machine.machine_foods.includes(:container_quantities, :food, container_quantities: :container_format).each do |machine_food| %>
+    <% @machine.machine_foods.includes(:container_quantities, :food, container_quantities: :container_format).each do |machine_food| %>
       <%= form_with(model: [@machine, machine_food], local: true) do |form| %>
         <tr>
           <td style="vertical-align: middle;"><%= link_to machine_food.food.name.capitalize, machine_food.food %></td>

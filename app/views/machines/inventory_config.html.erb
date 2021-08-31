@@ -1,4 +1,7 @@
-<% @machine_foods = machine.machine_foods.includes(:container_quantities, :food, container_quantities: :container_format)%>
+<%= render partial: "machines/tabs" %>
+<%= render partial: "machines/pills_config" %>
+
+<% @machine_foods = @machine.machine_foods.includes(:container_quantities, :food, container_quantities: :container_format)%>
 <% @container_formats = ContainerFormat.where.not(icon: [nil, '']).order(volume: :desc) %>
 
 <h3>Add a food</h3>

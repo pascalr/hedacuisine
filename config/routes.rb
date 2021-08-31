@@ -45,10 +45,12 @@ Rails.application.routes.draw do
     resources :grocery_items, only: [:create, :update, :destroy]
     resources :meals#, only: [:index, :new, :create, :update, :destroy]
 
-    get 'inventory'
-    get 'grocery_list'
-    get 'inventory_config'
-    get 'grocery_config'
+    member do
+      get 'inventory'
+      get 'grocery_list'
+      get 'grocery_config'
+      get 'inventory_config'
+    end
 
     delete 'clear_grocery_items', to: 'grocery_items#clear', as: 'clear_grocery_items'
 

@@ -1,3 +1,5 @@
+<%= render partial: "machines/tabs" %>
+
 <style>
 .containers {
   height: 48px;
@@ -21,7 +23,7 @@
   </thead>
 
   <tbody>
-    <% machine.machine_foods.includes(:container_quantities, :food).order('foods.name').each do |machine_food| %>
+    <% @machine.machine_foods.includes(:container_quantities, :food).order('foods.name').each do |machine_food| %>
       <tr>
         <td style="vertical-align: middle; font-size: 1.2rem;"><%= link_to machine_food.food.name.capitalize, machine_food.food %></td>
         <td>
