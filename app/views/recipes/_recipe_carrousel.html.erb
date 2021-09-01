@@ -14,7 +14,7 @@
     <% recipes.each do |recipe| %>
       <div class="recipe" style="width: 280px;">
         <%= link_to recipe_path(recipe) do %>
-          <%= image_tag "/images/#{recipe.image_id}_s.jpg" %>
+          <%= image_tag "/images/#{recipe.image_id}_s.jpg", width: 255, height: 171 %>
           <div style="width: 255px; text-align: center; font-family: 'Satisfy', cursive; font-size: 1.8rem; color: black;">
             <%= recipe.name %>
           </div>

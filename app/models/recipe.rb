@@ -18,6 +18,8 @@ class Recipe < ApplicationRecord
   #has_many :ingredients, foreign_key: 'recipe_id'
   has_many :foods, through: :ingredients
   belongs_to :group, optional: true
+
+  has_many :user_recipes
   
   has_many :recipe_ingredients#, foreign_key: 'recipe_id'
 
@@ -98,6 +100,10 @@ class Recipe < ApplicationRecord
 
   def last_ingredient_number
     recipe_ingredients.blank? ? 0 : recipe_ingredients.maximum(:item_nb)
+  end
+
+  def user_recipe_for(user)
+    user_recipes.where(user_id: user.id).first
   end
   
   #def missing_ingredients_for(user)
