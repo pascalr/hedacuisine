@@ -1,7 +1,9 @@
 <% recipe = nil unless defined?(recipe) %>
 
 <%= month_calendar events: meals || [] do |date, meals| %>
-  <div class="calendar-day" data-path="<%= daily_machine_meals_path(machine_id: machine.id, year: date.year, month: date.month, day: date.day)%>" style="cursor: pointer;" tabindex="1" data-year="<%= date.year %>" data-month="<%= date.month %>" data-day="<%= date.day %>"<%= " data-recipe-name=#{recipe.name}" if recipe %>>
+
+  <%= content_tag(:div, nil, class: "calendar-day", data: {path: daily_machine_meals_path(machine_id: machine.id, year: date.year, month: date.month, day: date.day), year: date.year, month: date.month, day: date.day, "recipe-name": recipe ? recipe.name : nil }, style: "cursor: pointer;", tabindex: 1) do %>
+
     <div style="width: 100%; text-align: center;"><%= date.day %></div>
     <div style="min-height: 4rem;">
       <% meals.each do |meal| %>
@@ -10,7 +12,8 @@
         </div>
       <% end %>
     </div>
-  </div>
+
+  <% end %>
 <% end %>
 
 <% if recipe %>
