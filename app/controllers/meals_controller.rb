@@ -1,7 +1,7 @@
 class MealsController < ApplicationController
   before_action :set_machine
   before_action :set_meal, only: [:update, :destroy]
-  #skip_before_action :only_admin!
+  skip_before_action :only_admin!
   
   def index
     @meals = @machine.meals.includes(:recipe)
@@ -21,6 +21,7 @@ class MealsController < ApplicationController
     meal = @machine.meals.build(meal_params)
     meal.recipe = Recipe.find(params[:meal][:recipe_id])
     t = meal.start_time
+    t = DateTime.new.noon unless t
     meal.start_time = DateTime.new(params[:year].to_i, params[:month].to_i, params[:day].to_i, t.hour, t.min, t.sec, t.zone)
     meal.save!
     redirect_back fallback_location: machine_meals_path(@machine)

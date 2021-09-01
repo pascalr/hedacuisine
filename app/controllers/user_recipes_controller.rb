@@ -34,8 +34,8 @@ class UserRecipesController < ApplicationController
   private
 
     def set_user_recipes
-      @user_recipes_without_category = current_user.user_recipes.where(user_recipe_category_id: nil)
-      @user_recipe_categories = current_user.user_recipe_categories.includes(:user_recipes).all
+      @user_recipes_without_category = current_user.user_recipes.where(user_recipe_category_id: nil).includes(user_recipes: :recipe)
+      @user_recipe_categories = current_user.user_recipe_categories.includes(user_recipes: :recipe).all
     end
 
     def set_user_recipe

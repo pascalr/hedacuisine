@@ -2,23 +2,7 @@
 
 <p id="notice"><%= notice %></p>
 
-<%= month_calendar events: @meals do |date, meals| %>
-  <div class="calendar-day" data-path="<%= daily_machine_meals_path(year: date.year, month: date.month, day: date.day)%>" style="cursor: pointer;" tabindex="1">
-    <div style="width: 100%; text-align: center;"><%= date.day %></div>
-    <div style="min-height: 4rem;">
-      <% meals.each do |meal| %>
-        <div class="inner-link">
-          <%= link_to meal.recipe.name, recipe_path(meal.recipe) %>
-        </div>
-      <% end %>
-    </div>
-  </div>
-<% end %>
-
-<%= link_to 'New Meal', new_machine_meal_path(machine_id: @machine.id) %>
-
-<%= javascript_pack_tag "calendar" %>
-
+<%= render partial: "calendar", locals: {machine: @machine, meals: @meals} %>
 
 <!--<div style="position: relative; width: 100%; height: 100%;">
   <%# date.day %>

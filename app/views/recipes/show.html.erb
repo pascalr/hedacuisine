@@ -10,8 +10,15 @@
     <%= form.submit "Ajouter à mes recettes", class: "btn btn-outline-primary" %>
   <% end %>
 <% end %>
-<button type="button" class="btn btn-outline-secondary">Ajouter à mon calendrier</button>
+<button type="button" class="btn btn-outline-secondary" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+  Ajouter à mon calendrier
+</button>
 <div style="height: 10px;"></div>
+<% machine = current_user.machines.first_or_create %>
+<div class="collapse" id="collapseExample">
+  <%= render partial: "meals/calendar", locals: {recipe: @recipe, machine: machine, meals: machine.meals.includes(:recipe) } %>
+  <div style="height: 10px;"></div>
+</div>
 
 <style>
 .subnav-link {
