@@ -1,7 +1,7 @@
 <% recipe = nil unless defined?(recipe) %>
 
 <%= month_calendar events: meals || [] do |date, meals| %>
-  <div class="calendar-day" data-path="<%= daily_machine_meals_path(machine_id: machine.id, year: date.year, month: date.month, day: date.day)%>" style="cursor: pointer;" tabindex="1" data-year="<%= date.year %>" data-month="<%= date.month %>" data-day="<%= date.day %>">
+  <div class="calendar-day" data-path="<%= daily_machine_meals_path(machine_id: machine.id, year: date.year, month: date.month, day: date.day)%>" style="cursor: pointer;" tabindex="1" data-year="<%= date.year %>" data-month="<%= date.month %>" data-day="<%= date.day %>"<%= " data-recipe-name=#{recipe.name}" if recipe %>>
     <div style="width: 100%; text-align: center;"><%= date.day %></div>
     <div style="min-height: 4rem;">
       <% meals.each do |meal| %>
@@ -14,7 +14,7 @@
 <% end %>
 
 <% if recipe %>
-  <%= form_with(model: [machine, Meal.new], local: true, id: "new_meal_form") do |form| %>
+  <%= form_with(model: [machine, Meal.new], local: false, id: "new_meal_form") do |form| %>
     <%= form.hidden_field :recipe_id, value: recipe.id %>
     <%= hidden_field_tag :year, nil, id: "new_meal_form_year" %>
     <%= hidden_field_tag :month, nil, id: "new_meal_form_month" %>

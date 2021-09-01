@@ -20,7 +20,7 @@ class Recipe < ApplicationRecord
   belongs_to :group, optional: true
 
   has_many :user_recipes
-  
+
   has_many :recipe_ingredients#, foreign_key: 'recipe_id'
 
   before_save do

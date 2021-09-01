@@ -24,8 +24,10 @@ class MealsController < ApplicationController
     t = DateTime.new.noon unless t
     meal.start_time = DateTime.new(params[:year].to_i, params[:month].to_i, params[:day].to_i, t.hour, t.min, t.sec, t.zone)
     meal.save!
-    redirect_back fallback_location: machine_meals_path(@machine)
-    #redirect_to machine_meals_path(@machine)
+    respond_to do |format|
+      format.html { redirect_back fallback_location: machine_meals_path(@machine) }
+      format.js { head :ok }
+    end
   end
 
   def update
