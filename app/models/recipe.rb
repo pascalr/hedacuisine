@@ -103,6 +103,7 @@ class Recipe < ApplicationRecord
   end
 
   def user_recipe_for(user)
+    return nil if user.nil?
     user_recipes.where(user_id: user.id).first
   end
   

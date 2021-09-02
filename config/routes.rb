@@ -32,6 +32,8 @@ Rails.application.routes.draw do
   post 'change_food_tag', to: 'foods#change_tag'
 
   get 'recipes/visibility'
+
+  get 'articles/index'#, to: 'articles'
   
   resources :machines do
     get 'get_state', to: 'sim#get_state'

@@ -2,7 +2,7 @@
 
 <div style="display: inline-block;"></div>
 <% user_recipe = @recipe.user_recipe_for(current_user) %>
-<% if user_recipe %>
+<% if user_signed_in? and user_recipe %>
   <%= button_to "Enlever de mes recettes", user_recipe, class: "btn btn-outline-primary", method: :delete, data: {confirm: 'Are you sure?'}, form: {style: 'display:inline-block;'} %>
 <% else %>
   <%= form_with(model: UserRecipe.new, class: "inline") do |form| %>
@@ -14,11 +14,13 @@
   Ajouter à mon calendrier
 </button>
 <div style="height: 10px;"></div>
-<% machine = current_user.machines.first_or_create %>
-<div class="collapse" id="collapseExample">
-  <%= render partial: "meals/calendar", locals: {recipe: @recipe, machine: machine, meals: machine.meals.includes(:recipe) } %>
-  <div style="height: 10px;"></div>
-</div>
+<% if user_signed_in? %>
+  <% machine = current_user.machines.first_or_create %>
+  <div class="collapse" id="collapseExample">
+    <%= render partial: "meals/calendar", locals: {recipe: @recipe, machine: machine, meals: machine.meals.includes(:recipe) } %>
+    <div style="height: 10px;"></div>
+  </div>
+<% end %>
 
 <style>
 .subnav-link {
