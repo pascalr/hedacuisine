@@ -180,16 +180,20 @@ module IngredientsHelper
       if range_started
         raise "Syntax error. Range already started. {...{" if c == '{'
         if c == '}'
-          indices = extract_range_indices(range)
-          if indices.length > 1
-            ings = recipe.recipe_ingredients.where(item_nb: indices)
-            s += "<ul class='recipe-ingredient-list dash'>"
-            indices.each do |idx|
-              s += "<li>#{pretty_ingredient(ings.find {|ing| ing.item_nb == idx})}</li>"
+          if range.include? "."
+            s += " #{pretty_fraction(range.to_f)} "
+          else
+            indices = extract_range_indices(range)
+            if indices.length > 1
+              ings = recipe.recipe_ingredients.where(item_nb: indices)
+              s += "<ul class='recipe-ingredient-list dash'>"
+              indices.each do |idx|
+                s += "<li>#{pretty_ingredient(ings.find {|ing| ing.item_nb == idx})}</li>"
+              end
+              s += "</ul>"
+            elsif indices.size == 1
+              s += pretty_inline_ingredient(recipe.recipe_ingredients.find_by(item_nb: indices[0]))
             end
-            s += "</ul>"
-          elsif indices.size == 1
-            s += pretty_inline_ingredient(recipe.recipe_ingredients.find_by(item_nb: indices[0]))
           end
           range = ""
           range_started = false
@@ -210,9 +214,10 @@ module IngredientsHelper
   def pretty_complete_instructions(recipe)
     return nil if recipe.blank? || recipe.complete_instructions.blank?
     translated = sanitize(translate_complete_instructions(recipe))
+    replaced = replace_ingredients(recipe, translated)
     s = ""
     step_nb = 0
-    translated.each_line do |line|
+    replaced.each_line do |line|
       if line.starts_with?("_")
         s += "<h3>#{line[1..-1].strip}</h3>"
       elsif line.starts_with?("$$$")
@@ -221,6 +226,8 @@ module IngredientsHelper
         s += "<h4>#{line[2..-1].strip}</h4>"
       elsif line.starts_with?("$")
         s += "<h3>#{line[1..-1].strip}</h3>"
+      elsif line.starts_with?("/")
+        s += "<p><i>#{line[1..-1].strip}</p></i>"
       elsif line.starts_with?("!")
         cmd = line[1..-1].strip
         if cmd == "reset-list"
@@ -228,7 +235,7 @@ module IngredientsHelper
         # TODO: Handle error
         end
       elsif line.starts_with?("#")
-        s += "<div><span class='step-number'>#{(step_nb += 1)}</span>#{replace_ingredients(recipe, line[1..-1])}</div>"
+        s += "<div><span class='step-number'>#{(step_nb += 1)}</span>#{line[1..-1]}</div>"
       else
         s += line
       end
