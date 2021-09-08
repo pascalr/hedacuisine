@@ -15,9 +15,9 @@
   <% if @recipe.recipe_ingredients.blank? %>
     Il n'y a pas encore d'ingrédients.
   <% else %>
-    <ul class="list-group" style="max-width: 600px;">
+    <ul class="list-group" style="max-width: 600px;" data-controller="drag" data-drag-recipe-id="<%= @recipe.id %>">
       <% @recipe.recipe_ingredients.order(:item_nb).each do |ingredient| %>
-        <li class="list-group-item">
+        <li class="list-group-item" data-id="<%= ingredient.id %>">
           <%= form_with(model: [@recipe, ingredient], local: true) do |form| %>
             <%= form.text_field :raw_quantity, size: "10" %>
             <%= link_to ingredient.food.name, ingredient.food %>

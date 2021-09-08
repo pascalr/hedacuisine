@@ -98,10 +98,6 @@ class Recipe < ApplicationRecord
     recipe_ingredients.map(&:food).reject(&:in_pantry)
   end
 
-  def last_ingredient_number
-    recipe_ingredients.blank? ? 0 : recipe_ingredients.maximum(:item_nb)
-  end
-
   def user_recipe_for(user)
     return nil if user.nil?
     user_recipes.where(user_id: user.id).first

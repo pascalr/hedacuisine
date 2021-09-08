@@ -1,4 +1,7 @@
 class RecipeIngredient < ApplicationRecord
+
+  acts_as_list column: "item_nb", scope: :recipe
+
   belongs_to :recipe
   belongs_to :food
   belongs_to :unit, optional: true

@@ -1,12 +1,16 @@
 class RecipeIngredientsController < ApplicationController
   before_action :set_recipe
-  before_action :set_recipe_ingredient, only: [:update, :destroy]
+  before_action :set_recipe_ingredient, only: [:update, :destroy, :move]
 
   def create
     recipe_ingredient = @recipe.recipe_ingredients.build(recipe_ingredient_params)
-    recipe_ingredient.item_nb = (@recipe.recipe_ingredients.maximum(:item_nb) || 0) + 1
     recipe_ingredient.save!
     redirect_back fallback_location: recipe_path(@recipe)
+  end
+
+  def move
+    @recipe_ingredient.insert_at(params[:item_nb].to_i)
+    head :ok
   end
 
   def update
@@ -26,7 +30,7 @@ class RecipeIngredientsController < ApplicationController
     end
 
     def set_recipe_ingredient
-      @recipe_ingredient = @recipe.recipe_ingredients.find(params[:id])
+      @recipe_ingredient = @recipe.recipe_ingredients.find(params[:id] || params[:recipe_ingredient_id])
     end
 
     def recipe_ingredient_params
