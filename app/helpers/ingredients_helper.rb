@@ -221,6 +221,12 @@ module IngredientsHelper
         s += "<h4>#{line[2..-1].strip}</h4>"
       elsif line.starts_with?("$")
         s += "<h3>#{line[1..-1].strip}</h3>"
+      elsif line.starts_with?("!")
+        cmd = line[1..-1].strip
+        if cmd == "reset-list"
+          step_nb = 0
+        # TODO: Handle error
+        end
       elsif line.starts_with?("#")
         s += "<div><span class='step-number'>#{(step_nb += 1)}</span>#{replace_ingredients(recipe, line[1..-1])}</div>"
       else
