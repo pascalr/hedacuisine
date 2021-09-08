@@ -215,6 +215,12 @@ module IngredientsHelper
     translated.each_line do |line|
       if line.starts_with?("_")
         s += "<h3>#{line[1..-1].strip}</h3>"
+      elsif line.starts_with?("$$$")
+        s += "<h5>#{line[3..-1].strip}</h5>"
+      elsif line.starts_with?("$$")
+        s += "<h4>#{line[2..-1].strip}</h4>"
+      elsif line.starts_with?("$")
+        s += "<h3>#{line[1..-1].strip}</h3>"
       elsif line.starts_with?("#")
         s += "<div><span class='step-number'>#{(step_nb += 1)}</span>#{replace_ingredients(recipe, line[1..-1])}</div>"
       else
