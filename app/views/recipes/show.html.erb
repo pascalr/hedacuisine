@@ -103,14 +103,15 @@ tr:last-child td:last-child { border-bottom-right-radius: 5px; }
   
   <% unless @recipe.ingredients.blank? %>
     
-    <% @recipe.ingredients.each do |ing| %>
-      <% next if ing.food.producing_recipes.blank? %>
-      <% r = ing.food.producing_recipes.first %>
-      <h2 class="h2 toggle-link" data-toggle_id="sub_recipe_<%= r.id %>">+ Comment faire: <%= r.name %></h2>
-      <div id="sub_recipe_<%= r.id %>" class="recipe-instructions" hidden>
-        <%= pretty_complete_instructions(r) %>
+    <!--<%# @recipe.ingredients.each do |ing| %>
+      <%# next if ing.food.producing_recipes.blank? %>
+      <%# r = ing.food.producing_recipes.first %>
+      <h2 class="h2 toggle-link" data-toggle_id="sub_recipe_<%# r.id %>">+ Comment faire: <%# r.name %></h2>
+      <div id="sub_recipe_<%# r.id %>" class="recipe-instructions" hidden>
+        <%# pretty_complete_instructions(r) %>
       </div>
-    <% end %>
+    <%# end %>
+    -->
     
     <h2 class="h2 toggle-link" data-toggle_id="ing_list">+ Liste d'ingrédients</h2>
 
