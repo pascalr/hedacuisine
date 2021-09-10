@@ -7,6 +7,17 @@ module IngredientsHelper
     false
   end
 
+  def pretty_time(minutes)
+    hours = minutes.to_i / 60
+    other_minutes = minutes - hours*60
+    r = ""
+    r += "#{hours} #{translated("heure")} " if hours == 1
+    r += "#{hours} #{translated("heures")} " if hours > 1
+    r += "#{other_minutes} #{translated("minute")}" if other_minutes == 1
+    r += "#{other_minutes} #{translated("minutes")}" if other_minutes > 1
+    r.strip
+  end
+
   def pretty_volume_and_weight(ing)
     return nil if ing.weight.nil?
     "#{pretty_volume(ing)} (#{pretty_weight(ing.weight)})"
