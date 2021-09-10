@@ -18,7 +18,8 @@
     <ul class="list-group" style="max-width: 600px;" data-controller="drag" data-drag-recipe-id="<%= @recipe.id %>">
       <% @recipe.recipe_ingredients.order(:item_nb).each do |ingredient| %>
         <li class="list-group-item" data-id="<%= ingredient.id %>">
-          <%= form_with(model: [@recipe, ingredient], local: true) do |form| %>
+          <span style="margin-right: 10px;"><b><%= ingredient.item_nb %>.</b></span>
+          <%= form_with(model: [@recipe, ingredient], local: true, class: "inline") do |form| %>
             <%= form.text_field :raw_quantity, size: "10" %>
             <%= link_to ingredient.food.name, ingredient.food %>
             <div style="float: right;">
@@ -29,30 +30,6 @@
         </li>
       <% end %>
     </ul>
-    <table class="table table-striped table-sm w-auto">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>quantité</th>
-          <th>ingredient</th>
-          <th colspan="2"></th>
-        </tr>
-      </thead>
-    
-      <tbody>
-        <% @recipe.recipe_ingredients.order(:item_nb).each do |ingredient| %>
-          <%= form_with(model: [@recipe, ingredient], local: true) do |form| %>
-            <tr>
-              <td><%= ingredient.item_nb %></td>
-              <td><%= form.text_field :raw_quantity %></td>
-              <td><%= link_to ingredient.food.name, ingredient.food %></td>
-              <td><%= form.submit 'modifier' %></td>
-              <td><%= link_to 'x', [@recipe, ingredient], method: :delete, data: {confirm: 'Are you sure?'} %></td>
-            </tr>
-          <% end %>
-        <% end %>
-      </tbody>
-    </table>
   <% end %>
 </div>
 
