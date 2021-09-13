@@ -100,8 +100,8 @@ module IngredientsHelper
       result += " #{without_unit ? "" : pretty_preposition(name)}"
     end
     result += "#{link_to translated(name.downcase), ingredient.food}"
-    result += " #{ingredient.comment}" if ingredient.comment
-    sanitize result
+    result += " #{my_sanitize ingredient.comment}" if ingredient.comment
+    result.html_safe
   end
 
   def pretty_ingredient(ingredient)
@@ -112,8 +112,8 @@ module IngredientsHelper
       result += " #{without_unit ? "" : pretty_preposition(name)}"
     end
     result += "#{link_to translated(name.downcase), ingredient.food}"
-    result += " #{ingredient.comment}" if ingredient.comment
-    sanitize result
+    result += " #{my_sanitize ingredient.comment}" if ingredient.comment
+    result.html_safe
   end
 
   # Translated everything at once because it is easier to translate and it is pretty quick with google translate.
@@ -177,15 +177,27 @@ module IngredientsHelper
     s
   end
 
+  def my_sanitize(s)
+    sanitize s, attributes: ['id']
+  end
+
   def pretty_complete_instructions(recipe)
     return nil if recipe.blank? || recipe.complete_instructions.blank?
-    translated = sanitize(translate_complete_instructions(recipe))
+    translated = my_sanitize(translate_complete_instructions(recipe))
     replaced = replace_ingredients(recipe, translated)
     s = ""
     step_nb = 0
-    replaced.each_line do |line|
+    toggle_block = 0
+    replaced.each_line do |raw_line|
+      line = raw_line.strip
       if line.starts_with?("_")
         s += "<h3>#{line[1..-1].strip}</h3>"
+      elsif line.starts_with?("$$$-")
+        s += "<h5>#{line[3..-1].strip}</h5>"
+      elsif line.starts_with?("$$-")
+        s += "<h4>#{line[2..-1].strip}</h4>"
+      elsif line.starts_with?("$-")
+        s += "<h3 class='toggle-link-visible' data-toggle-id='toggle-block-#{toggle_block += 1}'>#{line[1..-1].strip}</h3>"
       elsif line.starts_with?("$$$")
         s += "<h5>#{line[3..-1].strip}</h5>"
       elsif line.starts_with?("$$")
