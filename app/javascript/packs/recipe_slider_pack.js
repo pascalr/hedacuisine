@@ -6,7 +6,7 @@ import { tns } from "tiny-slider/src/tiny-slider"
 document.addEventListener("DOMContentLoaded", function(event) { 
 
   var slider = tns({
-    container: "#recipe-carrousel",
+    container: "#recipe-carrousel-1",
     items: 4,
     slideBy: 'page',
     gutter: 10,

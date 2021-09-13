@@ -1,4 +1,4 @@
-<% carrousel_id = 1 unless defined?(carrousel_id) %>
+<% carrousel_id = 1 if local_assigns[:carrousel_id].nil? %>
 
 <% unless recipes.blank? %>
   <% tag_id = 1 if local_assigns[:tag_id].nil? %>

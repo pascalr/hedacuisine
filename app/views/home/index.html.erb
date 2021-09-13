@@ -24,8 +24,21 @@
       color: grey;
     }
   </style>
-  
+
   <div class="responsive-margins-lg">
+
+    <div style="position: relative;">
+      <%= image_tag asset_path("open_cupboard.jpg"), style: "height: 95vh; margin: auto; display: block;" %>
+      <div style="position:absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(0,0,0,0.5); border-radius: 10px; text-align: center; padding: 1rem;">
+        <h1 style="font-size: 3rem; color: #f0f0f0; text-shadow: 2px 2px 4px white, 1px 1px 2px white;">Heda</h1>
+        <div style="margin-top: -0.8rem; font-size: 2rem; color: #eee; text-shadow: 1px 1px 2px white;">
+          Un robot garde-manger
+        </div>
+        <div style="margin: auto; font-size: 1.5rem; border-radius: 5px; width: 12rem; background-color: orange; color: white; text-shadow: none; margin-top: 1rem;">
+          Voir la vidéo 
+        </div>
+      </div>
+    </div>
   
     <!--
     <h2>Première fois sur le site?</h2>
@@ -34,17 +47,6 @@
     <p>Ou bien découvrer des recettes à travers le menu recette en haut à gauche!</p>
     <p>TODO: Lien en apprendre d'avantages...</p>
     -->
-
-    <div style="margin: auto; filter: blur(2px); height: 613px; width: 920px; background-image: url('<%= asset_path("tmp/pantry_placeholder.webp") %>')"></div>
-    <div style="translate: 0px -400px; z-index: 2; text-shadow: 4px 4px 8px black, 2px 2px 4px black, 1px 1px 2px black; font-weight: bold; text-align: center;">
-      <h1 style="font-size: 3rem; color: #f0f0f0;">Heda</h1>
-      <div style="margin-top: -0.8rem; font-size: 2rem; color: #f0f0f0;">
-        Un robot garde-manger
-      </div>
-      <div style="margin: auto; font-size: 1.5rem; border-radius: 5px; width: 12rem; background-color: orange; color: white; text-shadow: none; margin-top: 1rem;">
-        Voir la vidéo 
-      </div>
-    </div>
 
     <div class="home-section row" style="margin-top: 2rem;">
       <div class="col-sm-8">
@@ -60,9 +62,7 @@
     </div>
   
     <div class="home-section row">
-      <div class="col-sm-4" style="background-color:pink;">
-        <p>Une image de l'armoire fermée avec un petit icône écologique? Genre une feuille verte.</p>
-      </div>
+      <%= image_tag asset_path("closed_cupboard.jpg"), class: "col-sm-4" %>
       <div class="col-sm-8">
         <h2>Écologique</h2>
         <p>Heda suggère des recettes pour utiliser les aliments qui sont près d'être périmé pour éviter le gaspillage alimentaire. Aussi, elle cuisine surtout de la nourriture qui peut s'acheter en vrac pour favoriser le zéro-déchet.</p>
@@ -85,7 +85,7 @@
     
     <div class="home-section row">
       <div class="col-sm-4" style="background-color:pink;">
-        <p>Image</p>
+        <p>Image avec des logos de truc open-source que j'utilise. Et Open-source écrit en bas de l'image.</p>
       </div>
       <div class="col-sm-8">
         <h2>Open source</h2>
@@ -143,7 +143,7 @@
 
   </div>
 
-  <%= javascript_pack_tag "recipe_slider_pack" %>
+  <%= javascript_pack_tag "recipe_slider_pack_v2" %>
 
 <% end %>
 
