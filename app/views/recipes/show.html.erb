@@ -34,22 +34,6 @@
   font-size: 0.9rem;
   font-weight: bold;
 }
-table {
-  width: 100%;
-  border: 1px solid #eaeaea;
-  border-radius: 5px;
-}
-td {
-  border: 1px solid #eaeaea;
-  padding: 0.50rem 0.00rem;
-  padding-left: 1rem;
-}
-
-table { border-collapse: separate; border-spacing: 0; }
-tr:first-child td:first-child { border-top-left-radius: 5px; }
-tr:first-child td:last-child { border-top-right-radius: 5px; }
-tr:last-child td:first-child { border-bottom-left-radius: 5px; }
-tr:last-child td:last-child { border-bottom-right-radius: 5px; }
 </style>
 
 <!--<div class="mx-n2">
@@ -113,25 +97,28 @@ tr:last-child td:last-child { border-bottom-right-radius: 5px; }
     <%# end %>
     -->
     
-    <h2 class="h2 toggle-link" data-toggle-id="ing_list">+ Liste d'ingrédients</h2>
+    <h2 class="h2 toggle-link-visible" data-toggle-id="ing_list">- Liste d'ingrédients</h2>
 
-    <table id="ing_list" style="margin-top: -8px; margin-bottom: 8px;" hidden>
-      <tbody>
+    <div id="ing_list">
+      <div style="height: 1rem;"></div>
+      <b style="display: inline-block; font-size: 1.35rem; transform: translate(0, 0.25rem);">Quantité: </b>
+      <%= form_with(url: "FIXME", class: "inline") do |form| %>
+        <%= select_tag(:factor, options_for_select([['Quart', 0.25], ['Moitié', 0.5], ['Simple', 1], ['Double', 2], ['Quadruple', 4], ['Personalisé', nil]]), class: "form-control", style: "display: inline; width: auto;") %>
+        <%= form.text_field :custom_factor, value: "1", class: "form-control", style: "width: 4rem; display: inline; text-align: right;" %> X
+      <% end %>
+  
+      <ul class="list-group" style="margin-top: 0.25rem;">
         <% @recipe.ingredients.order(:item_nb).each do |ing| %>
-          <tr>
-            <td style="border-right: 0;">
-              <%= pretty_ingredient(ing) %>
-            </td>
-            <td>
-              <%= pretty_volume_with_metric(ing) %>
-            </td>
-            <td>
-              <%= pretty_weight(ing.weight) %>
-            </td>
-          </tr>
+          <li class="list-group-item">
+            <%= pretty_ingredient_with_conversions(ing) %>
+            <%= link_to image_tag(asset_path("pencil-square.svg")), "FIXME", style: "float: right;" %>
+          </li>
         <% end %>
-      </tbody>
-    </table>
+        <li class="list-group-item">
+          <%= link_to image_tag(asset_path("plus-circle.svg"), style: "width: 1.5rem;"), "FIXME" %>
+        </li>
+      </ul>
+    </div>
   
   <% end %>
     

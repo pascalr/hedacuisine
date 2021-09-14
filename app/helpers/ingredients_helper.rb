@@ -104,6 +104,22 @@ module IngredientsHelper
     result.html_safe
   end
 
+  def pretty_ingredient_with_conversions(ing)
+    r = "#{pretty_ingredient(ing)}"
+    r += " <i style='color: gray;'>("
+    if ing.unit.nil? or ing.unit.is_unitary
+      r += "#{pretty_volume(ing)} | #{pretty_metric_volume(ing.volume)} | #{pretty_weight(ing.weight)}"
+    elsif ing.unit.is_weight
+      # TODO: Show unit quantity if food can be unit.
+      r += "#{pretty_volume(ing)} | #{pretty_metric_volume(ing.volume)}"
+    else
+      # TODO: Show unit quantity if food can be unit.
+      r += "#{pretty_metric_volume(ing.volume)} | #{pretty_weight(ing.weight)}"
+    end
+    r += ")</i>"
+    r.html_safe
+  end
+
   def pretty_ingredient(ingredient)
     result = pretty_ingredient_quantity(ingredient)
     without_unit = (!ingredient.unit || ingredient.unit.is_unitary)
