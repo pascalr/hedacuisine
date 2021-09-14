@@ -4,6 +4,10 @@
 
 <h1><%= @article.name %></h1>
 
+<div>
+  <%= simple_format @article.intro %>
+</div>
+
 <% @article.sections.each do |section| %>
   <h2><%= sanitize section.title %></h2>
   <div>
