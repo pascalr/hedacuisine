@@ -10,10 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_13_193842) do
+ActiveRecord::Schema.define(version: 2021_09_14_201619) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "articles", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
@@ -314,6 +320,16 @@ ActiveRecord::Schema.define(version: 2021_09_13_193842) do
     t.boolean "is_vegan"
   end
 
+  create_table "sections", force: :cascade do |t|
+    t.bigint "article_id", null: false
+    t.text "content"
+    t.integer "position"
+    t.string "title"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["article_id"], name: "index_sections_on_article_id"
+  end
+
   create_table "similar_recipes", force: :cascade do |t|
     t.bigint "recipe_id", null: false
     t.integer "similar_recipe_id"
@@ -452,6 +468,7 @@ ActiveRecord::Schema.define(version: 2021_09_13_193842) do
   add_foreign_key "recipe_ratings", "users"
   add_foreign_key "recipe_steps", "recipes"
   add_foreign_key "recipe_steps", "steps"
+  add_foreign_key "sections", "articles"
   add_foreign_key "similar_recipes", "recipes"
   add_foreign_key "tasks", "users"
   add_foreign_key "unit_system_items", "unit_systems"

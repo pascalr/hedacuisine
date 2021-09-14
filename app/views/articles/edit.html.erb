@@ -1,0 +1,29 @@
+<%= link_to 'Show', article_path(@article) %> |
+<%= link_to 'Index', articles_path %>
+
+<h1>Editing <%= @article.name %></h1>
+
+<h2>Sections</h2>
+
+<% @article.sections.each do |section| %>
+  <hr>
+  <%= form_with(model: section, local: true) do |form| %>
+    <%= form.label :title %><br>
+    <%= form.text_field :title, size: 80 %><br>
+    <%= form.label :content %><br>
+    <%= form.text_area :content, cols: 80, rows: 8 %><br>
+    <%= form.submit %>
+  <% end %>
+<% end %>
+
+<hr>
+
+<h2>Add section</h2>
+<%= form_with(model: Section.new, local: true) do |form| %>
+  <%= form.hidden_field :article_id, value: @article.id %>
+  <%= form.label :title %><br>
+  <%= form.text_field :title, size: 80 %><br>
+  <%= form.label :content %><br>
+  <%= form.text_area :content, cols: 80, rows: 8 %><br>
+  <%= form.submit "Ajouter" %>
+<% end %>

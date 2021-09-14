@@ -1,6 +1,17 @@
-<h1>WORK IN PROGRESS</h1>
+<% if !user_signed_in? %>
+  <h1>WORK IN PROGRESS</h1>
+<% else %>
 
-<% if user_signed_in? %>
+<% if current_user_admin? %>
+  <%= link_to "New article", new_article_path %>
+<% end %>
+
+<h1>Articles récents</h1>
+<% @articles.each do |article| %>
+  <%= link_to article.name, article %>
+<% end %>
+
+<br><br><br><br>
 
 
 

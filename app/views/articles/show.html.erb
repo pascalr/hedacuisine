@@ -1,0 +1,12 @@
+<% if current_user_admin? %>
+  <%= link_to "edit", edit_article_path(@article) %>
+<% end %>
+
+<h1><%= @article.name %></h1>
+
+<% @article.sections.each do |section| %>
+  <h2><%= sanitize section.title %></h2>
+  <div>
+    <%= simple_format section.content %>
+  </div>
+<% end %>

@@ -33,7 +33,9 @@ Rails.application.routes.draw do
 
   get 'recipes/visibility'
 
-  get 'articles/index'#, to: 'articles'
+  #get 'articles/index'#, to: 'articles'
+  resources :articles
+  resources :sections, only: [:create, :update, :destroy]
   
   resources :machines do
     get 'get_state', to: 'sim#get_state'
