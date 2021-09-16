@@ -22,8 +22,8 @@ class Food < ApplicationRecord
 
   has_many :containers
 
-  has_many :direct_substitutions
-  has_many :indirect_substitutions
+  has_many :direct_substitutions, foreign_key: "food_id", class_name: "FoodSubstitution"
+  has_many :indirect_substitutions, foreign_key: "substitute_id", class_name: "FoodSubstitution"
 
   def substitutions
     direct_substitutions.map(&:substitute) + indirect_substitutions.map(&:food)
