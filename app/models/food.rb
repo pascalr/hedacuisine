@@ -26,7 +26,8 @@ class Food < ApplicationRecord
   has_many :indirect_substitutions, foreign_key: "substitute_id", class_name: "FoodSubstitution"
 
   def substitutions
-    direct_substitutions.map(&:substitute) + indirect_substitutions.map(&:food)
+    #direct_substitutions.map {|s| [s, s.substitute] } + indirect_substitutions.map {|s| [s, s.food] }
+    direct_substitutions + indirect_substitutions
   end
 
   before_save do

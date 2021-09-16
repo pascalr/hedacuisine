@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_15_203829) do
+ActiveRecord::Schema.define(version: 2021_09_16_220902) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -124,6 +124,8 @@ ActiveRecord::Schema.define(version: 2021_09_15_203829) do
     t.float "ratio"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "food_raw_quantity"
+    t.string "substitute_raw_quantity"
     t.index ["food_id"], name: "index_food_substitutions_on_food_id"
   end
 

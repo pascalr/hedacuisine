@@ -5,20 +5,22 @@
 <span id="food-list" data-values="<%= Food.all.map(&:name) %>"/>
 
 <%= form_with(model: FoodSubstitution.new, local: true) do |form| %>
+  <%= form.text_field :food_raw_quantity, size: "6" %>
   <%= form.label :food_name %>
-  <%= form.text_field :food_name, id: "FIXME1", "data-autocomplete": "food-list", placeholder: "Food...", autocomplete: :off %>
-  <%= form.label :ratio_with_colon %>
-  <%= form.text_field :ratio_with_colon %>
+  <%= form.text_field :food_name, "data-autocomplete": "food-list", placeholder: "Food...", autocomplete: :off %>
+  == 
+  <%= form.text_field :substitute_raw_quantity, size: "6" %>
   <%= form.label :substitute_name %>
-  <%= form.text_field :substitute_name, id: "FIXME2", "data-autocomplete": "food-list", placeholder: "Food...", autocomplete: :off %>
+  <%= form.text_field :substitute_name, "data-autocomplete": "food-list", placeholder: "Food...", autocomplete: :off %>
   <%= form.submit %>
 <% end %>
 
 <table class="table table-striped">
   <thead class="thead-dark">
     <tr>
+      <th>Qty</th>
       <th>Food</th>
-      <th>Weight ratio</th>
+      <th>Qty</th>
       <th>Substitute</th>
       <th colspan="2"></th>
     </tr>
@@ -28,8 +30,9 @@
     <% @food_substitutions.each do |substitution| %>
       <%= form_with(model: substitution, local: true) do |form| %>
         <tr>
+          <td><%= form.text_field :food_raw_quantity, size: "6" %></td>
           <td><%= substitution.food.name %></td>
-          <td><%= form.text_field :ratio_with_colon, size: "2" %></td>
+          <td><%= form.text_field :substitute_raw_quantity, size: "6" %></td>
           <td><%= substitution.substitute.name %></td>
           <td><%= form.submit "Mettre à jour" %></td>
           <td><%= link_to 'Destroy', substitution, method: :delete, data: { confirm: 'Are you sure?' } %></td>

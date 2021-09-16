@@ -28,6 +28,6 @@ private
   end
     
   def food_substitution_params
-    params.require(:food_substitution).permit(:food_id, :substitute_id, :ratio, :food_name, :substitute_name, :ratio_with_colon)
+    params.require(:food_substitution).permit(:food_id, :substitute_id, :food_name, :substitute_name, :food_raw_quantity, :substitute_raw_quantity)
   end
 end

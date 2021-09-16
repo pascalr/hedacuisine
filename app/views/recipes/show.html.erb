@@ -117,16 +117,12 @@
             <div class="dropdown" style="display: inline-block; float: right">
                <%= image_tag asset_path("pencil-square.svg"), "data-bs-toggle": "dropdown", style: "cursor: pointer;" %>
               <div class="dropdown-menu">
-                <a tabindex="-1" href="#">Retirer</a>
+                <a class="dropdown-item" href="#">Retirer</a>
                 <% unless ing.food.substitutions.blank? %>
-                  <div class="dropdown-submenu">
-                    <a class="submenu-link dropdown-toggle" tabindex="-1" href="#">Remplacer par</a>
-                    <div class="dropdown-menu">
-                      <% ing.food.substitutions.each do |sub| %>
-                        <div><a tabindex="-1" href="#"><%= sub.name %></a></div>
-                      <% end %>
-                    </div>
-                  </div>
+                  <h6 class="dropdown-header">Remplacer par</h6>
+                  <% ing.food.substitutions.each do |sub| %>
+                    <a class="dropdown-item" href="#"><%= pretty_substitution(ing, sub) %></a>
+                  <% end %>
                 <% end %>
               </div>
             </div>

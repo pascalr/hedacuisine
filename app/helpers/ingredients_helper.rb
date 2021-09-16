@@ -90,6 +90,21 @@ module IngredientsHelper
     ing.unit.nil? ? "#{qty_s}" : "#{qty_s} #{ing.unit.name}"
   end
 
+  def pretty_substitution(ing, substitution)
+
+    actual_quantity = Quantity.new(ing.food).set_from_value_and_unit(ing.quantity, ing.unit)
+    substitution_quantity = Quantity.new(ing.food).set_from_raw(substitution.food_raw_qty_for(ing.food))
+    ratio = actual_quantity.weight.to_f / substitution_quantity.weight.to_f
+    
+    food = substitution.substitute_for(ing.food)
+    sub_qty = Quantity.new(food).set_from_raw(substitution.food_raw_qty_for(food))
+    r = "#{sub_qty.unit_quantity * ratio} "
+    r += "#{sub_qty.unit.name} " if sub_qty.unit
+    r += pretty_preposition(food.name) if sub_qty.unit
+    r += food.name
+    r
+  end
+
   def pretty_inline_ingredient(ingredient)
     result = pretty_ingredient_quantity(ingredient)
     without_unit = (!ingredient.unit || ingredient.unit.is_unitary)
