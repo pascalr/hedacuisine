@@ -10,7 +10,8 @@
     <%= form.submit "Ajouter à mes recettes", class: "btn btn-outline-primary" %>
   <% end %>
 <% end %>
-<button type="button" class="btn btn-outline-secondary" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+<button type="button" class="btn btn-outline-secondary">Faire ma propre version</button>
+<button type="button" class="btn btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
   Ajouter à mon calendrier
 </button>
 <div style="height: 10px;"></div>
@@ -59,12 +60,12 @@
 <%# end %>
 
 <div class="row" style="margin-bottom: 10px;">
-  <div class="col-m-6">
+  <div class="col-md-auto">
     <% if @recipe.image_id %>
       <%= image_tag "/images/#{@recipe.image_id}_m.jpg", style: "margin-right: 20px;" %>
     <% end %>
   </div>
-  <div class="col-m-6">
+  <div class="col">
     <h1 class="recipe-title">
       <%= translated(@recipe.name) %>
       <!--<span style="font-size: 1.5rem;"><%# "(#{@recipe.version_name})" if @recipe.version_name %></span>-->
@@ -116,7 +117,7 @@
             <div class="dropdown" style="display: inline-block; float: right">
                <%= image_tag asset_path("pencil-square.svg"), "data-bs-toggle": "dropdown", style: "cursor: pointer;" %>
               <div class="dropdown-menu">
-                <div><a tabindex="-1" href="#">Retirer</a></div>
+                <a tabindex="-1" href="#">Retirer</a>
                 <% unless ing.food.substitutions.blank? %>
                   <div class="dropdown-submenu">
                     <a class="submenu-link dropdown-toggle" tabindex="-1" href="#">Remplacer par</a>
