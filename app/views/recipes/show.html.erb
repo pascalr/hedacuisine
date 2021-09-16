@@ -106,6 +106,55 @@
         <%= select_tag(:factor, options_for_select([['Quart', 0.25], ['Moitié', 0.5], ['Simple', 1], ['Double', 2], ['Quadruple', 4], ['Personalisé', nil]]), class: "form-control", style: "display: inline; width: auto;") %>
         <%= form.text_field :custom_factor, value: "1", class: "form-control", style: "width: 4rem; display: inline; text-align: right;" %> X
       <% end %>
+
+      <style>
+      .dropdown-submenu {
+        position: relative;
+      }
+      
+      .dropdown-submenu .dropdown-menu {
+        top: 0;
+        left: 100%;
+        margin-top: -1px;
+      }
+      </style>
+         
+      <div class="container">
+        <div class="dropdown">
+          <button class="btn btn-default" type="button" data-toggle="dropdown">
+            <%= image_tag(asset_path("pencil-square.svg")) %>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a tabindex="-1" href="#">Retirer</a></li>
+            <li class="dropdown-submenu">
+              <a class="test dropdown-toggle" tabindex="-1" href="#">Remplacer par</a>
+              <ul class="dropdown-menu">
+                <li><a tabindex="-1" href="#">Ing 1</a></li>
+                <li><a tabindex="-1" href="#">Ing 2</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <script>
+      $(document).ready(function(){
+        $('.dropdown-submenu a.test').on("click", function(e){
+          $(this).next('ul').toggle();
+          e.stopPropagation();
+          e.preventDefault();
+        });
+      });
+      </script>
+
+
+
+
+
+
+
+
+
   
       <ul class="list-group" style="margin-top: 0.25rem;">
         <% @recipe.ingredients.order(:item_nb).each do |ing| %>
