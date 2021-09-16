@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_14_203534) do
+ActiveRecord::Schema.define(version: 2021_09_15_203829) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -116,6 +116,15 @@ ActiveRecord::Schema.define(version: 2021_09_14_203534) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["food_id"], name: "index_food_recipes_on_food_id"
     t.index ["recipe_id"], name: "index_food_recipes_on_recipe_id"
+  end
+
+  create_table "food_substitutions", force: :cascade do |t|
+    t.bigint "food_id", null: false
+    t.integer "substitute_id", null: false
+    t.float "ratio"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["food_id"], name: "index_food_substitutions_on_food_id"
   end
 
   create_table "food_tag_items", force: :cascade do |t|
@@ -448,6 +457,7 @@ ActiveRecord::Schema.define(version: 2021_09_14_203534) do
   add_foreign_key "food_preferences", "users"
   add_foreign_key "food_recipes", "foods"
   add_foreign_key "food_recipes", "recipes"
+  add_foreign_key "food_substitutions", "foods"
   add_foreign_key "food_tag_items", "food_tags"
   add_foreign_key "food_tag_items", "foods"
   add_foreign_key "grocery_items", "machines"

@@ -28,6 +28,8 @@ Rails.application.routes.draw do
   resources :user_recipe_categories, only: [:create, :update, :destroy]
   
   resources :machine_users, only: [:create, :update, :destroy, :new]
+  
+  resources :food_substitutions, only: [:create, :update, :destroy, :index]
 
   post 'change_food_tag', to: 'foods#change_tag'
 

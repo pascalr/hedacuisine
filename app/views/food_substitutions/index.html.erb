@@ -1,0 +1,45 @@
+<%= render partial: 'meta/nav' %>
+
+<h1>Substitutions d'aliments</h1>
+
+<span id="autocomplete-data" data-foods="<%= Food.all.map(&:name) %>"/>
+
+<%= form_with(model: FoodSubstitution.new, local: true) do |form| %>
+  <%= form.label :ratio %>
+  <%= form.text_field :ratio %>
+  <%= form.label :food_name %>
+  <%= form.text_field :food_name, id: "FIXME1", "data-autocomplete": "autocomplete-data", placeholder: "Food...", autocomplete: :off %>
+  <%= form.hidden_field :food_id, id: "autocomplete-food-id" %>
+  <%= form.label :substitute_name %>
+  <%= form.text_field :substitute_name, id: "FIXME2", "data-autocomplete": "autocomplete-data", placeholder: "Food...", autocomplete: :off %>
+  <%= form.hidden_field :substitute_id, id: "autocomplete-substitute-id" %>
+  <%= form.submit %>
+<% end %>
+
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th>Food</th>
+      <th>Substitute</th>
+      <th>Weight ratio</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @food_substitutions.each do |substitution| %>
+      <%= form_with(model: food, local: true) do |form| %>
+        <tr>
+          <td><%= substitution.food.name %></td>
+          <td><%= substitution.substitute.name %></td>
+          <td><%= substitution.ratio %></td>
+          <td><%= form.submit "Mettre à jour" %></td>
+          <td><%= link_to 'Show', food %></td>
+          <td><%= link_to 'Destroy', food, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<%= javascript_pack_tag "autocomplete_field" %>

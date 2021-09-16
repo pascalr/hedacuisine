@@ -22,6 +22,13 @@ class Food < ApplicationRecord
 
   has_many :containers
 
+  has_many :direct_substitutions
+  has_many :indirect_substitutions
+
+  def substitutions
+    direct_substitutions.map(&:substitute) + indirect_substitutions.map(&:food)
+  end
+
   before_save do
     name.downcase!
     plural.try(:downcase!)
