@@ -2,8 +2,6 @@ import 'js-autocomplete/auto-complete.css';
 import autocomplete from 'js-autocomplete';
 
 document.addEventListener("DOMContentLoaded", function(event) { 
-  const foods = JSON.parse(document.getElementById('autocomplete-data').dataset.foods)
-  console.log(foods)
   var elements = document.querySelectorAll('[data-autocomplete]');
   for (const elem of elements) {
     new autocomplete({
@@ -11,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       minChars: 1,
       source: function(term, suggest){
         term = term.toLowerCase();
-        const choices = foods;
+        const choices = JSON.parse(document.getElementById(elem.dataset.autocomplete).dataset.values)
         const matches = [];
         for (let i = 0; i < choices.length; i++)
             if (~choices[i].toLowerCase().indexOf(term)) matches.push(choices[i]);

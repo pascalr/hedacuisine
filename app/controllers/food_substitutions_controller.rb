@@ -1,21 +1,9 @@
 class FoodSubstitutionsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:index, :show]
-  skip_before_action :only_admin!, only: [:index, :show]
-  before_action :set_food_substitution, only: [:show, :update, :destroy, :edit]
+  before_action :set_food_substitution, only: [:show, :update, :destroy]
 
   def index
     @foods = Food.all
     @food_substitutions = FoodSubstitution.all
-  end
-
-  def show
-  end
-
-  def edit
-  end
-
-  def new
-    @food_substitution = FoodSubstitution.new
   end
 
   def create
@@ -40,6 +28,6 @@ private
   end
     
   def food_substitution_params
-    params.require(:food_substitution).permit(:food_id, :substitute_id, :ratio)
+    params.require(:food_substitution).permit(:food_id, :substitute_id, :ratio, :food_name, :substitute_name, :ratio_with_colon)
   end
 end
