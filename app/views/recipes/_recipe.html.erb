@@ -1,14 +1,14 @@
 <div class="row" style="margin-bottom: 10px;">
-  <div class="col-m-6">
+  <div class="col-md-auto">
     <%= link_to recipe_path(recipe) do %>
       <% if recipe.image_id %>
-        <%= image_tag "/images/#{recipe.image_id}_s.jpg", style: "margin-right: 20px;" %>
+        <%= image_tag "/images/#{recipe.image_id}_s.jpg" %>
       <% else %>
-        <img width="255" height="171" style="margin-right: 20px;"></img>
+        <img width="255" height="171"></img>
       <% end %>
     <% end %>
   </div>
-  <div class="col-m-6">
+  <div class="col">
     <%= link_to recipe_path(recipe) do %>
       <div class="recipe-listing-title">
         <%= translated(recipe.name) %>

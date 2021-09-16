@@ -4,6 +4,8 @@
 // that code so it'll be compiled.
 
 import 'bootstrap'
+import '../stylesheets/application'
+
 import "chartkick/chart.js"
 require("@rails/ujs").start()
 //require("turbolinks").start()
