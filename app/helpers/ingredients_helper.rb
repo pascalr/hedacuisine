@@ -19,7 +19,7 @@ module IngredientsHelper
   end
 
   def pretty_volume_and_weight(ing)
-    return nil if ing.weight.nil?
+    return nil if ing.nil? or ing.weight.nil?
     "#{pretty_volume(ing)} (#{pretty_weight(ing.weight)})"
   end
 
@@ -48,7 +48,7 @@ module IngredientsHelper
   end
 
   def pretty_volume(ing)
-    return "" if ing.quantity.blank?
+    return "" if ing.nil? or ing.quantity.blank?
     return "#{pretty_fraction(ing.volume/1000.0)} #{translated("L")}" if ing.food.is_liquid? && ing.volume >= 1000.0
     return "#{pretty_fraction(ing.volume/250.0)} #{translated("t")}" if ing.volume >= 60.0# or (ing.volume > 30.0 and close_to_fraction?(ing.volume/250.0))
     return "#{pretty_fraction(ing.volume/15.0)} #{translated("c. à soupe")}" if ing.volume >= 15.0
@@ -84,7 +84,7 @@ module IngredientsHelper
   end
   
   def pretty_ingredient_quantity(ing)
-    return "" if ing.quantity.nil?
+    return "" if ing.nil? or ing.quantity.nil?
     return ing.raw_quantity || "" unless ing.unit and ing.unit.show_fraction
     qty_s = pretty_fraction(ing.quantity)
     ing.unit.nil? ? "#{qty_s}" : "#{qty_s} #{ing.unit.name}"
@@ -98,7 +98,7 @@ module IngredientsHelper
     
     food = substitution.substitute_for(ing.food)
     sub_qty = Quantity.new(food).set_from_raw(substitution.food_raw_qty_for(food))
-    r = "#{sub_qty.unit_quantity * ratio} "
+    r = "#{pretty_fraction(sub_qty.unit_quantity * ratio)} "
     r += "#{sub_qty.unit.name} " if sub_qty.unit
     r += pretty_preposition(food.name) if sub_qty.unit
     r += food.name
