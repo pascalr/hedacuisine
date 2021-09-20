@@ -136,6 +136,7 @@ module IngredientsHelper
   end
 
   def pretty_ingredient(ingredient)
+    return nil if ingredient.nil?
     result = pretty_ingredient_quantity(ingredient)
     without_unit = (!ingredient.unit || ingredient.unit.is_unitary)
     name = (without_unit && ingredient.quantity && ingredient.quantity >= 2) ? ingredient.plural : ingredient.name
