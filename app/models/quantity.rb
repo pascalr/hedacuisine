@@ -1,6 +1,6 @@
 # A quantity of a food. Has a value, sometimes a unit.
 class Quantity
-  attr_reader :unit, :food, :raw, :weight, :volume, :unitary_qty
+  attr_reader :unit, :food, :raw, :weight, :volume, :unitary_qty, :grams, :ml, :nb_quantity
 
   def initialize(food)
     @food = food
@@ -21,6 +21,9 @@ class Quantity
       @volume = @weight / @food.density if @food && !@food.density.nil?
       @unitary_qty = @weight / @food.unit_weight if !@weight.nil? && @food && !@food.unit_weight.nil?
     end
+    @grams = @weight * @unit.value if @weight && @unit
+    @ml = @volume * @unit.value if @volume && @unit
+    @nb_quantity = @unitary_qty * @unit.value if @unitary_qty && @unit
     self
   end
 
@@ -40,15 +43,28 @@ class Quantity
     self
   end
 
+  def to_raw
+    return "#{@unitary_qty}" if @unit.nil?
+    return "#{@unitary_qty} #{@unit.name}" if @unit.is_unitary
+    return "#{@volume} #{@unit.name}" if @unit.is_volume
+    return "#{@weight} #{@unit.name}"
+  end
+
   def unit_quantity
     return @unitary_qty if @unit.nil? || @unit.is_unitary
     return @volume if @unit.is_volume
     return @weight
   end
 
+  def self.ratio(from, to)
+    return from.unitary_qty / to.unitary_qty unless from.unit && to.unit
+    from.grams / to.grams
+  end
+
   def *(scalar)
-    @weight *= scalar
-    @unitary_qty *= scalar
-    @volume *= scalar
+    @weight *= scalar if @weight
+    @unitary_qty *= scalar if @unitary_qty
+    @volume *= scalar if @volume
+    self
   end
 end

@@ -25,9 +25,15 @@ class Food < ApplicationRecord
   has_many :direct_substitutions, foreign_key: "food_id", class_name: "FoodSubstitution"
   has_many :indirect_substitutions, foreign_key: "substitute_id", class_name: "FoodSubstitution"
 
-  def substitutions
+  def substitutions(previous=nil)
+    explicit_substitutions(previous) + implicit_substitutions(previous)
+  end
+
+  def explicit_substitutions(previous)
     #direct_substitutions.map {|s| [s, s.substitute] } + indirect_substitutions.map {|s| [s, s.food] }
-    direct_substitutions + indirect_substitutions
+    subs = direct_substitutions + indirect_substitutions
+    subs -= [previous] if previous
+    subs
   end
 
   before_save do
@@ -55,5 +61,49 @@ class Food < ApplicationRecord
 
   #def to_param
   #  "#{id}-#{name}"
+  #end
+
+  def implicit_substitutions(previous)
+    list = []
+    explicit_substitutions(previous).each do |sub|
+      through_food = sub.substitute_for(self)
+      (through_food.explicit_substitutions(sub)).each do |implicit|
+        puts "Found implicit!"
+        from = Quantity.new(through_food).set_from_raw(sub.substitute_raw_qty_for(self))
+        through = Quantity.new(through_food).set_from_raw(implicit.food_raw_qty_for(through_food))
+        to = Quantity.new(implicit.substitute_for(through_food)).set_from_raw(implicit.substitute_raw_qty_for(through_food))
+        ratio = Quantity.ratio(from, through)
+        s = FoodSubstitution.new
+        s.food = self
+        s.food_raw_quantity = sub.food_raw_qty_for(self)
+        s.substitute = implicit.substitute_for(through_food)
+        s.substitute_raw_quantity = (to*ratio).to_raw
+        list << s
+        puts "To"
+        pp to 
+        puts "Ratio: "
+        puts ratio
+        puts "****************** result ********************"
+        puts s
+        # We need to multiply the amount of other food by the ratio of the through food.
+      end
+      #unless sub.substitute_for(
+      #through_food = sub.substitute_for()
+      #unless set.contains?(sub)
+      #  all += sub.substitutions
+      #end
+    end
+    list
+  end
+
+  #def self.substitutions_for(food, set=Set.new)
+  #  all = direct_substitutions + indirect_substitutions
+  #  all.each do |sub|
+  #    through_food = sub.substitutie_for()
+  #    unless set.contains?(sub)
+  #      all += sub.substitutions
+  #    end
+  #  end
+  #  set
   #end
 end

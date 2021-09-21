@@ -1,6 +1,6 @@
 module IngredientsHelper
   def close_to_fraction?(value)
-    fractions = [1/8r, 1/4r, 1/3r, 1/2r, 2/3r, 3/4r, 1]
+    fractions = [1/8r, 1/4r, 1/3r, 1/2r, 2/3r, 3/4r, 7/8r, 1]
     fractions.select { |f|
       return true if (value.to_f - f).abs < 0.02
     }
@@ -62,7 +62,7 @@ module IngredientsHelper
   end
   
   def pretty_fraction(value)
-    fractions = [0, 1/8r, 1/4r, 1/3r, 1/2r, 2/3r, 3/4r, 1]
+    fractions = [0, 1/8r, 1/4r, 1/3r, 1/2r, 2/3r, 3/4r, 7/8r, 1]
     i_part = value.to_i
     f_part = value.modulo(1)
     f = fractions.min_by {|x| (f_part-x).abs}
