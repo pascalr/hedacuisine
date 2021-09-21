@@ -1,5 +1,11 @@
 class Recipe < ApplicationRecord
 
+  scope :all_public, -> { where(is_public: true) }
+  scope :all_for, lambda { |user|
+    return where(is_public: true) unless user
+    where(is_public: true).or(Recipe.where(user_id: user.id))
+  }
+
   def similar_recipes
     SimilarRecipe.where(recipe_id: self.id).map(&:similar_recipe) +
       SimilarRecipe.where(similar_recipe_id: self.id).map(&:recipe)
