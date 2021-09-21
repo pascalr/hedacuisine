@@ -21,6 +21,8 @@ Rails.application.routes.draw do
   resources :units
   devise_for :users
 
+  get 'sitemap', to: "sitemap#index"
+
   resources :user_recipes, only: [:index, :create, :update, :destroy]
   get 'user_recipes/index_with_pictures'
   get 'user_recipes/index_with_details'
