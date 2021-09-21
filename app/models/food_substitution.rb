@@ -13,28 +13,7 @@ class FoodSubstitution < ApplicationRecord
   def substitute_for(f)
     f == food ? substitute : food
   end
-
-  # deprecated, use food_raw_quantity and substitute_raw_quantity
-  #def ratio_for(f)
-  #  f == food ? 1.0/ratio : ratio
-  #end
-
-  # deprecated, use substitute_for
-  #def other_food(f)
-  #  f == food ? substitute : food
-  #end
-
-  # deprecated, use substitute_for
-  #def ratio_with_colon
-  #  r = ratio.to_r
-  #  "#{r.numerator} : #{r.denominator}"
-  #end
-
-  # deprecated, use substitute_for
-  #def ratio_with_colon=(ratio)
-  #  self.ratio = Rational(ratio.gsub(':', '/')).to_f
-  #end
-
+  
   def food_name=(name)
     self.food = Food.find_by("LOWER(name) = ?", name.downcase)
   end

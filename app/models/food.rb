@@ -68,7 +68,6 @@ class Food < ApplicationRecord
     explicit_substitutions(previous).each do |sub|
       through_food = sub.substitute_for(self)
       (through_food.explicit_substitutions(sub)).each do |implicit|
-        puts "Found implicit!"
         from = Quantity.new(through_food).set_from_raw(sub.substitute_raw_qty_for(self))
         through = Quantity.new(through_food).set_from_raw(implicit.food_raw_qty_for(through_food))
         to = Quantity.new(implicit.substitute_for(through_food)).set_from_raw(implicit.substitute_raw_qty_for(through_food))
@@ -79,31 +78,8 @@ class Food < ApplicationRecord
         s.substitute = implicit.substitute_for(through_food)
         s.substitute_raw_quantity = (to*ratio).to_raw
         list << s
-        puts "To"
-        pp to 
-        puts "Ratio: "
-        puts ratio
-        puts "****************** result ********************"
-        puts s
-        # We need to multiply the amount of other food by the ratio of the through food.
       end
-      #unless sub.substitute_for(
-      #through_food = sub.substitute_for()
-      #unless set.contains?(sub)
-      #  all += sub.substitutions
-      #end
     end
     list
   end
-
-  #def self.substitutions_for(food, set=Set.new)
-  #  all = direct_substitutions + indirect_substitutions
-  #  all.each do |sub|
-  #    through_food = sub.substitutie_for()
-  #    unless set.contains?(sub)
-  #      all += sub.substitutions
-  #    end
-  #  end
-  #  set
-  #end
 end
