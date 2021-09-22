@@ -16,6 +16,8 @@
 
   <body>
 
+    <span id="locale" hidden><%= params[:locale] %></span>
+
     <div id="body">
       <div class="responsive-margins-lg">
         <%= render partial: 'layouts/navbar' %>
@@ -40,5 +42,3 @@
   </body>
   <%= content_for :render_async %>
 </html>
-
-<%= javascript_pack_tag "top_search" %>

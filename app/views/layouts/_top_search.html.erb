@@ -1,8 +1,20 @@
-<div id="top-search-container">
-  <%= form_with(url: search_index_path, class: "form-inline", local: true, method: :get) do |form| %>
-    <%= search_field_tag :search, nil, id: "top-search", placeholder: "#{t_no_span("heda.search")}...", 'aria-lable': "Search", 'data-recipes': Recipe.all_for(current_user).order(:name).map {|m| [m.id, m.name]}.to_json, size: 40, value: params[:search] %>
-    <%# search_field_tag :search, nil, id: "top-search", placeholder: "#{t_no_span("heda.search")}...", 'aria-lable': "Search", 'data-menus': Menu.where.not(listing_id: nil).order(:name).map {|m| [m.id, m.name]}.to_json, 'data-recipes': Recipe.all.order(:name).map {|m| [m.id, m.name]}.to_json, 'data-foods': Food.all.order(:name).map {|m| [m.id, m.name]}.to_json, size: 40, value: params[:search] %>
-    <%# button_tag(image_tag(asset_path('search.svg'), style: "width: 20px; height: 20px; transform: translate(-5px, -5px);")) %>
-    <%= form.submit "Search", type: :image, src: asset_path('search.svg'), style: "width: 20px; height: 20px; margin-right: 5px;" %>
-</div>
+<% if user_signed_in?  %>
+  <div id="top-search-container">
+    <%= form_with(url: search_index_path, class: "form-inline", local: true, method: :get) do |form| %>
+      <%= search_field_tag :search, nil, id: "top-search", placeholder: "#{t_no_span("heda.search")}...", 'aria-lable': "Search", 'data-recipes': Recipe.all_for(current_user).order(:name).map {|m| [m.id, m.name]}.to_json, size: 40, value: params[:search] %>
+      <%# search_field_tag :search, nil, id: "top-search", placeholder: "#{t_no_span("heda.search")}...", 'aria-lable': "Search", 'data-menus': Menu.where.not(listing_id: nil).order(:name).map {|m| [m.id, m.name]}.to_json, 'data-recipes': Recipe.all.order(:name).map {|m| [m.id, m.name]}.to_json, 'data-foods': Food.all.order(:name).map {|m| [m.id, m.name]}.to_json, size: 40, value: params[:search] %>
+      <%= form.submit "Search", type: :image, src: asset_path('search.svg'), style: "width: 20px; height: 20px; margin-right: 5px;" %>
+    </div>
+  <% end %>
+
+<% else %>
+  <div id="top-search-container">
+    <%= form_with(url: search_index_path, class: "form-inline", local: true, method: :get) do |form| %>
+      <%= search_field_tag :search, nil, id: "top-search", placeholder: "#{t_no_span("heda.search")}...", 'aria-lable': "Search", 'data-recipes': Recipe.all_for(current_user).order(:name).map {|m| [m.id, m.name]}.to_json, size: 40, value: params[:search] %>
+      <%= image_tag asset_path('search.svg'), style: "width: 20px; height: 20px; margin-right: 5px; transform: translate(0px, -5px);" %>
+    </div>
+  <% end %>
+
 <% end %>
+
+<%= javascript_pack_tag "top_search" %>

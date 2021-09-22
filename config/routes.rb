@@ -35,31 +35,6 @@ Rails.application.routes.draw do
 
   get 'recipes/visibility'
 
-  scope "/:locale" do
-
-    get '/', to: 'home#index', as: 'home'
-
-    resources :articles, param: 'slug'
-
-    resources :recipes, param: 'slug' do
-    
-      resources :recipe_ingredients, only: [:create, :update, :destroy] do
-        patch :move
-      end
-
-      member do
-        patch 'do_process', param: 'slug'
-        patch 'cheat', param: 'slug'
-      end
-    end
-
-    resources :user_recipes, only: [:index, :create, :update, :destroy]
-    get 'user_recipes/index_with_pictures'
-    get 'user_recipes/index_with_details'
-    get 'user_recipes/index_edit'
-
-  end
-
   resources :sections, only: [:create, :update, :destroy]
   
   resources :machines do
@@ -108,4 +83,30 @@ Rails.application.routes.draw do
   resources :recipe_comments, only: [:create, :update, :destroy]
   resources :recipe_ratings, only: [:create]
   delete 'recipe_ratings', to: 'recipe_ratings#destroy'
+
+  scope "/:locale" do
+
+    get '/', to: 'home#index', as: 'home'
+
+    resources :articles, param: 'slug'
+
+    resources :recipes, param: 'slug' do
+    
+      resources :recipe_ingredients, only: [:create, :update, :destroy] do
+        patch :move
+      end
+
+      member do
+        patch 'do_process', param: 'slug'
+        patch 'cheat', param: 'slug'
+      end
+    end
+
+    resources :user_recipes, only: [:index, :create, :update, :destroy]
+    get 'user_recipes/index_with_pictures'
+    get 'user_recipes/index_with_details'
+    get 'user_recipes/index_edit'
+
+  end
+
 end
