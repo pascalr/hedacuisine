@@ -89,7 +89,8 @@ class Recipe < ApplicationRecord
   end
 
   def to_param
-    "#{id}-#{name}"
+    return id if name.nil?
+    "#{id}-#{name.gsub(' ', '_')}"
   end
 
   # DEPRECATED. Version_name is deprecated. Use only name.
