@@ -4,7 +4,7 @@ class ArticlesController < ApplicationController
   before_action :set_article, only: [:show, :update, :destroy, :edit]
 
   def index
-    @articles = Article.all
+    @articles = Article.all_public
   end
 
   def show
@@ -39,6 +39,6 @@ private
   end
     
   def article_params
-    params.require(:article).permit(:name, :intro)
+    params.require(:article).permit(:name, :intro, :is_public)
   end
 end

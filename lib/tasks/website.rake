@@ -34,7 +34,8 @@ namespace :website do
 
     FileUtils.rm_rf('tmp/localhost:3000/')
 
-    locales = ["fr", "en"]
+    locales = ["fr"]
+    #locales = ["fr", "en"]
       
     add_download("/")
     execute_download
