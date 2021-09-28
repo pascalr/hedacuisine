@@ -53,7 +53,25 @@ class RecipesController < ApplicationController
   def create
     @recipe = Recipe.new(recipe_params)
     @recipe.user = current_user
-    @recipe.save!
+    if @recipe.base_recipe
+      @recipe.complete_instructions = @recipe.base_recipe.complete_instructions if @recipe.complete_instructions.blank?
+      @recipe.preparation_time = @recipe.base_recipe.preparation_time
+      @recipe.cooking_time = @recipe.base_recipe.cooking_time
+      @recipe.servings_quantity = @recipe.base_recipe.servings_quantity
+      @recipe.servings_name = @recipe.base_recipe.servings_name
+      @recipe.total_time = @recipe.base_recipe.total_time
+    end
+
+    @recipe.transaction do
+      @recipe.save!
+      if @recipe.base_recipe
+        @recipe.base_recipe.ingredients.each do |_ing|
+          ing = _ing.dup
+          ing.recipe = @recipe
+          ing.save!
+        end
+      end
+    end
     redirect_to @recipe
   end
   

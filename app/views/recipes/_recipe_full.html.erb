@@ -24,21 +24,17 @@
     <div class="recipe-body">
     
     <p><%= @recipe.description_or_base_description %></p>
-    
-    <% if !@recipe.variants.blank? || @recipe.base_recipe %>
+
+    <% variants = @recipe.all_variants %>
+    <% unless variants.blank?  %>
       <ul class="nav nav-tabs">
         <li class="nav-item navbar-brand"><b>Variantes</b></li>
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="#"><%= @recipe.version_name.blank? ? "Original" : @recipe.version_name.capitalize %></a>
         </li>
-        <% @recipe.variants.each do |variant| %>
+        <% variants.each do |variant| %>
           <li class="nav-item">
             <%= link_to variant.version_name.capitalize, variant, class: "nav-link" %>
-          </li>
-        <% end %>
-        <% if @recipe.base_recipe %>
-          <li class="nav-item">
-            <%= link_to @recipe.base_recipe.version_name.capitalize, @recipe.base_recipe, class: "nav-link" %>
           </li>
         <% end %>
         <li class="nav-item">

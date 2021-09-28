@@ -38,18 +38,40 @@ class Recipe < ApplicationRecord
     instructions.try :gsub!, /[\u2018\u2019]/, "'"
   end
   
+  def _all_variants(vars = nil)
+    vars ||= []
+    if base_recipe && !vars.include?(base_recipe)
+      vars << base_recipe 
+      vars = base_recipe._all_variants(vars)
+    end
+    (variants || []).each do |var|
+      unless vars.include?(var)
+        vars << var
+        vars = var._all_variants(vars)
+      end
+    end
+    vars 
+  end
+
+  def all_variants(vars = nil)
+    vars = _all_variants
+    vars.delete(self)
+    vars 
+  end
+  
   #has_one_attached :source_image
   
   def name_or_base_name
-    base_recipe ? base_recipe.name : name
+    # FIXME: Make sure base_recipe cannot be self.
+    base_recipe ? base_recipe.name_or_base_name : name
   end
   
   def description_or_base_description
-    base_recipe ? base_recipe.description : description
+    base_recipe ? base_recipe.description_or_base_description : description
   end
   
   def image_id_or_base_image_id 
-    base_recipe ? base_recipe.image_id : image_id 
+    base_recipe ? base_recipe.image_id_or_base_image_id  : image_id 
   end
   
   def self.parse_quantity_and_servings_name(raw)
