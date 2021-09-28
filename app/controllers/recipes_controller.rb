@@ -65,7 +65,7 @@ class RecipesController < ApplicationController
     @recipe.transaction do
       @recipe.save!
       if @recipe.base_recipe
-        @recipe.base_recipe.ingredients.each do |_ing|
+        @recipe.base_recipe.ingredients.order(:item_nb).each do |_ing|
           ing = _ing.dup
           ing.recipe = @recipe
           ing.save!
