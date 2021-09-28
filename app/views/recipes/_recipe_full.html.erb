@@ -25,7 +25,7 @@
     
     <p><%= @recipe.description_or_base_description %></p>
     
-    <% unless @recipe.variants.blank? %>
+    <% if !@recipe.variants.blank? || @recipe.base_recipe %>
       <ul class="nav nav-tabs">
         <li class="nav-item navbar-brand"><b>Variantes</b></li>
         <li class="nav-item">
