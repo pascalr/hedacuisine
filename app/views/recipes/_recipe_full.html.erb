@@ -1,7 +1,7 @@
 <div class="responsive-above" style="justify-content: space-between">
   <div style="order: 2;">
-    <% if @recipe.image_id_or_base_image_id %>
-      <%= image_tag "/images/#{@recipe.image_id_or_base_image_id}_m.jpg", style: "margin-right: 20px;" %>
+    <% if @recipe.image_id %>
+      <%= image_tag "/images/#{@recipe.image_id}_m.jpg", style: "margin-right: 20px;" %>
     <% end %>
     <div style="margin-top: 1.5rem;">
       <%= render partial: "details_medium_version", locals: {recipe: @recipe} %>
@@ -9,7 +9,7 @@
   </div>
   <div style="order: 1;">
     <h1 class="recipe-title">
-      <%= translated(@recipe.name_or_base_name) %>
+      <%= translated(@recipe.name) %>
       <div style="float: right;">
         <div class="dropdown" style="display: inline-block; float: right">
           <%= image_tag asset_path("three-dots.svg"), "data-bs-toggle": "dropdown", style: "cursor: pointer;" %>
@@ -23,7 +23,7 @@
   
     <div class="recipe-body">
     
-    <p><%= @recipe.description_or_base_description %></p>
+    <p><%= @recipe.description %></p>
 
     <% variants = @recipe.all_variants %>
     <% unless variants.blank?  %>

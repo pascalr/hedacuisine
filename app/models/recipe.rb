@@ -61,17 +61,17 @@ class Recipe < ApplicationRecord
   
   #has_one_attached :source_image
   
-  def name_or_base_name
+  def name
     # FIXME: Make sure base_recipe cannot be self.
-    base_recipe ? base_recipe.name_or_base_name : name
+    base_recipe ? base_recipe.name : self[:name]
   end
   
-  def description_or_base_description
-    base_recipe ? base_recipe.description_or_base_description : description
+  def description
+    base_recipe ? base_recipe.description : self[:description]
   end
   
-  def image_id_or_base_image_id 
-    base_recipe ? base_recipe.image_id_or_base_image_id  : image_id 
+  def image_id
+    base_recipe ? base_recipe[:image_id] : self[:image_id]
   end
   
   def self.parse_quantity_and_servings_name(raw)
