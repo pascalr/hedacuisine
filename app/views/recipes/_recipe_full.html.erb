@@ -10,7 +10,14 @@
   <div style="order: 1;">
     <h1 class="recipe-title">
       <%= translated(@recipe.name_or_base_name) %>
-      <%= image_tag asset_path("three-dots.svg"), style: "cursor: pointer;" %>
+      <div style="float: right;">
+        <div class="dropdown" style="display: inline-block; float: right">
+          <%= image_tag asset_path("three-dots.svg"), "data-bs-toggle": "dropdown", style: "cursor: pointer;" %>
+          <div class="dropdown-menu">
+            <%= link_to "Créer une variation", new_variant_recipes_path(base_recipe_id: @recipe.id), class: "dropdown-item" %>
+          </div>
+        </div>
+      </div>
       <!--<span style="font-size: 1.5rem;"><%# "(#{@recipe.version_name})" if @recipe.version_name %></span>-->
     </h1>
   
@@ -55,7 +62,7 @@
         <%# end %>
         -->
         
-        <h2 class="h2 toggle-link-visible" data-toggle-id="ing_list">Ingrédients</h2>
+        <h2 class="h2">Ingrédients</h2>
     
         <div style="height: 0.5rem;"></div>
     
