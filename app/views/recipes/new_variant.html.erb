@@ -1,3 +1,7 @@
+<%= render partial: "recipes/tabs" %>
+
+<h1>New Recipe Variant</h1>
+
 <%= form_with(model: @recipe, local: true) do |form| %>
   <% if @recipe.errors.any? %>
     <div id="error_explanation">
@@ -11,22 +15,21 @@
     </div>
   <% end %>
 
+  <div>
+    <b>Base recipe: </b><%= @recipe.base_recipe.name %>
+  </div>
+
   <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+    <%= form.label :version_name %>
+    <%= form.text_field :version_name, size: 30 %>
   </div>
 
   <div class="field">
     <%= form.label :source %>
     <%= form.text_field :source, size: 80 %>
   </div>
-  
-  <div class="field">
-    <%= form.label :group_id %>
-    <%= form.collection_select :group_id, Group.order(:name).all, :id, :name, include_blank: true %>
-    <%= form.label :version_name %>
-    <%= form.text_field :version_name %>
-  </div>
+
+  <%= form.hidden_field :base_recipe_id %>
 
   <div class="field">
     <%= form.label :instructions %><br>
@@ -79,3 +82,5 @@
     <%= form.submit %>
   </div>
 <% end %>
+
+<%= link_to 'Back', recipes_path %>

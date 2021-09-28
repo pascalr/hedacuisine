@@ -27,6 +27,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Raleway&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
 
+.list-group-item {
+  padding: 0.35em 1em;
+}
+
 .dropdown-submenu {
   position: relative;
 }
@@ -100,6 +104,7 @@ h3, .instructions-header {
 .h2, .section-header {
   border-bottom: 1px solid black;
   padding-left: 0.25rem;
+  font-size: 1.5rem;
 }
 //.h2, .section-header {
 //  //background-color: #4b8cb7 ;
@@ -156,6 +161,7 @@ body, #body, html {
   //margin-top: 10px;
   //height: 100%;
   min-height: 100%;
+  font-size: 14px;
 }
 footer {
   margin-top: 30px;
@@ -286,6 +292,10 @@ ul.dash > li:before {
   cursor: pointer;
 }
 
+.responsive-right-above {
+  float: right;
+}
+
 // xs: phones, sm: tablets, md: small laptop, lg: laptops and desktops
 // Bootstrap: xs: 768 ou moins, sm: 768 à 992, md: 992 à 1200, lg: 1200 et plus
 
@@ -300,6 +310,9 @@ ul.dash > li:before {
   }
   body {
     margin-top: 0px;
+  }
+  .responsive-right-above {
+    float: none;
   }
 }
 

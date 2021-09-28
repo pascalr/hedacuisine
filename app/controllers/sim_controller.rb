@@ -5,7 +5,7 @@ class SimController < ApplicationController
   #protect_from_forgery only: [] or except: []
   skip_forgery_protection
 
-  before_action :set_machine
+  before_action :set_machine, except: [:pull_machine]
 
   def get_state
     render json: {recipes: Recipe.where.not(instructions: [nil, ""])}
@@ -17,6 +17,7 @@ class SimController < ApplicationController
 
   def pull_machine
     #data = {}
+    @machine = Machine.includes(containers: :container_ingredients).find(params[:machine_id])
     @foods = Food.all
     #@jar_formats = Food.all
     #data[:jars] = machine.containers

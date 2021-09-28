@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_23_145437) do
+ActiveRecord::Schema.define(version: 2021_09_27_200315) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -331,6 +331,8 @@ ActiveRecord::Schema.define(version: 2021_09_23_145437) do
     t.boolean "is_gluten_free"
     t.boolean "is_vegetarian"
     t.boolean "is_vegan"
+    t.integer "base_recipe_id"
+    t.text "description"
   end
 
   create_table "sections", force: :cascade do |t|

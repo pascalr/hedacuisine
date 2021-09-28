@@ -1,5 +1,7 @@
 class Recipe < ApplicationRecord
 
+  scope :all_main, -> { where(base_recipe_id: nil) }
+
   scope :all_public, -> { where(is_public: true) }
   scope :all_for, lambda { |user|
     return where(is_public: true) unless user
@@ -10,6 +12,9 @@ class Recipe < ApplicationRecord
     SimilarRecipe.where(recipe_id: self.id).map(&:similar_recipe) +
       SimilarRecipe.where(similar_recipe_id: self.id).map(&:recipe)
   end
+
+  belongs_to :base_recipe, class_name: "Recipe", optional: true
+  has_many :variants, class_name: "Recipe", foreign_key: "base_recipe_id"
 
   has_many :recipe_steps
   has_many :steps, through: :recipe_steps
@@ -34,6 +39,18 @@ class Recipe < ApplicationRecord
   end
   
   #has_one_attached :source_image
+  
+  def name_or_base_name
+    base_recipe ? base_recipe.name : name
+  end
+  
+  def description_or_base_description
+    base_recipe ? base_recipe.description : description
+  end
+  
+  def image_id_or_base_image_id 
+    base_recipe ? base_recipe.image_id : image_id 
+  end
   
   def self.parse_quantity_and_servings_name(raw)
     qty = nil

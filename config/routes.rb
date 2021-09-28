@@ -100,6 +100,10 @@ Rails.application.routes.draw do
         patch 'do_process', param: 'slug'
         patch 'cheat', param: 'slug'
       end
+
+      collection do
+        get 'new_variant'
+      end
     end
 
     resources :user_recipes, only: [:index, :create, :update, :destroy]

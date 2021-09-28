@@ -210,7 +210,7 @@ module IngredientsHelper
   end
 
   def my_sanitize(s)
-    sanitize s, attributes: ['id']
+    sanitize s, attributes: %w(id class href)
   end
 
   def pretty_complete_instructions(recipe)

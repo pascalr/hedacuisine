@@ -16,7 +16,7 @@
 
   <body>
 
-    <span id="locale" hidden><%= params[:locale] %></span>
+    <span id="locale" hidden><%= params[:locale] || I18n.default_locale %></span>
 
     <div id="body">
       <div class="responsive-margins-lg">

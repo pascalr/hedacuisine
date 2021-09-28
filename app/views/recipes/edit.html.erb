@@ -60,6 +60,16 @@
     <b><%= form.label :name %></b>
     <%= form.text_field :name %>
   </div>
+  
+  <div class="field">
+    <b><%= form.label :version_name %></b>
+    <%= form.text_field :version_name %>
+  </div>
+  
+  <div class="field">
+    <b><%= form.label :description%></b><br>
+    <%= form.text_area :description, cols: 100 %>
+  </div>
 
   <div class="field">
     <b><%= form.label :source %></b>

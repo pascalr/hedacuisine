@@ -34,11 +34,17 @@ class RecipesController < ApplicationController
     #redirect_to group_path(id: @recipe.group.id, recipe_id: @recipe.id) if @recipe.group
   end
 
+  def new_variant
+    @recipe = Recipe.new
+    @recipe.base_recipe = Recipe.find(params[:base_recipe_id])
+  end
+
   def new
     # FIXME: This allows any user to read any recipe. Ensure permission
     # if I allow private recipes.
-    @recipe = params[:clone_id] ? Recipe.find(params[:clone_id]).dup : Recipe.new
-    @recipe.version_name = nil
+    @recipe = Recipe.new
+    #@recipe = params[:clone_id] ? Recipe.find(params[:clone_id]).dup : Recipe.new
+    #@recipe.version_name = nil
   end
 
   def edit
@@ -95,7 +101,7 @@ class RecipesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def recipe_params
-      p = params.require(:recipe).permit(:name, :source, :instructions, :version_name, :group_id, :complete_instructions, :image_id, :raw_servings, :preparation_time, :cooking_time, :total_time, :is_public)
+      p = params.require(:recipe).permit(:name, :source, :instructions, :version_name, :group_id, :complete_instructions, :image_id, :raw_servings, :preparation_time, :cooking_time, :total_time, :is_public, :base_recipe_id, :description)
       #p[:image_id] == "on" ? p.except(:image_id) : p
     end
 end
