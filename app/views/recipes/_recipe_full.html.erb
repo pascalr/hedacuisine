@@ -1,18 +1,15 @@
-<div class="responsive-above" style="justify-content: space-between">
-  <div style="order: 2;">
+<div class="responsive-above">
+  <div>
     <% if @recipe.image_id %>
       <%= image_tag "/images/#{@recipe.image_id}_m.jpg", style: "margin-right: 20px;" %>
     <% end %>
-    <div style="margin-top: 1.5rem;">
-      <%= render partial: "details_medium_version", locals: {recipe: @recipe} %>
-    </div>
   </div>
-  <div style="order: 1;">
-    <h1 class="recipe-title">
-      <%= translated(@recipe.name) %>
-      <div style="float: right;">
-        <div class="dropdown" style="display: inline-block; float: right">
-          <%= image_tag asset_path("three-dots.svg"), "data-bs-toggle": "dropdown", style: "cursor: pointer;" %>
+  <div>
+    <h1>
+      <span class="recipe-title"><%= translated(@recipe.name) %></span>
+      <div style="display: inline-block;">
+        <div class="dropdown" style="display: inline-block; margin-left: 1rem;">
+          <%= image_tag asset_path("list.svg"), "data-bs-toggle": "dropdown", style: "cursor: pointer;" %>
           <div class="dropdown-menu">
             <%= link_to "Créer une variation", new_variant_recipes_path(base_recipe_id: @recipe.id), class: "dropdown-item" %>
           </div>
@@ -20,118 +17,121 @@
       </div>
       <!--<span style="font-size: 1.5rem;"><%# "(#{@recipe.version_name})" if @recipe.version_name %></span>-->
     </h1>
-  
-    <div class="recipe-body">
-    
-    <p><%= @recipe.description %></p>
-
-    <% variants = @recipe.all_variants %>
-    <% unless variants.blank?  %>
-      <ul class="nav nav-tabs">
-        <li class="nav-item navbar-brand"><b>Variantes</b></li>
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#"><%= @recipe.version_name.blank? ? "Original" : @recipe.version_name.capitalize %></a>
-        </li>
-        <% variants.each do |variant| %>
-          <li class="nav-item">
-            <%= link_to variant.version_name.capitalize, variant, class: "nav-link" %>
-          </li>
-        <% end %>
-        <li class="nav-item">
-          <%= link_to "+", new_variant_recipes_path(base_recipe_id: @recipe.id), class: "nav-link" %>
-        </li>
-      </ul>
-    <% end %>
-    
-    <div style="height: 1rem;"></div>
-      <!-- TODO: Si un ingrédient se retrouve plusieurs fois dans la recette, afficher un avertissement et la quantité totale comme ça le monde peuvent savoir s'ils en ont assez -->
-      
-      <% unless @recipe.ingredients.blank? %>
-        
-        <!--<%# @recipe.ingredients.each do |ing| %>
-          <%# next if ing.food.producing_recipes.blank? %>
-          <%# r = ing.food.producing_recipes.first %>
-          <h2 class="h2 toggle-link" data-toggle_id="sub_recipe_<%# r.id %>">+ Comment faire: <%# r.name %></h2>
-          <div id="sub_recipe_<%# r.id %>" class="recipe-instructions" hidden>
-            <%# pretty_complete_instructions(r) %>
-          </div>
-        <%# end %>
-        -->
-        
-        <h2 class="h2">Ingrédients</h2>
-    
-        <div style="height: 0.5rem;"></div>
-    
-        <div id="ing_list">
-          <ul class="list-group">
-            <% @recipe.ingredients.order(:item_nb).each do |ing| %>
-              <li class="list-group-item">
-                <%= pretty_ingredient_with_conversions(ing) %>
-    
-                <div class="dropdown" style="display: inline-block; float: right">
-                   <%= image_tag asset_path("pencil-square.svg"), "data-bs-toggle": "dropdown", style: "cursor: pointer;" %>
-                  <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">Retirer</a>
-                    <% unless ing.food.substitutions.blank? %>
-                      <h6 class="dropdown-header">Remplacer par</h6>
-                      <% ing.food.substitutions.each do |sub| %>
-                        <a class="dropdown-item" href="#"><%= pretty_substitution(ing, sub) %></a>
-                      <% end %>
-                    <% end %>
-                  </div>
-                </div>
-                <%# link_to image_tag(asset_path("pencil-square.svg")), "FIXME", style: "float: right;" %>
-              </li>
-            <% end %>
-          </ul>
-    
-          <div style="display: flex; justify-content: space-between; margin-top: 0.25rem;">
-            <div>
-              <b>Multiplier les quantités: </b>
-              <%= form_with(url: "FIXME", class: "inline") do |form| %>
-                <%# select_tag(:factor, options_for_select([['Quart', 0.25], ['Moitié', 0.5], ['Simple', 1], ['Double', 2], ['Quadruple', 4], ['Personalisé', nil]]), class: "form-control", style: "display: inline; width: auto;") %>
-                <%= form.text_field :custom_factor, value: "1", style: "width: 4rem; display: inline; text-align: right;" %> X
-              <% end %>
-            </div>
-            <div>
-              <%= image_tag asset_path("minus-square.svg"), style: "cursor: pointer; width: 1.5rem;" %>
-              &nbsp;
-              <%= image_tag asset_path("plus-square.svg"), style: "cursor: pointer; width: 1.5rem;" %>
-            </div>
-            <div>
-              <% unless @recipe.servings_quantity.nil? %>
-                <div>
-                  <b>Portions:</b>
-                  <span style="color: gray;"><%= @recipe.servings_quantity%> <%= @recipe.servings_name %></span>
-                </div>
-              <% end %>
-            </div>
-          </div>
-    
-        </div>
-      
-      <% end %>
-    
-      <h2 class="h2" style="margin-top: 2rem;">Instructions</h2>
-      
-      <div class="recipe-instructions">
-      
-        <%= pretty_complete_instructions(@recipe) %>
-        <%# pretty_print_recipe(@recipe) %>
-      </div>
-      
-      <% unless @recipe.similar_recipes.blank? %>
-        <h2>Recettes similaires</h2>
-      
-        <h3><%= link_to translated(@recipe.similar_recipes.first.name), @recipe.similar_recipes.first %></h3>
-        <%= pretty_print_recipe(@recipe.similar_recipes.first) %>
-      <% end %>
-      
-      <h2 class="h2" style="margin-top: 2rem;">Commentaires</h2>
-    
-      <%= translated("Aucun commentaire pour l'instant.") %>
+    <p style="width: 600px;"><%= @recipe.description %></p>
+    <div style="margin-top: 1.5rem;">
+      <%= render partial: "details_medium_version", locals: {recipe: @recipe} %>
     </div>
   </div>
+</div>
+  
+<div class="recipe-body">
+
+<% variants = @recipe.all_variants %>
+<% unless variants.blank?  %>
+  <div style="height: 1rem;"></div>
+  <ul class="nav nav-tabs">
+    <li class="nav-item navbar-brand"><b>Variantes</b></li>
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="#"><%= @recipe.version_name.blank? ? "Original" : @recipe.version_name.capitalize %></a>
+    </li>
+    <% variants.each do |variant| %>
+      <li class="nav-item">
+        <%= link_to variant.version_name.capitalize, variant, class: "nav-link" %>
+      </li>
+    <% end %>
+    <li class="nav-item">
+      <%= link_to "+", new_variant_recipes_path(base_recipe_id: @recipe.id), class: "nav-link" %>
+    </li>
+  </ul>
+<% end %>
+
+<div style="height: 1.5rem;"></div>
+  <!-- TODO: Si un ingrédient se retrouve plusieurs fois dans la recette, afficher un avertissement et la quantité totale comme ça le monde peuvent savoir s'ils en ont assez -->
+  
+  <% unless @recipe.ingredients.blank? %>
+    
+    <!--<%# @recipe.ingredients.each do |ing| %>
+      <%# next if ing.food.producing_recipes.blank? %>
+      <%# r = ing.food.producing_recipes.first %>
+      <h2 class="h2 toggle-link" data-toggle_id="sub_recipe_<%# r.id %>">+ Comment faire: <%# r.name %></h2>
+      <div id="sub_recipe_<%# r.id %>" class="recipe-instructions" hidden>
+        <%# pretty_complete_instructions(r) %>
+      </div>
+    <%# end %>
+    -->
+    
+    <h2 class="h2">Ingrédients</h2>
+
+    <div style="height: 0.5rem;"></div>
+
+    <div id="ing_list">
+      <ul class="list-group">
+        <% @recipe.ingredients.order(:item_nb).each do |ing| %>
+          <li class="list-group-item">
+            <%= pretty_ingredient_with_conversions(ing) %>
+
+            <div class="dropdown" style="display: inline-block; float: right">
+               <%= image_tag asset_path("pencil-square.svg"), "data-bs-toggle": "dropdown", style: "cursor: pointer;" %>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Retirer</a>
+                <% unless ing.food.substitutions.blank? %>
+                  <h6 class="dropdown-header">Remplacer par</h6>
+                  <% ing.food.substitutions.each do |sub| %>
+                    <a class="dropdown-item" href="#"><%= pretty_substitution(ing, sub) %></a>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+            <%# link_to image_tag(asset_path("pencil-square.svg")), "FIXME", style: "float: right;" %>
+          </li>
+        <% end %>
+      </ul>
+
+      <div style="display: flex; justify-content: space-between; margin-top: 0.25rem;">
+        <div>
+          <b>Multiplier les quantités: </b>
+          <%= form_with(url: "FIXME", class: "inline") do |form| %>
+            <%# select_tag(:factor, options_for_select([['Quart', 0.25], ['Moitié', 0.5], ['Simple', 1], ['Double', 2], ['Quadruple', 4], ['Personalisé', nil]]), class: "form-control", style: "display: inline; width: auto;") %>
+            <%= form.text_field :custom_factor, value: "1", style: "width: 4rem; display: inline; text-align: right;" %> X
+          <% end %>
+        </div>
+        <div>
+          <%= image_tag asset_path("minus-square.svg"), style: "cursor: pointer; width: 1.5rem;" %>
+          &nbsp;
+          <%= image_tag asset_path("plus-square.svg"), style: "cursor: pointer; width: 1.5rem;" %>
+        </div>
+        <div>
+          <% unless @recipe.servings_quantity.nil? %>
+            <div>
+              <b>Portions:</b>
+              <span style="color: gray;"><%= @recipe.servings_quantity%> <%= @recipe.servings_name %></span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+    </div>
+  
+  <% end %>
+
+  <h2 class="h2" style="margin-top: 2rem;">Instructions</h2>
+  
+  <div class="recipe-instructions">
+  
+    <%= pretty_complete_instructions(@recipe) %>
+    <%# pretty_print_recipe(@recipe) %>
+  </div>
+  
+  <% unless @recipe.similar_recipes.blank? %>
+    <h2>Recettes similaires</h2>
+  
+    <h3><%= link_to translated(@recipe.similar_recipes.first.name), @recipe.similar_recipes.first %></h3>
+    <%= pretty_print_recipe(@recipe.similar_recipes.first) %>
+  <% end %>
+  
+  <h2 class="h2" style="margin-top: 2rem;">Commentaires</h2>
+
+  <%= translated("Aucun commentaire pour l'instant.") %>
 </div>
 
 <%# javascript_pack_tag "recipe" %>
