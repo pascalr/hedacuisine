@@ -25,7 +25,7 @@
 
 <h1>Editing <%= @recipe.name %></h1>
 
-<span id="autocomplete-data" data-foods="<%= Food.all.map {|v| [v.id, v.name] } %>"/>
+<span id="food-list" data-values="<%= Food.all.map(&:name) %>"/>
   
 <div>
   <b>Recipe ingredients</b><br>
@@ -121,5 +121,6 @@
 <% end %>
 
 <%# javascript_pack_tag "recipe_editor.js" %>
-<%= javascript_pack_tag "ingredient_editor" %>
-<%= javascript_pack_tag "recipes_edit.js" %>
+<%# javascript_pack_tag "recipes_edit.js" %>
+<%= javascript_pack_tag "recipes_edit" %>
+<%= stylesheet_pack_tag "recipes_edit" %>

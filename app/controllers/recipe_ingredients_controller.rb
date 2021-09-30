@@ -3,7 +3,9 @@ class RecipeIngredientsController < ApplicationController
   before_action :set_recipe_ingredient, only: [:update, :destroy, :move]
 
   def create
-    recipe_ingredient = @recipe.recipe_ingredients.build(recipe_ingredient_params)
+    recipe_ingredient = @recipe.recipe_ingredients.build
+    recipe_ingredient.food = Food.find_by!(name: params[:food_name])
+    recipe_ingredient.assign_attributes(recipe_ingredient_params)
     recipe_ingredient.save!
     redirect_back fallback_location: recipe_path(@recipe)
   end
