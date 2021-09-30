@@ -1,0 +1,12 @@
+<li class="list-group-item" data-id="<%= ingredient.id %>">
+  <span style="margin-right: 10px;"><b><%= ingredient.item_nb %>.</b></span>
+  <%= form_with(model: [recipe, ingredient], local: true, class: "inline") do |form| %>
+    <%= form.text_field :raw_quantity, size: "10" %>
+    <%= link_to ingredient.food.name, ingredient.food %>
+    <div style="float: right;">
+      <%= form.text_field :comment, size: "18", style: "margin-right: 2rem;" %>
+      <%= form.submit 'modifier' %>
+      <%= link_to 'x', [recipe, ingredient], method: :delete, data: {confirm: 'Are you sure?'} %>
+    </div>
+  <% end %>
+</li>
