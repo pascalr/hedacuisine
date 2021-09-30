@@ -1,8 +1,25 @@
+<%= render partial: "recipes/tabs" %>
+
 <%= link_to 'Show', recipe_path(@recipe) %> |
 <%= link_to 'Process', do_process_recipe_path(@recipe), method: :patch %> |
 <%= link_to 'Cheat', cheat_recipe_path(@recipe), method: :patch %> |
 <%= link_to 'Fix ingredient numbers', 'TODO', method: :patch %> |
 <%= link_to 'Back', recipes_path %>
+
+<div class="responsive-above">
+  <div>
+    <% if @recipe.image_id %>
+      <%= image_tag "/images/#{@recipe.image_id}_m.jpg", style: "margin-right: 20px;" %>
+    <% end %>
+  </div>
+  <div>
+    <h1 class="recipe-title" contenteditable="true"><%= @recipe.name %></h1>
+    <p style="width: 600px;" contenteditable="true"><%= @recipe.description %></p>
+    <div style="margin-top: 1.5rem;">
+      <%= render partial: "details_medium_version", locals: {recipe: @recipe} %>
+    </div>
+  </div>
+</div>
 
 <% @units = Unit.all %>
 

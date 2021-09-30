@@ -65,6 +65,12 @@ module ApplicationHelper
     #render file: index.to_s, layout: false if index.exist?
   end
 
+  def capitalize_first_letter(str)
+    return str if str.blank?
+    str[0] = str[0].capitalize
+    str
+  end
+
   def t_no_span(e)
     strip_tags(t(e))
   end

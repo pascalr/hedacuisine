@@ -22,6 +22,7 @@
     <span style="color: gray;"><%= recipe.servings_quantity%> <%= recipe.servings_name %></span>
   </div>
 <% end %>
+<br>
 <% unless @recipe.source.blank? %>
-  <br><%= link_to 'Voir la recette originale', @recipe.source, class: "btn btn-outline-primary" %>
+  <%= link_to 'Voir la recette originale', @recipe.source, class: "btn btn-outline-primary" %>
 <% end %>

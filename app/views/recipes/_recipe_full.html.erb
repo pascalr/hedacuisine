@@ -54,7 +54,7 @@
   <ul class="nav nav-tabs">
     <li class="nav-item navbar-brand"><b>Variantes</b></li>
     <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="#"><%= @recipe.version_name.blank? ? "Original" : @recipe.version_name.capitalize %></a>
+      <a class="nav-link active" aria-current="page" href="#"><%= @recipe.version_name.blank? ? "Original" : capitalize_first_letter(@recipe.version_name) %></a>
     </li>
     <% variants.each do |variant| %>
       <li class="nav-item">

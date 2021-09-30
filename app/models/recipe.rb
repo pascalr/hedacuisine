@@ -129,7 +129,8 @@ class Recipe < ApplicationRecord
 
   def to_param
     return id if name.nil?
-    "#{id}-#{name.gsub(' ', '_')}"
+    return "#{id}-#{name.downcase.gsub(' ', '_')}" if version_name.blank?
+    "#{id}-#{name.downcase.gsub(' ', '_')}_#{version_name.downcase.gsub(' ', '_')}"
   end
 
   # DEPRECATED. Version_name is deprecated. Use only name.
