@@ -51,12 +51,7 @@
   <% end %>
 </div>
 
-<%= form_with(model: [@recipe,RecipeIngredient.new], local: true) do |form| %>
-  Qty: <%= form.text_field :raw_quantity %>
-  Food: <%= form.text_field :food_name, id: "autocomplete-food", placeholder: "Food..." %>
-  <%= form.hidden_field :food_id, id: "autocomplete-food-id" %>
-  <%= form.submit "Ajouter" %>
-<% end %>
+<%= render partial: "recipes/new_recipe_ingredient_form" %>
 
 <br><br>
 
