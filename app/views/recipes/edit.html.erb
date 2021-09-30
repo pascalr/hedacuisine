@@ -7,11 +7,14 @@
 <%= link_to 'Back', recipes_path %>
 
 <div class="responsive-above">
-  <div>
-    <% if @recipe.image_id %>
+  <% if @recipe.image_id %>
+    <div>
       <%= image_tag "/images/#{@recipe.image_id}_m.jpg", style: "margin-right: 20px;" %>
-    <% end %>
-  </div>
+    </div>
+  <% else %>
+    <div style="width: 452px; height: 304px; border: 1px solid black;">
+    </div>
+  <% end %>
   <div>
     <h1 class="recipe-title" contenteditable="true"><%= @recipe.name %></h1>
     <p style="width: 600px;" contenteditable="true"><%= @recipe.description %></p>
@@ -20,6 +23,13 @@
     </div>
   </div>
 </div>
+<%= form_with(model: @recipe, local: true) do |form| %>
+  <b><%= form.label :image_id %></b>
+  <%= form.number_field :image_id %>
+  <%= form.submit "modifier" %>
+<% end %>
+
+<br>
 
 <% @units = Unit.all %>
 
@@ -78,11 +88,6 @@
   <div class="field">
     <b><%= form.label :source %></b>
     <%= form.text_field :source, size: 80 %>
-  </div>
-  
-  <div class="field">
-    <b><%= form.label :image_id %></b>
-    <%= form.number_field :image_id %>
   </div>
   
   <div class="field">
