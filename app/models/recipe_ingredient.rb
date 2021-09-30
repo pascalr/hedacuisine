@@ -24,6 +24,7 @@ class RecipeIngredient < ApplicationRecord
     if quantity.nil?
       self.weight = nil
     elsif unit.nil? || (unit && unit.is_unitary)
+      raise "Invalid database data. Missing food unit weight" if food.unit_weight.nil?
       self.weight = quantity * food.unit_weight * (unit ? unit.value : 1)
     elsif unit.is_volume
       self.weight = quantity * unit.value * food.density
