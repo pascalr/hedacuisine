@@ -1,8 +1,26 @@
 import 'js-autocomplete/auto-complete.css';
 import autocomplete from 'js-autocomplete';
 
-document.addEventListener("DOMContentLoaded", function(event) { 
-    
+document.addEventListener("DOMContentLoaded", function(event) {
+
+  var elements = document.querySelectorAll('[data-update-column]');
+  for (const elem of elements) {
+    const model = elem.dataset.model
+    const url = elem.dataset.url
+    const column = elem.dataset.updateColumn
+    elem.addEventListener("focusout", function() {
+      $.ajax({
+        type: "PATCH",
+        url: url,
+        data: {
+          authenticity_token: $('[name="csrf-token"]')[0].content,
+          [model]: {
+            [column]: elem.innerHTML
+          }
+        }
+      });
+    });
+  }
 
   const button = document.getElementById("add-recipe-ingredient-form");
 

@@ -19,6 +19,11 @@ require("jquery")
 require("tiny-slider")
 global.toastr = require("toastr")
 
+window.Heda = {}
+window.Heda.getLocale = function() {
+  return document.getElementById("locale").innerHTML
+}
+
 // Uncomment to copy all static images under ../images to the output folder and reference
 // them with the image_pack_tag helper in views (e.g <%= image_pack_tag 'rails.png' %>)
 // or the `imagePath` JavaScript helper below.

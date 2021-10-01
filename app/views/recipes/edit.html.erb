@@ -16,8 +16,8 @@
     </div>
   <% end %>
   <div>
-    <h1 class="recipe-title" contenteditable="true"><%= @recipe.name %></h1>
-    <p style="width: 600px;" contenteditable="true"><%= @recipe.description %></p>
+    <h1 data-model="<%= @recipe.model_name.to_s.underscore %>" data-url="<%= recipe_path(@recipe) %>" data-update-column="name" class="recipe-title" contenteditable="true"><%= @recipe.name %></h1>
+    <p data-model="<%= @recipe.model_name.to_s.underscore %>" data-url="<%= recipe_path(@recipe) %>" data-update-column="description" style="width: 600px;" contenteditable="true"><%= @recipe.description %></p>
     <div style="margin-top: 1.5rem;">
       <%= render partial: "details_medium_version", locals: {recipe: @recipe} %>
     </div>
@@ -33,7 +33,7 @@
 
 <% @units = Unit.all %>
 
-<h1>Editing <%= @recipe.name %></h1>
+<h2 class="h2">Ingrédients</h2>
 
 <span id="food-list" data-values="<%= Food.all.map(&:name) %>"/>
   
@@ -57,6 +57,8 @@
 
 <%= render partial: "recipes/form_for_new_recipe_ingredient", locals: {recipe: @recipe} %>
 
+<h2 class="h2">Détails</h2>
+
 <%= form_with(model: @recipe, local: true) do |form| %>
   <% if @recipe.errors.any? %>
     <div id="error_explanation">
@@ -71,18 +73,8 @@
   <% end %>
   
   <div class="field">
-    <b><%= form.label :name %></b>
-    <%= form.text_field :name %>
-  </div>
-  
-  <div class="field">
     <b><%= form.label :version_name %></b>
     <%= form.text_field :version_name %>
-  </div>
-  
-  <div class="field">
-    <b><%= form.label :description%></b><br>
-    <%= form.text_area :description, cols: 100 %>
   </div>
 
   <div class="field">
@@ -109,6 +101,9 @@
     <b><%= form.label :raw_servings %></b>
     <%= form.text_field :raw_servings %>
   </div>
+
+  <br><br>
+  <h2 class="h2">Instructions</h2>
 
   <div class="field">
     <b><%= form.label :complete_instructions %></b><br>
