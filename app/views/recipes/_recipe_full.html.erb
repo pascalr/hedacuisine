@@ -109,29 +109,22 @@
         <% end %>
       </ul>
 
+      <div style="height: 4px;"></div>
+
       <div style="display: flex; justify-content: space-between; margin-top: 0.25rem;">
         <div>
-          <b>Multiplier les quantités: </b>
-          <%= form_with(url: "FIXME", class: "inline") do |form| %>
-            <%# select_tag(:factor, options_for_select([['Quart', 0.25], ['Moitié', 0.5], ['Simple', 1], ['Double', 2], ['Quadruple', 4], ['Personalisé', nil]]), class: "form-control", style: "display: inline; width: auto;") %>
-            <%= form.text_field :custom_factor, value: "1", style: "width: 4rem; display: inline; text-align: right;" %> X
-          <% end %>
+          <%= text_field_tag :quantity, "1", class: "form-control", style: "width: 6rem; display: inline; text-align: right;" %>
+          <%= collection_select :foo, :input_ingredient, @recipe.ingredients, :id, :name, {}, class: "form-select", style: "display: inline-block; width: auto;" %>
+        </div>
+        <div>
+          <%= image_tag asset_path("right_arrow.svg"), style: "width: 1.5rem;" %>
         </div>
         <div>
           <%= image_tag asset_path("minus-square.svg"), style: "cursor: pointer; width: 1.5rem;" %>
-          &nbsp;
+          <%= text_field_tag :servings, @recipe.servings, style: "width: 8rem; display: inline; text-align: right;", class: "form-control" %>
           <%= image_tag asset_path("plus-square.svg"), style: "cursor: pointer; width: 1.5rem;" %>
         </div>
-        <div>
-          <% unless @recipe.servings_quantity.nil? %>
-            <div>
-              <b>Portions:</b>
-              <span style="color: gray;"><%= @recipe.servings_quantity%> <%= @recipe.servings_name %></span>
-            </div>
-          <% end %>
-        </div>
       </div>
-
     </div>
   
   <% end %>

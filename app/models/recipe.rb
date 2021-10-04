@@ -99,6 +99,12 @@ class Recipe < ApplicationRecord
     qty_s = sprintf("%g", servings_quantity.round(2))
     servings_name.nil? ? "#{qty_s}" : "#{qty_s} #{servings_name}"
   end
+  def servings
+    return nil if servings_quantity.nil?
+    qty_s = sprintf("%g", servings_quantity.round(2))
+    # FIXME: translation
+    servings_name.blank? ? "#{qty_s} portions" : "#{qty_s} #{servings_name}"
+  end
   
   def ingredient_list
     ings = recipe_ingredients.order(weight: :desc).reject {|ing| ing.weight.nil?}.map(&:name).join(", ")
