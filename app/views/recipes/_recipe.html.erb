@@ -1,8 +1,8 @@
 <div class="row" style="margin-bottom: 10px;">
   <div class="col-md-auto">
     <%= link_to recipe_path(recipe) do %>
-      <% if recipe.image_id %>
-        <%= image_tag "/images/#{recipe.image_id}_s.jpg" %>
+      <% if recipe.image %>
+        <%= image_tag recipe.image.small_variant %>
       <% else %>
         <img width="255" height="171"></img>
       <% end %>

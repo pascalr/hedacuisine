@@ -1,7 +1,7 @@
 <div class="responsive-above">
   <div>
     <% if @recipe.image_id %>
-      <%= image_tag "/images/#{@recipe.image_id}_m.jpg", style: "margin-right: 20px;" %>
+      <%= image_tag @recipe.image.medium_variant, style: "margin-right: 20px;" if @recipe.image %>
     <% end %>
   </div>
   <div>

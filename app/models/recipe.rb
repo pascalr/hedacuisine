@@ -13,6 +13,8 @@ class Recipe < ApplicationRecord
       SimilarRecipe.where(similar_recipe_id: self.id).map(&:recipe)
   end
 
+  belongs_to :image, optional: true
+
   belongs_to :base_recipe, class_name: "Recipe", optional: true
   has_many :variants, class_name: "Recipe", foreign_key: "base_recipe_id"
 

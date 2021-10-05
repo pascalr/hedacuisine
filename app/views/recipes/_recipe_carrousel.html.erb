@@ -11,10 +11,10 @@
   <span id="next-recipe-carrousel-<%= carrousel_id %>" class="my-tns-control"><%= image_tag "right_arrow.svg", size: "15x15" %></span>
 
   <div id="recipe-carrousel-<%= carrousel_id %>" class="recipe-carrousel">
-    <% recipes.each do |recipe| %>
+    <% recipes.select(&:image).each do |recipe| %>
       <div class="recipe" style="width: 280px;">
         <%= link_to recipe_path(recipe) do %>
-          <%= image_tag "/images/#{recipe.image_id}_s.jpg", width: 255, height: 171 %>
+          <%= image_tag recipe.image.small_variant, width: 255, height: 171 %>
           <div style="width: 255px; text-align: center; font-family: 'Satisfy', cursive; font-size: 1.8rem; color: black;">
             <%= recipe.name %>
           </div>

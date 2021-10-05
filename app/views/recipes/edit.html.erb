@@ -7,9 +7,9 @@
 <%= link_to 'Back', recipes_path %>
 
 <div class="responsive-above">
-  <% if @recipe.image_id %>
+  <% if @recipe.image %>
     <div>
-      <%= image_tag "/images/#{@recipe.image_id}_m.jpg", style: "margin-right: 20px;" %>
+      <%= image_tag @recipe.image.medium_variant, style: "margin-right: 20px;" %>
     </div>
   <% else %>
     <div style="width: 452px; height: 304px; border: 1px solid black;">

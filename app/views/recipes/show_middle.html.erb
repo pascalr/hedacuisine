@@ -58,8 +58,8 @@ tr:last-child td:last-child { border-bottom-right-radius: 5px; }
     <%= translated(@recipe.name) %>
   </h1>
   <div style="width: 100%;">
-    <% if @recipe.image_id %>
-      <%= image_tag "/images/#{@recipe.image_id}_m.jpg", style: "margin: auto; display: block;" %>
+    <% if @recipe.image %>
+      <%= image_tag @recipe.image.medium_version, style: "margin: auto; display: block;" %>
     <% end %>
   </div>
   <div style="display: flex; justify-content: space-between;">
