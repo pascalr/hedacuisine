@@ -15,6 +15,7 @@ gem "simple_calendar", "~> 2.0" # For a calendar
 gem 'rails-i18n', '~> 6.0.0' # For locale (languages by region)
 gem 'mini_magick' # to analyze image widths
 gem 'piet' # to reduce file size
+gem "aws-sdk-s3", require: false # For AWS
 # ----------------------------
 
 gem 'chartkick'
