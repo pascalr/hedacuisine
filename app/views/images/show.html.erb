@@ -1,6 +1,6 @@
-<%= link_to 'Edit', edit_image_path(@image) %> |
+<%= link_to 'Index', images_path %> |
 <%= link_to 'Process', process_image_image_path(@image), method: :patch %> |
-<%= link_to 'Back', images_path %>
+<%= link_to 'Edit', edit_image_path(@image) %>
 
 <br><br>
 
@@ -27,7 +27,7 @@
 <h2>Medium</h2>
 
 <div style="display: flex;">
-  <%= image_tag @image.medium, style: "margin-right: 20px;" if @image.medium.attached? %>
+  <%= image_tag @image.medium_variant, style: "margin-right: 20px;" %>
   <div>
     <h2 class="recipe-title">Nom de la recette</h2>
     <div>
@@ -41,10 +41,11 @@
   </div>
 </div>
 
-<strong>Size:</strong><%= @medium_size %><br>
-<strong>Optmized size:</strong><%= @medium_size_after %><br>
-<strong>Width:</strong><%= @medium_height %><br>
-<strong>Height:</strong><%= @medium_width %><br>
+<% if @image.original.analyzed? %>
+  <strong>Size:</strong> <%= number_to_human_size(@image.original.byte_size) %><br>
+  <strong>Width:</strong> <%= @image.original.metadata[:width] %><br>
+  <strong>Height:</strong> <%= @image.original.metadata[:height] %><br>
+<% end %>
 
 <h2>Small - List</h2>
 
@@ -55,10 +56,10 @@
 <h2>Small - Slider</h2>
 
 <div style="display: flex;">
-  <%= image_tag @image.small, class: "slider-image-sample" if @image.small.attached? %>
-  <%= image_tag @image.small, class: "slider-image-sample" if @image.small.attached? %>
-  <%= image_tag @image.small, class: "slider-image-sample" if @image.small.attached? %>
-  <%= image_tag @image.small, class: "slider-image-sample" if @image.small.attached? %>
+  <%= image_tag @image.small_variant, class: "slider-image-sample" %>
+  <%= image_tag @image.small_variant, class: "slider-image-sample" %>
+  <%= image_tag @image.small_variant, class: "slider-image-sample" %>
+  <%= image_tag @image.small_variant, class: "slider-image-sample" %>
 </div>
 
 <h2>Tiny</h2>

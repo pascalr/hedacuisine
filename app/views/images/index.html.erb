@@ -1,10 +1,12 @@
 <%= render partial: 'meta/nav' %>
 
-<%= link_to 'New Image', new_image_path %>
+<h2>Ajouter une image</h2>
+
+<%= render 'form', image: Image.new %>
 
 <p id="notice"><%= notice %></p>
 
-<h1>Images</h1>
+<h2>Liste d'images</h2>
 
 <table>
   <thead>
@@ -20,7 +22,7 @@
     <% @images.each do |image| %>
       <tr>
         <td><%= image.id %></td>
-        <td><%= image_tag image.thumb if image.thumb.attached? %></td>
+        <td><%= image_tag image.thumb_variant %></td>
         <td><%= image.filename %></td>
         <td><%= link_to 'Show', image %></td>
         <td><%= link_to 'Edit', edit_image_path(image) %></td>
