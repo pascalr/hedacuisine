@@ -1,0 +1,70 @@
+<%= link_to 'Edit', edit_image_path(@image) %> |
+<%= link_to 'Process', process_image_image_path(@image), method: :patch %> |
+<%= link_to 'Back', images_path %>
+
+<br><br>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Raleway&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
+.slider-image-sample {
+  margin-right: 20px;
+}
+.recipe-title {
+  font-family: "Satisfy", cursive;
+  font-weight: bold;
+  font-size: 2.4rem;
+  margin-bottom: 0.4em;
+}
+.recipe-search-title {
+  font-family: "Satisfy", cursive;
+  font-size: 1.4rem;
+}
+</style>
+
+<p id="notice"><%= notice %></p>
+
+<h2>Medium</h2>
+
+<div style="display: flex;">
+  <%= image_tag @image.medium, style: "margin-right: 20px;" if @image.medium.attached? %>
+  <div>
+    <h2 class="recipe-title">Nom de la recette</h2>
+    <div>
+      <b>Inspiration:</b>
+      <span style="color: gray;">https://www.ricardocuisine.com/en/recipes/6947-honey-madeleines</span>
+    </div>
+    <div>
+      <b>Ingrédients:</b>
+      <span style="color: gray;">farine, poudre à pâte, sel, oeuf, miel, beurre</span>
+    </div>
+  </div>
+</div>
+
+<strong>Size:</strong><%= @medium_size %><br>
+<strong>Optmized size:</strong><%= @medium_size_after %><br>
+<strong>Width:</strong><%= @medium_height %><br>
+<strong>Height:</strong><%= @medium_width %><br>
+
+<h2>Small - List</h2>
+
+<%= render partial: 'sample_list_item' %>
+<%= render partial: 'sample_list_item' %>
+<%= render partial: 'sample_list_item' %>
+
+<h2>Small - Slider</h2>
+
+<div style="display: flex;">
+  <%= image_tag @image.small, class: "slider-image-sample" if @image.small.attached? %>
+  <%= image_tag @image.small, class: "slider-image-sample" if @image.small.attached? %>
+  <%= image_tag @image.small, class: "slider-image-sample" if @image.small.attached? %>
+  <%= image_tag @image.small, class: "slider-image-sample" if @image.small.attached? %>
+</div>
+
+<h2>Tiny</h2>
+
+<%= render partial: 'sample_search_item' %>
+<%= render partial: 'sample_search_item' %>
+<%= render partial: 'sample_search_item' %>
+
+<%# image_tag display_image_path(@image.original) %>

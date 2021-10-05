@@ -23,6 +23,12 @@ Rails.application.routes.draw do
   resources :units
   devise_for :users
 
+  resources :images do
+    member do
+      patch 'process_image'
+    end
+  end
+
   get 'sitemap', to: "sitemap#index"
 
   resources :user_recipe_categories, only: [:create, :update, :destroy]

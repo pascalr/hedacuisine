@@ -1,0 +1,22 @@
+<div style="display: flex; margin: 10px;">
+  <%= image_tag @image.small, style: "margin-right: 20px;" if @image.small.attached? %>
+  <div>
+    <h2 class="recipe-title">Nom de la recette</h2>
+    <div>
+      <b>Ingrédients:</b>
+      <span style="color: gray;">farine, poudre à pâte, sel, oeuf, miel, beurre</span>
+    </div>
+    <div>
+      <b>Préparation:</b>
+      <span style="color: gray;">20 minutes</span>
+    </div>
+    <div>
+      <b>Cuisson:</b>
+      <span style="color: gray;">8 minutes</span>
+    </div>
+    <div>
+      <b>Portions:</b>
+      <span style="color: gray;">24 madeleines</span>
+    </div>
+  </div>
+</div>
