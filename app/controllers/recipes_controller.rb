@@ -120,7 +120,7 @@ class RecipesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def recipe_params
-      p = params.require(:recipe).permit(:name, :source, :instructions, :version_name, :group_id, :complete_instructions, :image_id, :raw_servings, :preparation_time, :cooking_time, :total_time, :is_public, :base_recipe_id, :description)
+      p = params.require(:recipe).permit(:name, :source, :instructions, :version_name, :group_id, :complete_instructions, :image_id, :raw_servings, :preparation_time, :cooking_time, :total_time, :is_public, :base_recipe_id, :description, :main_ingredient_id)
       #p[:image_id] == "on" ? p.except(:image_id) : p
     end
 end

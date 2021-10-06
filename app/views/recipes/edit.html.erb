@@ -101,6 +101,11 @@
     <b><%= form.label :raw_servings %></b>
     <%= form.text_field :raw_servings %>
   </div>
+  
+  <div class="field">
+    <b><%= form.label :main_ingredient_id %></b>
+    <%= form.collection_select :main_ingredient_id, @recipe.ingredients, :id, :name, include_blank: true %>
+  </div>
 
   <br><br>
   <h2 class="h2">Instructions</h2>

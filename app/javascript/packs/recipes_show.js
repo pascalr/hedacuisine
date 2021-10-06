@@ -51,8 +51,12 @@ function updateServingsInputField() {
 
 function updateIngredientQtyInputField() {
   const elem = document.getElementById("ingredient-qty-input-field");
-  const initial = parseFloat(elem.dataset.initial)
-  elem.value = initial*window.scale
+  var s = parseQuantityFloatAndLabel(elem.dataset.quantity)
+  var f = s[0]; var label = s[1]
+  elem.value = f*window.scale
+  if (label) {
+    elem.value += " " + label
+  }
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {

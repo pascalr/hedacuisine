@@ -133,8 +133,9 @@
 
       <div style="display: flex; justify-content: space-between; margin-top: 0.25rem;">
         <div>
-          <%= text_field_tag :quantity, "1", class: "form-control", style: "width: 6rem; display: inline; text-align: right;", "data-initial": "1.0", id: "ingredient-qty-input-field" %>
-          <%= collection_select :foo, :input_ingredient, @recipe.ingredients, :id, :name, {}, class: "form-select", style: "display: inline-block; width: auto;" %>
+          <% val = @recipe.main_ingredient ? @recipe.main_ingredient.raw_quantity : '' %>
+          <%= text_field_tag :quantity, val, class: "form-control", style: "width: 9rem; display: inline; text-align: right;", "data-quantity": val, id: "ingredient-qty-input-field" %>
+          <%= collection_select :foo, :input_ingredient, @recipe.ingredients, :id, :name, {selected: @recipe.main_ingredient_id}, class: "form-select", style: "display: inline-block; width: auto;" %>
         </div>
         <div>
           <%= image_tag asset_path("right_arrow.svg"), style: "width: 1.5rem;" %>
