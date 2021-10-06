@@ -63,6 +63,15 @@ function updateIngredientQtyInputField() {
   }
 }
 
+function updateScalableQuantities() {
+  var elements = document.querySelectorAll('[data-scalable-qty]');
+  for (const elem of elements) {
+    const original = elem.dataset.scalableQty
+    //var val = parseFloat(elem.innerHTML)
+    elem.innerHTML = "" + prettyNumber(original*window.scale)
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function(event) {
   
   const servings = document.getElementById("servings-quantity-value");
@@ -78,24 +87,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
     calcScale(1)
     updateServingsInputField()
     updateIngredientQtyInputField()
-    var elements = document.querySelectorAll('[data-scalable-qty]');
-    for (const elem of elements) {
-      const original = elem.dataset.scalableQty
-      //var val = parseFloat(elem.innerHTML)
-      elem.innerHTML = "" + prettyNumber(original*window.scale)
-    }
+    updateScalableQuantities()
   })
   
   lessButton.addEventListener('click', event => {
     calcScale(-1)
     updateServingsInputField()
     updateIngredientQtyInputField()
-    var elements = document.querySelectorAll('[data-scalable-qty]');
-    for (const elem of elements) {
-      const original = elem.dataset.scalableQty
-      //var val = parseFloat(elem.innerHTML)
-      elem.innerHTML = "" + prettyNumber(original*window.scale)
-    }
+    updateScalableQuantities()
   })
 
   //var elements = document.querySelectorAll('[data-scalable]');

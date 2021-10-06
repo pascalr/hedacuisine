@@ -15,8 +15,9 @@ module IngredientsHelper
     # TODO: Ability to change between types of weight (500g -> 1kg)
   end
 
-  def scalable_volume(_qty, _unit)
-    # TODO: Ability to change between types of volume (c. à thé -> c. à table)
+  def scalable_volume(ml, is_liquid)
+    # Ability to change between types of volume (c. à thé -> c. à table)
+    "<span data-scalable-volume='#{ml}'>#{pretty_volume_from_ml(ml, is_liquid)}</span>".html_safe
   end
 
   def scalable_qty(_qty)
@@ -69,13 +70,18 @@ module IngredientsHelper
     sprintf("%g mL", volume.round(1))
   end
 
+  def pretty_volume_from_ml(ml, is_liquid)
+    return "" if ml.blank?
+    return "#{pretty_fraction(ml/1000.0)} #{translated("L")}" if is_liquid && ml >= 1000.0
+    return "#{pretty_fraction(ml/250.0)} #{translated("t")}" if ml >= 60.0# or (ing.volume > 30.0 and close_to_fraction?(ing.volume/250.0))
+    return "#{pretty_fraction(ml/15.0)} #{translated("c. à soupe")}" if ml >= 15.0
+    return "#{pretty_fraction(ml/5.0)} #{translated("c. à thé")}" if ml >= 5.0/8.0
+    "#{pretty_fraction(ml/0.31)} #{translated"pincée"}"
+  end
+
   def pretty_volume(ing)
     return "" if ing.nil? or ing.quantity.blank?
-    return "#{pretty_fraction(ing.volume/1000.0)} #{translated("L")}" if ing.food.is_liquid? && ing.volume >= 1000.0
-    return "#{pretty_fraction(ing.volume/250.0)} #{translated("t")}" if ing.volume >= 60.0# or (ing.volume > 30.0 and close_to_fraction?(ing.volume/250.0))
-    return "#{pretty_fraction(ing.volume/15.0)} #{translated("c. à soupe")}" if ing.volume >= 15.0
-    return "#{pretty_fraction(ing.volume/5.0)} #{translated("c. à thé")}" if ing.volume >= 5.0/8.0
-    "#{pretty_fraction(ing.volume/0.31)} #{translated"pincée"}"
+    pretty_volume_from_ml(ing.volume, ing.food.is_liquid?)
   end
 
   def pretty_base_unit(ing)
@@ -108,7 +114,11 @@ module IngredientsHelper
   def pretty_ingredient_quantity(ing)
     return "" if ing.nil? or ing.quantity.nil? or ing.raw_quantity.nil?
     return "#{scalable_qty(ing.raw_quantity)}" unless ing.unit and ing.unit.show_fraction
-    "#{scalable_qty(pretty_fraction(ing.quantity))} #{ing.unit.name}"
+    if ing.unit.is_volume?
+      "#{scalable_volume(ing.quantity_model.ml, ing.food.is_liquid?)}"
+    else
+      "#{scalable_qty(pretty_fraction(ing.quantity))} #{ing.unit.name}"
+    end
   end
 
   def pretty_substitution(ing, substitution)

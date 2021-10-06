@@ -33,6 +33,10 @@ class RecipeIngredient < ApplicationRecord
     end
     self.weight
   end
+
+  def quantity_model
+    Quantity.new(self.food).set_from_value_and_unit(self.quantity, self.unit)
+  end
   
   def self.parse_quantity_and_unit_given_food(raw, food)
     qty = nil
