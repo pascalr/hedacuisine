@@ -1,5 +1,51 @@
+// https://stackoverflow.com/questions/25888963/min-by-max-by-equivalent-functions-in-javascript
+Array.prototype.minBy = function(fn) { 
+  return this.extremumBy(fn, Math.min); 
+};
+Array.prototype.maxBy = function(fn) { 
+  return this.extremumBy(fn, Math.max);
+};
+Array.prototype.extremumBy = function(pluck, extremum) {
+  return this.reduce(function(best, next) {
+    var pair = [ pluck(next), next ];
+    if (!best) {
+       return pair;
+    } else if (extremum.apply(null, [ best[0], pair[0] ]) == best[0]) {
+       return best;
+    } else {
+       return pair;
+    }
+  },null)[1];
+}
+
+function translated(str) {
+  return str
+}
+  
+function prettyFraction(value) {
+  var fractions = [0, 1/8, 1/4, 1/3, 1/2, 2/3, 3/4, 7/8, 1]
+  var pp_fractions = ["0", "1/8", "1/4", "1/3", "1/2", "2/3", "3/4", "7/8", "1"]
+  var i_part = parseInt(value, 10)
+  var f_part = value % 1
+  var f = fractions.minBy (x => Math.abs(f_part-x))
+  if (f == 0) {return i_part.toString();}
+  if (f == 1) {return (i_part+1).toString();}
+  var pf = pp_fractions[fractions.indexOf(f)]
+  if (i_part == 0) {return pf;}
+  return `${i_part} ${pf}`
+}
+
 function prettyNumber(nb) {
   return Math.round(nb*100)/100
+}
+
+function prettyVolume(ml, is_liquid) {
+  if (!ml) {return "";}
+  if (is_liquid && ml >= 1000.0) {return `${prettyFraction(ml/1000.0)} ${translated("L")}`;} 
+  if (ml >= 60.0) {return `${prettyFraction(ml/250.0)} ${translated("t")}`;} 
+  if (ml >= 15.0) {return `${prettyFraction(ml/15.0)} ${translated("c. à soupe")}`;}
+  if (ml >= 5.0/8.0) {return `${prettyFraction(ml/5.0)} ${translated("c. à thé")}`;}
+  return `${prettyFraction(ml/0.31)} ${translated("pincée")}`
 }
 
 function parseFractionFloat(str) {
@@ -10,8 +56,6 @@ function parseFractionFloat(str) {
 function parseQuantityFloat(str) {
 
   if (!str) {return null;}
-  console.log(str)
-  console.log(typeof str)
   var qty_s = str.trim()
   if (qty_s.includes("/")) {
     if (qty_s.includes(" ")) {
@@ -72,6 +116,15 @@ function updateScalableQuantities() {
   }
 }
 
+function updateScalableVolumes() {
+  var elements = document.querySelectorAll('[data-scalable-volume]');
+  for (const elem of elements) {
+    const ml = elem.dataset.scalableVolume
+    //var val = parseFloat(elem.innerHTML)
+    elem.innerHTML = "" + prettyVolume(ml*window.scale, false) // FIXME: Pass is_liquid to the object.
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function(event) {
   
   const servings = document.getElementById("servings-quantity-value");
@@ -88,6 +141,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     updateServingsInputField()
     updateIngredientQtyInputField()
     updateScalableQuantities()
+    updateScalableVolumes()
   })
   
   lessButton.addEventListener('click', event => {
@@ -95,6 +149,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     updateServingsInputField()
     updateIngredientQtyInputField()
     updateScalableQuantities()
+    updateScalableVolumes()
   })
 
   //var elements = document.querySelectorAll('[data-scalable]');
