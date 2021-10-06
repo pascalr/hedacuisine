@@ -1,3 +1,7 @@
+function prettyNumber(nb) {
+  return Math.round(nb*100)/100
+}
+
 function parseFractionFloat(str) {
   var split = str.split('/')
   return split[0]/split[1]
@@ -43,7 +47,7 @@ function updateServingsInputField() {
   const elem = document.getElementById("servings-input-field");
   var s = parseQuantityFloatAndLabel(elem.dataset.initial)
   var f = s[0]; var label = s[1]
-  elem.value = f*window.scale
+  elem.value = prettyNumber(f*window.scale)
   if (label) {
     elem.value += " " + label
   }
@@ -53,7 +57,7 @@ function updateIngredientQtyInputField() {
   const elem = document.getElementById("ingredient-qty-input-field");
   var s = parseQuantityFloatAndLabel(elem.dataset.quantity)
   var f = s[0]; var label = s[1]
-  elem.value = f*window.scale
+  elem.value = prettyNumber(f*window.scale)
   if (label) {
     elem.value += " " + label
   }
@@ -78,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     for (const elem of elements) {
       const original = elem.dataset.scalableQty
       //var val = parseFloat(elem.innerHTML)
-      elem.innerHTML = "" + (original*window.scale)
+      elem.innerHTML = "" + prettyNumber(original*window.scale)
     }
   })
   
@@ -90,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     for (const elem of elements) {
       const original = elem.dataset.scalableQty
       //var val = parseFloat(elem.innerHTML)
-      elem.innerHTML = "" + (original*window.scale)
+      elem.innerHTML = "" + prettyNumber(original*window.scale)
     }
   })
 
