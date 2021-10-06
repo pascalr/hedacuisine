@@ -7,6 +7,18 @@ module IngredientsHelper
     false
   end
 
+  def scalable_unit(_qty, _unit)
+    # TODO: Ability to change between types of units (unités -> douzaine) Ouin vraiment pas tant important pour l'instant...
+  end
+
+  def scalable_weight(_qty, _unit)
+    # TODO: Ability to change between types of weight (500g -> 1kg)
+  end
+
+  def scalable_volume(_qty, _unit)
+    # TODO: Ability to change between types of volume (c. à thé -> c. à table)
+  end
+
   def scalable_qty(_qty)
     qty_s = sanitize(_qty.to_s)
     qty = Quantity.parse_float(qty_s)
@@ -94,10 +106,9 @@ module IngredientsHelper
   end
   
   def pretty_ingredient_quantity(ing)
-    return "" if ing.nil? or ing.quantity.nil?
-    return ing.raw_quantity || "" unless ing.unit and ing.unit.show_fraction
-    qty_s = pretty_fraction(ing.quantity)
-    ing.unit.nil? ? scalable_qty(qty_s) : "#{scalable_qty(qty_s)} #{ing.unit.name}"
+    return "" if ing.nil? or ing.quantity.nil? or ing.raw_quantity.nil?
+    return "#{scalable_qty(ing.raw_quantity)}" unless ing.unit and ing.unit.show_fraction
+    "#{scalable_qty(pretty_fraction(ing.quantity))} #{ing.unit.name}"
   end
 
   def pretty_substitution(ing, substitution)

@@ -1,22 +1,92 @@
+function parseFractionFloat(str) {
+  var split = str.split('/')
+  return split[0]/split[1]
+}
+
+function parseQuantityFloat(str) {
+
+  if (!str) {return null;}
+  console.log(str)
+  console.log(typeof str)
+  var qty_s = str.trim()
+  if (qty_s.includes("/")) {
+    if (qty_s.includes(" ")) {
+      var s = qty_s.split(' ')
+      var whole = s[0]
+      var fraction = s[1]
+      return parseInt(whole, 10) + parseFractionFloat(fraction)
+    } else {
+      return parseFractionFloat(qty_s)
+    }
+  } else {
+    return parseFloat(qty_s)
+  }
+}
+
+function parseQuantityFloatAndLabel(raw) {
+
+  var s = raw.match(/^\d+([,.\/]\d+)?/g)
+  var qty_s = s[0]
+  var label = raw.substr(qty_s.length).trim()
+  //console.log("Qty_s: " + qty_s)
+  //console.log("Label: " + label)
+  return [parseQuantityFloat(qty_s), label]
+}
+
+function calcScale(inc) {
+  const servings = document.getElementById("servings-quantity-value");
+  window.currentServings = window.currentServings + inc
+  window.scale = window.currentServings / window.originalServings
+}
+
+function updateServingsInputField() {
+  const elem = document.getElementById("servings-input-field");
+  var s = parseQuantityFloatAndLabel(elem.dataset.initial)
+  var f = s[0]; var label = s[1]
+  elem.value = f*window.scale
+  if (label) {
+    elem.value += " " + label
+  }
+}
+
+function updateIngredientQtyInputField() {
+  const elem = document.getElementById("ingredient-qty-input-field");
+  const initial = parseFloat(elem.dataset.initial)
+  elem.value = initial*window.scale
+}
+
 document.addEventListener("DOMContentLoaded", function(event) {
+  
+  const servings = document.getElementById("servings-quantity-value");
+  window.originalServings = parseInt(servings.innerHTML)
+  window.currentServings = window.originalServings
+
+  window.scale = 1.0
   
   const lessButton = document.getElementById("less-servings-button");
   const moreButton = document.getElementById("more-servings-button");
   
   moreButton.addEventListener('click', event => {
+    calcScale(1)
+    updateServingsInputField()
+    updateIngredientQtyInputField()
     var elements = document.querySelectorAll('[data-scalable-qty]');
     for (const elem of elements) {
       const original = elem.dataset.scalableQty
       //var val = parseFloat(elem.innerHTML)
-      elem.innerHTML = "" + (original*2)
+      elem.innerHTML = "" + (original*window.scale)
     }
   })
   
   lessButton.addEventListener('click', event => {
-    var elements = document.querySelectorAll('[data-scalable]');
+    calcScale(-1)
+    updateServingsInputField()
+    updateIngredientQtyInputField()
+    var elements = document.querySelectorAll('[data-scalable-qty]');
     for (const elem of elements) {
-      var val = parseFloat(elem.innerHTML)
-      elem.innerHTML = "" + (val-1)
+      const original = elem.dataset.scalableQty
+      //var val = parseFloat(elem.innerHTML)
+      elem.innerHTML = "" + (original*window.scale)
     }
   })
 
