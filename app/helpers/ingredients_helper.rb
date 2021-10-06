@@ -7,6 +7,16 @@ module IngredientsHelper
     false
   end
 
+  def scalable_qty(_qty)
+    qty_s = sanitize(_qty.to_s)
+    qty = Quantity.parse_float(qty_s)
+    if qty_s.include? "/"
+      "<span data-scalable-qty='#{qty}' data-show-fraction='true'>#{qty_s}</span>".html_safe
+    else
+      "<span data-scalable-qty='#{qty}'>#{qty_s}</span>".html_safe
+    end
+  end
+
   def pretty_time(minutes)
     hours = minutes.to_i / 60
     other_minutes = minutes - hours*60
@@ -87,7 +97,7 @@ module IngredientsHelper
     return "" if ing.nil? or ing.quantity.nil?
     return ing.raw_quantity || "" unless ing.unit and ing.unit.show_fraction
     qty_s = pretty_fraction(ing.quantity)
-    ing.unit.nil? ? "#{qty_s}" : "#{qty_s} #{ing.unit.name}"
+    ing.unit.nil? ? scalable_qty(qty_s) : "#{scalable_qty(qty_s)} #{ing.unit.name}"
   end
 
   def pretty_substitution(ing, substitution)

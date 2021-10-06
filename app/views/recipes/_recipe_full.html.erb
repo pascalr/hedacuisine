@@ -138,9 +138,9 @@
           <%= image_tag asset_path("right_arrow.svg"), style: "width: 1.5rem;" %>
         </div>
         <div>
-          <%= image_tag asset_path("minus-square.svg"), style: "cursor: pointer; width: 1.5rem;" %>
+          <%= image_tag(asset_path("minus-square.svg"), style: "cursor: pointer; width: 1.5rem;", id: "less-servings-button") %>
           <%= text_field_tag :servings, @recipe.servings, style: "width: 8rem; display: inline; text-align: right;", class: "form-control" %>
-          <%= image_tag asset_path("plus-square.svg"), style: "cursor: pointer; width: 1.5rem;" %>
+          <%= image_tag(asset_path("plus-square.svg"), style: "cursor: pointer; width: 1.5rem;", id: "more-servings-button") %>
         </div>
       </div>
     </div>
@@ -171,3 +171,4 @@
 <%= javascript_pack_tag "toggle_link" %>
 <%= javascript_pack_tag "dropdown_submenu" %>
 <%= javascript_pack_tag current_user ? "recipe_rating" : "recipe_rating_read_only" %>
+<%= javascript_pack_tag "recipes_show" %>

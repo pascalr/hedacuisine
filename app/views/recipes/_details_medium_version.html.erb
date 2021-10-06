@@ -19,7 +19,7 @@
 <% unless recipe.servings_quantity.nil? %>
   <div>
     <b>Portions:</b>
-    <span style="color: gray;"><%= recipe.servings_quantity%> <%= recipe.servings_name %></span>
+    <span style="color: gray;"><%= scalable_qty(recipe.servings_quantity) %> <%= recipe.servings_name %></span>
   </div>
 <% end %>
 <br>

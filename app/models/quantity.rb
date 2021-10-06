@@ -27,17 +27,27 @@ class Quantity
     self
   end
 
+  def self.parse_float(_qty_s)
+    return nil if _qty_s.blank?
+    qty_s = _qty_s.strip
+    #qty_s = _raw[/^\d+[,./]\d+/]
+    if qty_s.include?("/")
+      if qty_s.include?(" ")
+        whole, fraction = qty_s.split(' ')
+        whole.to_i + fraction.to_r.to_f
+      else
+        qty_s.to_r.to_f
+      end
+    else
+      qty_s.to_f
+    end
+  end
+
   def set_from_raw(raw)
     @raw = raw
     qty_s = raw[/^\d+([,.\/]\d+)?/]
-    qty = nil
-    return nil, nil if qty_s.blank?
-    #qty_s = _raw[/^\d+[,./]\d+/]
-    if qty_s.include?("/")
-      qty = qty_s.to_r.to_f
-    else
-      qty = qty_s.to_f
-    end
+    qty = Quantity.parse_float(qty_s)
+    return nil, nil if qty.nil?
     unit_s = raw[qty_s.length..-1].strip
     set_from_value_and_unit(qty, Unit.find_by(name: unit_s))
     self
