@@ -62,6 +62,12 @@ function prettyWeight(grams) {
   return `${prettyNumber(grams)} g`
 }
 
+function prettyMetricVolume(ml) {
+  if (!ml) {return "";}
+  if (ml >= 1000.0) {return `${prettyNumber(ml/1000.0)} L`;} 
+  return `${prettyNumber(ml)} mL`
+}
+
 function prettyNumber(nb) {
   return Math.round(nb*100)/100
 }
@@ -73,6 +79,43 @@ function prettyVolume(ml, is_liquid) {
   if (ml >= 15.0) {return `${prettyFraction(ml/15.0)} ${translated("c. à soupe")}`;}
   if (ml >= 5.0/8.0) {return `${prettyFraction(ml/5.0)} ${translated("c. à thé")}`;}
   return `${prettyFraction(ml/0.31)} ${translated("pincée")}`
+}
+
+function prettyIngredient(ing) {
+
+  var s = parseQuantityFloatAndLabel(ing.dataset.raw)
+  var qty = s[0] * window.scale
+  var unit = unitByName(s[1])
+  var grams = ing.dataset.grams * window.scale
+  var ml = ing.dataset.ml * window.scale
+
+  if (unit && unit.is_weight) {
+    var r = prettyWeight(qty) + " "
+  } else if (unit && unit.is_volume) {
+    var r = prettyVolume(qty) + " "
+  } else {
+    var r = prettyFraction(qty) + " "
+    if (unit) {r += unit.name + " "}
+  }
+  if (unit && ing.dataset.preposition) {r += ing.dataset.preposition }
+  if ((!unit || (!unit.is_volume && !unit.is_weight)) && qty > 1) {
+    r += "<a href='/foods/"+ing.dataset.foodId+"'>"+ing.dataset.foodNamePlural+"</a> "
+  } else {
+    r += "<a href='/foods/"+ing.dataset.foodId+"'>"+ing.dataset.foodNameSingular+"</a> "
+  }
+  r += "<span class='ingredient-details'>("
+  if (unit && unit.is_weight) {
+    // TODO: Show unit quantity if food can be unit.
+    r += `${prettyVolume(ml)} | ${prettyMetricVolume(ml)}`
+  } else if (unit && unit.is_volume) {
+    // TODO: Show unit quantity if food can be unit.
+    // FIXME: What if it is already metric???
+    r += `${prettyMetricVolume(ml)} | ${prettyWeight(grams)}`
+  } else {
+    r += `${prettyVolume(ml)} | ${prettyMetricVolume(ml)} | ${prettyWeight(grams)}`
+  }
+  r += ")</span>"
+  return r
 }
 
 function parseFractionFloat(str) {
@@ -118,9 +161,7 @@ function scaleRaw(raw) {
   var s = parseQuantityFloatAndLabel(raw)
   var f = s[0]; var label = s[1]
   var v = prettyNumber(f*window.scale)
-  if (label) {
-    return v + " " + label
-  }
+  if (label) {return v + " " + label}
   return v
 }
 
@@ -160,6 +201,13 @@ function updateScalableWeights() {
   }
 }
 
+function updateScalableIngredients() {
+  var elements = document.querySelectorAll('[data-scalable-ingredient]');
+  for (const elem of elements) {
+    elem.innerHTML = "" + prettyIngredient(elem)
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function(event) {
   
   const servings = document.getElementById("servings-quantity-value");
@@ -181,6 +229,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     updateScalableQuantities()
     updateScalableVolumes()
     updateScalableWeights()
+    updateScalableIngredients()
   })
   
   lessButton.addEventListener('click', event => {
@@ -190,6 +239,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     updateScalableQuantities()
     updateScalableVolumes()
     updateScalableWeights()
+    updateScalableIngredients()
   })
   
   inField.addEventListener('change', event => {
@@ -206,6 +256,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     updateScalableQuantities()
     updateScalableVolumes()
     updateScalableWeights()
+    updateScalableIngredients()
   })
   
   servingsField.addEventListener('change', event => {
@@ -221,6 +272,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     updateScalableQuantities()
     updateScalableVolumes()
     updateScalableWeights()
+    updateScalableIngredients()
   })
   
   inIngs.addEventListener('change', event => {

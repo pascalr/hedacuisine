@@ -114,7 +114,7 @@
       <ul class="list-group">
         <% @recipe.ingredients.order(:item_nb).each do |ing| %>
           <li class="list-group-item">
-            <%= pretty_ingredient_with_conversions(ing) %>
+            <%= scalable_detailed_ingredient(ing) %>
 
             <div class="dropdown" style="display: inline-block; float: right">
                <%= image_tag asset_path("pencil-square.svg"), "data-bs-toggle": "dropdown", style: "cursor: pointer;" %>
