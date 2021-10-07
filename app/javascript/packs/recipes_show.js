@@ -56,6 +56,12 @@ function prettyFraction(value) {
   return `${i_part} ${pf}`
 }
 
+function prettyWeight(grams) {
+  if (!grams) {return "";}
+  if (grams >= 1000.0) {return `${prettyNumber(grams/1000.0)} kg`;} 
+  return `${prettyNumber(grams)} g`
+}
+
 function prettyNumber(nb) {
   return Math.round(nb*100)/100
 }
@@ -142,7 +148,15 @@ function updateScalableVolumes() {
   for (const elem of elements) {
     const ml = elem.dataset.scalableVolume
     //var val = parseFloat(elem.innerHTML)
-    elem.innerHTML = "" + prettyVolume(ml*window.scale, false) // FIXME: Pass is_liquid to the object.
+    elem.innerHTML = "" + prettyVolume(ml*window.scale, elem.dataset.isLiquid)
+  }
+}
+
+function updateScalableWeights() {
+  var elements = document.querySelectorAll('[data-scalable-weight]');
+  for (const elem of elements) {
+    const grams = elem.dataset.scalableWeight
+    elem.innerHTML = "" + prettyWeight(grams*window.scale)
   }
 }
 
@@ -156,6 +170,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   
   const lessButton = document.getElementById("less-servings-button");
   const moreButton = document.getElementById("more-servings-button");
+  const servingsField = document.getElementById("servings-input-field");
   const inField = document.getElementById("ingredient-qty-input-field");
   const inIngs = document.getElementById("input-ingredients");
   
@@ -165,6 +180,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     updateIngredientQtyInputField()
     updateScalableQuantities()
     updateScalableVolumes()
+    updateScalableWeights()
   })
   
   lessButton.addEventListener('click', event => {
@@ -173,6 +189,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     updateIngredientQtyInputField()
     updateScalableQuantities()
     updateScalableVolumes()
+    updateScalableWeights()
   })
   
   inField.addEventListener('change', event => {
@@ -188,6 +205,22 @@ document.addEventListener("DOMContentLoaded", function(event) {
     updateServingsInputField()
     updateScalableQuantities()
     updateScalableVolumes()
+    updateScalableWeights()
+  })
+  
+  servingsField.addEventListener('change', event => {
+    var s0 = parseQuantityFloatAndLabel(servingsField.dataset.initial)
+    var f0 = s0[0]; var label = s0[1]
+    var f = parseQuantityFloatAndLabel(servingsField.value)[0]
+    servingsField.value = f.toString() + " " + label
+    window.scale = f / f0
+    //console.log(f)
+    //console.log(f0)
+    //console.log(scale)
+    updateIngredientQtyInputField()
+    updateScalableQuantities()
+    updateScalableVolumes()
+    updateScalableWeights()
   })
   
   inIngs.addEventListener('change', event => {

@@ -11,13 +11,17 @@ module IngredientsHelper
     # TODO: Ability to change between types of units (unités -> douzaine) Ouin vraiment pas tant important pour l'instant...
   end
 
-  def scalable_weight(_qty, _unit)
-    # TODO: Ability to change between types of weight (500g -> 1kg)
+  def scalable_weight(grams)
+    "<span data-scalable-weight='#{grams}'>#{pretty_weight(grams)}</span>".html_safe
   end
 
   def scalable_volume(ml, is_liquid)
     # Ability to change between types of volume (c. à thé -> c. à table)
-    "<span data-scalable-volume='#{ml}'>#{pretty_volume_from_ml(ml, is_liquid)}</span>".html_safe
+    if is_liquid
+      "<span data-is-liquid='true' data-scalable-volume='#{ml}'>#{pretty_volume_from_ml(ml, is_liquid)}</span>".html_safe
+    else
+      "<span data-scalable-volume='#{ml}'>#{pretty_volume_from_ml(ml, is_liquid)}</span>".html_safe
+    end
   end
 
   def scalable_qty(_qty)
@@ -113,12 +117,13 @@ module IngredientsHelper
   
   def pretty_ingredient_quantity(ing)
     return "" if ing.nil? or ing.quantity.nil? or ing.raw_quantity.nil?
-    return "#{scalable_qty(ing.raw_quantity)}" unless ing.unit and ing.unit.show_fraction
-    if ing.unit.is_volume?
-      "#{scalable_volume(ing.quantity_model.ml, ing.food.is_liquid?)}"
-    else
-      "#{scalable_qty(pretty_fraction(ing.quantity))} #{ing.unit.name}"
+    qty = ing.quantity_model
+    if ing.unit and ing.unit.is_volume?
+      return "#{scalable_volume(qty.ml, ing.food.is_liquid?)}"
+    elsif ing.unit and ing.unit.is_weight?
+      return "#{scalable_weight(qty.grams)}"
     end
+    return "#{scalable_qty(ing.raw_quantity)}"
   end
 
   def pretty_substitution(ing, substitution)
