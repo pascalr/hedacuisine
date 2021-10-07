@@ -86,8 +86,6 @@ function prettyIngredient(ing) {
   var s = parseQuantityFloatAndLabel(ing.dataset.raw)
   var qty = s[0] * window.scale
   var unit = unitByName(s[1])
-  var grams = ing.dataset.grams * window.scale
-  var ml = ing.dataset.ml * window.scale
 
   if (unit && unit.is_weight) {
     var r = prettyWeight(qty) + " "
@@ -103,6 +101,18 @@ function prettyIngredient(ing) {
   } else {
     r += "<a href='/foods/"+ing.dataset.foodId+"'>"+ing.dataset.foodNameSingular+"</a> "
   }
+  return r
+}
+
+function prettyDetailedIngredient(ing) {
+  
+  var r = prettyIngredient(ing)
+
+  var s = parseQuantityFloatAndLabel(ing.dataset.raw)
+  var unit = unitByName(s[1])
+  var grams = ing.dataset.grams * window.scale
+  var ml = ing.dataset.ml * window.scale
+
   r += "<span class='ingredient-details'>("
   if (unit && unit.is_weight) {
     // TODO: Show unit quantity if food can be unit.
@@ -201,6 +211,13 @@ function updateScalableWeights() {
   }
 }
 
+function updateScalableDetailedIngredients() {
+  var elements = document.querySelectorAll('[data-scalable-ingredient-detailed]');
+  for (const elem of elements) {
+    elem.innerHTML = "" + prettyDetailedIngredient(elem)
+  }
+}
+
 function updateScalableIngredients() {
   var elements = document.querySelectorAll('[data-scalable-ingredient]');
   for (const elem of elements) {
@@ -230,6 +247,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     updateScalableVolumes()
     updateScalableWeights()
     updateScalableIngredients()
+    updateScalableDetailedIngredients()
   })
   
   lessButton.addEventListener('click', event => {
@@ -240,6 +258,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     updateScalableVolumes()
     updateScalableWeights()
     updateScalableIngredients()
+    updateScalableDetailedIngredients()
   })
   
   inField.addEventListener('change', event => {
@@ -257,6 +276,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     updateScalableVolumes()
     updateScalableWeights()
     updateScalableIngredients()
+    updateScalableDetailedIngredients()
   })
   
   servingsField.addEventListener('change', event => {
@@ -273,6 +293,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     updateScalableVolumes()
     updateScalableWeights()
     updateScalableIngredients()
+    updateScalableDetailedIngredients()
   })
   
   inIngs.addEventListener('change', event => {

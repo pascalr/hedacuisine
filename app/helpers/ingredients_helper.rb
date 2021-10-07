@@ -9,6 +9,10 @@ module IngredientsHelper
 
   # 2 oignons => 1 oignon
   def scalable_ingredient(ing)
+    qty = ing.quantity_model
+    content_tag :span, id: "ingredient-#{ing.id}", data: {"scalable-ingredient": true, grams: qty.grams, ml: qty.ml, total: qty.total, raw: ing.raw_quantity, "food-name-singular": ing.food.name, "food-name-plural": ing.food.plural, preposition: pretty_preposition(ing.food.name), "food-id": ing.food.id} do
+      pretty_ingredient(ing)
+    end
   end
 
   def pretty_ingredient_with_conversions(ing)
@@ -30,11 +34,9 @@ module IngredientsHelper
   # 1 oignon (1/2 t | 110 mL | 110 g) => 2 oignons (7/8 t | 220 mL | 220 g)
   def scalable_detailed_ingredient(ing)
     qty = ing.quantity_model
-    #content_tag :span, id: "ingredient-#{ing.id}", data: {grams: qty.grams, ml: qty.ml, total: qty.total, unit_weight: ing.food.unit_weight, density: ing.food.density}
-    content_tag :span, id: "ingredient-#{ing.id}", data: {"scalable-ingredient": true, grams: qty.grams, ml: qty.ml, total: qty.total, raw: ing.raw_quantity, "food-name-singular": ing.food.name, "food-name-plural": ing.food.plural, preposition: pretty_preposition(ing.food.name), "food-id": ing.food.id} do
+    content_tag :span, id: "ingredient-#{ing.id}", data: {"scalable-ingredient-detailed": true, grams: qty.grams, ml: qty.ml, total: qty.total, raw: ing.raw_quantity, "food-name-singular": ing.food.name, "food-name-plural": ing.food.plural, preposition: pretty_preposition(ing.food.name), "food-id": ing.food.id} do
       pretty_ingredient_with_conversions(ing)
     end
-    #"<span data-scalable-weight='#{grams}'>#{pretty_weight(grams)}</span>".html_safe
   end
 
   def scalable_unit(_qty, _unit)
@@ -239,11 +241,11 @@ module IngredientsHelper
               ings = recipe.recipe_ingredients.where(item_nb: indices)
               s += "<ul class='recipe-ingredient-list dash'>"
               indices.each do |idx|
-                s += "<li>#{pretty_ingredient(ings.find {|ing| ing.item_nb == idx})}</li>"
+                s += "<li>#{scalable_ingredient(ings.find {|ing| ing.item_nb == idx})}</li>"
               end
               s += "</ul>"
             elsif indices.size == 1
-              s += pretty_inline_ingredient(recipe.recipe_ingredients.find_by(item_nb: indices[0]))
+              s += scalable_ingredient(recipe.recipe_ingredients.find_by(item_nb: indices[0]))
             end
           end
           range = ""
