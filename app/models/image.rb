@@ -13,6 +13,14 @@ class Image < ApplicationRecord
   def medium_variant
     original.representation(resize_to_fill: [452, 304])
   end
+
+  def width
+    original.analyzed? ? original.metadata[:width] : nil
+  end
+  def height
+    original.analyzed? ? original.metadata[:height] : nil
+  end
+
   # FIXME: This is recent in rails and it does not work yet for me. calling image.original.variant(:thumb) like the docs says does not work yet
   #do
   #  attachable.variant :thumb, resize: "71x48"

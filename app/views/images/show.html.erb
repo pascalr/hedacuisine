@@ -43,8 +43,8 @@
 
 <% if @image.original.analyzed? %>
   <strong>Size:</strong> <%= number_to_human_size(@image.original.byte_size) %><br>
-  <strong>Width:</strong> <%= @image.original.metadata[:width] %><br>
-  <strong>Height:</strong> <%= @image.original.metadata[:height] %><br>
+  <strong>Width:</strong> <%= @image.width %><br>
+  <strong>Height:</strong> <%= @image.height %><br>
 <% end %>
 
 <h2>Small - List</h2>

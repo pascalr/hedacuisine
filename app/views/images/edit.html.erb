@@ -1,41 +1,46 @@
 <%= link_to 'Show', @image %> |
 <%= link_to 'Back', images_path %>
 
-<% width = 533.333 * 1.8 %>
-<% height = 400.0 * 1.8 %>
-<% scale = @image.height/height %>
+<h2>Change Image</h2>
 
-<h1>Editing Image</h1>
+<%= render 'form', image: @image %>
 
-<!-- 120, 28, zoom 1.2 -->
-
-<div>
-  <%= form_with(model: @image) do |form| %>
-    <label for="zoom" style="display: inline;">Zoom:</label>
-    <%= form.range_field :zoom, id: "zoom", min: 1.0, max: 4.0, step: 0.1, style: "width: 400px;", oninput: "updateModified()" %>
-    <br>
-    <label for="left" style="display: inline;">Left:</label>
-    <%= form.number_field :left, id: "left", min: 0, max: @image.width, step: scale.ceil, oninput: "updateModified()" %>
-    <label for="top" style="display: inline;">Top:</label>
-    <%= form.number_field :top, id: "top", min: 0, max: @image.height, step: scale.ceil, oninput: "updateModified()" %>
-    <%= form.submit "save" %>
-  <% end %>
-</div>
-
-<div id="modified-image-result" style="width: <%= width %>px; height: <%= height %>px; border: solid 1px black; background-image: url('<%= display_image_path(@image.original) %>'); background-size: <%= width %>px <%= height %>px;"></div>
-<h2>Original</h2>
-
-<%= image_tag display_image_path(@image.original), style: "height: #{height}px;" %>
-
-<script>
-  function updateModified() {
-    var result = document.getElementById("modified-image-result");
-    var zoom = parseFloat(document.getElementById("zoom").value);
-    var left = parseFloat(document.getElementById("left").value);
-    var top = parseFloat(document.getElementById("top").value);
-    result.style.backgroundSize = (<%= width %> * zoom) + "px " + (<%= height %> * zoom) + "px";
-    result.style.backgroundPosition = -left/<%= scale %> + "px " + -top/<%= scale %> + "px"
-  }
-  updateModified(1.0);
-</script>
-
+<% if @image.original.analyzed? %>
+  <h2>Editing Image</h2>
+  
+  <% width = 533.333 * 1.8 %>
+  <% height = 400.0 * 1.8 %>
+  <% scale = @image.height/height %>
+  
+  <!-- 120, 28, zoom 1.2 -->
+  
+  <div>
+    <%= form_with(model: @image) do |form| %>
+      <label for="zoom" style="display: inline;">Zoom:</label>
+      <%= form.range_field :zoom, id: "zoom", min: 1.0, max: 4.0, step: 0.1, style: "width: 400px;", oninput: "updateModified()" %>
+      <br>
+      <label for="left" style="display: inline;">Left:</label>
+      <%= form.number_field :left, id: "left", min: 0, max: @image.width, step: scale.ceil, oninput: "updateModified()" %>
+      <label for="top" style="display: inline;">Top:</label>
+      <%= form.number_field :top, id: "top", min: 0, max: @image.height, step: scale.ceil, oninput: "updateModified()" %>
+      <%= form.submit "save" %>
+    <% end %>
+  </div>
+  
+  <div id="modified-image-result" style="width: <%= width %>px; height: <%= height %>px; border: solid 1px black; background-image: url('<%= url_for(@image.original) %>'); background-size: <%= width %>px <%= height %>px;"></div>
+  <h2>Original</h2>
+  
+  <%= image_tag @image.original, style: "height: #{height}px;" %>
+  
+  <script>
+    function updateModified() {
+      var result = document.getElementById("modified-image-result");
+      var zoom = parseFloat(document.getElementById("zoom").value);
+      var left = parseFloat(document.getElementById("left").value);
+      var top = parseFloat(document.getElementById("top").value);
+      result.style.backgroundSize = (<%= width %> * zoom) + "px " + (<%= height %> * zoom) + "px";
+      result.style.backgroundPosition = -left/<%= scale %> + "px " + -top/<%= scale %> + "px"
+    }
+    updateModified(1.0);
+  </script>
+<% end %> 
