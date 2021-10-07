@@ -1,12 +1,12 @@
 // https://stackoverflow.com/questions/25888963/min-by-max-by-equivalent-functions-in-javascript
-Array.prototype.minBy = function(fn) { 
-  return this.extremumBy(fn, Math.min); 
+function minBy(array, fn) { 
+  return extremumBy(array, fn, Math.min); 
 };
-Array.prototype.maxBy = function(fn) { 
-  return this.extremumBy(fn, Math.max);
+function maxBy(array, fn) { 
+  return extremumBy(array, fn, Math.max);
 };
-Array.prototype.extremumBy = function(pluck, extremum) {
-  return this.reduce(function(best, next) {
+function extremumBy(array, pluck, extremum) {
+  return array.reduce(function(best, next) {
     var pair = [ pluck(next), next ];
     if (!best) {
        return pair;
@@ -21,13 +21,34 @@ Array.prototype.extremumBy = function(pluck, extremum) {
 function translated(str) {
   return str
 }
+
+function unitByName(name) {
+  const units = JSON.parse(document.getElementById("unit-list").dataset.values)
+  return units.find(unit => unit['name'] == name)
+}
+
+function ingredientById(id) {
+  const ings = JSON.parse(document.getElementById("ingredient-list").dataset.values)
+  return ings[id]
+}
+
+function toGrams(val, unit, unit_weight, density) {
+  if (!unit) {
+    return val * unit_weight
+  } else if (unit.is_weight) {
+    return val * unit.value
+  } else if (unit.is_volume) {
+    return val * unit.value * density
+  }
+  return val * unit.value * unit_weight
+}
   
 function prettyFraction(value) {
   var fractions = [0, 1/8, 1/4, 1/3, 1/2, 2/3, 3/4, 7/8, 1]
   var pp_fractions = ["0", "1/8", "1/4", "1/3", "1/2", "2/3", "3/4", "7/8", "1"]
   var i_part = parseInt(value, 10)
   var f_part = value % 1
-  var f = fractions.minBy (x => Math.abs(f_part-x))
+  var f = minBy(fractions, x => Math.abs(f_part-x))
   if (f == 0) {return i_part.toString();}
   if (f == 1) {return (i_part+1).toString();}
   var pf = pp_fractions[fractions.indexOf(f)]
@@ -87,24 +108,24 @@ function calcScale(inc) {
   window.scale = window.currentServings / window.originalServings
 }
 
+function scaleRaw(raw) {
+  var s = parseQuantityFloatAndLabel(raw)
+  var f = s[0]; var label = s[1]
+  var v = prettyNumber(f*window.scale)
+  if (label) {
+    return v + " " + label
+  }
+  return v
+}
+
 function updateServingsInputField() {
   const elem = document.getElementById("servings-input-field");
-  var s = parseQuantityFloatAndLabel(elem.dataset.initial)
-  var f = s[0]; var label = s[1]
-  elem.value = prettyNumber(f*window.scale)
-  if (label) {
-    elem.value += " " + label
-  }
+  elem.value = scaleRaw(elem.dataset.initial)
 }
 
 function updateIngredientQtyInputField() {
   const elem = document.getElementById("ingredient-qty-input-field");
-  var s = parseQuantityFloatAndLabel(elem.dataset.quantity)
-  var f = s[0]; var label = s[1]
-  elem.value = prettyNumber(f*window.scale)
-  if (label) {
-    elem.value += " " + label
-  }
+  elem.value = scaleRaw(elem.dataset.quantity)
 }
 
 function updateScalableQuantities() {
@@ -112,7 +133,7 @@ function updateScalableQuantities() {
   for (const elem of elements) {
     const original = elem.dataset.scalableQty
     //var val = parseFloat(elem.innerHTML)
-    elem.innerHTML = "" + prettyNumber(original*window.scale)
+    elem.innerHTML = "" + prettyFraction(original*window.scale)
   }
 }
 
@@ -135,6 +156,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
   
   const lessButton = document.getElementById("less-servings-button");
   const moreButton = document.getElementById("more-servings-button");
+  const inField = document.getElementById("ingredient-qty-input-field");
+  const inIngs = document.getElementById("input-ingredients");
   
   moreButton.addEventListener('click', event => {
     calcScale(1)
@@ -151,6 +174,24 @@ document.addEventListener("DOMContentLoaded", function(event) {
     updateScalableQuantities()
     updateScalableVolumes()
   })
+  
+  //inField.addEventListener('focusout', event => {
+  inField.addEventListener('change', event => {
+    var s = parseQuantityFloatAndLabel(inField.value)
+    var f = s[0]; var unit = unitByName(s[1])
+    const inIng = ingredientById(inIngs.value);
+    var grams = toGrams(f, unit, inIng.unit_weight, inIng.density)
+    window.scale = grams / inIng.grams
+    updateServingsInputField()
+    updateScalableQuantities()
+    updateScalableVolumes()
+  })
+  
+  inIngs.addEventListener('change', event => {
+    const inIng = ingredientById(inIngs.value);
+    inField.value = inIng.raw
+  })
+  
 
   //var elements = document.querySelectorAll('[data-scalable]');
   //for (const elem of elements) {

@@ -1,6 +1,6 @@
 # A quantity of a food. Has a value, sometimes a unit.
 class Quantity
-  attr_reader :unit, :food, :raw, :weight, :volume, :unitary_qty, :grams, :ml, :nb_quantity
+  attr_reader :unit, :food, :raw, :weight, :volume, :unitary_qty, :grams, :ml, :total
 
   def initialize(food)
     @food = food
@@ -23,7 +23,7 @@ class Quantity
     end
     @grams = @weight * @unit.value if @weight && @unit
     @ml = @volume * @unit.value if @volume && @unit
-    @nb_quantity = @unitary_qty * @unit.value if @unitary_qty && @unit
+    @total = @unitary_qty * @unit.value if @unitary_qty && @unit
     self
   end
 
