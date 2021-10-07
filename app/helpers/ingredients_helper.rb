@@ -169,11 +169,19 @@ module IngredientsHelper
     
     food = substitution.substitute_for(ing.food)
     sub_qty = Quantity.new(food).set_from_raw(substitution.food_raw_qty_for(food))
-    r = "#{pretty_fraction(sub_qty.unit_quantity * ratio)} "
-    r += "#{sub_qty.unit.name} " if sub_qty.unit
+    if sub_qty.unit && sub_qty.unit.is_volume?
+      r = "#{scalable_volume(sub_qty.unit_quantity * ratio, false)} "
+    elsif sub_qty.unit && sub_qty.unit.is_weight?
+      r = "#{scalable_weight(sub_qty.unit_quantity * ratio)} "
+    else
+      r = "#{scalable_qty(sub_qty.unit_quantity * ratio)} "
+      r += "#{sub_qty.unit.name} " if sub_qty.unit
+    end
+    #r = "#{pretty_fraction(sub_qty.unit_quantity * ratio)} "
+    #r += "#{sub_qty.unit.name} " if sub_qty.unit
     r += pretty_preposition(food.name) if sub_qty.unit
     r += food.name
-    r
+    r.html_safe # FIXME: Is it?
   end
 
   def pretty_inline_ingredient(ingredient)
