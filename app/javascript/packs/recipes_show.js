@@ -175,13 +175,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
     updateScalableVolumes()
   })
   
-  //inField.addEventListener('focusout', event => {
   inField.addEventListener('change', event => {
     var s = parseQuantityFloatAndLabel(inField.value)
     var f = s[0]; var unit = unitByName(s[1])
     const inIng = ingredientById(inIngs.value);
     var grams = toGrams(f, unit, inIng.unit_weight, inIng.density)
     window.scale = grams / inIng.grams
+    //console.log(f)
+    //console.log(grams)
+    //console.log(inIng.grams)
+    //console.log(scale)
     updateServingsInputField()
     updateScalableQuantities()
     updateScalableVolumes()
@@ -189,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   
   inIngs.addEventListener('change', event => {
     const inIng = ingredientById(inIngs.value);
-    inField.value = inIng.raw
+    inField.value = scaleRaw(inIng.raw)
   })
   
 

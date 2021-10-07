@@ -21,9 +21,10 @@ class Quantity
       @volume = @weight / @food.density if @food && !@food.density.nil?
       @unitary_qty = @weight / @food.unit_weight if !@weight.nil? && @food && !@food.unit_weight.nil?
     end
-    @grams = @weight * @unit.value if @weight && @unit
-    @ml = @volume * @unit.value if @volume && @unit
-    @total = @unitary_qty * @unit.value if @unitary_qty && @unit
+    factor = @unit ? @unit.value : 1.0
+    @grams = @weight * factor if @weight
+    @ml = @volume * factor if @volume
+    @total = @unitary_qty * factor if @unitary_qty
     self
   end
 
