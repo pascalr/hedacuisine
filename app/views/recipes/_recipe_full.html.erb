@@ -22,6 +22,16 @@
                 <%= link_to 'Modifier', edit_recipe_path(@recipe), class: "dropdown-item" %>
               <% end %>
               <%= link_to "Créer une variation", new_variant_recipes_path(base_recipe_id: @recipe.id), class: "dropdown-item" %>
+              <% if user_signed_in? and current_user.id == @recipe.user_id %>
+                <%= form_with(model: @recipe, class: "inline", local: true) do |form| %>
+                  <%= form.hidden_field :is_public, value: !@recipe.is_public %>
+                  <% if @recipe.is_public %>
+                    <%= form.submit "Make private", class: "dropdown-item" %>
+                  <% else %>
+                    <%= form.submit "Make public", class: "dropdown-item" %>
+                  <% end %>
+                <% end %>
+              <% end %>
               <% user_recipe = @recipe.user_recipe_for(current_user) %>
               <% if user_signed_in? and user_recipe %>
                 <%= link_to "Enlever de mes recettes", user_recipe, class: "dropdown-item", method: :delete, data: {confirm: 'Are you sure?'} %>
@@ -172,6 +182,8 @@
   <h2 class="h2" style="margin-top: 2rem;">Commentaires</h2>
 
   <%= translated("Aucun commentaire pour l'instant.") %>
+
+  <div style="height: 3rem;"></div>
 </div>
 
 <%# javascript_pack_tag "recipe" %>

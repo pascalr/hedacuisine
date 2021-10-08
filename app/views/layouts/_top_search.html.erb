@@ -1,17 +1,14 @@
 <div id="top-search-container">
   <% links = Recipe.all_main.all_for(current_user).order(:name).map {|r| {label: r.name, url: recipe_path(r)} }.to_json %>
   <span id="search-list" data-values="<%= links %>"/>
-  <% if user_signed_in?  %>
     <%= form_with(url: search_index_path, class: "form-inline", local: true, method: :get) do |form| %>
       <%= search_field_tag :search, nil, id: "top-search", placeholder: "#{t_no_span("heda.search")}...", 'aria-lable': "Search", 'data-autocomplete-links': 'search-list', size: 40, value: params[:search] %>
-      <%= form.submit "Search", type: :image, src: asset_path('search.svg'), style: "width: 20px; height: 20px; margin-right: 5px;" %>
+      <% if user_signed_in?  %>
+        <%= form.submit "Search", type: :image, src: asset_path('search.svg'), style: "width: 20px; height: 20px; margin-right: 5px;" %>
+      <% else %>
+        <%= image_tag asset_path('search.svg'), style: "width: 20px; height: 20px; margin-right: 5px; transform: translate(0px, -5px);" %>
+      <% end %>
     <% end %>
-  <% else %>
-    <%= form_with(url: search_index_path, class: "form-inline", local: true, method: :get) do |form| %>
-      <%= search_field_tag :search, nil, id: "top-search", placeholder: "#{t_no_span("heda.search")}...", 'aria-lable': "Search", 'data-recipes': Recipe.all_main.all_for(current_user).order(:name).map {|m| [m.id, m.name]}.to_json, size: 40, value: params[:search] %>
-      <%= image_tag asset_path('search.svg'), style: "width: 20px; height: 20px; margin-right: 5px; transform: translate(0px, -5px);" %>
-    <% end %>
-  <% end %>
 </div>
 
 <%= javascript_pack_tag "autocomplete_search" %>
