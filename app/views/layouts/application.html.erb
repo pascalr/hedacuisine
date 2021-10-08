@@ -20,8 +20,8 @@
 
     <span id="locale" hidden><%= params[:locale] || I18n.default_locale %></span>
 
-    <div id="body">
-      <div class="responsive-margins-lg">
+    <div class="responsive-margins-lg">
+      <div style="min-height: 100%;">
         <%= render partial: 'layouts/navbar' %>
 
         <% unless flash.empty? %>
@@ -36,9 +36,11 @@
         <div class="root">
           <%= yield %>
         </div>
-
-        
       </div>
+
+      <footer>
+        <small style="margin-left: 1rem;">&copy; Copyright <%= Date.current.year%>, Pascal Rainville</small>
+      </footer>        
     </div>
     <%# javascript_pack_tag 'autocomplete_pack' %>
   </body>
