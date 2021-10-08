@@ -1,6 +1,6 @@
 <span id="servings-quantity-value" hidden><%= @recipe.servings_quantity %></span>
 <span id="ingredient-list" data-values="<%= @recipe.ingredients.inject({}) {|ings, i|
-  qty = i.quantity_model; ings[i.id] = {ml: qty.ml, grams: qty.grams, total: qty.total, unit_weight: i.food.unit_weight, density: i.food.density, raw: i.raw_quantity}; ings
+  qty = i.quantity_model; ings[i.id] = {ml: qty.ml, grams: qty.grams, total: qty.total, unit_weight: i.food.unit_weight, density: i.food.density, raw: i.raw}; ings
 }.to_json
 %>"/>
 
@@ -147,7 +147,7 @@
 
       <div style="display: flex; justify-content: space-between; margin-top: 0.25rem;">
         <div>
-          <% val = @recipe.main_ingredient ? @recipe.main_ingredient.raw_quantity : '' %>
+          <% val = @recipe.main_ingredient ? @recipe.main_ingredient.raw : '' %>
           <%= text_field_tag :quantity, val, class: "form-control", style: "width: 9rem; display: inline; text-align: right;", "data-quantity": val, id: "ingredient-qty-input-field" %>
           <%= collection_select :foo, :input_ingredient, @recipe.ingredients, :id, :name, {selected: @recipe.main_ingredient_id}, class: "form-select", id: "input-ingredients", style: "display: inline-block; width: auto;" %>
         </div>

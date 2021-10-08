@@ -11,7 +11,7 @@ module IngredientsHelper
   def scalable_ingredient(ing)
     return nil unless ing
     qty = ing.quantity_model
-    content_tag :span, id: "ingredient-#{ing.id}", data: {"scalable-ingredient": true, grams: qty.grams, ml: qty.ml, total: qty.total, raw: ing.raw_quantity, "food-name-singular": ing.food.name, "food-name-plural": ing.food.plural, preposition: pretty_preposition(ing.food.name), "food-id": ing.food.id} do
+    content_tag :span, id: "ingredient-#{ing.id}", data: {"scalable-ingredient": true, grams: qty.grams, ml: qty.ml, total: qty.total, raw: ing.raw, "food-name-singular": ing.food.name, "food-name-plural": ing.food.plural, preposition: pretty_preposition(ing.food.name), "food-id": ing.food.id} do
       pretty_ingredient(ing)
     end
   end
@@ -35,7 +35,7 @@ module IngredientsHelper
   # 1 oignon (1/2 t | 110 mL | 110 g) => 2 oignons (7/8 t | 220 mL | 220 g)
   def scalable_detailed_ingredient(ing)
     qty = ing.quantity_model
-    content_tag :span, id: "ingredient-#{ing.id}", data: {"scalable-ingredient-detailed": true, grams: qty.grams, ml: qty.ml, total: qty.total, raw: ing.raw_quantity, "food-name-singular": ing.food.name, "food-name-plural": ing.food.plural, preposition: pretty_preposition(ing.food.name), "food-id": ing.food.id} do
+    content_tag :span, id: "ingredient-#{ing.id}", data: {"scalable-ingredient-detailed": true, grams: qty.grams, ml: qty.ml, total: qty.total, raw: ing.raw, "food-name-singular": ing.food.name, "food-name-plural": ing.food.plural, preposition: pretty_preposition(ing.food.name), "food-id": ing.food.id} do
       pretty_ingredient_with_conversions(ing)
     end
   end
@@ -149,7 +149,7 @@ module IngredientsHelper
   end
   
   def pretty_ingredient_quantity(ing)
-    return "" if ing.nil? or ing.quantity.nil? or ing.raw_quantity.nil?
+    return "" if ing.nil? or ing.quantity.nil? or ing.raw.blank?
     qty = ing.quantity_model
     if ing.unit and ing.unit.is_volume?
       #return "#{scalable_volume(qty.ml, ing.food.is_liquid?)}"
@@ -159,7 +159,7 @@ module IngredientsHelper
       return "#{pretty_weight(qty.grams)}"
     end
     #return "#{scalable_qty(ing.raw_quantity)}"
-    return "#{ing.raw_quantity}"
+    return "#{ing.raw}" # FIXME: This is not html safe...
   end
 
   def pretty_substitution(ing, substitution)
