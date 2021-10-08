@@ -84,8 +84,9 @@ function prettyVolume(ml, is_liquid) {
 function prettyIngredient(ing) {
 
   var s = parseQuantityFloatAndLabel(ing.dataset.raw)
-  var qty = s[0] * window.scale
   var unit = unitByName(s[1])
+  var qty = s[0] * window.scale
+  if (unit) {qty *= unit.value}
 
   if (unit && unit.is_weight) {
     var r = prettyWeight(qty) + " "
