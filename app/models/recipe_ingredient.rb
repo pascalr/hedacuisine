@@ -13,10 +13,20 @@ class RecipeIngredient < ApplicationRecord
     quantity_model.ml
   end
 
+  def raw=(str)
+    super(str)
+    if str.blank?
+      self.weight = nil
+    else
+      q = Quantity.new(self.food).set_from_raw(str)
+      self.weight = q.grams
+    end
+  end
+
   def quantity_model
     # Caching here is premature optimiziation. It could lead to issues. I am not familiar enough with rails to do that.
     #@quantity_model ||= Quantity.new(self.food).set_from_value_and_unit(self.quantity, self.unit)
-    Quantity.new(self.food).set_from_value_and_unit(self.quantity, self.unit)
+    Quantity.new(self.food).set_from_grams(self.weight)
   end
   
   def raw_quantity=(raw_qty)

@@ -6,6 +6,14 @@ class Quantity
     @food = food
   end
 
+  # Only grams, ml and total are good. The others are pretty much deprecated
+  def set_from_grams(grams)
+    @grams = grams
+    @ml = @grams / @food.density if @food && !@food.density.nil?
+    @total = @grams / @food.unit_weight if !@weight.nil? && @food && !@food.unit_weight.nil?
+    self
+  end
+
   def set_from_value_and_unit(qty, unit)
     @unit = unit
     if @unit.nil? || @unit.is_unitary
@@ -45,6 +53,7 @@ class Quantity
   end
 
   def set_from_raw(raw)
+    return nil, nil if raw.nil?
     @raw = raw
     qty_s = raw[/^\d+( \d)?([,.\/]\d+)?/]
     qty = Quantity.parse_float(qty_s)

@@ -1,5 +1,5 @@
 <%= form_with(model: [recipe,RecipeIngredient.new], id: "new-recipe-ingredient-form", class: "invisible") do |form| %>
-  Qty: <%= form.text_field :raw_quantity, id: 'new-raw-quantity' %>
+  Qty: <%= form.text_field :raw, id: 'new-raw-quantity' %>
   Food: <%= text_field_tag :food_name, nil, "data-autocomplete": "food-list", placeholder: "Food...", autocomplete: :off %>
   <%= form.submit "Créer", style: "display: inline-block;" %>
 <% end %>
