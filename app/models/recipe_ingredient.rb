@@ -10,55 +10,20 @@ class RecipeIngredient < ApplicationRecord
   delegate :plural, to: :food
 
   def volume
-    return nil if quantity.nil?
-    if unit.nil? || (unit && unit.is_unitary)
-      return (quantity * food.unit_weight * (unit ? unit.value : 1)) / food.density
-    elsif unit.is_volume
-      return quantity * unit.value
-    else
-      return quantity * unit.value / food.density
-    end
-  end
-
-  def calc_weight
-    if quantity.nil?
-      self.weight = nil
-    elsif unit.nil? || (unit && unit.is_unitary)
-      raise "Invalid database data. Missing food unit weight" if food.unit_weight.nil?
-      self.weight = quantity * food.unit_weight * (unit ? unit.value : 1)
-    elsif unit.is_volume
-      self.weight = quantity * unit.value * food.density
-    else
-      self.weight = quantity * unit.value
-    end
-    self.weight
+    quantity_model.ml
   end
 
   def quantity_model
+    # Caching here is premature optimiziation. It could lead to issues. I am not familiar enough with rails to do that.
+    #@quantity_model ||= Quantity.new(self.food).set_from_value_and_unit(self.quantity, self.unit)
     Quantity.new(self.food).set_from_value_and_unit(self.quantity, self.unit)
   end
   
-  def self.parse_quantity_and_unit_given_food(raw, food)
-    qty = nil
-    #qty_s = raw.match(/^\d+([,.\/]\d+)?/)
-    qty_s = raw[/^\d+([,.\/]\d+)?/]
-    return nil, nil if qty_s.blank?
-    #qty_s = raw[/^\d+[,./]\d+/]
-    if qty_s.include?("/")
-      qty = qty_s.to_r.to_f
-    else
-      qty = qty_s.to_f
-    end
-    unit_s = raw[qty_s.length..-1].strip
-    unit = Unit.find_by(name: unit_s)
-    return qty, unit
-  end
- 
   def raw_quantity=(raw_qty)
-    qty, unit = RecipeIngredient.parse_quantity_and_unit_given_food(raw_qty, self.food)
-    self.quantity = qty
-    self.unit = unit
-    calc_weight
+    q = Quantity.new(self.food).set_from_raw(raw_qty)
+    self.quantity = q.unit_quantity
+    self.unit = q.unit
+    self.weight = q.grams
   end
   def raw_quantity
     return nil if quantity.nil?

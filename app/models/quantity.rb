@@ -46,7 +46,7 @@ class Quantity
 
   def set_from_raw(raw)
     @raw = raw
-    qty_s = raw[/^\d+([,.\/]\d+)?/]
+    qty_s = raw[/^\d+( \d)?([,.\/]\d+)?/]
     qty = Quantity.parse_float(qty_s)
     return nil, nil if qty.nil?
     unit_s = raw[qty_s.length..-1].strip

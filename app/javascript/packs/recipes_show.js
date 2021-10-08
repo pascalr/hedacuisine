@@ -153,7 +153,7 @@ function parseQuantityFloat(str) {
 
 function parseQuantityFloatAndLabel(raw) {
 
-  var s = raw.match(/^\d+([,.\/]\d+)?/g)
+  var s = raw.match(/^\d+( \d)?([,.\/]\d+)?/g)
   var qty_s = s[0]
   var label = raw.substr(qty_s.length).trim()
   //console.log("Qty_s: " + qty_s)
