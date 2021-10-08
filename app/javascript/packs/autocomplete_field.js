@@ -1,6 +1,3 @@
-import 'js-autocomplete/auto-complete.css';
-import autocomplete from 'js-autocomplete';
-
 document.addEventListener("DOMContentLoaded", function(event) { 
   var elements = document.querySelectorAll('[data-autocomplete]');
   for (const elem of elements) {
