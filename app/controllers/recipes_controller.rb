@@ -4,7 +4,9 @@ class RecipesController < ApplicationController
   skip_before_action :only_admin!, only: [:show, :index]
 
   def index
-    @recipes = Recipe.where(is_public: true).order(:created_at)
+    @recipes = Recipe.all_main.all_public.with_images.order(:created_at)
+    #@recipes = Recipe.where(is_public: true).order(:created_at)
+    #@recipes = Recipe.where(is_public: true, base_recipe_id: nil).where.not(image_id: nil)
     #@tags = Tag.order(priority: :desc).where("priority >= 400")
     #@tags = Tag.order(priority: :desc)
     #@recipes = Recipe.order(:name).all

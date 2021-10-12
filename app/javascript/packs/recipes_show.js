@@ -154,6 +154,7 @@ function parseQuantityFloat(str) {
 
 function parseQuantityFloatAndLabel(raw) {
 
+  if (!raw) {return null}
   var s = raw.match(/^\d+( \d)?([,.\/]\d+)?/g)
   var qty_s = s[0]
   var label = raw.substr(qty_s.length).trim()
@@ -169,6 +170,7 @@ function calcScale(inc) {
 }
 
 function scaleRaw(raw) {
+  if (!raw) {return ""}
   var s = parseQuantityFloatAndLabel(raw)
   var f = s[0]; var label = s[1]
   var v = prettyNumber(f*window.scale)

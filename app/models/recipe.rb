@@ -1,6 +1,7 @@
 class Recipe < ApplicationRecord
 
   scope :all_main, -> { where(base_recipe_id: nil) }
+  scope :with_images, -> { where.not(image_id: nil) }
 
   scope :all_public, -> { where(is_public: true) }
   scope :all_for, lambda { |user|

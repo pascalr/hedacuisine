@@ -86,7 +86,7 @@
 </style>
 
 <div class="var-list">
-  <div style="color: white; font-size: 1rem;">Versions (2)</div>
+  <div style="color: white; font-size: 1rem;">Versions:</div>
   <div style="font-weight: 500; color: black; background-color: white; border-radius: 5px; padding-top: 0.5rem; padding-bottom: 0.5rem; transform: translate(0px, 3px);">
     <div style="transform: translate(0px, -3px);">
       <%= @recipe.version_name.blank? ? "Original" : capitalize_first_letter(@recipe.version_name) %>
@@ -97,7 +97,9 @@
     <%= link_to variant.version_name.capitalize, variant, class: "nav-link" %>
     <%# link_to variant.version_name.capitalize + " ⭐⭐⭐⭐⭐", variant, class: "nav-link" %>
   <% end %>
-  <%= link_to "+", new_variant_recipes_path(base_recipe_id: @recipe.id), class: "nav-link" %>
+  <% if user_signed_in? %>
+    <%= link_to "+", new_variant_recipes_path(base_recipe_id: @recipe.id), class: "nav-link" %>
+  <% end %>
 </div>
 <% end %>
 
