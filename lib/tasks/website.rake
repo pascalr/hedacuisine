@@ -51,7 +51,7 @@ namespace :website do
 
     locales.each do |locale|
       add_download(recipes_path(locale: locale))
-      add_download(articles_path(locale: locale))
+      #add_download(articles_path(locale: locale))
     end
     execute_download
 
@@ -61,9 +61,9 @@ namespace :website do
         add_download(recipe_path(recipe, locale: locale))
       end
 
-      Article.all.each do |article|
-        add_download(article_path(article, locale: locale))
-      end
+      #Article.all.each do |article|
+      #  add_download(article_path(article, locale: locale))
+      #end
 
     end
     execute_download

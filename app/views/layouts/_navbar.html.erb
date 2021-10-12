@@ -11,9 +11,9 @@
       <% else %>
         <%= link_to_active_if ["recipes", "menus", "user_recipes"].include?(controller_name), t("heda.menu.recipes"), recipes_path, class: "nav-item nav-link" %>
       <% end %>
-      <%= link_to_active 'Articles', articles_path, class: "nav-item nav-link" %>
       <%# link_to_active 'Utilisateurs', users_index_path, class: "nav-item nav-link" %>
       <% if current_user_admin? %>
+        <%= link_to_active 'Articles', articles_path, class: "nav-item nav-link" %>
         <%= link_to_active 'Admin', meta_index_path, class: "nav-item nav-link" %>
       <% end %>
     </div>

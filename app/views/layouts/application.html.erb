@@ -2,7 +2,9 @@
 <html>
   <head>
     <title>HedaCuisine</title>
-    <%= csrf_meta_tags %>
+    <% if user_signed_in? %>
+      <%= csrf_meta_tags %>
+    <% end %>
     <%= csp_meta_tag %>
 
     <meta charset="utf-8"/>
