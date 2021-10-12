@@ -18,6 +18,7 @@ module IngredientsHelper
 
   def pretty_ingredient_with_conversions(ing)
     r = "#{pretty_ingredient(ing)}"
+    return r.html_safe unless ing.has_quantity?
     r += " <span class='ingredient-details'>("
     if ing.unit.nil? or ing.unit.is_unitary
       r += "#{pretty_volume(ing)} | #{pretty_metric_volume(ing.volume)} | #{pretty_weight(ing.weight)}"
@@ -164,7 +165,8 @@ module IngredientsHelper
 
   def pretty_substitution(ing, substitution)
 
-    actual_quantity = Quantity.new(ing.food).set_from_value_and_unit(ing.quantity, ing.unit)
+    actual_quantity = Quantity.new(ing.food).set_from_grams(ing.quantity.grams)
+    #actual_quantity = Quantity.new(ing.food).set_from_value_and_unit(ing.quantity, ing.unit)
     substitution_quantity = Quantity.new(ing.food).set_from_raw(substitution.food_raw_qty_for(ing.food))
     ratio = actual_quantity.weight.to_f / substitution_quantity.weight.to_f
     
@@ -203,7 +205,7 @@ module IngredientsHelper
     return nil if ingredient.nil?
     result = pretty_ingredient_quantity(ingredient)
     without_unit = (!ingredient.unit || ingredient.unit.is_unitary)
-    name = (without_unit && ingredient.quantity && ingredient.quantity >= 2) ? ingredient.plural : ingredient.name
+    name = (without_unit && ingredient.quantity.total && ingredient.quantity.total >= 2) ? ingredient.plural : ingredient.name
     unless result.blank?
       result += " #{without_unit ? "" : pretty_preposition(name)}"
     end

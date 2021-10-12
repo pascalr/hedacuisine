@@ -83,6 +83,10 @@ function prettyVolume(ml, is_liquid) {
 
 function prettyIngredient(ing) {
 
+  var linkSingular = "<a href='/foods/"+ing.dataset.foodId+"'>"+ing.dataset.foodNameSingular+"</a> "
+
+  if (ing.dataset.raw == null || ing.dataset.raw == "") {return linkSingular}
+
   var s = parseQuantityFloatAndLabel(ing.dataset.raw)
   var unit = unitByName(s[1])
   var qty = s[0] * window.scale
@@ -100,7 +104,7 @@ function prettyIngredient(ing) {
   if ((!unit || (!unit.is_volume && !unit.is_weight)) && qty > 1) {
     r += "<a href='/foods/"+ing.dataset.foodId+"'>"+ing.dataset.foodNamePlural+"</a> "
   } else {
-    r += "<a href='/foods/"+ing.dataset.foodId+"'>"+ing.dataset.foodNameSingular+"</a> "
+    r += linkSingular 
   }
   return r
 }
@@ -108,12 +112,13 @@ function prettyIngredient(ing) {
 function prettyDetailedIngredient(ing) {
   
   var r = prettyIngredient(ing)
+  if (ing.dataset.raw == null || ing.dataset.raw == "") {return r}
 
   var s = parseQuantityFloatAndLabel(ing.dataset.raw)
   var unit = unitByName(s[1])
   var grams = ing.dataset.grams * window.scale
   var ml = ing.dataset.ml * window.scale
-
+  
   r += "<span class='ingredient-details'>("
   if (unit && unit.is_weight) {
     // TODO: Show unit quantity if food can be unit.

@@ -147,7 +147,7 @@
 
       <div style="height: 4px;"></div>
 
-      <div style="display: flex; justify-content: space-between; margin-top: 0.25rem;">
+      <div style="display: flex; justify-content: space-between; margin-top: 0.25rem; flex-wrap: wrap;">
         <div>
           <% val = @recipe.main_ingredient ? @recipe.main_ingredient.raw : '' %>
           <%= text_field_tag :quantity, val, class: "form-control", style: "width: 9rem; display: inline; text-align: right;", "data-quantity": val, id: "ingredient-qty-input-field" %>

@@ -9,6 +9,11 @@ class Quantity
   # Only grams, ml and total are good. The others are pretty much deprecated
   def set_from_grams(grams)
     @grams = grams
+    if grams.nil?
+      @ml = nil
+      @total = nil
+      return self
+    end
     @ml = @grams / @food.density if @food && !@food.density.nil?
     @total = @grams / @food.unit_weight if !@weight.nil? && @food && !@food.unit_weight.nil?
     self

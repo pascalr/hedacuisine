@@ -28,6 +28,11 @@ class RecipeIngredient < ApplicationRecord
     end
   end
 
+  def has_quantity
+    !raw.blank?
+  end
+  alias has_quantity? has_quantity
+
   def quantity
     # Caching here is premature optimiziation. It could lead to issues. I am not familiar enough with rails to do that.
     #@quantity_model ||= Quantity.new(self.food).set_from_value_and_unit(self.quantity, self.unit)
