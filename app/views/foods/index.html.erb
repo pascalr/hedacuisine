@@ -36,7 +36,7 @@
   <tbody>
     <% @food_tags = FoodTag.all %>
     <% @foods.each do |food| %>
-      <%= form_with(model: food, local: true) do |form| %>
+      <%= form_with(model: food) do |form| %>
         <tr>
           <td><%= form.text_field :name, size: 15 %></td>
           <td><%= form.text_field :plural, size: 15 %></td>
