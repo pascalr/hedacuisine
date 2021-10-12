@@ -18,14 +18,18 @@ class RecipeIngredient < ApplicationRecord
     quantity_model.ml
   end
 
-  def raw=(str)
-    super(str)
-    if str.blank?
+  def refresh_weight
+    if self.raw.blank?
       self.weight = nil
     else
-      q = Quantity.new(self.food).set_from_raw(str)
+      q = Quantity.new(self.food).set_from_raw(self.raw)
       self.weight = q.grams
     end
+  end
+
+  def raw=(str)
+    super(str)
+    refresh_weight
   end
 
   def has_quantity

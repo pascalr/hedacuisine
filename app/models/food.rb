@@ -1,5 +1,7 @@
 class Food < ApplicationRecord
 
+  has_many :recipe_ingredients
+
   has_many :food_recipes
   has_many :producing_recipes, through: :food_recipes, source: :recipe
 

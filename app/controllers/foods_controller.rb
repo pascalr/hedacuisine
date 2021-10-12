@@ -31,6 +31,10 @@ class FoodsController < ApplicationController
 
   def update
     @food.update!(food_params)
+    @food.recipe_ingredients.all.each do |ing|
+      ing.refresh_weight
+      ing.save!
+    end
     redirect_to foods_path
   end
 
