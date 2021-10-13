@@ -74,7 +74,7 @@
     <div>
       <h2>Une bibliothèque de recettes gratuites</h2>
 
-      <p>Ce site internet recueille des recettes que Heda vous aide à cuisiner. Explorez ce qu'elle peut faire par vous-même dans l'onglet <%= link_to "Recettes", recipes_path %>!</p>
+      <p>Ce site internet recueille des recettes que Heda vous aide à cuisiner. Explorez ce qu'elle peut faire par vous-même en naviguant dans l'onglet <%= link_to "Recettes", recipes_path %>!</p>
       
       <%= render partial: "recipes/recipe_carrousel", locals: {title: "Dernières recettes ajoutées", recipes: Recipe.all_public.limit(10)} %>
     </div>

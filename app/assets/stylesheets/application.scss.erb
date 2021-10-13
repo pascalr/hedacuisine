@@ -320,6 +320,10 @@ ul.dash > li:before {
   display: flex;
 }
 
+.responsive-sm-above {
+  display: flex;
+}
+
 @media screen and (max-width: 1200px) {
   .responsive-margins-lg, .responsive-margins-50-lg {
     width: 100%; /* The width is 100%, when the viewport is 800px or smaller */
@@ -339,6 +343,9 @@ ul.dash > li:before {
 }
 
 @media screen and (max-width: 768px) {
+  .responsive-sm-above {
+    display: block;
+  }
   .responsive-margins-sm, .responsive-margins-50-sm {
     width: 100%; /* The width is 100%, when the viewport is 800px or smaller */
   }

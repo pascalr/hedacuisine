@@ -4,7 +4,7 @@
 }.to_json
 %>"/>
 
-<div class="responsive-above">
+<div class="responsive-sm-above">
   <div>
     <% if @recipe.image_id %>
       <%= image_tag medium_image_path(@recipe.image), style: "margin-right: 20px; width: 452px; height: 304px;" if @recipe.image %>
@@ -47,7 +47,7 @@
         </div>
       <% end %>
     </h1>
-    <p style="width: 600px;"><%= @recipe.description %></p>
+    <p style="max-width: 600px;"><%= @recipe.description %></p>
     <div style="margin-top: 1.5rem;">
       <%= render partial: "details_medium_version", locals: {recipe: @recipe} %>
     </div>
