@@ -64,6 +64,10 @@ namespace :website do
         add_download(recipe_path(recipe, locale: locale))
       end
 
+      Food.all.each do |food|
+        add_download(food_path(food, locale: locale))
+      end
+
       #Article.all.each do |article|
       #  add_download(article_path(article, locale: locale))
       #end
