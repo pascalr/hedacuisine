@@ -6,8 +6,10 @@
 #cp -R "../static-heda/.git" "tmp/tmp-git"
 #rm -Rf "../static-heda/"
 rake website:build
-rm -R "../static-heda/build"
-cp -R "tmp/localhost:3000" "../static-heda/build"
+rm -R "../static-heda/docs"
+cp -R "tmp/localhost:3000" "../static-heda/docs"
+printf %s "www.hedacuisine.com" >> "../static-heda/docs/CNAME"
+#echo "www.hedacuisine.com" > "../static-heda/docs/CNAME"
 #echo "Restoring git"
 #cp "tmp/tmp-CNAME" "../static-heda/CNAME"
 #cp -R "tmp/tmp-git" "../static-heda/.git"

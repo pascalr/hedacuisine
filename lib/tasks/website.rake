@@ -1,3 +1,5 @@
+OUT_DIR = "tmp/localhost:3000"
+
 def add_download(path)
   $download_list ||= []
   $download_list << "http://localhost:3000#{path}"
@@ -18,7 +20,8 @@ def move_files_without_extensions
 
   puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 
-  Dir.glob('tmp/localhost:3000/**/*') do |path|
+  Dir.glob("#{OUT_DIR}/**/*") do |path|
+    next if path.starts_with?("#{OUT_DIR}/images")
     next if path == '.' or path == '..'
     next unless File.extname(path).blank?
     next if File.directory?(path)
@@ -36,7 +39,7 @@ namespace :website do
 
     include Rails.application.routes.url_helpers
 
-    FileUtils.rm_rf('tmp/localhost:3000/')
+    FileUtils.rm_rf(OUT_DIR)
 
     locales = ["fr"]
     #locales = ["fr", "en"]
