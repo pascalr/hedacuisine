@@ -1,10 +1,24 @@
 class ImagesController < ApplicationController
   #skip_before_action :authenticate_user!, only: [:show]
   #skip_before_action :only_admin!, only: [ :show]
-  before_action :set_image, only: [:show, :update, :destroy, :edit, :process_image]
+  before_action :set_image, only: [:show, :update, :destroy, :edit, :process_image, :small, :medium, :thumb]
+  skip_before_action :authenticate_user!, only: [:thumb, :medium, :small]
+  skip_before_action :only_admin!, only: [:thumb, :medium, :small]
 
   def index
     @images = Image.all
+  end
+
+  def thumb
+    redirect_to @image.thumb_variant
+  end
+
+  def small
+    redirect_to @image.small_variant
+  end
+
+  def medium
+    redirect_to @image.medium_variant
   end
 
   def show

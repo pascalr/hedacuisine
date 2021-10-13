@@ -9,7 +9,7 @@
 <div class="responsive-above">
   <% if @recipe.image %>
     <div>
-      <%= image_tag @recipe.image.medium_variant, style: "margin-right: 20px;" %>
+      <%= image_tag medium_image_path(@recipe.image), style: "margin-right: 20px;" %>
     </div>
   <% else %>
     <div style="width: 452px; height: 304px; border: 1px solid black;">

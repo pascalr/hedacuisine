@@ -14,7 +14,7 @@
     <% recipes.select(&:image).each do |recipe| %>
       <div class="recipe" style="width: 280px;">
         <%= link_to recipe_path(recipe) do %>
-          <%= image_tag recipe.image.small_variant, width: 255, height: 171 %>
+          <%= image_tag small_image_path(recipe.image), width: 255, height: 171 %>
           <div style="width: 255px; text-align: center; font-family: 'Satisfy', cursive; font-size: 1.8rem; color: black;">
             <%= recipe.name %>
           </div>

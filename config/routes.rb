@@ -26,6 +26,9 @@ Rails.application.routes.draw do
   resources :images do
     member do
       patch 'process_image'
+      get 'thumb'
+      get 'small'
+      get 'medium'
     end
   end
 
