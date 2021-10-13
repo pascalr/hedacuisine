@@ -1,51 +1,28 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
-  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" style="flex-grow: unset;">
-    <div class="navbar-nav">
-      <%= link_to_active_controller "Heda", home_path, "home", class: "navbar-brand" %>
-      <% if user_signed_in? %>
-        <%= link_to_active_if ["recipes", "menus", "user_recipes"].include?(controller_name), t("heda.menu.recipes"), user_recipes_path, class: "nav-item nav-link" %>
-        <%= link_to_active 'Appareils', machines_path, class: "nav-item nav-link" %>
-      <% else %>
-        <%= link_to_active_if ["recipes", "menus", "user_recipes"].include?(controller_name), t("heda.menu.recipes"), recipes_path, class: "nav-item nav-link" %>
-      <% end %>
-      <%# link_to_active 'Utilisateurs', users_index_path, class: "nav-item nav-link" %>
-      <% if current_user_admin? %>
-        <%= link_to_active 'Articles', articles_path, class: "nav-item nav-link" %>
-        <%= link_to_active 'Admin', meta_index_path, class: "nav-item nav-link" %>
-      <% end %>
+<!-- collapsed -->
+<div class="d-md-none">
+  <nav class="navbar navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation" style="margin-right: 10px;">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <%= render partial: 'layouts/top_search', locals: {user: current_user} %>
+    <div class="collapse navbar-collapse bg-dark">
+      <div class="navbar-nav">
+        <%= render partial: 'layouts/navbar_start_links' %>
+        <%= render partial: 'layouts/navbar_end_links' %>
+      </div>
     </div>
-  </div>
-  <%= render partial: 'layouts/top_search', locals: {user: current_user} %>
-  <div class="collapse navbar-collapse" style="flex-grow: unset;">
+  </nav>
+</div>
+<!-- expanded -->
+<div class="d-none d-md-block">
+  <nav class="navbar navbar-expand navbar-dark bg-dark justify-content-between">
     <div class="navbar-nav">
-      <% if user_signed_in? %>
-        <% if (params[:locale] && params[:locale][0..1] == 'fr') || (params[:locale].blank? && I18n.default_locale[0..1] == 'fr') %>
-          <%= link_to 'EN', url_for(locale: 'en'), class: 'nav-item nav-link' %>
-          <%# url_for(params.merge({:your_new_parameter => value})) maybe this is above does not work %>
-        <% else %>
-          <%= link_to 'FR', url_for(locale: 'fr'), class: 'nav-item nav-link' %>
-        <% end %>
-      <% end %>
-      <% if user_signed_in? %>
-        <div class="dropdown nav-item">
-          <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <%= t("heda.my_account") %>
-          </a>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <div class="dropdown-item disabled"><%= current_user.email %></div>
-            <%= link_to t("heda.modify"), users_modify_path, class: "dropdown-item" %>
-            <%= link_to t("heda.menu.logout"), destroy_user_session_path, method: :delete, class: "dropdown-item"  %>
-          </div>
-        </div>
-      <% else %>
-        <%# link_to t("devise.shared.links.sign_up"), new_user_registration_path, class: "nav-item nav-link" %>
-        <%# link_to t("devise.sessions.new.sign_in"), new_user_session_path, class: "nav-item nav-link" %>
-      <% end %>
+      <%= render partial: 'layouts/navbar_start_links' %>
     </div>
-  </div>
-</nav>
-<div style="height: 900px; width: 100%;"></div>
+    <%= render partial: 'layouts/top_search', locals: {user: current_user} %>
+    <div class="navbar-nav">
+      <%= render partial: 'layouts/navbar_end_links' %>
+    </div>
+  </nav>
+</div>
 <div style="height: 10px; width: 100%;"></div>
