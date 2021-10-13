@@ -2,7 +2,7 @@
   <div class="col-md-auto">
     <%= link_to recipe_path(recipe) do %>
       <% if recipe.image %>
-        <%= image_tag small_image_path(recipe.image) %>
+        <%= image_tag small_image_path(recipe.image), width: 255, height: 171 %>
       <% else %>
         <img width="255" height="171"></img>
       <% end %>

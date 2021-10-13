@@ -12,14 +12,19 @@
 
   <div class="article">
     <h1><%= @food.name.capitalize %></h1>
+    
+    <h2>Description</h2>
+
+    Il n'y a pas de description pour cet aliment pour l'instant.
 
     <h2>Recettes</h2>
 
     <% if @food.recipes.blank? %>
-      <p>Aucune recette pour l'instant.</p>
+      <p>Aucune recette ne contient cet ingrédient pour l'instant.</p>
     <% else %>
       <% @food.recipes.each do |recipe| %>
-        <%= link_to translated(recipe.name).capitalize, recipe %><br>
+        <%= render recipe %>
+        <%# link_to translated(recipe.name).capitalize, recipe %>
       <% end %>
     <% end %>
 
