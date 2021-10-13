@@ -39,6 +39,22 @@
   padding: 0.35em 1em;
 }
 
+/* FIXME: Only used in _recipe_full */
+.detailed-ingredient {
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+.ingredient-list-item {
+  width: calc(100% - 16px);
+  display: inline-block;
+}
+@media screen and (max-width: 452px) {
+  .recipe-show-image {
+    width: 100%;
+    height: auto;
+  }
+}
+
 .dropdown-submenu {
   position: relative;
 }
