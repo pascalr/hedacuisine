@@ -18,7 +18,6 @@ Rails.application.routes.draw do
   get 'stats/index'
   resources :container_formats
   resources :food_preferences
-  resources :foods
   get 'meta/index'
   resources :units
   devise_for :users
@@ -94,6 +93,8 @@ Rails.application.routes.draw do
   delete 'recipe_ratings', to: 'recipe_ratings#destroy'
 
   scope "/:locale" do
+  
+    resources :foods, param: 'slug'
 
     get '/', to: 'home#index', as: 'home'
 

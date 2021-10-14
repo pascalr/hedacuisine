@@ -61,9 +61,10 @@ class Food < ApplicationRecord
   end
   alias is_unitary? is_unitary
 
-  #def to_param
-  #  "#{id}-#{name}"
-  #end
+  def to_param
+    return "#{id}" if name.nil?
+    "#{id}-#{name.downcase.gsub(' ', '_')}"
+  end
 
   def implicit_substitutions(previous)
     list = []
