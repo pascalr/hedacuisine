@@ -245,7 +245,7 @@ module IngredientsHelper
         raise "Syntax error. Range already started. {...{" if c == '{'
         if c == '}'
           if range.include? "."
-            s += " #{pretty_fraction(range.to_f)} "
+            s += " #{scalable_qty(range.to_f)} "
           else
             indices = extract_range_indices(range)
             if indices.length > 1

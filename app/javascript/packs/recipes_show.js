@@ -248,25 +248,26 @@ document.addEventListener("DOMContentLoaded", function(event) {
   const inIngs = document.getElementById("input-ingredients");
   
   moreButton.addEventListener('click', event => {
-    calcScale(1)
-    updateServingsInputField()
-    updateIngredientQtyInputField()
-    updateScalableQuantities()
-    updateScalableVolumes()
-    updateScalableWeights()
-    updateScalableIngredients()
-    updateScalableDetailedIngredients()
+
+    var s = parseQuantityFloatAndLabel(servingsField.value)
+    var f = s[0]; var label = s[1]
+    var v = (f < 1.0) ? f * 2.0 : f + 1
+    if (v < 0.125) {v = 0.125}
+    servingsField.value = prettyFraction(v) + " " + label
+    var event = new Event('change');
+    event.forced = true
+    servingsField.dispatchEvent(event);
   })
   
   lessButton.addEventListener('click', event => {
-    calcScale(-1)
-    updateServingsInputField()
-    updateIngredientQtyInputField()
-    updateScalableQuantities()
-    updateScalableVolumes()
-    updateScalableWeights()
-    updateScalableIngredients()
-    updateScalableDetailedIngredients()
+    var s = parseQuantityFloatAndLabel(servingsField.value)
+    var f = s[0]; var label = s[1]
+    var v = (f <= 1.0) ? f / 2.0 : f - 1
+    if (v < 0.125) {v = 0.125}
+    servingsField.value = prettyFraction(v) + " " + label
+    var event = new Event('change');
+    event.forced = true
+    servingsField.dispatchEvent(event);
   })
   
   inField.addEventListener('change', event => {
@@ -291,7 +292,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     var s0 = parseQuantityFloatAndLabel(servingsField.dataset.initial)
     var f0 = s0[0]; var label = s0[1]
     var f = parseQuantityFloatAndLabel(servingsField.value)[0]
-    servingsField.value = f.toString() + " " + label
+    servingsField.value = (event.forced ? prettyFraction(f) : f.toString()) + " " + label
     window.scale = f / f0
     //console.log(f)
     //console.log(f0)
