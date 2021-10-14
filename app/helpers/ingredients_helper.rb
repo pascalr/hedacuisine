@@ -168,16 +168,16 @@ module IngredientsHelper
     actual_quantity = Quantity.new(ing.food).set_from_grams(ing.quantity.grams)
     #actual_quantity = Quantity.new(ing.food).set_from_value_and_unit(ing.quantity, ing.unit)
     substitution_quantity = Quantity.new(ing.food).set_from_raw(substitution.food_raw_qty_for(ing.food))
-    ratio = actual_quantity.weight.to_f / substitution_quantity.weight.to_f
+    ratio = actual_quantity.grams.to_f / substitution_quantity.grams.to_f
     
     food = substitution.substitute_for(ing.food)
     sub_qty = Quantity.new(food).set_from_raw(substitution.food_raw_qty_for(food))
     if sub_qty.unit && sub_qty.unit.is_volume?
-      r = "#{scalable_volume(sub_qty.unit_quantity * ratio, false)} "
+      r = "#{scalable_volume(sub_qty.ml * ratio, false)} "
     elsif sub_qty.unit && sub_qty.unit.is_weight?
-      r = "#{scalable_weight(sub_qty.unit_quantity * ratio)} "
+      r = "#{scalable_weight(sub_qty.grams * ratio)} "
     else
-      r = "#{scalable_qty(sub_qty.unit_quantity * ratio)} "
+      r = "#{scalable_qty(sub_qty.total * ratio)} "
       r += "#{sub_qty.unit.name} " if sub_qty.unit
     end
     #r = "#{pretty_fraction(sub_qty.unit_quantity * ratio)} "

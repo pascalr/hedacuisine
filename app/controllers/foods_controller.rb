@@ -7,6 +7,7 @@ class FoodsController < ApplicationController
   end
 
   def show
+    @recipes = @food.recipes.all_public.all_main.with_images
   end
   
   def edit
