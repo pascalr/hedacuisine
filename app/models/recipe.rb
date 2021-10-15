@@ -145,12 +145,8 @@ class Recipe < ApplicationRecord
     "#{id}-#{name.downcase.gsub(' ', '_')}_#{version_name.downcase.gsub(' ', '_')}"
   end
 
-  # DEPRECATED. Version_name is deprecated. Use only name.
-  #def fullname
-  #  version_name ? "#{name} (#{version_name})" : name
-  #end
   def fullname
-    name
+    version_name ? "#{name} (#{version_name})" : name
   end
   
   def missing_ingredients
