@@ -5,10 +5,19 @@
 #rm -Rf "tmp/tmp-git/"
 #cp -R "../static-heda/.git" "tmp/tmp-git"
 #rm -Rf "../static-heda/"
-rake website:build
+
+# TODO: production environment
+RAILS_ENV=production rails assets:precompile
+rails s -p 3001 -e production -P tmp/pids/prod-pid.txt -d
+sleep 8
+
+RAILS_ENV=production rake website:build
 rm -R "../static-heda/docs"
-cp -R "tmp/localhost:3000" "../static-heda/docs"
-printf %s "www.hedacuisine.com" >> "../static-heda/docs/CNAME"
+cp -R "tmp/localhost:3001" ../static-heda/docs
+cp -R ../static-heda/keep/* ../static-heda/docs
+#printf %s "www.hedacuisine.com" >> "../static-heda/docs/CNAME"
+
+kill `cat tmp/pids/prod-pid.txt`
 #echo "www.hedacuisine.com" > "../static-heda/docs/CNAME"
 #echo "Restoring git"
 #cp "tmp/tmp-CNAME" "../static-heda/CNAME"

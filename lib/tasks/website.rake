@@ -1,8 +1,8 @@
-OUT_DIR = "tmp/localhost:3000"
+OUT_DIR = "tmp/localhost:3001"
 
 def add_download(path)
   $download_list ||= []
-  $download_list << "http://localhost:3000#{path}"
+  $download_list << "http://localhost:3001#{path}"
 end
 
 def execute_download
