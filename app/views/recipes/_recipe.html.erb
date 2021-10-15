@@ -1,5 +1,5 @@
 <div class="row" style="margin-bottom: 10px;">
-  <div class="col-md-auto">
+  <div class="col-sm-auto">
     <%= link_to recipe_path(recipe) do %>
       <% if recipe.image %>
         <%= image_tag small_image_path(recipe.image), width: 255, height: 171 %>
@@ -8,7 +8,7 @@
       <% end %>
     <% end %>
   </div>
-  <div class="col">
+  <div class="col recipe-details-small">
     <%= link_to recipe_path(recipe) do %>
       <div class="recipe-listing-title">
         <%= translated(recipe.name) %>

@@ -1,5 +1,13 @@
 <%= render partial: "recipes/tabs" %>
 
+<style>
+@media screen and (max-width: 576px) {
+  .recipe-details-small {
+    max-width: 300px;
+  }
+}
+</style>
+
 <%# Recipe.where.not(image_id: nil).order(:created_at).each do |recipe| %>
 <% @recipes.each do |recipe| %>
   <%= render recipe %>
