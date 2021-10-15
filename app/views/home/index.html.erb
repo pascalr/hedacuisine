@@ -94,7 +94,7 @@
 
       <p>Ce site internet recueille des recettes que Heda vous aide à cuisiner. Explorez ce qu'elle peut faire par vous-même en naviguant dans l'onglet <%= link_to "Recettes", recipes_path %>!</p>
       
-      <%= render partial: "recipes/recipe_carrousel", locals: {title: "Dernières recettes ajoutées", recipes: Recipe.all_public.limit(10)} %>
+      <%= render partial: "recipes/recipe_carrousel", locals: {title: "Dernières recettes ajoutées", recipes: Recipe.all_main.all_public.with_images.limit(10)} %>
     </div>
   </div>
   
