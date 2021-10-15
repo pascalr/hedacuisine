@@ -63,6 +63,7 @@ class Recipe < ApplicationRecord
     vars.delete(self)
     vars 
   end
+  alias alternatives all_variants
   
   #has_one_attached :source_image
   

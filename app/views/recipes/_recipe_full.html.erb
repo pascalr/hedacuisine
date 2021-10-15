@@ -12,7 +12,7 @@
   </div>
   <div>
     <h1>
-      <span class="recipe-title"><%= translated(@recipe.name) %></span>
+      <span class="recipe-title"><%= translated(@recipe.fullname) %></span>
       <% if user_signed_in? %>
         <div style="display: inline-block;">
           <div class="dropdown" style="display: inline-block; margin-left: 1rem;">
@@ -66,16 +66,16 @@
   
 <div style="height: 1rem;"></div>
 
-<% variants = @recipe.all_variants %>
-<% unless variants.blank?  %>
+<% alternatives = @recipe.alternatives %>
+<% unless alternatives.blank?  %>
 
 <style>
   .var-list {
     align-items: center;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     background-color: #212529;
     width: 100%;
-    height: 36.5px;
+    height: 30px;
     display: flex;
   }
   .var-list > * {
@@ -83,19 +83,16 @@
     padding-right: 1rem;
     color: #ddd;
   }
+  .var-list > *:hover {
+    color: #bbb;
+  }
 </style>
 
 <div class="var-list">
-  <div style="color: white; font-size: 1rem;">Versions:</div>
-  <div style="font-weight: 500; color: black; background-color: white; border-radius: 5px; padding-top: 0.5rem; padding-bottom: 0.5rem; transform: translate(0px, 3px);">
-    <div style="transform: translate(0px, -3px);">
-      <%= @recipe.version_name.blank? ? "Original" : capitalize_first_letter(@recipe.version_name) %>
-    </div>
-    <%# @recipe.version_name.blank? ? "Original" : capitalize_first_letter(@recipe.version_name) + " ⭐⭐⭐⭐⭐" %>
-  </div>
-  <% variants.each do |variant| %>
-    <%= link_to variant.version_name.capitalize, variant, class: "nav-link" %>
-    <%# link_to variant.version_name.capitalize + " ⭐⭐⭐⭐⭐", variant, class: "nav-link" %>
+  <div style="color: white; font-weight: bold;">Variations:</div>
+  <% alternatives.each do |alternative| %>
+    <%= link_to alternative.version_name.capitalize, alternative, class: "nav-link" %>
+    <%# link_to alternative.version_name.capitalize + " ⭐⭐⭐⭐⭐", alternative, class: "nav-link" %>
   <% end %>
   <% if user_signed_in? %>
     <%= link_to "+", new_variant_recipes_path(base_recipe_id: @recipe.id), class: "nav-link" %>
