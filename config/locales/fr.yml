@@ -1,0 +1,5 @@
+fr:
+  routes:
+    foods: aliments
+    recipes: recettes
+    new: nouveau

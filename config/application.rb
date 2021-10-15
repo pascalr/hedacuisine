@@ -13,6 +13,11 @@ ActiveStorage::Engine.config
 .content_types_to_serve_as_binary
 .delete('image/svg+xml')
 
+RouteTranslator.config do |config|
+  config.force_locale = true
+  config.available_locales = [:fr, :en]
+end
+
 module Hedacuisine
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.

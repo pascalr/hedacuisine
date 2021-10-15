@@ -4,6 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.7.0'
 
 # -------- MINE --------------
+gem 'route_translator'
 gem 'ruby-prof' # For profiling
 gem 'devise' # For authentication
 gem 'devise-i18n' # For authentication in all languages

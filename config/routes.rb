@@ -92,16 +92,10 @@ Rails.application.routes.draw do
   resources :recipe_ratings, only: [:create]
   delete 'recipe_ratings', to: 'recipe_ratings#destroy'
 
-  scope "/:locale" do
-  
+  localized do
     resources :foods, param: 'slug'
-
-    get '/', to: 'home#index', as: 'home'
-
-    resources :articles, param: 'slug'
-
     resources :recipes, param: 'slug' do
-    
+      
       resources :recipe_ingredients, only: [:create, :update, :destroy] do
         patch :move
       end
@@ -115,6 +109,15 @@ Rails.application.routes.draw do
         get 'new_variant'
       end
     end
+  end
+    
+
+  scope "/:locale" do
+
+    get '/', to: 'home#index', as: 'home'
+
+    resources :articles, param: 'slug'
+
 
     resources :user_recipes, only: [:index, :create, :update, :destroy]
     get 'user_recipes/index_with_pictures'
