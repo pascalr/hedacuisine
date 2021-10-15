@@ -2,14 +2,28 @@
   .home-section {
     margin-top: 8rem;
     margin-bottom: 8rem;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
   }
   .home-section > div > h2 {
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: bold;
   }
   .know-more {
     color: grey;
+  }
+  .img-home-container > img {
+    width: 100%;
+    height: auto;
+  }
+
+
+  @media screen and (max-width: 1500px) {
+    .home-section {
+      font-size: 1.4rem;
+    }
+    .home-section > div > h2 {
+      font-size: 2.2rem;
+    }
   }
 </style>
 
@@ -18,32 +32,32 @@
   <div style="overflow: hidden;">
     <%= image_tag asset_path("open_cupboard.jpg"), style: "height: 95vh; margin-left: 50%; transform: translateX(-50%);" %>
   </div>
-  <div style="display: flex; justify-content: center;">
-    <div style="transform: translate(0, -59vh); background-color: rgba(0,0,0,0.5); border-radius: 10px; text-align: center; padding: 1rem;">
-      <h1 style="font-size: 3rem; color: #f0f0f0; text-shadow: 2px 2px 4px white, 1px 1px 2px white;">Heda</h1>
-      <div style="margin-top: -0.8rem; font-size: 2rem; color: #eee; text-shadow: 1px 1px 2px white;">
-        Un robot garde-manger
-      </div>
-      <!--<div style="margin: auto; font-size: 1.5rem; border-radius: 5px; width: 12rem; background-color: orange; color: white; text-shadow: none; margin-top: 1rem;">
-        Voir la vidéo 
-      </div>-->
+  <div style="transform: translate(0, -59vh); background-color: rgba(0,0,0,0.5); border-radius: 10px; text-align: center; padding: 1rem; margin: auto; width: 24rem;">
+    <h1 style="font-size: 3rem; color: #f0f0f0; text-shadow: 2px 2px 4px white, 1px 1px 2px white;">Heda</h1>
+    <div style="margin-top: -0.8rem; font-size: 2rem; color: #eee; text-shadow: 1px 1px 2px white;">
+      Un robot garde-manger
     </div>
+    <!--<div style="margin: auto; font-size: 1.5rem; border-radius: 5px; width: 12rem; background-color: orange; color: white; text-shadow: none; margin-top: 1rem;">
+      Voir la vidéo 
+    </div>-->
   </div>
   
-  <div class="home-section row" style="margin-top: 2rem;">
-    <div class="col-sm-8">
+  <div class="home-section row" style="margin-top: -6rem;">
+    <div class="col-md-8">
       <h2>Un robot garde-manger c'est...</h2>
       <p>
       Une toute nouvelle invention! L'idée est d'avoir une armoire intelligente qui incorpore un bras robotique pour s'occuper de l'inventaire et aider à cuisiner.
       </p>
     </div>
-    <div class="col-sm-4">
+    <div class="col-md-4">
     </div>
   </div>
 
   <div class="home-section row">
-    <%= image_tag asset_path("closed_cupboard.jpg"), class: "col-sm-4" %>
-    <div class="col-sm-8">
+    <div class="col-md-6 img-home-container">
+      <%= image_tag asset_path("closed_cupboard.jpg") %>
+    </div>
+    <div class="col-md-6">
       <h2>Une armoire de cuisine intelligente</h2>
       <p>Le bras robotique pèse les ingrédients après chaque utilisations. Il peut ainsi gérer la liste d'épicerie automatiquement selon l'inventaire et vos habitudes.</p>
       <%# link_to "En savoir plus...", ecological_path, class: "know-more" %>
@@ -51,7 +65,9 @@
   </div>
 
   <div class="home-section row" style="margin-top: 2rem;">
-    <%= image_tag asset_path("hand_mixer.jpg"), class: "col-sm-4 order-sm-2" %>
+    <div class="col-sm-4 order-sm-2 img-home-container">
+      <%= image_tag asset_path("hand_mixer.jpg") %>
+    </div>
     <div class="col-sm-8 order-sm-1">
       <h2>Un aide-cuisinier personnel</h2>
       <p>
@@ -62,7 +78,9 @@
   </div>
 
   <div class="home-section row">
-    <%= image_tag asset_path("ecologic.png"), class: "col-sm-4" %>
+    <div class="col-sm-4 img-home-container">
+      <%= image_tag asset_path("ecologic.png") %>
+    </div>
     <div class="col-sm-8">
       <h2>Écologique</h2>
       <p>Heda suggère des recettes pour utiliser les aliments qui sont près d'être périmé pour éviter le gaspillage alimentaire. Aussi, elle cuisine surtout de la nourriture qui peut s'acheter en vrac pour favoriser le zéro-déchet.</p>
@@ -81,10 +99,10 @@
   </div>
   
   <!--<div class="home-section row">
-    <div class="col-sm-4" style="background-color:pink;">
+    <div class="col-md-4" style="background-color:pink;">
       <p>Image avec des logos de truc open-source que j'utilise. Et Open-source écrit en bas de l'image.</p>
     </div>
-    <div class="col-sm-8">
+    <div class="col-md-8">
       <h2>Open source</h2>
       <p>Heda est vendu sous forme de kit à assembler. Toute la documentation pour en fabriquer une est disponible librement et gratuitement. Vous pouvez lire le code et le modifier à votre guise.
       </p>
@@ -93,23 +111,23 @@
   
   
   <div class="home-section row">
-    <div class="col-sm-8">
+    <div class="col-md-8">
       <h2>Sauver du temps</h2>
       <ul>
         <li>Les gens passents en moyenne combien de temps à cuisiner dans leur vie?</li>
         <li>Estimer combien de temps ça sauve avec cette machine</li>
       </ul>
     </div>
-    <div class="col-sm-4" style="background-color:pink;">
+    <div class="col-md-4" style="background-color:pink;">
       <p>Image</p>
     </div>
   </div>
   
   <div class="home-section row">
-    <div class="col-sm-4" style="background-color:pink;">
+    <div class="col-md-4" style="background-color:pink;">
       <p>Image</p>
     </div>
-    <div class="col-sm-8">
+    <div class="col-md-8">
       <h2>Économisez de l'argent</h2>
       <p>
         En plus d'être écologique, cuisiner des aliments primaires représente un autre avantage énorme: c'est économique! Un Canadien moyen pourrait économiser **1434$** par année **(1)**, principalement, parce que le prix des aliments transformés est souvent grandement supérieur aux aliments de base.
@@ -118,7 +136,7 @@
   </div>
 
   <div class="home-section row" style="margin-top: 2rem;">
-    <div class="col-sm-8">
+    <div class="col-md-8">
       <h2>Missing</h2>
       <ul>
         <li>Recommandations de recettes avec ce que vous avez sous la main</li>
@@ -127,7 +145,7 @@
       <p>Heda simplifie la cuisine d'ingrédients de base. Au lieu d'acheter des aliments transformés avec des ingrédients que vous ne savez pas prononcé, c'est tellement simple de les faire maisons à la place. Par exemple, faire de la mayonnaise prends 30 secondes. Et c'est bien meilleur!</p>
   <p>Vous pouvez aussi vous <%# link_to "connecter", new_user_session_path %> ou vous <%# link_to "inscrire", new_user_session_path %> pour gérer vos propres listes de recettes!</p>
     </div>
-    <div class="col-sm-4" style="background-color:pink;">
+    <div class="col-md-4" style="background-color:pink;">
       <p>Image de l'application inventaire automatique</p>
     </div>
   </div>
