@@ -2,7 +2,7 @@
 <html>
   <head>
     <% title = yield(:title) %>
-    <% title = title.blank? ? "HedaCuisine" : title + " - HedaCuisine" %>
+    <% title = title.blank? ? "HedaCuisine" : title %>
     <title><%= title %></title>
     <% if user_signed_in? %>
       <%= csrf_meta_tags %>

@@ -1,3 +1,5 @@
+<%= content_for :title, @food.name + " - HedaCuisine" %>
+
 <div class="responsive-margins-lg">
 
   <%= link_to 'edit', edit_food_path(@food) if current_user_admin?  %>

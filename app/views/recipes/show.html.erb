@@ -1,6 +1,6 @@
 <%= render partial: "recipes/tabs" %>
 
-<%= content_for :title, @recipe.fullname %>
+<%= content_for :title, @recipe.fullname + " - HedaCuisine" %>
 
 <span id="unit-list" data-values="<%= Unit.all.map {|u| u.attributes.slice('name', 'value', 'is_weight', 'is_volume', 'show_fraction')}.to_json %>"/>
 
