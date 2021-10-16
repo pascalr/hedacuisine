@@ -82,6 +82,11 @@ production:
   <<: *default
   database: hedacuisine_production
   username: hedacuisine
-  # password: <%= ENV['HEDACUISINE_DATABASE_PASSWORD'] %>
+  password: <%= ENV['HEDACUISINE_DATABASE_PASSWORD'] %>
+
+local:
+  <<: *default
+  database: hedacuisine_local
+  username: hedacuisine
   password: FIXMEINGIT
   host: localhost

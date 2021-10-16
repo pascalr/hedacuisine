@@ -7,11 +7,11 @@
 #rm -Rf "../static-heda/"
 
 # TODO: production environment
-RAILS_ENV=production rails assets:precompile
-rails s -p 3001 -e production -P tmp/pids/prod-pid.txt -d
+RAILS_ENV=local rails assets:precompile
+rails s -p 3001 -e local -P tmp/pids/prod-pid.txt -d
 sleep 8
 
-RAILS_ENV=production rake website:build
+RAILS_ENV=local rake website:build
 rm -R "../static-heda/docs"
 cp -R "tmp/localhost:3001" ../static-heda/docs
 cp -R ../static-heda/keep/* ../static-heda/docs
