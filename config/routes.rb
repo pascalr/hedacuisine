@@ -4,7 +4,8 @@
 
 Rails.application.routes.draw do
 
-  root :to => 'home#index'
+  #root :to => 'home#index'
+  root to: redirect("/#{I18n.default_locale}"), as: :redirected_root
 
   resources :food_tags
   get 'search/index'

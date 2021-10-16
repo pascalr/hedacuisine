@@ -318,5 +318,9 @@ module IngredientsHelper
     end
     s.html_safe
   end
+
+  def description_recipe_ingredients(recipe)
+    "Ingrédients: " + recipe.ingredients.order(weight: :desc).map(&:name).join(" · ")
+  end
   
 end
