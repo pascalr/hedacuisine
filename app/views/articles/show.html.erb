@@ -1,5 +1,5 @@
 <% if current_user_admin? %>
-  <%= button_to "Edit", edit_article_path(@article), {form_class: "inline", class: "btn btn-outline-primary inline"} %>
+  <%= button_to "Edit", edit_article_path(@article), {method: :get, form_class: "inline", class: "btn btn-outline-primary inline"} %>
   <%= form_with(model: @article, class: "inline", local: true) do |form| %>
     <%= form.hidden_field :is_public, value: !@article.is_public %>
     <% if @article.is_public %>
