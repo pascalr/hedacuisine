@@ -147,7 +147,7 @@ class Recipe < ApplicationRecord
   end
 
   def fullname
-    version_name ? "#{name} (#{version_name})" : name
+    version_name.blank? ? name : "#{name} (#{version_name})"
   end
   
   def missing_ingredients
