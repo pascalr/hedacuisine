@@ -27,7 +27,7 @@ export default class extends Controller {
     var locale = document.getElementById("locale").innerHTML
 
     Rails.ajax({
-      url: "/"+locale+"/recipes/"+this.data.get("recipe-id")+"/recipe_ingredients/"+id+"/move",
+      url: this.data.get("base-url")+"/recipe_ingredients/"+id+"/move",
       type: 'PATCH',
       data: data
     })

@@ -42,7 +42,7 @@
   <% if @recipe.recipe_ingredients.blank? %>
     Il n'y a pas encore d'ingrédients.
   <% else %>
-    <ul class="list-group" style="max-width: 800px;" data-controller="drag" data-drag-recipe-id="<%= @recipe.id %>">
+    <ul class="list-group" style="max-width: 800px;" data-controller="drag" data-drag-base-url="<%= recipe_path(@recipe) %>">
       <% @recipe.recipe_ingredients.order(:item_nb).each do |ingredient| %>
         <%= render partial: "recipes/recipe_ingredient_update_form", locals: {recipe: @recipe, ingredient: ingredient} %>
       <% end %>
