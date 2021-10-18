@@ -323,7 +323,7 @@ module IngredientsHelper
   end
 
   def description_recipe_ingredients(recipe)
-    "Ingrédients: " + recipe.ingredients.order(weight: :desc).map(&:name).join(" · ")
+    "Ingrédients: " + recipe.ingredients_ordered_by_weight.map(&:name).join(" · ")
   end
   
 end

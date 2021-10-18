@@ -112,8 +112,12 @@ class Recipe < ApplicationRecord
     servings_name.blank? ? "#{qty_s} portions" : "#{qty_s} #{servings_name}"
   end
   
+  def ingredients_ordered_by_weight
+    recipe_ingredients.order(RecipeIngredient.arel_table[:weight].desc.nulls_last)
+  end
+
   def ingredient_list
-    ings = recipe_ingredients.order(weight: :desc).reject {|ing| ing.weight.nil?}.map(&:name).join(", ")
+    ings = ingredients_ordered_by_weight.map(&:name).join(", ")
     if ings.length > 80
       ri = ings[0..80].rindex(',')
       return ings[0..80] if ri.blank?

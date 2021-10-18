@@ -4,10 +4,9 @@
 <%= content_for :description, description_recipe_ingredients(@recipe) %>
 <%= content_for :og_tags do %>
   <meta property="og:title" content="<%= @recipe.fullname %>">
-  <meta property="og:description" content="<%= description_recipe_ingredients(@recipe) %>">
   <meta property="og:image" content="<%= medium_image_url(@recipe.image)%>" >
+  <meta property="og:type" content="website">
   <meta property="og:url" content="<%= request.original_url %>">
-  <meta name="twitter:card" content="summary_large_image">
 <% end %>
 
 <span id="unit-list" data-values="<%= Unit.all.map {|u| u.attributes.slice('name', 'value', 'is_weight', 'is_volume', 'show_fraction')}.to_json %>"/>
