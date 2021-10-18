@@ -21,6 +21,7 @@
     <% unless description.blank? %>
       <meta name="description" content="<%= description %>">
     <% end %>
+    <%= yield(:og_tags) %>
 
   </head>
 
