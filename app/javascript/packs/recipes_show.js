@@ -122,13 +122,13 @@ function prettyDetailedIngredient(ing) {
   r += "<span class='ingredient-details'>("
   if (unit && unit.is_weight) {
     // TODO: Show unit quantity if food can be unit.
-    r += `${prettyVolume(ml)} | ${prettyMetricVolume(ml)}`
+    r += `${prettyVolume(ml)} · ${prettyMetricVolume(ml)}`
   } else if (unit && unit.is_volume) {
     // TODO: Show unit quantity if food can be unit.
     // FIXME: What if it is already metric???
-    r += `${prettyMetricVolume(ml)} | ${prettyWeight(grams)}`
+    r += `${prettyMetricVolume(ml)} · ${prettyWeight(grams)}`
   } else {
-    r += `${prettyVolume(ml)} | ${prettyMetricVolume(ml)} | ${prettyWeight(grams)}`
+    r += `${prettyWeight(grams)}`
   }
   r += ")</span>"
   return r

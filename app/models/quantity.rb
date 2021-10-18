@@ -22,19 +22,16 @@ class Quantity
   def set_from_value_and_unit(qty, unit)
     factor = unit && unit.value ? unit.value : 1.0
     @unit = unit
-    @ml = nil
-    @grams = nil
-    @total = nil
     if unit.nil? || unit.is_unitary
-      @total = qty
-      @grams = qty * @food.unit_weight * factor if @food && !@food.unit_weight.nil?
-      @ml = @grams / @food.density * factor if !@grams.nil? && !@food.density.nil?
+      @total = qty * factor
+      @grams = @total * @food.unit_weight if @food && !@food.unit_weight.nil?
+      @ml = @grams / @food.density if !@grams.nil? && !@food.density.nil?
     elsif unit.is_volume
-      @ml = qty
+      @ml = qty * factor
       @grams = @ml * @food.density if @food && !@food.density.nil?
       @total = @grams / @food.unit_weight if !@grams.nil? && @food && !@food.unit_weight.nil?
     else
-      @grams = qty
+      @grams = qty * factor
       @ml = @grams / @food.density if @food && !@food.density.nil?
       @toal = @grams / @food.unit_weight if !@grams.nil? && @food && !@food.unit_weight.nil?
     end

@@ -20,14 +20,17 @@ module IngredientsHelper
     r = "#{pretty_ingredient(ing)}"
     return r.html_safe unless ing.has_quantity?
     r = "<div class='detailed-ingredient'><div>" + r + "&nbsp;</div><span class='ingredient-details'>("
-    if ing.unit.nil? or ing.unit.is_unitary
-      r += "#{pretty_volume(ing)} | #{pretty_metric_volume(ing.volume)} | #{pretty_weight(ing.weight)}"
+    if ing.unit.nil? or ing.unit.is_unitary # ·
+      # I don't show volume here, because for whole ingredients, the volume
+      # usualy depends on the way it is cut. Big chunks volume != small chunks volume
+      # #{pretty_volume(ing)} — #{pretty_metric_volume(ing.volume)} — 
+      r += "#{pretty_weight(ing.weight)}"
     elsif ing.unit.is_weight
       # TODO: Show unit quantity if food can be unit.
-      r += "#{pretty_volume(ing)} | #{pretty_metric_volume(ing.volume)}"
+      r += "#{pretty_volume(ing)} · #{pretty_metric_volume(ing.volume)}"
     else
       # TODO: Show unit quantity if food can be unit.
-      r += "#{pretty_metric_volume(ing.volume)} | #{pretty_weight(ing.weight)}"
+      r += "#{pretty_metric_volume(ing.volume)} · #{pretty_weight(ing.weight)}"
     end
     r += ")</span></div>"
     r.html_safe
