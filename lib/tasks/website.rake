@@ -1,13 +1,16 @@
 OUT_DIR = "tmp/localhost:3001"
 
 def add_download(path)
+  puts "Adding path to download: #{path}"
   $download_list ||= []
   $download_list << "http://localhost:3001#{path}"
 end
 
 def execute_download
+  puts "Executing the download for the download list"
   File.open("tmp/download-list", 'w') { |file| file.write($download_list.join("\n")) }
   system("wget -e robots=off -p -P tmp -i tmp/download-list")
+  #system("wget -q -e robots=off -p -P tmp -i tmp/download-list")
   move_files_without_extensions
   $download_list.clear
 end
@@ -18,7 +21,7 @@ end
 
 def move_files_without_extensions
 
-  puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+  puts "Moving the files to directories and index.html"
 
   Dir.glob("#{OUT_DIR}/**/*") do |path|
     next if path.starts_with?("#{OUT_DIR}/images")

@@ -1,12 +1,14 @@
 <%= render partial: "recipes/tabs" %>
 
 <%= content_for :title, @recipe.fullname + " - HedaCuisine" %>
+<% description = description_recipe_ingredients(@recipe) %>
 <%= content_for :description, description_recipe_ingredients(@recipe) %>
 <%= content_for :og_tags do %>
   <meta property="og:title" content="<%= @recipe.fullname %>">
-  <meta property="og:image" content="<%= medium_image_url(@recipe.image)%>" >
+  <meta property="og:image" content="<%= prod_url(medium_image_path(@recipe.image)) %>" >
   <meta property="og:type" content="website">
-  <meta property="og:url" content="<%= request.original_url %>">
+  <meta property="og:url" content="<%= prod_url(request.original_fullpath) %>">
+  <meta property="og:description" content="<%= description %>">
 <% end %>
 
 <span id="unit-list" data-values="<%= Unit.all.map {|u| u.attributes.slice('name', 'value', 'is_weight', 'is_volume', 'show_fraction')}.to_json %>"/>

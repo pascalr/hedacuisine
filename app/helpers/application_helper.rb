@@ -1,5 +1,36 @@
 module ApplicationHelper
 
+  def ext_for_content_type(type)
+    case type.to_s
+    when "image/bmp" then ".bmp"
+    when "image/gif" then ".gif"
+    when "image/x-icon" then ".ico"
+    when "image/jpeg" then ".jpg"
+    when "image/png" then ".png"
+    when "image/svg+xml" then ".svg"
+    when "image/tiff" then ".tiff"
+    when "image/webp" then ".webp"
+    else
+      raise "Invalid content type #{type}"
+    end
+  end
+  def base_image_path(image)
+    "/images/#{image.id}"
+  end
+  def medium_image_path(image)
+    "#{base_image_path(image)}/medium#{ext_for_content_type(image.original.content_type)}"
+  end
+  def small_image_path(image)
+    "#{base_image_path(image)}/small#{ext_for_content_type(image.original.content_type)}"
+  end
+  def thumb_image_path(image)
+    "#{base_image_path(image)}/thumb#{ext_for_content_type(image.original.content_type)}"
+  end
+
+  def prod_url(path)
+    "https://www.hedacuisine.com#{path}"
+  end
+
   def current_language
     @current_language ||= Language.find_by(locale: params[:locale] || I18n.default_locale)
   end
