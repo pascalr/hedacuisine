@@ -75,6 +75,11 @@ development:
     watch_options:
       ignored: '**/node_modules/**'
 
+  # Extract and emit a css file
+  # MODIFIED. Added this to development otherwise stylesheet_pack_tag does not work in development
+  # How don't know if there are any downsides I don't understand what is going on here
+  extract_css: true
+
 
 test:
   <<: *default

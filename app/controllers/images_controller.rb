@@ -6,7 +6,7 @@ class ImagesController < ApplicationController
   skip_before_action :only_admin!, only: [:thumb, :medium, :small]
 
   def index
-    @images = Image.all
+    @images = Image.order(id: :desc).all
   end
 
   def thumb

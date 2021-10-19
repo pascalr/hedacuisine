@@ -20,12 +20,15 @@ module ApplicationHelper
     "/images/#{image.id}"
   end
   def medium_image_path(image)
+    return nil if image.nil?
     "#{base_image_path(image)}/medium#{_file_ext(image.original)}"
   end
   def small_image_path(image)
+    return nil if image.nil?
     "#{base_image_path(image)}/small#{_file_ext(image.original)}"
   end
   def thumb_image_path(image)
+    return nil if image.nil?
     "#{base_image_path(image)}/thumb#{_file_ext(image.original)}"
   end
 
