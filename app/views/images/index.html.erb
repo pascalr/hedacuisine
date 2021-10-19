@@ -22,7 +22,7 @@
     <% @images.each do |image| %>
       <tr>
         <td><%= image.id %></td>
-        <td><%= image_tag image.thumb_variant %></td>
+        <td><%= image_tag image.thumb_variant if image.original.attached? %></td>
         <td><%= image.filename %></td>
         <td><%= link_to 'Show', image %></td>
         <td><%= link_to 'Edit', edit_image_path(image) %></td>
