@@ -8,6 +8,7 @@
 
 # TODO: production environment
 RAILS_ENV=local rails assets:precompile
+RAILS_ENV=local rails db:migrate
 rails s -p 3001 -e local -P tmp/pids/prod-pid.txt -d
 sleep 8
 

@@ -63,12 +63,12 @@ namespace :website do
 
     locales.each do |locale|
 
-      Recipe.all_public.each do |recipe|
-        add_download(recipe_path(recipe, locale: locale))
-      end
-
       Food.all.each do |food|
         add_download(food_path(food, locale: locale))
+      end
+
+      Recipe.all_public.each do |recipe|
+        add_download(recipe_path(recipe, locale: locale))
       end
 
       #Article.all.each do |article|
