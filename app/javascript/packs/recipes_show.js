@@ -233,15 +233,20 @@ function updateScalableIngredients() {
   }
 }
 
-function updateFilters() {
+function _createFilterTag(color, text) {
+  var span = document.createElement('span')
+  span.className = "filter-" + color
+  span.innerHTML = text + " X"
+  span.addEventListener('click', event => {
+    span.remove()
+  })
+  return span
+}
+
+function addFilterTag(color, text) {
   const activeFilters = document.getElementById("active-filters");
-  activeFilters.innerHTML = ""
-  for (const f of green_filters) {
-    activeFilters.innerHTML += "<span class='filter-green'>"+f+" X</span>"
-  }
-  for (const f of red_filters) {
-    activeFilters.innerHTML += "<span class='filter-red'>"+f+" X</span>"
-  }
+  if (activeFilters.childElementCount == 0) {activeFilters.innerHTML = ""}
+  activeFilters.appendChild(_createFilterTag(color, text))
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
@@ -250,8 +255,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
   window.originalServings = parseInt(servings.innerHTML)
   window.currentServings = window.originalServings
 
-  window.green_filters = []
-  window.red_filters = []
   window.scale = 1.0
   
   const lessButton = document.getElementById("less-servings-button");
@@ -263,16 +266,21 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var elements = document.querySelectorAll('.filter-add-red-ing-link');
   for (const elem of elements) {
     elem.addEventListener('click', event => {
-      window.red_filters.push(elem.innerHTML);
-      updateFilters();
+      addFilterTag("red", elem.innerHTML);
+    })
+  }
+
+  var elements = document.querySelectorAll('.filter-add-green-diet-link');
+  for (const elem of elements) {
+    elem.addEventListener('click', event => {
+      addFilterTag("green", elem.innerHTML);
     })
   }
 
   var elements = document.querySelectorAll('.filter-add-green-ing-link');
   for (const elem of elements) {
     elem.addEventListener('click', event => {
-      window.green_filters.push(elem.innerHTML);
-      updateFilters();
+      addFilterTag("green", elem.innerHTML);
     })
   }
   

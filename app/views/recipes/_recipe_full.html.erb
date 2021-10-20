@@ -1,3 +1,6 @@
+<% alternatives = @recipe.alternatives %>
+<% versions = [@recipe] + alternatives %>
+
 <span id="servings-quantity-value" hidden><%= @recipe.servings_quantity %></span>
 <span id="ingredient-list" data-values="<%= @recipe.ingredients.inject({}) {|ings, i|
   qty = i.quantity_model; ings[i.id] = {ml: qty.ml, grams: qty.grams, total: qty.total, unit_weight: i.food.unit_weight, density: i.food.density, raw: i.raw}; ings
@@ -18,6 +21,9 @@
       <span class="recipe-title"><%= translated(@recipe.name) %></span>
     </h1>
     <div style="max-width: 600px;"><%= simple_format @recipe.description %></div>
+    <% if user_signed_in? %>
+      <%= link_to 'Ajouter à mes recettes', @recipe.source, class: "btn btn-outline-primary", style: "margin-top: 1rem;" %>
+    <% end %>
     <!--<div style="margin-top: 1.5rem;">
       <%# render partial: "details_medium_version", locals: {recipe: @recipe} %>
     </div>-->
@@ -34,163 +40,170 @@
 
 <div style="height: 2rem;"></div>
 
-<% alternatives = @recipe.alternatives %>
-<% versions = [@recipe] + alternatives %>
-<div style="display: flex; gap: 10px;">
-  <div style="padding-top: 0.25rem; font-weight: bold; font-size: 1.2rem;">
-    Filtrer:
-  </div>
-  <div class="dropdown">
-    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dietMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Diète
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dietMenuButton">
-      <a class="dropdown-item" href="#">Végétarien</a>
-      <a class="dropdown-item" href="#">Végane</a>
-      <a class="dropdown-item" href="#">Kéto</a>
+<% unless alternatives.blank?  %>
+  <div style="font-size: 1.2rem; border-bottom: 1px solid black; padding-bottom: -0.1rem; margin-bottom: 0.5rem; width: 30rem;">Versions correspondantes: (<%= versions.size %> sur <%= versions.size %>) recettes</div>
+  <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+    <div style="padding-top: 0.25rem; font-weight: bold; font-size: 1.2rem;">
+      Filtrer:
+    </div>
+    <div class="dropdown">
+      <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dietMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Diète
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dietMenuButton">
+        <span class="dropdown-item cursor-pointer filter-add-green-diet-link">Végétarien</span>
+        <span class="dropdown-item cursor-pointer filter-add-green-diet-link">Végane</span>
+        <span class="dropdown-item cursor-pointer filter-add-green-diet-link">Kéto</span>
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="withoutIngMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Sans ingrédient
+      </button>
+      <div class="dropdown-menu" aria-labelledby="withoutIngMenuButton">
+        <% @recipe.ingredients.each do |ing| %>
+          <span class="dropdown-item cursor-pointer filter-add-red-ing-link"><%= ing.name %></span>
+        <% end %>
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="withIngMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Avec ingrédient
+      </button>
+      <div class="dropdown-menu" aria-labelledby="withIngMenuButton">
+        <% @recipe.alternative_ingredients.each do |ing| %>
+          <span class="dropdown-item cursor-pointer filter-add-green-ing-link"><%= ing.name %></span>
+        <% end %>
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="withoutToolMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Sans outil
+      </button>
+      <div class="dropdown-menu" aria-labelledby="withoutToolMenuButton">
+        <a class="dropdown-item" href="#">TODO</a>
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="withToolMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Avec outil
+      </button>
+      <div class="dropdown-menu" aria-labelledby="withToolMenuButton">
+        <a class="dropdown-item" href="#">TODO</a>
+      </div>
     </div>
   </div>
-  <div class="dropdown">
-    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="withoutIngMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Sans ingrédient
-    </button>
-    <div class="dropdown-menu" aria-labelledby="withoutIngMenuButton">
-      <% @recipe.ingredients.each do |ing| %>
-        <span class="dropdown-item cursor-pointer filter-add-red-ing-link"><%= ing.name %></span>
-      <% end %>
-    </div>
+  <style>
+  .filter-green {
+    background-color: #4eff33;
+    border: 2px solid #38b325;
+    padding: 0.2rem;
+    border-radius: 5px;
+    margin: 0px 2px;
+    cursor: pointer;
+  }
+  .filter-red {
+    background-color: #ff000055;
+    border: 2px solid #ff0000;
+    padding: 0.2rem;
+    border-radius: 5px;
+    margin: 0px 2px;
+    cursor: pointer;
+  }
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  </style>
+  <div style="margin-top: 0.5rem; margin-bottom: 0.2rem;">
+    <span>Filtres: </span>
+    <span id="active-filters">
+      Aucun
+    </span>
   </div>
-  <div class="dropdown">
-    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="withIngMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Avec ingrédient
-    </button>
-    <div id="filter-add-green-ing" class="dropdown-menu" aria-labelledby="withIngMenuButton">
-      <% @recipe.alternative_ingredients.each do |ing| %>
-        <span class="dropdown-item cursor-pointer filter-add-green-ing-link"><%= ing.name %></span>
-      <% end %>
-    </div>
-  </div>
-  <div class="dropdown">
-    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="withoutToolMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Sans outil
-    </button>
-    <div class="dropdown-menu" aria-labelledby="withoutToolMenuButton">
-      <a class="dropdown-item" href="#">TODO</a>
-    </div>
-  </div>
-  <div class="dropdown">
-    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="withToolMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Avec outil
-    </button>
-    <div class="dropdown-menu" aria-labelledby="withToolMenuButton">
-      <a class="dropdown-item" href="#">TODO</a>
-    </div>
-  </div>
-</div>
-<style>
-.filter-green {
-  background-color: #4eff33;
-  border: 2px solid #38b325;
-  padding: 0.2rem;
-  border-radius: 5px;
-  margin: 0px 2px;
-}
-.filter-red {
-  background-color: #ff000055;
-  border: 2px solid #ff0000;
-  padding: 0.2rem;
-  border-radius: 5px;
-  margin: 0px 2px;
-}
-.cursor-pointer {
-  cursor: pointer;
-}
-</style>
-<div style="margin-top: 0.5rem; margin-bottom: 0.2rem;">
-  <span>Filtres actuels:</span>
-  <span id="active-filters">
-    <span>Aucun</span>
-  </span>
-</div>
-<div>Correspondant: (<%= versions.size %> sur <%= versions.size %>) recettes.</div>
+<% end %>
   
 <div class="recipe-body">
   
 <div style="height: 1rem;"></div>
 
-<% unless alternatives.blank?  %>
-  <style>
-    .var-list {
-      align-items: center;
-      font-size: 1.2rem;
-      background-color: #212529;
-      width: 100%;
-      height: 35px;
-      display: flex;
-    }
-    .var-list > * {
-      padding-left: 1rem;
-      padding-right: 1rem;
-      color: #ddd;
-    }
-    .var-list > *:hover {
-      color: #bbb;
-    }
-  </style>
-  
-  <div class="var-list">
-    <div style="color: white; font-weight: bold; width: 100%;">
-      <span style="margin-right: 1rem;"><%= @recipe.name %></span>
+<style>
+  .var-list {
+    align-items: center;
+    font-size: 1.2rem;
+    background-color: #212529;
+    width: 100%;
+    height: 40px;
+    display: flex;
+  }
+  .var-list > * {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    color: #ddd;
+  }
+  .var-list > *:hover {
+    color: #bbb;
+  }
+</style>
 
-      <div class="dropdown inline">
-        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="withoutToolMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding: 0.1rem 0.4rem; background-color: #444; color: white">
-          <%= @recipe.pretty_version %>
-        </button>
-        <div class="dropdown-menu" aria-labelledby="withoutToolMenuButton">
+<div class="var-list">
+  <div style="color: white; font-weight: bold; width: 100%;">
+    <span style="margin-right: 1rem;"><%= @recipe.name %></span>
+
+    <div class="dropdown inline">
+      <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="versionsMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding: 0.1rem 0.4rem; background-color: #444; color: white">
+        <%= @recipe.pretty_version %>
+      </button>
+      <div class="dropdown-menu" aria-labelledby="versionsMenuButton">
+        <% if alternatives.blank? %>
+          <span class="dropdown-item disabled">Aucune autre version pour l'instant</span>
+        <% else %>
           <% alternatives.each do |alternative| %>
             <%= link_to alternative.pretty_version, alternative, class: "dropdown-item" %>
           <% end %>
-        </div>
+        <% end %>
       </div>
-      <% if user_signed_in? %>
-        <div style="float: right;">
-          <div class="dropdown" style="display: inline-block; margin-left: 1rem;">
-            <%= image_tag asset_path("list-white.svg"), "data-bs-toggle": "dropdown", style: "cursor: pointer;" %>
-            <div class="dropdown-menu">
-              <% if @recipe.owned_by?(current_user) %>
-                <%= link_to 'Modifier', edit_recipe_path(@recipe), class: "dropdown-item" %>
-              <% end %>
-              <%= link_to "Créer une variation", new_variant_recipes_path(base_recipe_id: @recipe.id), class: "dropdown-item" %>
-              <% if user_signed_in? and current_user.id == @recipe.user_id %>
-                <%= form_with(model: @recipe, class: "inline", local: true) do |form| %>
-                  <%= form.hidden_field :is_public, value: !@recipe.is_public %>
-                  <% if @recipe.is_public %>
-                    <%= form.submit "Make private", class: "dropdown-item" %>
-                  <% else %>
-                    <%= form.submit "Make public", class: "dropdown-item" %>
-                  <% end %>
+    </div>
+    <% if user_signed_in? %>
+      <div style="float: right;">
+        <div class="dropdown" style="display: inline-block; margin-left: 1rem;">
+          <%= image_tag asset_path("list-white.svg"), "data-bs-toggle": "dropdown", style: "cursor: pointer;" %>
+          <div class="dropdown-menu">
+            <% if @recipe.owned_by?(current_user) %>
+              <%= link_to 'Modifier', edit_recipe_path(@recipe), class: "dropdown-item" %>
+            <% end %>
+            <% unless @recipe.source.blank? %>
+              <%= link_to 'Voir la source', @recipe.source, class: "dropdown-item" %>
+            <% end %>
+            <%= link_to "Créer une variation", new_variant_recipes_path(base_recipe_id: @recipe.id), class: "dropdown-item" %>
+            <% if user_signed_in? and current_user.id == @recipe.user_id %>
+              <%= form_with(model: @recipe, class: "inline", local: true) do |form| %>
+                <%= form.hidden_field :is_public, value: !@recipe.is_public %>
+                <% if @recipe.is_public %>
+                  <%= form.submit "Make private", class: "dropdown-item" %>
+                <% else %>
+                  <%= form.submit "Make public", class: "dropdown-item" %>
                 <% end %>
               <% end %>
-              <% user_recipe = @recipe.user_recipe_for(current_user) %>
-              <% if user_signed_in? and user_recipe %>
-                <%= link_to "Enlever de mes recettes", user_recipe, class: "dropdown-item", method: :delete, data: {confirm: 'Are you sure?'} %>
-              <% else %>
-                <%= form_with(model: UserRecipe.new, class: "inline") do |form| %>
-                  <%= form.hidden_field :recipe_id, value: @recipe.id %>
-                  <%= form.submit "Ajouter à mes recettes", class: "dropdown-item" %>
-                <% end %>
+            <% end %>
+            <% user_recipe = @recipe.user_recipe_for(current_user) %>
+            <% if user_signed_in? and user_recipe %>
+              <%= link_to "Enlever de mes recettes", user_recipe, class: "dropdown-item", method: :delete, data: {confirm: 'Are you sure?'} %>
+            <% else %>
+              <%= form_with(model: UserRecipe.new, class: "inline") do |form| %>
+                <%= form.hidden_field :recipe_id, value: @recipe.id %>
+                <%= form.submit "Ajouter à mes recettes", class: "dropdown-item" %>
               <% end %>
-              <span data-bs-toggle="collapse" data-bs-target="#calendar" class="dropdown-item" style="cursor: pointer;">Ajouter à mon calendrier</span>
-            </div>
+            <% end %>
+            <span data-bs-toggle="collapse" data-bs-target="#calendar" class="dropdown-item" style="cursor: pointer;">Ajouter à mon calendrier</span>
           </div>
         </div>
-      <% end %>
-    </div>
-    <%# if user_signed_in? %>
-      <%# link_to "+", new_variant_recipes_path(base_recipe_id: @recipe.id), class: "nav-link" %>
-    <%# end %>
+      </div>
+    <% end %>
   </div>
-<% end %>
+  <%# if user_signed_in? %>
+    <%# link_to "+", new_variant_recipes_path(base_recipe_id: @recipe.id), class: "nav-link" %>
+  <%# end %>
+</div>
 
 <%= render partial: "details_inline_version", locals: {recipe: @recipe} %>
 
