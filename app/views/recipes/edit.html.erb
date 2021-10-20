@@ -9,7 +9,7 @@
 <div class="responsive-above">
   <% if @recipe.image %>
     <div>
-      <%= image_tag medium_image_path(@recipe.image), style: "margin-right: 20px;" %>
+      <%= image_tag medium_image_path(@recipe.image), style: "margin-right: 20px; width: 452px; height: 304px;" %>
     </div>
   <% else %>
     <div style="width: 452px; height: 304px; border: 1px solid black;">
@@ -17,7 +17,7 @@
   <% end %>
   <div>
     <h1 data-model="<%= @recipe.model_name.to_s.underscore %>" data-url="<%= recipe_path(@recipe) %>" data-update-column="name" class="recipe-title" contenteditable="true"><%= @recipe.name %></h1>
-    <p data-model="<%= @recipe.model_name.to_s.underscore %>" data-url="<%= recipe_path(@recipe) %>" data-update-column="description" style="width: 600px;" contenteditable="true"><%= @recipe.description %></p>
+    <textarea data-model="<%= @recipe.model_name.to_s.underscore %>" data-url="<%= recipe_path(@recipe) %>" data-update-column="description" style="width: 600px;" rows=4 contenteditable="true"><%= @recipe.description %></textarea>
     <div style="margin-top: 1.5rem;">
       <%= render partial: "details_medium_version", locals: {recipe: @recipe} %>
     </div>

@@ -77,12 +77,19 @@ class Recipe < ApplicationRecord
   
   #has_one_attached :source_image
   
+  #def description=(raw_value)
+  #  value = raw_value.gsub("<br>", "\n")
+  #  super(value)
+  #end
+  
   def name
     # FIXME: Make sure base_recipe cannot be self.
     base_recipe ? base_recipe.name : self[:name]
   end
   def description
     base_recipe ? base_recipe.description : self[:description]
+    #desc = base_recipe ? base_recipe.description : self[:description]
+    #desc.gsub("\n", "<br>")
   end
   def image_id
     base_recipe ? base_recipe.image_id : self[:image_id]
