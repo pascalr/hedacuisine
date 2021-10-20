@@ -87,9 +87,9 @@
     <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="withoutIngMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       Sans ingrédient
     </button>
-    <div id="filter-add-red-ing" class="dropdown-menu" aria-labelledby="withoutIngMenuButton">
+    <div class="dropdown-menu" aria-labelledby="withoutIngMenuButton">
       <% @recipe.ingredients.each do |ing| %>
-        <a class="dropdown-item" href="#"><%= ing.name %></a>
+        <span class="dropdown-item cursor-pointer filter-add-red-ing-link"><%= ing.name %></span>
       <% end %>
     </div>
   </div>
@@ -99,7 +99,7 @@
     </button>
     <div id="filter-add-green-ing" class="dropdown-menu" aria-labelledby="withIngMenuButton">
       <% @recipe.alternative_ingredients.each do |ing| %>
-        <a class="dropdown-item" href="#"><%= ing.name %></a>
+        <span class="dropdown-item cursor-pointer filter-add-green-ing-link"><%= ing.name %></span>
       <% end %>
     </div>
   </div>
@@ -126,19 +126,23 @@
   border: 2px solid #38b325;
   padding: 0.2rem;
   border-radius: 5px;
+  margin: 0px 2px;
 }
 .filter-red {
   background-color: #ff000055;
   border: 2px solid #ff0000;
   padding: 0.2rem;
   border-radius: 5px;
+  margin: 0px 2px;
+}
+.cursor-pointer {
+  cursor: pointer;
 }
 </style>
 <div style="margin-top: 0.5rem; margin-bottom: 0.2rem;">
   <span>Filtres actuels:</span>
-  <span id="filters">
-    <span class="filter-green">Machine à pain X</span>
-    <span class="filter-red">Abaisse de tarte précuite X</span>
+  <span id="active-filters">
+    <span>Aucun</span>
   </span>
 </div>
 <div>Correspondant: (<%= versions.size %> sur <%= versions.size %>) recettes.</div>
@@ -170,7 +174,17 @@
   <div class="var-list">
     <div style="color: white; font-weight: bold;">
       <span style="margin-right: 1rem;"><%= @recipe.name %></span>
-      <%= collection_select nil, :version_name, versions, :id, :pretty_version, {selected: @recipe.id}, style: "display: inline-block; width: auto; background-color: #444; color: white; border: 1px solid black;" %>
+
+      <div class="dropdown inline">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="withoutToolMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding: 0.1rem 0.4rem; background-color: #444; color: white">
+          <%= @recipe.pretty_version %>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="withoutToolMenuButton">
+          <% alternatives.each do |alternative| %>
+            <%= link_to alternative.pretty_version, alternative, class: "dropdown-item" %>
+          <% end %>
+        </div>
+      </div>
     </div>
     <%# if user_signed_in? %>
       <%# link_to "+", new_variant_recipes_path(base_recipe_id: @recipe.id), class: "nav-link" %>

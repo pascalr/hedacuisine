@@ -68,7 +68,11 @@ class Recipe < ApplicationRecord
   def alternative_ingredients
     ings = alternatives.map(&:ingredients).flatten(1)
     food_ids = ingredients.map(&:food_id)
-    ings.reject {|ing| food_ids.include?(ing.food_id)}
+    ings.reject {|ing| 
+      reject = food_ids.include?(ing.food_id)
+      food_ids << ing.food_id unless reject # remove duplicates
+      reject
+    }
   end
   
   #has_one_attached :source_image

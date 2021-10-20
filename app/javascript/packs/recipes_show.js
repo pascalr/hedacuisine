@@ -233,12 +233,25 @@ function updateScalableIngredients() {
   }
 }
 
+function updateFilters() {
+  const activeFilters = document.getElementById("active-filters");
+  activeFilters.innerHTML = ""
+  for (const f of green_filters) {
+    activeFilters.innerHTML += "<span class='filter-green'>"+f+" X</span>"
+  }
+  for (const f of red_filters) {
+    activeFilters.innerHTML += "<span class='filter-red'>"+f+" X</span>"
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function(event) {
   
   const servings = document.getElementById("servings-quantity-value");
   window.originalServings = parseInt(servings.innerHTML)
   window.currentServings = window.originalServings
 
+  window.green_filters = []
+  window.red_filters = []
   window.scale = 1.0
   
   const lessButton = document.getElementById("less-servings-button");
@@ -246,6 +259,22 @@ document.addEventListener("DOMContentLoaded", function(event) {
   const servingsField = document.getElementById("servings-input-field");
   const inField = document.getElementById("ingredient-qty-input-field");
   const inIngs = document.getElementById("input-ingredients");
+
+  var elements = document.querySelectorAll('.filter-add-red-ing-link');
+  for (const elem of elements) {
+    elem.addEventListener('click', event => {
+      window.red_filters.push(elem.innerHTML);
+      updateFilters();
+    })
+  }
+
+  var elements = document.querySelectorAll('.filter-add-green-ing-link');
+  for (const elem of elements) {
+    elem.addEventListener('click', event => {
+      window.green_filters.push(elem.innerHTML);
+      updateFilters();
+    })
+  }
   
   moreButton.addEventListener('click', event => {
 
