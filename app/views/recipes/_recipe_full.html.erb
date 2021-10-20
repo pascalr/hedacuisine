@@ -94,6 +94,8 @@
 <div class="var-list">
   <div style="color: white; font-weight: bold;">Variations:</div>
   <% alternatives.each do |alternative| %>
+    <% name = alternative.version_name.capitalize %>
+    <% name = "original" if @recipe.base_recipe_id == alternative.id %>
     <%= link_to alternative.version_name.capitalize, alternative, class: "nav-link" %>
     <%# link_to alternative.version_name.capitalize + " ⭐⭐⭐⭐⭐", alternative, class: "nav-link" %>
   <% end %>

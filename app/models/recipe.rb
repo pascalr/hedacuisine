@@ -71,13 +71,15 @@ class Recipe < ApplicationRecord
     # FIXME: Make sure base_recipe cannot be self.
     base_recipe ? base_recipe.name : self[:name]
   end
-  
   def description
     base_recipe ? base_recipe.description : self[:description]
   end
-  
   def image_id
-    base_recipe ? base_recipe[:image_id] : self[:image_id]
+    base_recipe ? base_recipe.image_id : self[:image_id]
+  end
+  alias_method :original_image, :image
+  def image
+    base_recipe ? base_recipe.image : self.original_image
   end
   
   def self.parse_quantity_and_servings_name(raw)
@@ -146,12 +148,18 @@ class Recipe < ApplicationRecord
 
   def to_param
     return "#{id}" if name.nil?
-    return "#{id}-#{name.downcase.gsub(' ', '_')}" if version_name.blank?
-    "#{id}-#{name.downcase.gsub(' ', '_')}_#{version_name.downcase.gsub(' ', '_')}"
+    return "#{id}-#{name.downcase.gsub(' ', '_')}"# if version_name.blank?
+    #"#{id}-#{name.downcase.gsub(' ', '_')}_#{version_name.downcase.gsub(' ', '_')}"
+  end
+
+  def pretty_version
+    return version unless version_name.blank?
+    return version_nb.to_s if version_nb
+    return "original"
   end
 
   def fullname
-    version_name.blank? ? name : "#{name} (#{version_name})"
+    version_name.blank? ? name : "#{name} (#{pretty_version})"
   end
   
   def missing_ingredients
