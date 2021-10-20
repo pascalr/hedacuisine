@@ -98,7 +98,7 @@
       Avec ingrédient
     </button>
     <div id="filter-add-green-ing" class="dropdown-menu" aria-labelledby="withIngMenuButton">
-      <% @recipe.alternative_ingredients.each do |ing| %>
+      <% alternatives.map(&:ingredients).flatten(1) - @recipe.ingredients.each do |ing| %>
         <a class="dropdown-item" href="#"><%= ing.name %></a>
       <% end %>
     </div>

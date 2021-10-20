@@ -1,0 +1,21 @@
+<div style="display: flex; justify-content: space-between;">
+  <% unless recipe.preparation_time.nil? %>
+    <div>
+      <b>Préparation:</b>
+      <span style="color: gray;"><%= pretty_time(recipe.preparation_time) %></span>
+    </div>
+  <% end %>
+  <% unless recipe.cooking_time.nil? %>
+    <div>
+      <b>Cuisson:</b>
+      <span style="color: gray;"><%= pretty_time(recipe.cooking_time) %></span>
+    </div>
+  <% end %>
+  <% unless recipe.total_time.nil? %>
+    <div>
+      <b>Total:</b>
+      <span style="color: gray;"><%= pretty_time(recipe.total_time) %></span>
+    </div>
+  <% end %>
+  <br>
+</div>

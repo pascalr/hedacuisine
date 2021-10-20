@@ -64,6 +64,12 @@ class Recipe < ApplicationRecord
     vars 
   end
   alias alternatives all_variants
+
+  def alternative_ingredients
+    ings = alternatives.map(&:ingredients).flatten(1)
+    food_ids = ingredients.map(&:food_id)
+    ings.reject {|ing| food_ids.include?(ing.food_id)}
+  end
   
   #has_one_attached :source_image
   
@@ -152,10 +158,13 @@ class Recipe < ApplicationRecord
     #"#{id}-#{name.downcase.gsub(' ', '_')}_#{version_name.downcase.gsub(' ', '_')}"
   end
 
-  def pretty_version
-    return version unless version_name.blank?
+  def pretty_version_name
+    return version_name unless version_name.blank?
     return version_nb.to_s if version_nb
-    return "original"
+    return "ver 1"
+  end
+  def pretty_version
+    "#{pretty_version_name} ⭐⭐⭐⭐⭐ (1)"
   end
 
   def fullname
