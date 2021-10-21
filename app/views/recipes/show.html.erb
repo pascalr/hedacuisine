@@ -1,5 +1,16 @@
 <%= render partial: "recipes/tabs" %>
 
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><%= link_to "Acceuil", home_path %></li>
+    <li class="breadcrumb-item"><%= link_to "Recettes", recipes_path %></li>
+    <% if @recipe.kind %>
+      <%= link_to @recipe.kind.name, @recipe.kind, class: "breadcrumb-item" %>
+    <% end %>
+    <li class="breadcrumb-item active" aria-current="page"><%= @recipe.name %></li>
+  </ol>
+</nav>
+
 <%= content_for :title, @recipe.fullname + " - HedaCuisine" %>
 <% description = description_recipe_ingredients(@recipe) %>
 <%= content_for :description, description_recipe_ingredients(@recipe) %>

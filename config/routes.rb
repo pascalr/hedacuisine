@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   resources :units
   devise_for :users
   resources :kinds
+  resources :tools
 
   resources :images do
     member do

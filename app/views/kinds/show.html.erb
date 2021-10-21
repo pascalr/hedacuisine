@@ -1,0 +1,37 @@
+<%= render partial: "recipes/tabs" %>
+
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><%= link_to "Acceuil", home_path %></li>
+    <li class="breadcrumb-item"><%= link_to "Recettes", recipes_path %></li>
+    <li class="breadcrumb-item active" aria-current="page"><%= @kind.name %></li>
+  </ol>
+</nav>
+
+<%= content_for :title, @kind.name.capitalize + " - HedaCuisine" %>
+<%# content_for :description, "TODO along the food description." %>
+
+<div class="responsive-margins-lg">
+
+  <%= link_to 'edit', edit_kind_path(@kind) if current_user_admin?  %>
+
+  <div class="article">
+    <h1><%= @kind.name.capitalize %></h1>
+    
+    <h2>Description</h2>
+
+    Il n'y a pas de description pour cet aliment pour l'instant.
+
+    <h2>Recettes</h2>
+
+    <% if @kind.recipes.blank? %>
+      <p>Aucune recette ne contient cet ingrédient pour l'instant.</p>
+    <% else %>
+      <% @kind.recipes.each do |recipe| %>
+        <%= render recipe %>
+        <%# link_to translated(recipe.name).capitalize, recipe %>
+      <% end %>
+    <% end %>
+  </div>
+
+</div>

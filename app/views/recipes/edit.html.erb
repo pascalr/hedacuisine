@@ -28,6 +28,11 @@
   <%= form.number_field :image_id %>
   <%= form.submit "modifier" %>
 <% end %>
+<%= form_with(model: @recipe, local: true) do |form| %>
+  <b><%= form.label :kind_id %></b>
+  <%= form.collection_select :kind_id, Kind.all.order(:name), :id, :name, include_blank: true %>
+  <%= form.submit "modifier" %>
+<% end %>
 
 <br>
 

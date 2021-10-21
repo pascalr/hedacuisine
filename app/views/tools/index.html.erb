@@ -1,8 +1,8 @@
 <%= render partial: 'meta/nav' %>
 
-<h1>Kinds</h1>
+<h1>Tools</h1>
 
-<%= form_with(model: Kind.new, local: true) do |form| %>
+<%= form_with(model: Tool.new, local: true) do |form| %>
   <%= form.label :name %>
   <%= form.text_field :name, size: 15 %>
   <%= form.submit %>
@@ -17,7 +17,7 @@
   </thead>
 
   <tbody>
-    <% @kinds.each do |abstract| %>
+    <% @tools.each do |abstract| %>
       <tr>
         <td><%= abstract.name %></td>
         <td><%= link_to 'Show', abstract %></td>

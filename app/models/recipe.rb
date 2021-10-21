@@ -16,6 +16,8 @@ class Recipe < ApplicationRecord
 
   belongs_to :image, optional: true
 
+  belongs_to :kind, optional: true
+
   belongs_to :main_ingredient, optional: true, class_name: "RecipeIngredient"
 
   belongs_to :base_recipe, class_name: "Recipe", optional: true
