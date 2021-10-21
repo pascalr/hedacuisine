@@ -9,7 +9,6 @@ class RecipeIngredient < ApplicationRecord
 
   belongs_to :recipe
   belongs_to :food
-  belongs_to :unit, optional: true # deprecated
   
   delegate :name, to: :food
   delegate :plural, to: :food

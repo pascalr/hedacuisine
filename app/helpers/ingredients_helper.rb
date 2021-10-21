@@ -20,12 +20,13 @@ module IngredientsHelper
     r = "#{pretty_ingredient(ing)}"
     return r.html_safe unless ing.has_quantity?
     r = "<div class='detailed-ingredient'><div>" + r + "&nbsp;</div><span class='ingredient-details'>("
-    if ing.unit.nil? or ing.unit.is_unitary # ·
+    qty = Quantity.new(ing.food).set_from_raw(ing.raw)
+    if qty.unit.nil? or qty.unit.is_unitary # ·
       # I don't show volume here, because for whole ingredients, the volume
       # usualy depends on the way it is cut. Big chunks volume != small chunks volume
       # #{pretty_volume(ing)} — #{pretty_metric_volume(ing.volume)} — 
       r += "#{pretty_weight(ing.weight)}"
-    elsif ing.unit.is_weight
+    elsif qty.unit.is_weight
       # TODO: Show unit quantity if food can be unit.
       r += "#{pretty_volume(ing)} · #{pretty_metric_volume(ing.volume)}"
     else
@@ -152,20 +153,6 @@ module IngredientsHelper
     noun.start_with?('a','e','i','o','u','y','é') ? "de l'" : "du "
   end
   
-  def pretty_ingredient_quantity(ing)
-    return "" if ing.nil? or ing.quantity.nil? or ing.raw.blank?
-    qty = ing.quantity_model
-    if ing.unit and ing.unit.is_volume?
-      #return "#{scalable_volume(qty.ml, ing.food.is_liquid?)}"
-      return "#{pretty_volume_from_ml(qty.ml, ing.food.is_liquid?)}"
-    elsif ing.unit and ing.unit.is_weight?
-      #return "#{scalable_weight(qty.grams)}"
-      return "#{pretty_weight(qty.grams)}"
-    end
-    #return "#{scalable_qty(ing.raw_quantity)}"
-    return "#{ing.raw}" # FIXME: This is not html safe...
-  end
-
   def pretty_substitution(ing, substitution)
 
     actual_quantity = Quantity.new(ing.food).set_from_grams(ing.quantity.grams)
@@ -190,30 +177,26 @@ module IngredientsHelper
     r.html_safe # FIXME: Is it?
   end
 
-  def pretty_inline_ingredient(ingredient)
-    result = pretty_ingredient_quantity(ingredient)
-    without_unit = (!ingredient.unit || ingredient.unit.is_unitary)
-    name = (without_unit && ingredient.quantity && ingredient.quantity >= 2) ? ingredient.plural : ingredient.name
-    if result.blank?
-      result += " #{pretty_article(name)}"
-    else
-      result += " #{without_unit ? "" : pretty_preposition(name)}"
-    end
-    result += "#{link_to translated(name.downcase), ingredient.food}"
-    result += " #{my_sanitize ingredient.comment}" if ingredient.comment
-    result.html_safe
-  end
+  def pretty_ingredient(ing)
+    return nil if ing.nil?
 
-  def pretty_ingredient(ingredient)
-    return nil if ingredient.nil?
-    result = pretty_ingredient_quantity(ingredient)
-    without_unit = (!ingredient.unit || ingredient.unit.is_unitary)
-    name = (without_unit && ingredient.quantity.total && ingredient.quantity.total >= 2) ? ingredient.plural : ingredient.name
+    result = "" if ing.nil? or ing.quantity.nil? or ing.raw.blank?
+    qty = Quantity.new(ing.food).set_from_raw(ing.raw)
+    if qty.unit and qty.unit.is_volume?
+      result = "#{pretty_volume_from_ml(qty.ml, ing.food.is_liquid?)}"
+    elsif qty.unit and qty.unit.is_weight?
+      result = "#{pretty_weight(qty.grams)}"
+    elsif !ing.raw.blank?
+      result = "#{ing.raw}" # FIXME: This is not html safe...
+    end
+
+    without_unit = (!qty.unit || qty.unit.is_unitary)
+    name = (without_unit && qty.total && qty.total >= 2) ? ing.plural : ing.name
     unless result.blank?
       result += " #{without_unit ? "" : pretty_preposition(name)}"
     end
-    result += "#{link_to translated(name.downcase), ingredient.food}"
-    result += " #{my_sanitize ingredient.comment}" if ingredient.comment
+    result += "#{link_to translated(name.downcase), ing.food}"
+    result += " #{my_sanitize ing.comment}" if ing.comment
     result.html_safe
   end
 
