@@ -102,6 +102,7 @@ Rails.application.routes.draw do
       resources :recipe_ingredients, only: [:create, :update, :destroy] do
         patch :move
       end
+      resources :recipe_tools, only: [:create, :update, :destroy]
 
       member do
         patch 'do_process', param: 'slug'

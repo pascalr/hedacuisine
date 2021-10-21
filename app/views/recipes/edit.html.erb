@@ -43,7 +43,6 @@
 <span id="food-list" data-values="<%= Food.all.map(&:name) %>"/>
   
 <div>
-  <b>Recipe ingredients</b><br>
   <% if @recipe.recipe_ingredients.blank? %>
     Il n'y a pas encore d'ingrédients.
   <% else %>
@@ -51,9 +50,6 @@
       <% @recipe.recipe_ingredients.order(:item_nb).each do |ingredient| %>
         <%= render partial: "recipes/recipe_ingredient_update_form", locals: {recipe: @recipe, ingredient: ingredient} %>
       <% end %>
-      <div hidden>
-        <%# render partial: "recipes/recipe_ingredient_update_form", locals: {recipe: @recipe, ingredient: ingredient} %>
-      </div>
     </ul>
   <% end %>
 </div>
@@ -61,6 +57,26 @@
 <button id="add-recipe-ingredient-form">Ajouter</button>
 
 <%= render partial: "recipes/form_for_new_recipe_ingredient", locals: {recipe: @recipe} %>
+
+<h2 class="h2">Outils</h2>
+
+<div>
+  <% if @recipe.tools.blank? %>
+    Il n'y a pas encore d'outils.
+  <% else %>
+    <ul class="list-group" style="max-width: 800px;" data-controller="drag" data-drag-base-url="<%= recipe_path(@recipe) %>">
+      <% @recipe.tools.order(:name).each do |tool| %>
+        <li><%= tool.name %></li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>
+
+<%= form_with(model: [@recipe,RecipeTool.new], id: "new-recipe-tool-form", local: true) do |form| %>
+  <%= form.hidden_field :recipe_id, value: @recipe.id %>
+  <%= form.collection_select :tool_id, Tool.order(:name).all, :id, :name, include_blank: true %>
+  <%= form.submit "Ajouter" %>
+<% end %>
 
 <h2 class="h2">Détails</h2>
 
