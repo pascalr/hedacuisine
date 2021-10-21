@@ -9,6 +9,7 @@ namespace :once do
   desc "TODO"
   task set_recipes_version_nb: :environment do
     Recipe.where(base_recipe_id: nil).each do |recipe|
+      recipe.update!(version_nb: 1)
       recipe.variants.each_with_index do |var, i|
         var.update!(version_nb: i+2)
       end

@@ -46,6 +46,13 @@ class Recipe < ApplicationRecord
   before_save do
     instructions.try :gsub!, /[\u2018\u2019]/, "'"
   end
+
+  #def versions
+  #  [self] + other_versions
+  #end
+  #def other_versions
+  #  @other_versions ||= (Recipe.where("LOWER(name) = ?", name.downcase).to_a - [self])
+  #end
   
   def _all_variants(vars = nil)
     vars ||= []
@@ -174,12 +181,14 @@ class Recipe < ApplicationRecord
   end
 
   def pretty_version_name
+    return "version #{version_nb}"
     return version_name unless version_name.blank?
     return version_nb.to_s if version_nb
     return "version 1"
   end
   def pretty_version
-    "#{pretty_version_name} ⭐⭐⭐⭐⭐ (1)"
+    "#{pretty_version_name} ☆☆☆☆☆ (0)"
+    #"#{pretty_version_name} ⭐⭐⭐⭐⭐ (1)"
   end
 
   def fullname

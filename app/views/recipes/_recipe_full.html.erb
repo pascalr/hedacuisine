@@ -16,18 +16,20 @@
       <% end %>
     <% end %>
   </div>
-  <div>
-    <h1>
-      <span class="recipe-title"><%= translated(@recipe.name) %></span>
-    </h1>
-    <div style="max-width: 600px;"><%= simple_format @recipe.description %></div>
-    <% if user_signed_in? %>
-      <%= link_to 'Ajouter à mes recettes', @recipe.source, class: "btn btn-outline-primary", style: "margin-top: 1rem;" %>
-    <% end %>
-    <!--<div style="margin-top: 1.5rem;">
-      <%# render partial: "details_medium_version", locals: {recipe: @recipe} %>
-    </div>-->
-  </div>
+  <% unless @recipe.description.blank? %>
+    <div>
+      <h1>
+        <span class="recipe-title"><%= translated(@recipe.name) %></span>
+      </h1>
+      <div style="max-width: 600px;"><%= simple_format @recipe.description %></div>
+      <% if user_signed_in? %>
+        <%= link_to 'Ajouter à mes recettes', @recipe.source, class: "btn btn-outline-primary", style: "margin-top: 1rem;" %>
+      <% end %>
+      <!--<div style="margin-top: 1.5rem;">
+        <%# render partial: "details_medium_version", locals: {recipe: @recipe} %>
+      </div>-->
+    </div>
+  <% end %>
 </div>
 
 <% if user_signed_in? %>
@@ -38,9 +40,7 @@
   </div>
 <% end %>
 
-<div style="height: 2rem;"></div>
-
-<% unless alternatives.blank?  %>
+<% if !alternatives.blank? && current_user_admin? %>
   <div style="font-size: 1.2rem; border-bottom: 1px solid black; padding-bottom: -0.1rem; margin-bottom: 0.5rem; width: 30rem;">Versions correspondantes: (<%= versions.size %> sur <%= versions.size %>) recettes</div>
   <div style="display: flex; gap: 10px; flex-wrap: wrap;">
     <div style="padding-top: 0.1rem; font-weight: bold;">
@@ -149,20 +149,22 @@
   <div style="color: white; font-weight: bold; width: 100%;">
     <span style="margin-right: 1rem;"><%= @recipe.name %></span>
 
-    <div class="dropdown inline">
-      <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="versionsMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding: 0.1rem 0.4rem; background-color: #333; color: white">
-        <%= @recipe.pretty_version %>
-      </button>
-      <div class="dropdown-menu" aria-labelledby="versionsMenuButton">
-        <% if alternatives.blank? %>
-          <span class="dropdown-item disabled">Aucune autre version pour l'instant</span>
-        <% else %>
+    <% if alternatives.blank? %>
+        <span class="btn btn-outline-secondary" style="padding: 0.1rem 0.4rem; background-color: #333; color: white; cursor: unset;">
+          <%= "☆☆☆☆☆ (0)" %>
+        </span>
+    <% else %>
+      <div class="dropdown inline">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="versionsMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding: 0.1rem 0.4rem; background-color: #333; color: white">
+          <%= @recipe.pretty_version %>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="versionsMenuButton">
           <% alternatives.each do |alternative| %>
             <%= link_to alternative.pretty_version, alternative, class: "dropdown-item" %>
           <% end %>
-        <% end %>
+        </div>
       </div>
-    </div>
+    <% end %>
     <% if user_signed_in? %>
       <div style="float: right;">
         <div class="dropdown" style="display: inline-block; margin-left: 1rem;">
