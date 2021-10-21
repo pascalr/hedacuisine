@@ -172,7 +172,7 @@ class Recipe < ApplicationRecord
   def pretty_version_name
     return version_name unless version_name.blank?
     return version_nb.to_s if version_nb
-    return "ver 1"
+    return "version 1"
   end
   def pretty_version
     "#{pretty_version_name} ⭐⭐⭐⭐⭐ (1)"

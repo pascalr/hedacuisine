@@ -1,0 +1,28 @@
+<%= render partial: 'meta/nav' %>
+
+<h1>Abstract recipes</h1>
+
+<%= form_with(model: Kind.new, local: true) do |form| %>
+  <%= form.label :name %>
+  <%= form.text_field :name, size: 15 %>
+  <%= form.submit %>
+<% end %>
+
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th>Nom</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @kinds.each do |abstract| %>
+      <tr>
+        <td><%= abstract.name %></td>
+        <td><%= link_to 'Show', abstract %></td>
+        <td><%= link_to 'Destroy', abstract, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
