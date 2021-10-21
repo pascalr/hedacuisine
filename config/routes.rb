@@ -22,7 +22,6 @@ Rails.application.routes.draw do
   get 'meta/index'
   resources :units
   devise_for :users
-  resources :kinds
   resources :tools
 
   resources :images do
@@ -96,6 +95,7 @@ Rails.application.routes.draw do
   delete 'recipe_ratings', to: 'recipe_ratings#destroy'
 
   localized do
+    resources :kinds, param: 'slug'
     resources :foods, param: 'slug'
     resources :recipes, param: 'slug' do
       

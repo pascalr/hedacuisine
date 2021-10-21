@@ -11,22 +11,18 @@
 <%= content_for :title, @kind.name.capitalize + " - HedaCuisine" %>
 <%# content_for :description, "TODO along the food description." %>
 
-<div class="responsive-margins-lg">
+<%= link_to 'edit', edit_kind_path(@kind) if current_user_admin?  %>
 
-  <%= link_to 'edit', edit_kind_path(@kind) if current_user_admin?  %>
-
-  <div style="margin-bottom: 1rem;">
-    <h1 style="display: inline;"><%= @kind.name.capitalize %> </h1>
-    <span style="font-size: 1.3rem;"> (<%= @kind.recipes.size%> <%= @kind.recipes.size > 1 ? "recettes" : "recette" %>)</span>
-  </div>
-  
-  <% if @kind.recipes.blank? %>
-    <p>Aucune recette ne contient cet ingrédient pour l'instant.</p>
-  <% else %>
-    <% @kind.recipes.each do |recipe| %>
-      <%= render recipe %>
-      <%# link_to translated(recipe.name).capitalize, recipe %>
-    <% end %>
-  <% end %>
-
+<div style="margin-bottom: 1rem;">
+  <h1 style="display: inline;"><%= @kind.name.capitalize %> </h1>
+  <span style="font-size: 1.3rem;"> (<%= @kind.recipes.size%> <%= @kind.recipes.size > 1 ? "recettes" : "recette" %>)</span>
 </div>
+
+<% if @kind.recipes.blank? %>
+  <p>Aucune recette ne contient cet ingrédient pour l'instant.</p>
+<% else %>
+  <% @kind.recipes.each do |recipe| %>
+    <%= render recipe %>
+    <%# link_to translated(recipe.name).capitalize, recipe %>
+  <% end %>
+<% end %>

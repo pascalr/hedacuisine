@@ -1,39 +1,35 @@
 <%= content_for :title, @food.name.capitalize + " - HedaCuisine" %>
 <%# content_for :description, "TODO along the food description." %>
 
-<div class="responsive-margins-lg">
+<%= link_to 'edit', edit_food_path(@food) if current_user_admin?  %>
 
-  <%= link_to 'edit', edit_food_path(@food) if current_user_admin?  %>
-
-  <!--
-    <div style="border: solid 1px black; border-radius: 5px; padding: 5px; margin-bottom: 20px;">
-      <b>Comment faire maison: <%# link_to @food.name, @food.producing_recipes.first %></b><br>
-      
-      <div class="recipe-instructions">
-        <%# pretty_complete_instructions(@food.producing_recipes.first) %>
-      </div>
-    </div>
-  -->
-
-  <div class="article">
-    <h1><%= @food.name.capitalize %></h1>
+<!--
+  <div style="border: solid 1px black; border-radius: 5px; padding: 5px; margin-bottom: 20px;">
+    <b>Comment faire maison: <%# link_to @food.name, @food.producing_recipes.first %></b><br>
     
-    <h2>Description</h2>
-
-    Il n'y a pas de description pour cet aliment pour l'instant.
-
-    <h2>Recettes</h2>
-
-    <% if @recipes.blank? %>
-      <p>Aucune recette ne contient cet ingrédient pour l'instant.</p>
-    <% else %>
-      <% @recipes.each do |recipe| %>
-        <%= render recipe %>
-        <%# link_to translated(recipe.name).capitalize, recipe %>
-      <% end %>
-    <% end %>
-
-    <%= article_for @food.name %>
+    <div class="recipe-instructions">
+      <%# pretty_complete_instructions(@food.producing_recipes.first) %>
+    </div>
   </div>
+-->
 
+<div class="article">
+  <h1><%= @food.name.capitalize %></h1>
+  
+  <h2>Description</h2>
+
+  Il n'y a pas de description pour cet aliment pour l'instant.
+
+  <h2>Recettes</h2>
+
+  <% if @recipes.blank? %>
+    <p>Aucune recette ne contient cet ingrédient pour l'instant.</p>
+  <% else %>
+    <% @recipes.each do |recipe| %>
+      <%= render recipe %>
+      <%# link_to translated(recipe.name).capitalize, recipe %>
+    <% end %>
+  <% end %>
+
+  <%= article_for @food.name %>
 </div>

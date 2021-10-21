@@ -30,77 +30,73 @@
   }
 </style>
 
-<div class="responsive-margins-lg">
+<div style="overflow: hidden;">
+  <%= image_tag asset_path("open_cupboard.jpg"), style: "height: 95vh; margin-left: 50%; transform: translateX(-50%);" %>
+</div>
+<div style="transform: translate(0, -59vh); background-color: rgba(0,0,0,0.5); border-radius: 10px; text-align: center; padding: 1rem; margin: auto; width: 24rem;">
+  <h1 style="font-size: 3rem; color: #f0f0f0; text-shadow: 2px 2px 4px white, 1px 1px 2px white;">Heda</h1>
+  <div style="margin-top: -0.8rem; font-size: 2rem; color: #eee; text-shadow: 1px 1px 2px white;">
+    Un robot garde-manger
+  </div>
+  <!--<div style="margin: auto; font-size: 1.5rem; border-radius: 5px; width: 12rem; background-color: orange; color: white; text-shadow: none; margin-top: 1rem;">
+    Voir la vidéo 
+  </div>-->
+</div>
 
-  <div style="overflow: hidden;">
-    <%= image_tag asset_path("open_cupboard.jpg"), style: "height: 95vh; margin-left: 50%; transform: translateX(-50%);" %>
+<div class="home-section row" style="margin-top: -6rem;">
+  <div class="col-md-8">
+    <h2>Un robot garde-manger c'est...</h2>
+    <p>
+    Une toute nouvelle invention! L'idée est d'avoir une armoire intelligente qui incorpore un bras robotique pour s'occuper de l'inventaire et aider à cuisiner.
+    </p>
   </div>
-  <div style="transform: translate(0, -59vh); background-color: rgba(0,0,0,0.5); border-radius: 10px; text-align: center; padding: 1rem; margin: auto; width: 24rem;">
-    <h1 style="font-size: 3rem; color: #f0f0f0; text-shadow: 2px 2px 4px white, 1px 1px 2px white;">Heda</h1>
-    <div style="margin-top: -0.8rem; font-size: 2rem; color: #eee; text-shadow: 1px 1px 2px white;">
-      Un robot garde-manger
-    </div>
-    <!--<div style="margin: auto; font-size: 1.5rem; border-radius: 5px; width: 12rem; background-color: orange; color: white; text-shadow: none; margin-top: 1rem;">
-      Voir la vidéo 
-    </div>-->
+  <div class="col-md-4">
   </div>
-  
-  <div class="home-section row" style="margin-top: -6rem;">
-    <div class="col-md-8">
-      <h2>Un robot garde-manger c'est...</h2>
-      <p>
-      Une toute nouvelle invention! L'idée est d'avoir une armoire intelligente qui incorpore un bras robotique pour s'occuper de l'inventaire et aider à cuisiner.
-      </p>
-    </div>
-    <div class="col-md-4">
-    </div>
-  </div>
+</div>
 
-  <div class="home-section row">
-    <div class="col-md-6 img-home-container">
-      <%= image_tag asset_path("closed_cupboard.jpg") %>
-    </div>
-    <div class="col-md-6">
-      <h2>Une armoire de cuisine intelligente</h2>
-      <p>Le bras robotique pèse les ingrédients après chaque utilisations. Il peut ainsi gérer la liste d'épicerie automatiquement selon l'inventaire et vos habitudes.</p>
-      <%# link_to "En savoir plus...", ecological_path, class: "know-more" %>
-    </div>
+<div class="home-section row">
+  <div class="col-md-6 img-home-container">
+    <%= image_tag asset_path("closed_cupboard.jpg") %>
   </div>
+  <div class="col-md-6">
+    <h2>Une armoire de cuisine intelligente</h2>
+    <p>Le bras robotique pèse les ingrédients après chaque utilisations. Il peut ainsi gérer la liste d'épicerie automatiquement selon l'inventaire et vos habitudes.</p>
+    <%# link_to "En savoir plus...", ecological_path, class: "know-more" %>
+  </div>
+</div>
 
-  <div class="home-section row" style="margin-top: 2rem;">
-    <div class="col-sm-4 order-sm-2 img-home-container">
-      <%= image_tag asset_path("hand_mixer.jpg") %>
-    </div>
-    <div class="col-sm-8 order-sm-1">
-      <h2>Un aide-cuisinier personnel</h2>
-      <p>
-      Heda sors les ingrédients de la recette et portionne les quantités nécessaires. Éventuellement, elle pourra même faire tremper, couper et mélanger des aliments.
-      </p>
-      <%# link_to "En savoir plus...", "TODO", class: "know-more" %>
-    </div>
+<div class="home-section row" style="margin-top: 2rem;">
+  <div class="col-sm-4 order-sm-2 img-home-container">
+    <%= image_tag asset_path("hand_mixer.jpg") %>
   </div>
+  <div class="col-sm-8 order-sm-1">
+    <h2>Un aide-cuisinier personnel</h2>
+    <p>
+    Heda sors les ingrédients de la recette et portionne les quantités nécessaires. Éventuellement, elle pourra même faire tremper, couper et mélanger des aliments.
+    </p>
+    <%# link_to "En savoir plus...", "TODO", class: "know-more" %>
+  </div>
+</div>
 
-  <div class="home-section row">
-    <div class="col-sm-4 img-home-container">
-      <%= image_tag asset_path("ecologic.png") %>
-    </div>
-    <div class="col-sm-8">
-      <h2>Écologique</h2>
-      <p>Heda suggère des recettes pour utiliser les aliments qui sont près d'être périmé pour éviter le gaspillage alimentaire. Aussi, elle cuisine surtout de la nourriture qui peut s'acheter en vrac pour favoriser le zéro-déchet.</p>
-      <%# link_to "En savoir plus...", ecological_path, class: "know-more" %>
-    </div>
+<div class="home-section row">
+  <div class="col-sm-4 img-home-container">
+    <%= image_tag asset_path("ecologic.png") %>
   </div>
-  
-  <div class="home-section">
-    <div>
-      <h2>Une bibliothèque de recettes gratuites</h2>
+  <div class="col-sm-8">
+    <h2>Écologique</h2>
+    <p>Heda suggère des recettes pour utiliser les aliments qui sont près d'être périmé pour éviter le gaspillage alimentaire. Aussi, elle cuisine surtout de la nourriture qui peut s'acheter en vrac pour favoriser le zéro-déchet.</p>
+    <%# link_to "En savoir plus...", ecological_path, class: "know-more" %>
+  </div>
+</div>
 
-      <p>Ce site internet recueille des recettes que Heda vous aide à cuisiner. Explorez ce qu'elle peut faire par vous-même en naviguant dans l'onglet <%= link_to "Recettes", recipes_path %>!</p>
-      
-      <%= render partial: "recipes/recipe_carrousel", locals: {title: "Dernières recettes ajoutées", recipes: Recipe.all_main.all_public.with_images.limit(10)} %>
-    </div>
+<div class="home-section">
+  <div>
+    <h2>Une bibliothèque de recettes gratuites</h2>
+
+    <p>Ce site internet recueille des recettes que Heda vous aide à cuisiner. Explorez ce qu'elle peut faire par vous-même en naviguant dans l'onglet <%= link_to "Recettes", recipes_path %>!</p>
+    
+    <%= render partial: "recipes/recipe_carrousel", locals: {title: "Dernières recettes ajoutées", recipes: Recipe.all_main.all_public.with_images.limit(10)} %>
   </div>
-  
 </div>
 
 <%= javascript_pack_tag "recipe_slider_pack_v2" %>

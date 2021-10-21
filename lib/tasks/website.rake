@@ -70,6 +70,10 @@ namespace :website do
       Recipe.all_public.each do |recipe|
         add_download(recipe_path(recipe, locale: locale))
       end
+      
+      Kind.all.each do |kind|
+        add_download(kind_path(kind, locale: locale))
+      end
 
       #Article.all.each do |article|
       #  add_download(article_path(article, locale: locale))

@@ -1,4 +1,8 @@
-<% alternatives = @recipe.alternatives %>
+<% if current_user_admin? %>
+  <% alternatives = @recipe.alternatives %>
+<% else %>
+  <% alternatives = @recipe.alternatives.reject {|r| !r.is_public} %>
+<% end %>
 <% versions = [@recipe] + alternatives %>
 
 <span id="servings-quantity-value" hidden><%= @recipe.servings_quantity %></span>

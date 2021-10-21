@@ -31,8 +31,7 @@ class KindsController < ApplicationController
 
   private
     def set_kind
-      @kind = Kind.find(params[:id])
-      #@kind = Kind.find(params[:slug].split('-')[0])
+      @kind = Kind.find(params[:slug].split('-')[0])
     end
 
     def kind_params
