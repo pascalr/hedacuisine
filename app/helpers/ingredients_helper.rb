@@ -89,15 +89,18 @@ module IngredientsHelper
   end
 
   def pretty_number(nb, decimals=2)
-    sprintf("%g", nb.round(decimals))
+    number_with_precision(nb, precision: 2, significant: true).to_s
+    #sprintf("%g", nb.round(decimals))
   end
 
   def pretty_weight(weight)
     #return "%.2f kg" % [weight/1000.0] if weight >= 1000.0
     #"%.1f g" % [weight]
     return nil if weight.nil?
-    return sprintf("%g kg", (weight/1000.0).round(2)) if weight >= 1000.0
-    sprintf("%g g", weight.round(1))
+    return "#{pretty_number(weight/1000.0)} kg" if weight >= 1000.0
+    #return sprintf("%g kg", (weight/1000.0).round(2)) if weight >= 1000.0
+    #sprintf("%g g", weight.round(1))
+    "#{pretty_number(weight)} g"
   end
 
   def pretty_volume_with_metric(ing)
@@ -108,8 +111,10 @@ module IngredientsHelper
 
   def pretty_metric_volume(volume)
     return nil if volume.nil?
-    return sprintf("%g L", (volume/1000.0).round(2)) if volume >= 1000.0
-    sprintf("%g mL", volume.round(1))
+    #return sprintf("%g L", (volume/1000.0).round(2)) if volume >= 1000.0
+    #sprintf("%g mL", volume.round(1))
+    return "#{pretty_number(volume/1000.0)} L" if volume >= 1000.0
+    "#{pretty_number(volume)} mL"
   end
 
   def pretty_volume_from_ml(ml, is_liquid)
