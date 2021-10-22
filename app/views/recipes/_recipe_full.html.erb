@@ -227,6 +227,8 @@
       </div>
     <%# end %>
     -->
+
+    <% foods_dup = @recipe.ingredients.group_by(&:food_id).reject {|f,s| s.size == 1}.map(&:first) %>
     
     <h2 class="h2">Ingrédients</h2>
 
@@ -236,7 +238,7 @@
       <ul class="list-group">
         <% @recipe.ingredients.order(:item_nb).each do |ing| %>
           <li class="list-group-item">
-            <%= scalable_detailed_ingredient(ing) %>
+            <%= scalable_detailed_ingredient(ing) %><%# "*" if foods_dup.include?(ing.food_id) %>
 
             <div class="dropdown" style="display: inline-block; float: right">
                <%= image_tag asset_path("pencil-square.svg"), "data-bs-toggle": "dropdown", style: "cursor: pointer;" %>

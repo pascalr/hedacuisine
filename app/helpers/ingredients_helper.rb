@@ -19,7 +19,7 @@ module IngredientsHelper
   def pretty_ingredient_with_conversions(ing)
     r = "#{pretty_ingredient(ing)}"
     return r.html_safe unless ing.has_quantity?
-    r = "<div class='detailed-ingredient'><div>" + r + "&nbsp;</div><span class='ingredient-details'>("
+    r = "<div style='display: inline-block;'>" + r + "&nbsp;</div><span class='ingredient-details'>("
     qty = Quantity.new(ing.food).set_from_raw(ing.raw)
     if qty.unit.nil? or qty.unit.is_unitary # ·
       # I don't show volume here, because for whole ingredients, the volume
@@ -33,7 +33,7 @@ module IngredientsHelper
       # TODO: Show unit quantity if food can be unit.
       r += "#{pretty_metric_volume(ing.volume)} · #{pretty_weight(ing.weight)}"
     end
-    r += ")</span></div>"
+    r += ")</span>"
     r.html_safe
   end
 
