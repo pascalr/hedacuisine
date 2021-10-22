@@ -273,6 +273,11 @@
         </div>
       </div>
     </div>
+
+    <% foods_dup.each do |dup| %>
+      <br>
+      <div>* <b><%= @recipe.ingredients.find_by(food_id: dup).food.name %></b> se retrouve plusieurs fois dans les ingrédients</div>
+    <% end %>
   
   <% end %>
 

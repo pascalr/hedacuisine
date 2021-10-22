@@ -247,7 +247,7 @@ module IngredientsHelper
               end
               s += "</ul>"
             elsif indices.size == 1
-              s += scalable_ingredient(recipe.recipe_ingredients.find_by(item_nb: indices[0]))
+              s += scalable_ingredient(recipe.recipe_ingredients.find_by(item_nb: indices[0])) || ""
             end
           end
           range = ""
