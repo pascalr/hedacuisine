@@ -55,11 +55,11 @@ class Quantity
   end
 
   def set_from_raw(raw)
-    return nil, nil if raw.nil?
+    return nil if raw.nil?
     @raw = raw
     qty_s = raw[/^\d+( \d)?([,.\/]\d+)?/]
     qty = Quantity.parse_float(qty_s)
-    return nil, nil if qty.nil?
+    return nil if qty.nil?
     unit_s = raw[qty_s.length..-1].strip
     set_from_value_and_unit(qty, Unit.find_by(name: unit_s))
   end

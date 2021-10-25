@@ -1,2 +1,0 @@
-module ContainerFormatsHelper
-end

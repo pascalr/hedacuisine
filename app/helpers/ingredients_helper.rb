@@ -188,20 +188,24 @@ module IngredientsHelper
 
     result = "" if ing.nil? or ing.quantity.nil? or ing.raw.blank?
     qty = Quantity.new(ing.food).set_from_raw(ing.raw)
-    if qty.unit and qty.unit.is_volume?
-      result = "#{pretty_volume_from_ml(qty.ml, ing.food.is_liquid?)}"
-    elsif qty.unit and qty.unit.is_weight?
-      result = "#{pretty_weight(qty.grams)}"
-    elsif !ing.raw.blank?
-      result = "#{ing.raw}" # FIXME: This is not html safe...
-    end
+    if qty
+      if qty.unit and qty.unit.is_volume?
+        result = "#{pretty_volume_from_ml(qty.ml, ing.food.is_liquid?)}"
+      elsif qty.unit and qty.unit.is_weight?
+        result = "#{pretty_weight(qty.grams)}"
+      elsif !ing.raw.blank?
+        result = "#{ing.raw}" # FIXME: This is not html safe...
+      end
 
-    without_unit = (!qty.unit || qty.unit.is_unitary)
-    name = (without_unit && qty.total && qty.total >= 2) ? ing.plural : ing.name
-    unless result.blank?
-      result += " #{without_unit ? "" : pretty_preposition(name)}"
+      without_unit = (!qty.unit || qty.unit.is_unitary)
+      name = (without_unit && qty.total && qty.total >= 2) ? ing.plural : ing.name
+      unless result.blank?
+        result += " #{without_unit ? "" : pretty_preposition(name)}"
+      end
+      result += "#{link_to translated(name.downcase), ing.food}"
+    else
+      result += "#{link_to translated(ing.name.downcase), ing.food}"
     end
-    result += "#{link_to translated(name.downcase), ing.food}"
     result += " #{my_sanitize ing.comment}" if ing.comment
     result.html_safe
   end
