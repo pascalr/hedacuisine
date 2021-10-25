@@ -65,11 +65,12 @@ module IngredientsHelper
   def scalable_qty(_qty)
     qty_s = sanitize(_qty.to_s)
     qty = Quantity.parse_float(qty_s)
-    if qty_s.include? "/"
-      "<span data-scalable-qty='#{qty}' data-show-fraction='true'>#{qty_s}</span>".html_safe
-    else
-      "<span data-scalable-qty='#{qty}'>#{qty_s}</span>".html_safe
-    end
+    "<span data-scalable-qty='#{qty}'>#{pretty_number(qty)}</span>".html_safe
+    #if qty_s.include? "/"
+    #  "<span data-scalable-qty='#{qty}' data-show-fraction='true'>#{qty_s}</span>".html_safe
+    #else
+    #  "<span data-scalable-qty='#{qty}'>#{qty_s}</span>".html_safe
+    #end
   end
 
   def pretty_time(minutes)
