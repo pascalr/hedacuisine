@@ -207,6 +207,8 @@ class Recipe < ApplicationRecord
   def warnings
     list = []
     list << "Main ingredient should be set." if !ingredients.blank? and main_ingredient.blank?
+    list << "Servings field is empty." if servings.blank?
+    # TODO: Add warnings when ingredients are not in the ingredient text.
   end
   
   #def missing_ingredients_for(user)
