@@ -203,6 +203,11 @@ class Recipe < ApplicationRecord
     return nil if user.nil?
     user_recipes.where(user_id: user.id).first
   end
+
+  def warnings
+    list = []
+    list << "Main ingredient should be set." if !ingredients.blank? and main_ingredient.blank?
+  end
   
   #def missing_ingredients_for(user)
   #  #ingredients.filter {|i| user.food_preferences.in_stock.not.where(food_id: i.food_id).exists? }

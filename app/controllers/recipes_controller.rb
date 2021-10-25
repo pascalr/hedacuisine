@@ -1,5 +1,5 @@
 class RecipesController < ApplicationController
-  before_action :set_recipe, only: [:do_process, :edit, :update, :destroy, :rate, :cheat]
+  before_action :set_recipe, only: [:do_process, :edit, :update, :destroy, :rate, :cheat, :validate]
   skip_before_action :authenticate_user!, only: [:show, :index]
   skip_before_action :only_admin!, only: [:show, :index]
 
@@ -11,6 +11,10 @@ class RecipesController < ApplicationController
     #@tags = Tag.order(priority: :desc)
     #@recipes = Recipe.order(:name).all
     #@items = Item.order(:name).all
+  end
+
+  def validate
+    @warnings = @recipe.warnings
   end
 
   def visibility

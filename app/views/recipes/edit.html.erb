@@ -1,6 +1,7 @@
 <%= render partial: "recipes/tabs" %>
 
 <%= link_to 'Show', recipe_path(@recipe) %> |
+<%= link_to 'Validate', validate_recipe_path(@recipe) %> |
 <%= link_to 'Process', do_process_recipe_path(@recipe), method: :patch %> |
 <%= link_to 'Cheat', cheat_recipe_path(@recipe), method: :patch %> |
 <%= link_to 'Fix ingredient numbers', 'TODO', method: :patch %> |
