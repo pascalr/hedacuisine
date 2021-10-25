@@ -65,7 +65,7 @@ module IngredientsHelper
   def scalable_qty(_qty)
     qty_s = sanitize(_qty.to_s)
     qty = Quantity.parse_float(qty_s)
-    "<span data-scalable-qty='#{qty}'>#{pretty_number(qty)}</span>".html_safe
+    "<span data-scalable-qty='#{qty}'>#{pretty_fraction(qty)}</span>".html_safe
     #if qty_s.include? "/"
     #  "<span data-scalable-qty='#{qty}' data-show-fraction='true'>#{qty_s}</span>".html_safe
     #else
@@ -90,7 +90,7 @@ module IngredientsHelper
   end
 
   def pretty_number(nb, decimals=2)
-    number_with_precision(nb, precision: 2, significant: true).to_s
+    number_with_precision(Quantity.parse_float(nb), precision: 2, significant: true, strip_insignificant_zeros: true, separator: '.').to_s
     #sprintf("%g", nb.round(decimals))
   end
 

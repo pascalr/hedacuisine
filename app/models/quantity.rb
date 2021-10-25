@@ -38,9 +38,9 @@ class Quantity
     self
   end
 
-  def self.parse_float(_qty_s)
-    return nil if _qty_s.blank?
-    qty_s = _qty_s.strip
+  def self.parse_float(_qty_0)
+    return nil if _qty_0.blank?
+    qty_s = _qty_0.to_s.strip
     #qty_s = _raw[/^\d+[,./]\d+/]
     if qty_s.include?("/")
       if qty_s.include?(" ")
