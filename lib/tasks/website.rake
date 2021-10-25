@@ -64,6 +64,7 @@ namespace :website do
     locales.each do |locale|
 
       Food.all.each do |food|
+        next if food.recipes.blank?
         add_download(food_path(food, locale: locale))
       end
 
