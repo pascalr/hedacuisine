@@ -183,6 +183,22 @@ module IngredientsHelper
     r.html_safe # FIXME: Is it?
   end
 
+  def pretty_ingredient_qty(ing)
+    return nil if ing.nil?
+
+    return "" if ing.nil? or ing.raw.blank?
+    qty = Quantity.new(ing.food).set_from_raw(ing.raw)
+    return "" unless qty
+    if qty.unit and qty.unit.is_volume?
+      return "#{pretty_volume_from_ml(qty.ml, ing.food.is_liquid?)}"
+    elsif qty.unit and qty.unit.is_weight?
+      return "#{pretty_weight(qty.grams)}"
+    elsif !ing.raw.blank?
+      return "#{ing.raw}" # FIXME: This is not html safe...
+    end
+    result
+  end
+
   def pretty_ingredient(ing)
     return nil if ing.nil?
 

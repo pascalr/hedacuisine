@@ -179,7 +179,7 @@ function scaleRaw(raw) {
   if (!raw) {return ""}
   var s = parseQuantityFloatAndLabel(raw)
   var f = s[0]; var label = s[1]
-  var v = prettyNumber(f*window.scale)
+  var v = prettyFraction(f*window.scale)
   if (label) {return v + " " + label}
   return v
 }
