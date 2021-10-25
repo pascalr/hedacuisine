@@ -35,6 +35,8 @@ Rails.application.routes.draw do
 
   get 'sitemap', to: "sitemap#index"
 
+  resources :expressions, only: [:index, :create, :update, :destroy]
+
   resources :user_recipe_categories, only: [:create, :update, :destroy]
   
   resources :machine_users, only: [:create, :update, :destroy, :new]

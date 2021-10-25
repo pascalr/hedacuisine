@@ -15,5 +15,17 @@ namespace :once do
       end
     end
   end
+  
+  desc "TODO"
+  task food_names_to_expressions: :environment do
+    Expression.destroy_all
+    FrenchExpression.destroy_all
+    Food.all.each do |f|
+      e = Expression.create!(default: f.name)
+      f.expression = e
+      f.save!
+      e.create_french_expression!(singular: f.name, plural: f.plural)
+    end
+  end
 
 end

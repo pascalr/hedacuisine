@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_21_163634) do
+ActiveRecord::Schema.define(version: 2021_10_25_191717) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -117,6 +117,12 @@ ActiveRecord::Schema.define(version: 2021_10_21_163634) do
     t.index ["language_id"], name: "index_descriptions_on_language_id"
   end
 
+  create_table "expressions", force: :cascade do |t|
+    t.string "default"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "favorite_menus", force: :cascade do |t|
     t.bigint "menu_id", null: false
     t.bigint "user_id", null: false
@@ -184,6 +190,17 @@ ActiveRecord::Schema.define(version: 2021_10_21_163634) do
     t.string "plural"
     t.boolean "in_pantry"
     t.integer "food_tag_id"
+    t.integer "expression_id"
+  end
+
+  create_table "french_expressions", force: :cascade do |t|
+    t.string "singular"
+    t.string "plural"
+    t.boolean "contract_preposition"
+    t.bigint "expression_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["expression_id"], name: "index_french_expressions_on_expression_id"
   end
 
   create_table "grocery_items", force: :cascade do |t|
@@ -533,6 +550,7 @@ ActiveRecord::Schema.define(version: 2021_10_21_163634) do
   add_foreign_key "food_substitutions", "foods"
   add_foreign_key "food_tag_items", "food_tags"
   add_foreign_key "food_tag_items", "foods"
+  add_foreign_key "french_expressions", "expressions"
   add_foreign_key "grocery_items", "machines"
   add_foreign_key "ingredients", "foods"
   add_foreign_key "items", "menus"

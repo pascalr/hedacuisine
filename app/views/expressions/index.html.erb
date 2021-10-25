@@ -1,0 +1,41 @@
+<%= render partial: 'meta/nav' %>
+
+<h1>Expressions</h1>
+
+<p>Ajouter (désambiguation) en parenthèse si nécessaire.</p>
+
+<%= form_with(model: Expression.new, local: true) do |form| %>
+  <%= form.label :default %>
+  <%= form.text_field :default %>
+  <%= form.submit %>
+<% end %>
+
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th>Default</th>
+      <th>Singular</th>
+      <th>Plural</th>
+      <th>Contract preposition</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @expressions.each do |expression| %>
+      <%= form_with(model: expression) do |form| %>
+        <tr>
+          <td><%= form.text_field :default, size: 15 %></td>
+          <% exp = expression.in(current_language) %>
+          <%= form.fields_for :french_expression do |nested| %>
+            <td><%= nested.text_field :singular %></td>
+            <td><%= nested.text_field :plural %></td>
+            <td><%= nested.check_box :contract_preposition %></td>
+          <% end %>
+          <td><%= form.submit "Mettre à jour" %></td>
+          <td><%= link_to 'Destroy', expression, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

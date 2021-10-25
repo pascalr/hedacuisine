@@ -11,7 +11,7 @@ module IngredientsHelper
   def scalable_ingredient(ing)
     return nil unless ing
     qty = ing.quantity_model
-    content_tag :span, id: "ingredient-#{ing.id}", data: {"scalable-ingredient": true, grams: qty.grams, ml: qty.ml, total: qty.total, raw: ing.raw, "food-name-singular": ing.food.name, "food-name-plural": ing.food.plural, preposition: pretty_preposition(ing.food.name), "food-id": ing.food.id} do
+    content_tag :span, id: "ingredient-#{ing.id}", data: {"scalable-ingredient": true, grams: qty.grams, ml: qty.ml, total: qty.total, raw: ing.raw, "food-name-singular": ing.food.name, "food-name-plural": ing.food.plural, preposition: pretty_preposition(ing.food), "food-id": ing.food.id} do
       pretty_ingredient(ing)
     end
   end
@@ -40,7 +40,7 @@ module IngredientsHelper
   # 1 oignon (1/2 t | 110 mL | 110 g) => 2 oignons (7/8 t | 220 mL | 220 g)
   def scalable_detailed_ingredient(ing)
     qty = ing.quantity_model
-    content_tag :span, id: "ingredient-#{ing.id}", class: "ingredient-list-item", data: {"scalable-ingredient-detailed": true, grams: qty.grams, ml: qty.ml, total: qty.total, raw: ing.raw, "food-name-singular": ing.food.name, "food-name-plural": ing.food.plural, preposition: pretty_preposition(ing.food.name), "food-id": ing.food.id} do
+    content_tag :span, id: "ingredient-#{ing.id}", class: "ingredient-list-item", data: {"scalable-ingredient-detailed": true, grams: qty.grams, ml: qty.ml, total: qty.total, raw: ing.raw, "food-name-singular": ing.food.name, "food-name-plural": ing.food.plural, preposition: pretty_preposition(ing.food), "food-id": ing.food.id} do
       pretty_ingredient_with_conversions(ing)
     end
   end
@@ -149,8 +149,10 @@ module IngredientsHelper
   end
 
   # FIXME: H aspiré...
-  def pretty_preposition(noun)
-    noun.start_with?('a','e','i','o','u','y','é') ? "d'" : "de "
+  def pretty_preposition(food)
+    exp = food.expression.in(current_language)
+    return food.name.start_with?('a','e','i','o','u','y','é') ? "d'" : "de " if exp.contract_preposition.nil?
+    exp.contract_preposition ? "d'" : "de "
   end
   
   # FIXME: H aspiré...
@@ -178,7 +180,7 @@ module IngredientsHelper
     end
     #r = "#{pretty_fraction(sub_qty.unit_quantity * ratio)} "
     #r += "#{sub_qty.unit.name} " if sub_qty.unit
-    r += pretty_preposition(food.name) if sub_qty.unit
+    r += pretty_preposition(food) if sub_qty.unit
     r += food.name
     r.html_safe # FIXME: Is it?
   end
@@ -216,7 +218,7 @@ module IngredientsHelper
       without_unit = (!qty.unit || qty.unit.is_unitary)
       name = (without_unit && qty.total && qty.total >= 2) ? ing.plural : ing.name
       unless result.blank?
-        result += " #{without_unit ? "" : pretty_preposition(name)}"
+        result += " #{without_unit ? "" : pretty_preposition(ing.food)}"
       end
       result += "#{link_to translated(name.downcase), ing.food}"
     else

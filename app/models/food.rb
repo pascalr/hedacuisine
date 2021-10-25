@@ -1,5 +1,7 @@
 class Food < ApplicationRecord
 
+  belongs_to :expression
+
   has_many :recipe_ingredients
 
   has_many :food_recipes
@@ -10,7 +12,7 @@ class Food < ApplicationRecord
   
   has_many :descriptions, as: :described
 
-  validates :name, presence: true, uniqueness: true
+  #validates :name, presence: true, uniqueness: true
 
   has_many :food_tag_items
   has_many :food_tags, through: :food_tag_items
@@ -26,6 +28,10 @@ class Food < ApplicationRecord
 
   has_many :direct_substitutions, foreign_key: "food_id", class_name: "FoodSubstitution"
   has_many :indirect_substitutions, foreign_key: "substitute_id", class_name: "FoodSubstitution"
+
+  #def name
+  #  @name ||= expression.default
+  #end
 
   def substitutions(previous=nil)
     explicit_substitutions(previous) + implicit_substitutions(previous)
