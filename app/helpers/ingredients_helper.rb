@@ -90,7 +90,7 @@ module IngredientsHelper
   end
 
   def pretty_number(nb, decimals=2)
-    number_with_precision(Quantity.parse_float(nb), precision: 2, significant: true, strip_insignificant_zeros: true, separator: '.').to_s
+    number_with_precision(Quantity.parse_float(nb), precision: 3, significant: true, strip_insignificant_zeros: true, separator: '.').to_s
     #sprintf("%g", nb.round(decimals))
   end
 
