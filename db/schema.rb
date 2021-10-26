@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_26_124329) do
+ActiveRecord::Schema.define(version: 2021_10_26_200003) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -115,6 +115,15 @@ ActiveRecord::Schema.define(version: 2021_10_26_124329) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["language_id"], name: "index_descriptions_on_language_id"
+  end
+
+  create_table "english_expressions", force: :cascade do |t|
+    t.string "singular"
+    t.string "plural"
+    t.bigint "expression_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["expression_id"], name: "index_english_expressions_on_expression_id"
   end
 
   create_table "expressions", force: :cascade do |t|
@@ -551,6 +560,7 @@ ActiveRecord::Schema.define(version: 2021_10_26_124329) do
   add_foreign_key "containers", "container_formats"
   add_foreign_key "containers", "machines"
   add_foreign_key "descriptions", "languages"
+  add_foreign_key "english_expressions", "expressions"
   add_foreign_key "favorite_menus", "menus"
   add_foreign_key "favorite_menus", "users"
   add_foreign_key "food_preferences", "foods"

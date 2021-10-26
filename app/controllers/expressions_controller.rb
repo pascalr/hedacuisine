@@ -6,6 +6,9 @@ class ExpressionsController < ApplicationController
     @expressions = Expression.all.includes(:french_expression).order(:default)
   end
 
+  def show
+  end
+
   def create
     @expression = Expression.new(expression_params)
     @expression.save!

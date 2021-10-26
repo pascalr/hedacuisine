@@ -1,0 +1,11 @@
+<%= render partial: 'meta/nav' %>
+
+<h1>Expression: <%= @expression.default %></h1>
+
+<% Language.all.each do |lang| %>
+  <h2><%= lang.name %></h2>
+  <% exp = @expression.in(lang) %>
+  <b>Singular:</b> <%= exp.singular if exp %><br>
+  <b>Plural:</b> <%= exp.plural if exp %><br>
+  <b>Contract preposition:</b> <%= check_box_tag :contract_preposition, value: exp.contract_preposition if exp %>
+<% end %>

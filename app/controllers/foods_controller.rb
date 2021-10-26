@@ -21,7 +21,7 @@ class FoodsController < ApplicationController
   end
 
   def index
-    @foods = Food.all.order(:name)
+    @foods = Food.all.sort_by(&:name)
   end
 
   def create

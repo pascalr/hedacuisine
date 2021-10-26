@@ -1,6 +1,7 @@
 class Food < ApplicationRecord
-
+  
   belongs_to :expression
+  default_scope {includes(:expression)}
 
   has_many :recipe_ingredients
 
@@ -29,8 +30,16 @@ class Food < ApplicationRecord
   has_many :direct_substitutions, foreign_key: "food_id", class_name: "FoodSubstitution"
   has_many :indirect_substitutions, foreign_key: "substitute_id", class_name: "FoodSubstitution"
 
-  #def name
-  #  @name ||= expression.default
+  def name
+    return nil if self.expression.nil?
+    self.expression.default
+  end
+  def name=(name)
+    self.expression = Expression.find_or_create_by(default: name.downcase)
+  end
+  #def plural_in(lang)
+  #  return nil if self.expression.nil? || self.expression.in(lang).nil?
+  #  self.expression.in(lang).plural
   #end
 
   def substitutions(previous=nil)

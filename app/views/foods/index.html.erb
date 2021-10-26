@@ -8,9 +8,9 @@
   <%= form.label :color %>
   <%= form.color_field :color_string %>
   <%= form.label :unit_weight %>
-  <%= form.number_field :unit_weight, step: 0.01, size: 3 %>
+  <%= form.text_field :unit_weight, size: 3 %>
   <%= form.label :density %>
-  <%= form.number_field :density, value: 1.0, step: 0.01, size: 3 %>
+  <%= form.text_field :density, size: 3 %>
   <%= form.check_box :is_liquid %>
   <%= form.label :is_liquid %>
   <%= form.check_box :in_pantry %>
@@ -38,8 +38,9 @@
     <% @foods.each do |food| %>
       <%= form_with(model: food) do |form| %>
         <tr>
-          <td><%= form.text_field :name, size: 15 %></td>
-          <td><%= form.text_field :plural, size: 15 %></td>
+          <% exp = food.expression.in(current_language) %>
+          <td><%= link_to exp.try(:singular), food.expression %></td>
+          <td><%= exp.try(:plural) %></td>
           <td><%= form.collection_select :food_tag_id, @food_tags, :id, :name, include_blank: true %></td>
           <td><%= form.color_field :color_string %></td>
           <td><%= form.number_field :unit_weight, step: 0.01, size: 3 %></td>
