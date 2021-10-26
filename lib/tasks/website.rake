@@ -85,7 +85,7 @@ namespace :website do
 
   end
 
-  desc "TODO"
+  desc "Sync the s3 bucket with the sync directory"
   task sync_s3: :environment do
 
     s3_bucket = "heda-bucket-production"
@@ -96,40 +96,33 @@ namespace :website do
     sync_folder.mkpath
 
     system("AWS_ACCESS_KEY_ID=#{access_key_id} AWS_SECRET_ACCESS_KEY=#{secret_access_key} aws s3 sync s3://#{s3_bucket} #{sync_folder}")
-
-    
-    storage_folder = Rails.root.join('storage')
-    FileUtils.rm_rf(storage_folder.to_s + '/*')
-
-    images.each do |path_name|
-
-      dir, basename = path_name.split
-      file_name = basename.to_s
-      sub_folders = dir.join(file_name[0..1], file_name[2..3])
-      sub_folders.mkpath # Create the subfolder used by active_record
-      path_name.rename(dir + sub_folders + basename) # Renames file to be moved into subfolder
-      FileUtils.cp(path_name, storage_folder.join(sub_folder))
-    end
-
   end
   
-  desc "TODO"
+  desc "Move the files from the sync directory into the storage directory in the proper format"
   task s3_to_local: :environment do
 
-    images = get_sync_folder.children.select { |file| file.file? && !file.empty? }
-    
+    # OPTIMIZE: Be smart and not erase everything everytime...
+
     storage_folder = Rails.root.join('storage')
     FileUtils.rm_rf(storage_folder.to_s + '/*')
 
-    images.each do |path_name|
-
-      dir, basename = path_name.split
-      file_name = basename.to_s
-      sub_folder = storage_folder.join(file_name[0..1], file_name[2..3])
-      sub_folder.mkpath # Create the subfolder used by active_record
-      #path_name.rename(dir + sub_folders + basename) # Renames file to be moved into subfolder
-      FileUtils.cp(path_name, storage_folder.join(sub_folder))
+    Image.all.each do |im|
+      path = "#{Rails.root}/sync/#{im.original.key}"
+      if File.exist?(path)
+        im.original.attach(io: File.open(path), filename: im.original.filename)
+      else
+        puts "File missing: #{im.original.key}"
+      end
     end
+    #images.each do |path_name|
+
+    #  dir, basename = path_name.split
+    #  file_name = basename.to_s
+    #  sub_folder = storage_folder.join(file_name[0..1], file_name[2..3])
+    #  sub_folder.mkpath # Create the subfolder used by active_record
+    #  #path_name.rename(dir + sub_folders + basename) # Renames file to be moved into subfolder
+    #  FileUtils.cp(path_name, storage_folder.join(sub_folder))
+    #end
 
   end
 
