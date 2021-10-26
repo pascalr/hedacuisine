@@ -70,7 +70,7 @@ function prettyMetricVolume(ml) {
 
 function prettyNumber(nb) {
   //return Math.round(nb*100)/100
-  return Number.parseFloat(Number.parseFloat(nb).toPrecision(2));
+  return Number.parseFloat(Number.parseFloat(nb).toPrecision(3));
 }
 
 function prettyVolume(ml, is_liquid) {

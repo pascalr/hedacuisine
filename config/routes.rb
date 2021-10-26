@@ -117,15 +117,10 @@ Rails.application.routes.draw do
         get 'new_variant'
       end
     end
-  end
-    
-
-  scope "/:region" do
 
     get '/', to: 'home#index', as: 'home'
 
     resources :articles, param: 'slug'
-
 
     resources :user_recipes, only: [:index, :create, :update, :destroy]
     get 'user_recipes/index_with_pictures'

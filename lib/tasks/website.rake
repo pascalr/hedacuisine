@@ -44,7 +44,7 @@ namespace :website do
 
     FileUtils.rm_rf(OUT_DIR)
 
-    locales = ["fr"]
+    locales = ["fr-CA"]
     #locales = ["fr", "en"]
       
     add_download("/")

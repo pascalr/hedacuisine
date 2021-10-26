@@ -43,11 +43,16 @@ module ApplicationHelper
 
   def current_region
     # route_translator seems to send the locale as a param instead of sending the region...
-    ugly_fix = params[:region] && params[:region].length > 2
-    if ugly_fix
-      @current_region ||= Region.find_by(locale: params[:region])
+    #ugly_fix = params[:region] && params[:region].length > 2
+    #if ugly_fix
+    #  @current_region ||= Region.find_by(locale: params[:region])
+    #else
+    #  @current_region ||= Region.find_by(code: params[:region] || DEFAULT_REGION)
+    #end
+    if params[:region].blank?
+      @current_region ||= Region.find_by(locale: params[:locale])
     else
-      @current_region ||= Region.find_by(code: params[:region] || DEFAULT_REGION)
+      @current_region ||= Region.find_by(code: params[:region])
     end
   end
 

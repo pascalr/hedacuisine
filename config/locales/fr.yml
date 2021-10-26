@@ -6,7 +6,7 @@ fr-CA:
     foods: aliments
     recipes: recettes
     new: nouveau
-    kinds: sortes
+    kinds: catégories
   heda:
     menu:
       menus: "Menus"
@@ -35,7 +35,7 @@ fr-FR:
     foods: aliments
     recipes: recettes
     new: nouveau
-    kinds: sortes
+    kinds: catégories
   heda:
     menu:
       menus: "Menus"

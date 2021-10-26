@@ -6,8 +6,13 @@ class ApplicationController < ActionController::Base
   include ApplicationHelper
 
   def set_region_and_locale
-    @region = current_region
-    I18n.locale = @region.locale
+    #@region = current_region
+    #I18n.locale = @region.locale
+    #if params[:locale].blank? and !params[:region].blank?
+    #  I18n.locale = current_region.locale
+    #else
+      I18n.locale = params[:locale] || I18n.default_locale
+    #end
   end
 
   def only_admin!
@@ -21,6 +26,6 @@ class ApplicationController < ActionController::Base
   end
 
   def default_url_options
-    { region: @region.code }
+    { locale: I18n.locale }
   end
 end

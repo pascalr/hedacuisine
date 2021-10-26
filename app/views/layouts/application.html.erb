@@ -23,7 +23,7 @@
     <%= yield(:og_tags) %>
   </head>
   <body>
-    <span id="region" hidden><%= params[:region] || default_region %></span>
+    <span id="region" hidden><%= current_region.code %></span>
     <div class="responsive-margins-lg">
       <div style="min-height: 100%;">
         <%= render partial: 'layouts/navbar' %>
