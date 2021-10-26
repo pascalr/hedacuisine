@@ -1,8 +1,4 @@
 class Recipe < ApplicationRecord
-  validates :name, uniqueness: true
-  validates :locale, uniqueness: true
-  validates :code, uniqueness: true
-
   scope :all_main, -> { where(base_recipe_id: nil) }
   scope :with_images, -> { where.not(image_id: nil) }
 
