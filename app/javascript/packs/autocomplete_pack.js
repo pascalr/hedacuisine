@@ -33,14 +33,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
   };
 
-  var locale = $("#locale").data("full")
+  var region = $("#region").data("full")
   var searchField;
 
   /*searchField = $("#autocomplete-search-tags")
   options.data = []
   searchField.data("values").forEach((v) => {
     options.data.push({"text": v[1], "link": "tags/"+v[0]})
-    //options.data.push({"text": v, "link": "/"+locale+"/tags/"+v})
+    //options.data.push({"text": v, "link": "/"+region+"/tags/"+v})
   })
   searchField.easyAutocomplete(options);*/
 
@@ -49,19 +49,19 @@ document.addEventListener("DOMContentLoaded", function(event) {
   searchField = $("#autocomplete-search-all")
   options.data = []
   searchField.data("items").forEach((v) => {
-    options.data.push({"text": v[1] + " (catégorie)", "link": "/"+locale+"/items/"+v[0]+"_"+v[1]})
+    options.data.push({"text": v[1] + " (catégorie)", "link": "/"+region+"/items/"+v[0]+"_"+v[1]})
     included[v[1]] = true
   })
   searchField.data("ingredients").forEach((v) => {
     if (included[v[1]]) {
-      options.data.push({"text": v[1] + " (ingrédient)", "link": "/"+locale+"/ingredients/"+v[0]+"_"+v[1]})
+      options.data.push({"text": v[1] + " (ingrédient)", "link": "/"+region+"/ingredients/"+v[0]+"_"+v[1]})
     } else {
-      options.data.push({"text": v[1], "link": "/"+locale+"/ingredients/"+v[0]+"_"+v[1]})
+      options.data.push({"text": v[1], "link": "/"+region+"/ingredients/"+v[0]+"_"+v[1]})
     }
   })
   searchField.data("recipes").forEach((v) => {
     if (!included[v[1]]) {
-      options.data.push({"text": v[1], "link": "/"+locale+"/recipes/"+v[0]+"_"+v[1]})
+      options.data.push({"text": v[1], "link": "/"+region+"/recipes/"+v[0]+"_"+v[1]})
     }
   })
   searchField.easyAutocomplete(options);

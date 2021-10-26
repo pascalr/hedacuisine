@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
   };
 
-  var locale = $("#locale").data("full")
+  //var locale = $("#locale").data("full")
   var searchField;
 
   var included = {}

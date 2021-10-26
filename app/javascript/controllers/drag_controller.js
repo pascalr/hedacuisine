@@ -24,7 +24,7 @@ export default class extends Controller {
 
     console.log(event.newIndex + 1)
 
-    var locale = document.getElementById("locale").innerHTML
+    //var region = document.getElementById("region").innerHTML
 
     Rails.ajax({
       url: this.data.get("base-url")+"/recipe_ingredients/"+id+"/move",

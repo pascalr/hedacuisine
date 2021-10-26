@@ -37,7 +37,18 @@ module ApplicationHelper
   end
 
   def current_language
-    @current_language ||= Language.find_by(locale: params[:locale] || I18n.default_locale)
+    #@current_language ||= Language.find_by(locale: params[:locale] || I18n.default_locale)
+    @current_language ||= current_region.language
+  end
+
+  def current_region
+    # route_translator seems to send the locale as a param instead of sending the region...
+    ugly_fix = params[:region] && params[:region].length > 2
+    if ugly_fix
+      @current_region ||= Region.find_by(locale: params[:region])
+    else
+      @current_region ||= Region.find_by(code: params[:region] || DEFAULT_REGION)
+    end
   end
 
   def current_user_admin?

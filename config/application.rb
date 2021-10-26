@@ -13,9 +13,18 @@ ActiveStorage::Engine.config
 .content_types_to_serve_as_binary
 .delete('image/svg+xml')
 
+LOCALE_TO_CODE = {
+  'fr-CA': 'qc',
+  'fr-FR': 'fr',
+  'en-CA': 'ca',
+  'en-US': 'us'
+}
+
 RouteTranslator.config do |config|
   config.force_locale = true
-  config.available_locales = [:fr, :en]
+  config.available_locales = ['fr-CA', 'en-CA', 'fr-FR', 'en-US']
+  config.locale_param_key = :region
+  config.locale_segment_proc = -> (locale) { LOCALE_TO_CODE[locale] }
 end
 
 module Hedacuisine

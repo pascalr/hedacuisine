@@ -20,8 +20,8 @@ require("tiny-slider")
 global.toastr = require("toastr")
 
 window.Heda = {}
-window.Heda.getLocale = function() {
-  return document.getElementById("locale").innerHTML
+window.Heda.getLocale = function() { // TODO: RENAME TO getRegion
+  return document.getElementById("region").innerHTML
 }
 
 // Uncomment to copy all static images under ../images to the output folder and reference

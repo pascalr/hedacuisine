@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
   };
 
-  var locale = document.getElementById("locale").innerHTML
+  var region = document.getElementById("region").innerHTML
 
   var elem = $("#top-search")
   //elem.data("menus").forEach((v) => {
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   //  options.data.push({"text": v[1] + " (ingredient)", "link": "/foods/"+v[0]+"_"+v[1]})
   //})
   elem.data("recipes").forEach((v) => {
-    options.data.push({"text": v[1], "link": "/"+locale+"/recipes/"+v[0]+"_"+v[1]})
+    options.data.push({"text": v[1], "link": "/"+region+"/recipes/"+v[0]+"_"+v[1]})
   })
   elem.easyAutocomplete(options);
 

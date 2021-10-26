@@ -1,6 +1,60 @@
-fr:
+# Note: Après chaque modification, copier coller pour fr-FR aussi.
+# Les trucs qui sont spécifiques à la région devrait être dans leur propre fichier.
+# Ici, tout est commun.
+fr-CA:
   routes:
     foods: aliments
     recipes: recettes
     new: nouveau
     kinds: sortes
+  heda:
+    menu:
+      menus: "Menus"
+      recipes: "Recettes"
+      ingredients: "Ingrédients"
+      foods: "Aliments"
+      units: "Unités"
+      logout: "Déconnexion"
+      unit_systems: "Systèmes d'unité"
+      translations: "Traductions"
+      food_recipes: "Recettes d'aliments"
+      container_formats: "Formats de contenant"
+      robot: "Robot"
+      about: "À propos"
+      home: "Acceuil"
+    my_account: "Mon compte"
+    modify: "Modifier"
+    search: "Rechercher"
+    my_menus: "Mes menus"
+    my_favorites: "Mes favoris"
+    my_close_ones: "Mes proches"
+    heda_menus: "Menus Heda"
+
+fr-FR:
+  routes:
+    foods: aliments
+    recipes: recettes
+    new: nouveau
+    kinds: sortes
+  heda:
+    menu:
+      menus: "Menus"
+      recipes: "Recettes"
+      ingredients: "Ingrédients"
+      foods: "Aliments"
+      units: "Unités"
+      logout: "Déconnexion"
+      unit_systems: "Systèmes d'unité"
+      translations: "Traductions"
+      food_recipes: "Recettes d'aliments"
+      container_formats: "Formats de contenant"
+      robot: "Robot"
+      about: "À propos"
+      home: "Acceuil"
+    my_account: "Mon compte"
+    modify: "Modifier"
+    search: "Rechercher"
+    my_menus: "Mes menus"
+    my_favorites: "Mes favoris"
+    my_close_ones: "Mes proches"
+    heda_menus: "Menus Heda"

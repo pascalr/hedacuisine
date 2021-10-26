@@ -1,10 +1,13 @@
 class ApplicationController < ActionController::Base
   before_action :authenticate_user!
-  before_action :set_locale
+  before_action :set_region_and_locale
   before_action :only_admin!
 
-  def set_locale
-    I18n.locale = params[:locale] || I18n.default_locale
+  include ApplicationHelper
+
+  def set_region_and_locale
+    @region = current_region
+    I18n.locale = @region.locale
   end
 
   def only_admin!
@@ -18,6 +21,6 @@ class ApplicationController < ActionController::Base
   end
 
   def default_url_options
-    { locale: I18n.locale }
+    { region: @region.code }
   end
 end

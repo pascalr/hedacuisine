@@ -5,7 +5,8 @@
 Rails.application.routes.draw do
 
   #root :to => 'home#index'
-  root to: redirect("/#{I18n.default_locale}"), as: :redirected_root
+  # FIXME: Put this constant somewhere. Don't hard code it.
+  root to: redirect("/qc"), as: :redirected_root
 
   resources :food_tags
   get 'search/index'
@@ -119,7 +120,7 @@ Rails.application.routes.draw do
   end
     
 
-  scope "/:locale" do
+  scope "/:region" do
 
     get '/', to: 'home#index', as: 'home'
 

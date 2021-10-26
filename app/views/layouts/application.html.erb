@@ -23,7 +23,7 @@
     <%= yield(:og_tags) %>
   </head>
   <body>
-    <span id="locale" hidden><%= params[:locale] || I18n.default_locale %></span>
+    <span id="region" hidden><%= params[:region] || default_region %></span>
     <div class="responsive-margins-lg">
       <div style="min-height: 100%;">
         <%= render partial: 'layouts/navbar' %>
