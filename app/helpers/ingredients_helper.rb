@@ -11,7 +11,7 @@ module IngredientsHelper
   def scalable_ingredient(ing)
     return nil unless ing
     qty = ing.quantity_model
-    content_tag :span, id: "ingredient-#{ing.id}", data: {"scalable-ingredient": true, grams: qty.grams, ml: qty.ml, total: qty.total, raw: ing.raw, "food-name-singular": ing.food.name, "food-name-plural": ing.food.plural, preposition: pretty_preposition(ing.food), "food-id": ing.food.id} do
+    content_tag :span, id: "ingredient-#{ing.id}", data: {"scalable-ingredient": true, grams: qty.grams, ml: qty.ml, total: qty.total, raw: ing.raw, "food-name-singular": ing.food.name, "food-name-plural": ing.food.plural, preposition: pretty_preposition(ing.food), "food-id": ing.food.id, "comment": ing.comment} do
       pretty_ingredient(ing)
     end
   end
@@ -40,7 +40,7 @@ module IngredientsHelper
   # 1 oignon (1/2 t | 110 mL | 110 g) => 2 oignons (7/8 t | 220 mL | 220 g)
   def scalable_detailed_ingredient(ing)
     qty = ing.quantity_model
-    content_tag :span, id: "ingredient-#{ing.id}", class: "ingredient-list-item", data: {"scalable-ingredient-detailed": true, grams: qty.grams, ml: qty.ml, total: qty.total, raw: ing.raw, "food-name-singular": ing.food.name, "food-name-plural": ing.food.plural, preposition: pretty_preposition(ing.food), "food-id": ing.food.id} do
+    content_tag :span, id: "ingredient-#{ing.id}", class: "ingredient-list-item", data: {"scalable-ingredient-detailed": true, grams: qty.grams, ml: qty.ml, total: qty.total, raw: ing.raw, "food-name-singular": ing.food.name, "food-name-plural": ing.food.plural, preposition: pretty_preposition(ing.food), "food-id": ing.food.id, "comment": ing.comment} do
       pretty_ingredient_with_conversions(ing)
     end
   end

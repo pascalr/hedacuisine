@@ -107,6 +107,9 @@ function prettyIngredient(ing) {
   } else {
     r += linkSingular 
   }
+  if (ing.dataset.comment) {
+    r += " " + ing.dataset.comment + " "
+  }
   return r
 }
 
