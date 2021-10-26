@@ -20,6 +20,7 @@
     <% unless description.blank? %>
       <meta name="description" content="<%= description %>">
     <% end %>
+    <meta property="og:locale" content="<%= current_region.locale_with_underscore %>">
     <%= yield(:og_tags) %>
   </head>
   <body>
