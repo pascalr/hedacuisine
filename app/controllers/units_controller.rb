@@ -3,7 +3,6 @@ class UnitsController < ApplicationController
 
   # GET /units or /units.json
   def index
-    @units = Unit.all
   end
 
   def create
@@ -30,6 +29,6 @@ class UnitsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def unit_params
-      params.require(:unit).permit(:name, :value, :is_weight, :is_volume, :show_fraction, :language_id)
+      params.require(:unit).permit(:name, :value, :is_weight, :is_volume, :show_fraction, :language_id, :region_id)
     end
 end

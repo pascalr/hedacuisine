@@ -6,6 +6,8 @@ class Region < ApplicationRecord
   validates :locale, presence: true, uniqueness: true
   validates :code, presence: true, uniqueness: true
 
+  has_many :units
+
   def locale_with_underscore
     l = locale
     l[2] = "_" if l[2] == "-"
