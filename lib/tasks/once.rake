@@ -27,5 +27,14 @@ namespace :once do
       e.create_french_expression!(singular: f.name, plural: f.plural)
     end
   end
+  
+  desc "TODO"
+  task remove_food_bad_data: :environment do
+    Food.all.each do |f|
+      f.unit_weight = nil if f.unit_weight && f.unit_weight > 1000.0
+      f.density = nil if f.density == 1.0
+      f.save!
+    end
+  end
 
 end

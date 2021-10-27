@@ -51,7 +51,7 @@ namespace :website do
     execute_download
 
     locales.each do |locale|
-      add_download("/#{locale}")
+      add_download(home_path(locale: locale))
     end
     execute_download
 
