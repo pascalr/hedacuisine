@@ -1,4 +1,4 @@
-<% alternatives = @recipe.alternatives.sort_by(&:version_nb) %>
+<% alternatives = @recipe.alternatives.sort_by {|r| r.version_nb || -1} %>
 <% unless current_user_admin? %>
   <% alternatives = alternatives.reject {|r| !r.is_public} %>
 <% end %>

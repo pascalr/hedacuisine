@@ -44,6 +44,12 @@ class Recipe < ApplicationRecord
 
   before_save do
     instructions.try :gsub!, /[\u2018\u2019]/, "'"
+    if base_recipe.nil?
+      self.version_nb = 1
+    elsif version_nb.nil?
+      self.version_nb = base_recipe.alternatives.size + 2
+    end
+    true
   end
 
   #def versions
