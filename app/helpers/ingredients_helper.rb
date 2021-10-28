@@ -289,6 +289,37 @@ module IngredientsHelper
     s
   end
 
+  def replace_links(text)
+    # link syntaxes:
+    # [note: 1]
+    # [link_note: 1]
+    # [recipe: 100]
+    # [food: 100]
+    # [url: "http://www.hedacuisine.com/"]
+    # [label: "home", url: "http://www.hedacuisine.com/"]
+    text.gsub(/\[[^\[\]]+\]/) do |raw_link|
+      args = {}
+      # FIXME: Don't split in semicolon inside a string
+      raw_link[1..-2].split(";").each do |a|
+        s = a.split(":", 2)
+        args[s[0].to_sym] = s[1]
+      end
+      if args[:note]
+        "<span id='note-#{args[:note]}'>[#{args[:note]}]</span>"
+      elsif args[:link_note]
+        link_to args[:label] || "[#{args[:link_note]}]", "#note-#{args[:link_note]}"
+      elsif args[:recipe]
+        r = Recipe.find(args[:recipe])
+        link_to r.name, r
+      elsif args[:food]
+        f = Food.find(args[:food])
+        link_to f.name, f
+      else
+        raise "Missing required link argument. For: #{raw_link}. Got: #{args}"
+      end
+    end
+  end
+
   def my_sanitize(s)
     sanitize s, attributes: %w(id class href)
   end
@@ -297,6 +328,7 @@ module IngredientsHelper
     return nil if recipe.blank? || recipe.complete_instructions.blank?
     translated = my_sanitize(translate_complete_instructions(recipe))
     replaced = replace_ingredients(recipe, translated)
+    replaced = replace_links(replaced)
     s = ""
     step_nb = 0
     toggle_block = 0
