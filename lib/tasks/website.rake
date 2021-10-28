@@ -17,6 +17,7 @@ end
 
 def get_sync_folder
   Rails.root.join('sync')
+  #sync_folder.mkpath
 end
 
 def move_files_without_extensions
@@ -85,6 +86,15 @@ namespace :website do
 
   end
 
+  task fix_s3: :environment do
+
+    s3_bucket = "heda-bucket-production"
+    access_key_id = Rails.application.credentials.dig(:aws, :access_key_id)
+    secret_access_key = Rails.application.credentials.dig(:aws, :secret_access_key)
+
+    system("AWS_ACCESS_KEY_ID=#{access_key_id} AWS_SECRET_ACCESS_KEY=#{secret_access_key} aws s3 sync #{get_sync_folder} s3://#{s3_bucket}")
+  end
+
   desc "Sync the s3 bucket with the sync directory"
   task sync_s3: :environment do
 
@@ -92,10 +102,7 @@ namespace :website do
     access_key_id = Rails.application.credentials.dig(:aws, :access_key_id)
     secret_access_key = Rails.application.credentials.dig(:aws, :secret_access_key)
 
-    sync_folder = get_sync_folder
-    sync_folder.mkpath
-
-    system("AWS_ACCESS_KEY_ID=#{access_key_id} AWS_SECRET_ACCESS_KEY=#{secret_access_key} aws s3 sync s3://#{s3_bucket} #{sync_folder}")
+    system("AWS_ACCESS_KEY_ID=#{access_key_id} AWS_SECRET_ACCESS_KEY=#{secret_access_key} aws s3 sync s3://#{s3_bucket} #{get_sync_folder}")
   end
   
   desc "Move the files from the sync directory into the storage directory in the proper format"
@@ -106,14 +113,24 @@ namespace :website do
     storage_folder = Rails.root.join('storage')
     FileUtils.rm_rf(storage_folder.to_s + '/*')
 
-    Image.all.each do |im|
-      path = "#{Rails.root}/sync/#{im.original.key}"
-      if File.exist?(path)
-        im.original.attach(io: File.open(path), filename: im.original.filename)
-      else
-        puts "File missing: #{im.original.key}"
-      end
+    image_data = {}
+    Image.order(id: :desc).all.each do |im|
+      image_data[im.id] = {key: im.original.key, filename: im.original.filename}
     end
+    ActiveRecord::Base.connection.execute("DELETE FROM active_storage_variant_records;")
+    ActiveRecord::Base.connection.execute("DELETE FROM active_storage_attachments;")
+    ActiveRecord::Base.connection.execute("DELETE FROM active_storage_blobs;")
+    Image.all.each do |i|
+      data = image_data[i.id]
+      path = get_sync_folder.join(data[:key])
+      #if File.exist?(path)
+      ####  im.original.attach(io: File.open(path), filename: im.original.filename)
+      #else
+      #  puts "File missing: Image(id: #{im.id}, key: #{im.original.key})"
+      #end
+      i.original.attach(io: File.open(path), filename: data[:filename])
+    end
+    
     #images.each do |path_name|
 
     #  dir, basename = path_name.split
