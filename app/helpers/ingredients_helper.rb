@@ -302,7 +302,7 @@ module IngredientsHelper
       # FIXME: Don't split in semicolon inside a string
       raw_link[1..-2].split(";").each do |a|
         s = a.split(":", 2)
-        args[s[0].to_sym] = s[1]
+        args[s[0].to_sym] = s[1].strip unless s[1].nil?
       end
       if args[:note]
         "<span id='note-#{args[:note]}'>[#{args[:note]}]</span>"
@@ -315,7 +315,8 @@ module IngredientsHelper
         f = Food.find(args[:food])
         link_to f.name, f
       else
-        raise "Missing required link argument. For: #{raw_link}. Got: #{args}"
+        #raise "Missing required link argument. For: #{raw_link}. Got: #{args}"
+        puts "Missing required link argument. For: #{raw_link}. Got: #{args}"
       end
     end
   end
