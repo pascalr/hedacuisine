@@ -7,7 +7,8 @@
 //document.addEventListener("DOMContentLoaded", function(event) { 
 //})
 
-import 'bootstrap'
+import * as bootstrap from 'bootstrap'
+window.bootstrap = bootstrap
 //import '../stylesheets/application'
 
 import "chartkick/chart.js"

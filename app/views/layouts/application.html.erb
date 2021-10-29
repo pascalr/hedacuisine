@@ -12,6 +12,8 @@
     <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= javascript_pack_tag 'application' %>
     <%= javascript_pack_tag 'autocomplete' %>
+    <%# javascript_pack_tag "autocomplete_search" %>
+    <%= javascript_pack_tag "whole_page_search" %>
     <%= stylesheet_pack_tag 'autocomplete' %>
     <link href='https://fonts.googleapis.com/css?family=Caveat' rel='stylesheet'>
     <%# favicon_link_tag asset_path("logo.png") %>
@@ -24,6 +26,9 @@
     <%= yield(:og_tags) %>
   </head>
   <body>
+    <div id="whole-page-search">
+      <%= image_tag asset_path('x-lg-white.svg'), class: "close-search", style: "width: 8vw; transform: translate(86vw, 6vh);" %>
+    </div>
     <span id="region" hidden><%= current_region.code %></span>
     <div class="responsive-margins-lg">
       <div style="min-height: 100%;">

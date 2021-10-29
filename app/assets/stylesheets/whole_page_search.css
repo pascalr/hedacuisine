@@ -1,0 +1,23 @@
+#whole-page-search {
+  background-color: #212529;
+  /*width: 800px;
+  height: 800px;*/
+  display: none;
+  width: 100vw;
+  height: 100vh;
+  /*transform: scale(1.0, 0.0);*/
+  /*transform: scaleY(0);*/
+  /*animation: 1s ease 1 pulldown;*/
+  /*transform: translate(0px, -100vh);*/
+  /*transition-property: transform;*/
+  /*transition-duration: 3s;*/
+}
+
+/*@keyframes pulldown {
+  from {
+    transform: translate(0px, -100vh);
+  }
+  to {
+    transform: translate(0px, 0px);
+  }
+}*/
