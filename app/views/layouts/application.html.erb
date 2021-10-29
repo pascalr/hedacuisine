@@ -26,8 +26,20 @@
     <%= yield(:og_tags) %>
   </head>
   <body>
-    <div id="whole-page-search">
-      <%= image_tag asset_path('x-lg-white.svg'), class: "close-search", style: "width: 8vw; transform: translate(86vw, 6vh);" %>
+    <!--<div id="whole-page-search">
+      <%# image_tag asset_path('x-lg-white.svg'), class: "close-search", style: "width: 8vw; transform: translate(86vw, 6vh);" %>
+    </div>-->
+    <div id="top-search-container" class="top-search-container">
+      <% links = Recipe.all_main.all_for(current_user).order(:name).map {|r| {label: r.name, url: recipe_path(r)} }.to_json %>
+      <span id="search-list" data-values="<%= links %>"/>
+        <%# form_with(url: search_index_path, class: "form-inline", local: true, method: :get) do |form| %>
+          <%= search_field_tag :search, nil, id: "top-search", placeholder: "#{t_no_span("heda.search")}...", 'aria-lable': "Search", 'data-autocomplete-links': 'search-list', value: params[:search] %>
+          <% if false && user_signed_in?  %>
+            <%= form.submit "Search", type: :image, src: asset_path('search.svg'), style: "width: 20px; height: 20px; margin-right: 5px;" %>
+          <% else %>
+            <%= image_tag asset_path('search.svg'), class: "search-image", style: "width: 20px; height: 20px; margin-right: 5px; transform: translate(0px, -5px);" %>
+          <% end %>
+        <%# end %>
     </div>
     <span id="region" hidden><%= current_region.code %></span>
     <div class="responsive-margins-lg">

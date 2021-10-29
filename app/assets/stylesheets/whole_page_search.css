@@ -1,3 +1,32 @@
+#top-search-container {
+  background-color: #212529;
+  //border-radius: 5px;
+  border-bottom: 1px solid #aaa;
+  color: white;
+  box-shadow: none;
+  padding-bottom: 0px;
+  width: 400px;
+  transform: translateY(14px);
+  z-index: 2;
+  position: absolute;
+  margin-left: calc(50vw - 200px)
+}
+@media screen and (max-width: 768px) {
+  #top-search-container {
+    margin-left: 4rem;
+    width: calc(100% - 60px);
+  }
+}
+
+#top-search {
+  background-color: #212529;
+  border: none;
+  color: white;
+  box-shadow: none;
+  padding-bottom: 0px;
+  width: calc(100% - 30px);
+}
+
 #whole-page-search {
   background-color: #212529;
   /*width: 800px;
