@@ -26,9 +26,6 @@
     <%= yield(:og_tags) %>
   </head>
   <body>
-    <!--<div id="whole-page-search">
-      <%# image_tag asset_path('x-lg-white.svg'), class: "close-search", style: "width: 8vw; transform: translate(86vw, 6vh);" %>
-    </div>-->
     <div id="top-search-container" class="top-search-container">
       <% links = Recipe.all_main.all_for(current_user).order(:name).map {|r| {label: r.name, url: recipe_path(r)} }.to_json %>
       <span id="search-list" data-values="<%= links %>"/>
@@ -40,6 +37,14 @@
             <%= image_tag asset_path('search.svg'), class: "search-image", style: "width: 20px; height: 20px; margin-right: 5px; transform: translate(0px, -5px);" %>
           <% end %>
         <%# end %>
+    </div>
+    <div id="whole-page-search">
+      <div style="height: 60px;"></div>
+      <%# image_tag asset_path('x-lg-white.svg'), class: "close-search", style: "width: 8vw; transform: translate(86vw, 6vh);" %>
+      <div style="transform: translateX(calc(50vw - 50%)); height: calc(100% - 60px); overflow: auto; scrollbar-color: #555 #888;">
+        <ul id="search-results">
+        </ul>
+      </div>
     </div>
     <span id="region" hidden><%= current_region.code %></span>
     <div class="responsive-margins-lg">
