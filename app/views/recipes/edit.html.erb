@@ -200,7 +200,7 @@
 
 <%= form_with(model: [@recipe,Reference.new], local: true) do |form| %>
   <%= form.hidden_field :recipe_id, value: @recipe.id %>
-  <%= form.text_field :raw %>
+  <%= form.text_field :raw, size: 80 %>
   <%= form.submit "Ajouter" %>
 <% end %>
 

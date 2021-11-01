@@ -1,8 +1,9 @@
 OUT_DIR = "tmp/localhost:3001"
+  
+$download_list ||= []
 
 def add_download(path)
   puts "Adding path to download: #{path}"
-  $download_list ||= []
   $download_list << "http://localhost:3001#{path}"
 end
 
@@ -49,8 +50,21 @@ namespace :website do
     end
   end
 
+  task build_image_thumbnails: :environment do
+
+    require "#{Rails.root}/app/helpers/application_helper"
+    include ApplicationHelper
+
+    Recipe.all_main.all_public.with_images.map(&:image).each do |image|
+      add_download(thumb_image_path(image))
+    end
+    execute_download
+  end
+
   desc "TODO"
-  task build: :environment do
+  task build: [:environment, :build_image_thumbnails] do
+
+    #Rake::Task["website:build_image_thumbnails"].invoke
 
     include Rails.application.routes.url_helpers
 
@@ -69,6 +83,7 @@ namespace :website do
 
     locales.each do |locale|
       add_download(recipes_path(locale: locale))
+      add_download(recipes_path(locale: locale, format: :json))
       #add_download(articles_path(locale: locale))
     end
     execute_download
