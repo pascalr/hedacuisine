@@ -8,6 +8,8 @@ class Reference < ApplicationRecord
 
   def url?
     @_uri ||= URI.parse(self.raw)
-    return @_uri.kind_of?(URI::HTTP) || @_uri.kind_of?(URI::HTTPS)
+    return @_uri.host && (@_uri.kind_of?(URI::HTTP) || @_uri.kind_of?(URI::HTTPS))
+  rescue URI::InvalidURIError
+    false
   end
 end
