@@ -306,6 +306,23 @@
     <h3><%= link_to translated(@recipe.similar_recipes.first.name), @recipe.similar_recipes.first %></h3>
     <%= pretty_print_recipe(@recipe.similar_recipes.first) %>
   <% end %>
+
+  <% unless @recipe.references.blank? %> 
+    <h2 class="h2" style="margin-top: 2rem;">Références</h2>
+
+    <div style="font-size: 1.1rem; margin-left: 1em;">
+      <% @recipe.references.each_with_index do |ref, i| %>
+        <div>
+          <%= i+1 %>.
+          <% if ref.url? %>
+            <%= link_to ref.url, ref.url %>
+          <% else %>
+            <%= ref.raw %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
   
   <h2 class="h2" style="margin-top: 2rem;">Commentaires</h2>
 

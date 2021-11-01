@@ -5,6 +5,13 @@ namespace :once do
       ing.update!(raw: ing.raw_quantity)
     end
   end
+
+  desc "TODO"
+  task source_to_references: :environment do
+    Recipe.all.each do |recipe|
+      recipe.references.create(raw: recipe.source) unless recipe.source.blank?
+    end
+  end
   
   desc "TODO"
   task set_recipes_version_nb: :environment do

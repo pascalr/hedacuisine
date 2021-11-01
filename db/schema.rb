@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_27_193703) do
+ActiveRecord::Schema.define(version: 2021_11_01_182023) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -422,6 +422,14 @@ ActiveRecord::Schema.define(version: 2021_10_27_193703) do
     t.integer "kind_id"
   end
 
+  create_table "references", force: :cascade do |t|
+    t.bigint "recipe_id", null: false
+    t.string "raw"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["recipe_id"], name: "index_references_on_recipe_id"
+  end
+
   create_table "regions", force: :cascade do |t|
     t.string "name"
     t.string "code"
@@ -594,6 +602,7 @@ ActiveRecord::Schema.define(version: 2021_10_27_193703) do
   add_foreign_key "recipe_steps", "steps"
   add_foreign_key "recipe_tools", "recipes"
   add_foreign_key "recipe_tools", "tools"
+  add_foreign_key "references", "recipes"
   add_foreign_key "regions", "languages"
   add_foreign_key "sections", "articles"
   add_foreign_key "similar_recipes", "recipes"

@@ -47,7 +47,7 @@
   <% if @recipe.recipe_ingredients.blank? %>
     Il n'y a pas encore d'ingrédients.
   <% else %>
-    <ul class="list-group" style="max-width: 800px;" data-controller="drag" data-drag-base-url="<%= recipe_path(@recipe) %>">
+    <ul class="list-group">
       <% @recipe.recipe_ingredients.order(:item_nb).each do |ingredient| %>
         <%= render partial: "recipes/recipe_ingredient_update_form", locals: {recipe: @recipe, ingredient: ingredient} %>
       <% end %>
@@ -178,6 +178,28 @@
     <%= form.submit %>
   </div>
 <% end %>
+
+<h2 class="h2">Références</h2>
+
+<div>
+  <% if @recipe.references.blank? %>
+    Aucune références
+  <% else %>
+    <ul class="list-group">
+      <% @recipe.references.each do |ref| %>
+        <li><%= ref.raw %></li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>
+
+<%= form_with(model: [@recipe,Reference.new], local: true) do |form| %>
+  <%= form.hidden_field :recipe_id, value: @recipe.id %>
+  <%= form.text_field :raw %>
+  <%= form.submit "Ajouter" %>
+<% end %>
+
+<div style="height: 5em;"></div>
 
 <%# javascript_pack_tag "recipe_editor.js" %>
 <%# javascript_pack_tag "recipes_edit.js" %>
