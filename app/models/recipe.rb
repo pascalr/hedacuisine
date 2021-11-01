@@ -40,7 +40,7 @@ class Recipe < ApplicationRecord
 
   has_many :user_recipes
 
-  has_many :recipe_ingredients#, foreign_key: 'recipe_id'
+  has_many :recipe_ingredients, dependent: :delete_all#, foreign_key: 'recipe_id'
 
   before_save do
     instructions.try :gsub!, /[\u2018\u2019]/, "'"
@@ -213,6 +213,7 @@ class Recipe < ApplicationRecord
     list = []
     list << "Main ingredient should be set." if !ingredients.blank? and main_ingredient.blank?
     list << "Servings field is empty." if servings.blank?
+    list
     # TODO: Add warnings when ingredients are not in the ingredient text.
   end
   

@@ -37,6 +37,17 @@ def move_files_without_extensions
 end
 
 namespace :website do
+  
+  desc "TODO"
+  task check: :environment do
+
+    Recipe.all_public.each do |recipe|
+      ws = recipe.warnings
+      (ws || []).each do |warning|
+        puts "WARNING (recipe=#{recipe.name}): #{warning}"
+      end
+    end
+  end
 
   desc "TODO"
   task build: :environment do
