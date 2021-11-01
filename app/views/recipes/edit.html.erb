@@ -187,7 +187,12 @@
   <% else %>
     <ul class="list-group">
       <% @recipe.references.each do |ref| %>
-        <li><%= ref.raw %></li>
+        <%= form_with(model: [@recipe, ref], local: true) do |form| %>
+          <li>
+            <%= form.text_field :raw, size: 80 %>
+            <%= form.submit "Modifier" %>
+          </li>
+        <% end %>
       <% end %>
     </ul>
   <% end %>
