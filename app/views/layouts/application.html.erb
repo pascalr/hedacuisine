@@ -11,10 +11,8 @@
     <meta charset="utf-8"/>
     <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= javascript_pack_tag 'application' %>
-    <%= javascript_pack_tag 'autocomplete' %>
-    <%# javascript_pack_tag "autocomplete_search" %>
-    <%= javascript_pack_tag "whole_page_search" %>
     <%= stylesheet_pack_tag 'autocomplete' %>
+    <%= javascript_pack_tag "autocomplete_search" %>
     <link href='https://fonts.googleapis.com/css?family=Caveat' rel='stylesheet'>
     <%# favicon_link_tag asset_path("logo.png") %>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -26,25 +24,9 @@
     <%= yield(:og_tags) %>
   </head>
   <body>
-    <div id="top-search-container" class="top-search-container">
-      <% links = Recipe.all_main.all_for(current_user).order(:name).map {|r| {label: r.name, url: recipe_path(r)} }.to_json %>
-      <span id="search-list" data-values="<%= links %>"/>
-        <%# form_with(url: search_index_path, class: "form-inline", local: true, method: :get) do |form| %>
-          <%= search_field_tag :search, nil, id: "top-search", placeholder: "#{t_no_span("heda.search")}...", 'aria-lable': "Search", 'data-autocomplete-links': 'search-list', value: params[:search] %>
-          <% if false && user_signed_in?  %>
-            <%= form.submit "Search", type: :image, src: asset_path('search.svg'), style: "width: 20px; height: 20px; margin-right: 5px;" %>
-          <% else %>
-            <%= image_tag asset_path('search.svg'), class: "search-image", style: "width: 20px; height: 20px; margin-right: 5px; transform: translate(0px, -5px);" %>
-          <% end %>
-        <%# end %>
-    </div>
-    <div id="whole-page-search">
-      <div style="height: 60px;"></div>
-      <%# image_tag asset_path('x-lg-white.svg'), class: "close-search", style: "width: 8vw; transform: translate(86vw, 6vh);" %>
-      <div style="height: calc(100% - 60px); overflow: auto; scrollbar-color: #555 #888;">
-        <ul id="search-results">
-        </ul>
-      </div>
+    <div id="top-search">
+      <%= search_field_tag :search, nil, placeholder: "#{t_no_span("heda.search")}...", 'aria-lable': "Search", 'data-autocomplete-url': recipes_path(format: 'json'), value: params[:search] %>
+      <%= image_tag asset_path('search.svg'), class: "search-image", style: "width: 20px; height: 20px; margin-right: 5px; transform: translate(0px, -5px);" %>
     </div>
     <span id="region" hidden><%= current_region.code %></span>
     <div class="responsive-margins-lg">
