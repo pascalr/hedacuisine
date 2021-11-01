@@ -48,7 +48,9 @@
 }
 #search-results > li {
   height: 4rem;
-  width: auto;
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
 }
 #search-results > li > a {
   height: 4rem;
