@@ -1,4 +1,11 @@
 namespace :once do
+
+  task sections_position: :environment do
+    Section.all.each_with_index do |section, i|
+      section.update!({position: i+1})
+    end
+  end
+
   desc "TODO"
   task set_recipe_ingredients_raw: :environment do
     RecipeIngredient.all.each do |ing|

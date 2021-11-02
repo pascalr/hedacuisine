@@ -9,8 +9,20 @@
 <textarea data-model="<%= @article.model_name.to_s.underscore %>" data-url="<%= article_path(@article) %>" data-update-column="intro" style="width: 100%;" rows=8 contenteditable="true"><%= @article.intro %></textarea>
 <br><br>
 
+<h2>Table of contents</h2>
+
+<ul class="list-group" data-controller="drag" data-drag-base-url="<%= article_path(@article) %>">
+  <% @article.sections.each do |section| %>
+    <li class="list-group-item" data-url="<%= section_move_path(section) %>"><%= section.title %></li>
+  <% end %>
+</ul>
+<br><br>
+
 <% @article.sections.each do |section| %>
-  <h2 data-model="<%= section.model_name.to_s.underscore %>" data-url="<%= section_path(section) %>" data-update-column="name" contenteditable="true"><%= section.title %></h2>
+  <div class="d-flex">
+    <%= image_tag asset_path("arrows-move.svg"), class: "handle", style: "padding: 0 0.5em;" %>
+    <h2 data-model="<%= section.model_name.to_s.underscore %>" data-url="<%= section_path(section) %>" data-update-column="name" contenteditable="true"><%= section.title %></h2>
+  </div>
   <textarea data-model="<%= section.model_name.to_s.underscore %>" data-url="<%= section_path(section) %>" data-update-column="content" style="width: 100%;" rows=8 contenteditable="true"><%= section.content %></textarea>
   <br><br>
 <% end %>

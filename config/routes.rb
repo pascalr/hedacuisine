@@ -48,7 +48,9 @@ Rails.application.routes.draw do
 
   get 'recipes/visibility'
 
-  resources :sections, only: [:create, :update, :destroy]
+  resources :sections, only: [:create, :update, :destroy] do
+    patch :move
+  end
   
   resources :machines do
     get 'get_state', to: 'sim#get_state'
