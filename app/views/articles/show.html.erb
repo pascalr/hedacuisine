@@ -1,3 +1,4 @@
+<div style="height: 0.5em;"></div>
 <% if current_user_admin? %>
   <%= button_to "Edit", edit_article_path(@article), {method: :get, form_class: "inline", class: "btn btn-outline-primary inline"} %>
   <%= form_with(model: @article, class: "inline", local: true) do |form| %>
@@ -23,4 +24,9 @@
       <%= pretty_article_text(section.content) %>
     </div>
   <% end %>
+
+  <h2>Commentaires</h2>
+
+  <p>La section des commentaires n'est pas encore fonctionnelle. Pour toutes questions ou commentaires, vous pouvez me contacter à <%= mail_to "hedacuisine@gmail.com" %></p>
+  <div style="height: 3em;"></div>
 </div>

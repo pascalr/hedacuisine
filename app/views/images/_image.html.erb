@@ -1,9 +1,8 @@
-Style: <%= style %>
 <div>
   <div style="display: inline-block; <%= style %>">
     <%= image_tag image.original, style: "width: 100%;" %>
     <% if image.author %>
-      <div style="text-align: center;"><i>Crédit: <%= image.author %></i></div>
+      <div style="text-align: center;"><i>Source: <%= link_to image.author, image.source %></i></div>
     <% end %>
   </div>
 </div>
