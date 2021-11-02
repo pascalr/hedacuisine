@@ -13,13 +13,15 @@ import Sortable from "sortablejs"
 export default class extends Controller {
   connect() {
     console.log("Connecting sortable controller")
+    let handle = this.element.dataset.handle
     this.sortable = Sortable.create(this.element, {
+      handle: handle,
       onEnd: this.end.bind(this)
     })
   }
 
   end(event) {
-    let id = event.item.dataset.id
+    //let id = event.item.dataset.id
     let url = event.item.dataset.url
     let data = new FormData()
     data.append('item_nb', event.newIndex + 1) // TODO: Rename item_nb to position

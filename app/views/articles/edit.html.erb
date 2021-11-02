@@ -13,7 +13,10 @@
 
 <ul class="list-group" data-controller="drag" data-drag-base-url="<%= article_path(@article) %>">
   <% @article.sections.each do |section| %>
-    <li class="list-group-item" data-url="<%= section_move_path(section) %>"><%= section.title %></li>
+    <li class="list-group-item draggable" data-url="<%= section_move_path(section) %>">
+      <%= image_tag asset_path("arrows-move.svg") %>
+      <%= section.title %>
+    </li>
   <% end %>
 </ul>
 <br><br>

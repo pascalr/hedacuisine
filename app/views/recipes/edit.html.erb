@@ -47,9 +47,21 @@
   <% if @recipe.recipe_ingredients.blank? %>
     Il n'y a pas encore d'ingrédients.
   <% else %>
-    <ul class="list-group">
+    <ul class="list-group" style="max-width: 800px;" data-controller="drag" data-drag-base-url="<%= recipe_path(@recipe) %>" data-handle=".handle">
       <% @recipe.recipe_ingredients.order(:item_nb).each do |ingredient| %>
-        <%= render partial: "recipes/recipe_ingredient_update_form", locals: {recipe: @recipe, ingredient: ingredient} %>
+        <li class="list-group-item" data-url="<%= recipe_recipe_ingredient_move_path(@recipe, ingredient) %>">
+          <%= image_tag asset_path("arrows-move.svg"), class: "handle" %>
+          <span style="margin: 0 10px;"><b><%= ingredient.item_nb %>.</b></span>
+          <%= form_with(model: [@recipe, ingredient], local: true, class: "inline") do |form| %>
+            <%= form.text_field :raw, size: "10" %>
+            <%= link_to ingredient.food.name, ingredient.food %>
+            <div style="float: right;">
+              <%= form.text_field :comment, size: "18", style: "margin-right: 2rem;" %>
+              <%= form.submit 'modifier' %>
+              <%= link_to 'x', [@recipe, ingredient], method: :delete, data: {confirm: 'Are you sure?'} %>
+            </div>
+          <% end %>
+        </li>
       <% end %>
     </ul>
   <% end %>
@@ -65,7 +77,7 @@
   <% if @recipe.tools.blank? %>
     Il n'y a pas encore d'outils.
   <% else %>
-    <ul class="list-group" style="max-width: 800px;" data-controller="drag" data-drag-base-url="<%= recipe_path(@recipe) %>">
+    <ul class="list-group">
       <% @recipe.tools.order(:name).each do |tool| %>
         <li><%= tool.name %></li>
       <% end %>
