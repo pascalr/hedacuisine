@@ -10,15 +10,17 @@
   <% end %>
 <% end %>
 
-<h1><%= @article.name %></h1>
-
-<div>
-  <%= pretty_article_text(@article.intro) %>
-</div>
-
-<% @article.sections.each do |section| %>
-  <h2><%= sanitize section.title %></h2>
+<div class="article">
+  <h1><%= @article.name %></h1>
+  
   <div>
-    <%= pretty_article_text(section.content) %>
+    <%= pretty_article_text(@article.intro) %>
   </div>
-<% end %>
+  
+  <% @article.sections.each do |section| %>
+    <h2><%= sanitize section.title %></h2>
+    <div>
+      <%= pretty_article_text(section.content) %>
+    </div>
+  <% end %>
+</div>
