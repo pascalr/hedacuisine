@@ -6,7 +6,7 @@
 <br><br>
 
 <h1 data-model="<%= @article.model_name.to_s.underscore %>" data-url="<%= article_path(@article) %>" data-update-column="name" contenteditable="true"><%= @article.name %></h1>
-<textarea data-model="<%= @article.model_name.to_s.underscore %>" data-url="<%= article_path(@article) %>" data-update-column="intro" style="width: 100%;" rows=10 contenteditable="true"><%= @article.intro %></textarea>
+<textarea data-model="<%= @article.model_name.to_s.underscore %>" data-url="<%= article_path(@article) %>" data-update-column="intro" style="width: 100%;" rows=10><%= @article.intro %></textarea>
 <br><br>
 
 <h2>Table of contents</h2>
@@ -23,7 +23,7 @@
 
 <% @article.sections.each do |section| %>
   <h2 data-model="<%= section.model_name.to_s.underscore %>" data-url="<%= section_path(section) %>" data-update-column="name" contenteditable="true"><%= section.title %></h2>
-  <textarea data-model="<%= section.model_name.to_s.underscore %>" data-url="<%= section_path(section) %>" data-update-column="content" style="width: 100%;" rows=10 contenteditable="true"><%= section.content %></textarea>
+  <textarea data-model="<%= section.model_name.to_s.underscore %>" data-url="<%= section_path(section) %>" data-update-column="content" style="width: 100%;" rows=10><%= section.content %></textarea>
   <br><br>
 <% end %>
 
