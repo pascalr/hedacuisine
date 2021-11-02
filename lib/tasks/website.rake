@@ -49,6 +49,10 @@ namespace :website do
       end
     end
   end
+  
+  task clear: :environment do
+    FileUtils.rm_rf(OUT_DIR)
+  end
 
   task build_image_thumbnails: :environment do
 
@@ -62,13 +66,11 @@ namespace :website do
   end
 
   desc "TODO"
-  task build: [:environment, :build_image_thumbnails] do
+  task build: [:environment, :clear, :build_image_thumbnails] do
 
     #Rake::Task["website:build_image_thumbnails"].invoke
 
     include Rails.application.routes.url_helpers
-
-    FileUtils.rm_rf(OUT_DIR)
 
     locales = ["fr-CA"]
     #locales = ["fr", "en"]
