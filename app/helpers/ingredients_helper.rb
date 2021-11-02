@@ -289,6 +289,11 @@ module IngredientsHelper
     s
   end
 
+  def replace_paragraph_spacing(text)
+    return nil if text.nil?
+    text.gsub(/(\r?\n){2}/, "<br><br>")
+  end
+
   def replace_links(text)
     return nil if text.nil?
     # link syntaxes:
@@ -379,6 +384,7 @@ module IngredientsHelper
 
   def pretty_article_text(text)
     replaced = replace_links(text)
+    replaced = replace_paragraph_spacing(replaced)
     sanitize_article replaced
   end
   
