@@ -191,124 +191,111 @@
 
 <%= render partial: "details_inline_version", locals: {recipe: @recipe} %>
 
-<div style="height: 1.5rem;"></div>
-  <!-- TODO: Si un ingrédient se retrouve plusieurs fois dans la recette, afficher un avertissement et la quantité totale comme ça le monde peuvent savoir s'ils en ont assez -->
+<% unless @recipe.ingredients.blank? %>
   
-  <% unless @recipe.ingredients.blank? %>
-    
-    <!--<%# @recipe.ingredients.each do |ing| %>
-      <%# next if ing.food.producing_recipes.blank? %>
-      <%# r = ing.food.producing_recipes.first %>
-      <h2 class="h2 toggle-link" data-toggle_id="sub_recipe_<%# r.id %>">+ Comment faire: <%# r.name %></h2>
-      <div id="sub_recipe_<%# r.id %>" class="recipe-instructions" hidden>
-        <%# pretty_complete_instructions(r) %>
-      </div>
-    <%# end %>
-    -->
+  <% foods_dup = @recipe.ingredients.group_by(&:food_id).reject {|f,s| s.size == 1}.map(&:first) %>
+  
+  <h2>Ingrédients</h2>
 
-    <% foods_dup = @recipe.ingredients.group_by(&:food_id).reject {|f,s| s.size == 1}.map(&:first) %>
-    
-    <h2 class="h2">Ingrédients</h2>
+  <div style="height: 0.5rem;"></div>
 
-    <div style="height: 0.5rem;"></div>
+  <div id="ing_list">
+    <ul class="list-group">
+      <% @recipe.ingredients.order(:item_nb).each do |ing| %>
+        <li class="list-group-item">
+          <%= scalable_detailed_ingredient(ing) %><%# "*" if foods_dup.include?(ing.food_id) %>
 
-    <div id="ing_list">
-      <ul class="list-group">
-        <% @recipe.ingredients.order(:item_nb).each do |ing| %>
-          <li class="list-group-item">
-            <%= scalable_detailed_ingredient(ing) %><%# "*" if foods_dup.include?(ing.food_id) %>
-
-            <div class="dropdown" style="display: inline-block; float: right">
-               <%= image_tag asset_path("pencil-square.svg"), "data-bs-toggle": "dropdown", style: "cursor: pointer;" %>
-              <div class="dropdown-menu">
-                <a class="dropdown-item disabled" href="#">Retirer</a>
-                <% unless ing.food.substitutions.blank? %>
-                  <h6 class="dropdown-header">Remplacer par</h6>
-                  <% ing.food.substitutions.each do |sub| %>
-                    <a class="dropdown-item" href="#"><%= pretty_substitution(ing, sub) %></a>
-                  <% end %>
+          <div class="dropdown" style="display: inline-block; float: right">
+             <%= image_tag asset_path("pencil-square.svg"), "data-bs-toggle": "dropdown", style: "cursor: pointer;" %>
+            <div class="dropdown-menu">
+              <a class="dropdown-item disabled" href="#">Retirer</a>
+              <% unless ing.food.substitutions.blank? %>
+                <h6 class="dropdown-header">Remplacer par</h6>
+                <% ing.food.substitutions.each do |sub| %>
+                  <a class="dropdown-item" href="#"><%= pretty_substitution(ing, sub) %></a>
                 <% end %>
-              </div>
+              <% end %>
             </div>
-            <%# link_to image_tag(asset_path("pencil-square.svg")), "FIXME", style: "float: right;" %>
-          </li>
-        <% end %>
-      </ul>
-
-      <div style="height: 4px;"></div>
-
-      <div style="margin-top: 0.25rem; text-align: center;">
-        <div style="float: left;">
-          <% val = @recipe.main_ingredient ? @recipe.main_ingredient.raw : '' %>
-          <%= text_field_tag :quantity, pretty_ingredient_qty(@recipe.main_ingredient), class: "form-control", style: "width: 9rem; display: inline; text-align: right;", "data-quantity": val, id: "ingredient-qty-input-field" %>
-          <%= collection_select :foo, :input_ingredient, @recipe.ingredients, :id, :name, {selected: @recipe.main_ingredient_id}, class: "form-select", id: "input-ingredients", style: "display: inline-block; width: auto;" %>
-        </div>
-        <%= image_tag asset_path("right_arrow.svg"), style: "width: 1.5rem;" %>
-        <div style="float: right;">
-          <%= image_tag(asset_path("minus-square.svg"), style: "cursor: pointer; width: 1.5rem;", id: "less-servings-button") %>
-          <%= text_field_tag :servings, @recipe.servings, style: "width: 9rem; display: inline; text-align: right;", class: "form-control", id: "servings-input-field", "data-initial": @recipe.servings %>
-          <%= image_tag(asset_path("plus-square.svg"), style: "cursor: pointer; width: 1.5rem;", id: "more-servings-button") %>
-        </div>
-      </div>
-    </div>
-
-    <% foods_dup.each do |dup| %>
-      <br>
-      <div>* <b><%= @recipe.ingredients.find_by(food_id: dup).food.name %></b> se retrouve plusieurs fois dans les ingrédients</div>
-    <% end %>
-  
-  <% end %>
-
-  <% unless @recipe.tools.blank? %> 
-    <h2 class="h2" style="margin-top: 2rem;">Outils</h2>
-
-    <ul style="font-size: 1.1rem;">
-      <% @recipe.tools.order(:name).each do |tool| %>
-        <li>
-          <%= tool.name %>
+          </div>
+          <%# link_to image_tag(asset_path("pencil-square.svg")), "FIXME", style: "float: right;" %>
         </li>
       <% end %>
     </ul>
-  <% end %>
 
-  <h2 class="h2" style="margin-top: 2rem;">Instructions</h2>
-  
-  <div class="recipe-instructions">
-  
-    <%= pretty_complete_instructions(@recipe) %>
-    <%# pretty_print_recipe(@recipe) %>
-  </div>
-  
-  <% unless @recipe.similar_recipes.blank? %>
-    <h2>Recettes similaires</h2>
-  
-    <h3><%= link_to translated(@recipe.similar_recipes.first.name), @recipe.similar_recipes.first %></h3>
-    <%= pretty_print_recipe(@recipe.similar_recipes.first) %>
-  <% end %>
+    <div style="height: 4px;"></div>
 
-  <% unless @recipe.references.blank? %> 
-    <h2 class="h2" style="margin-top: 2rem;">Références</h2>
-
-    <div style="font-size: 1.1rem; margin-left: 1em;">
-      <% @recipe.references.each_with_index do |ref, i| %>
-        <div>
-          <%= i+1 %>.
-          <% if ref.url? %>
-            <%= link_to ref.url, ref.url %>
-          <% else %>
-            <%= ref.raw %>
-          <% end %>
-        </div>
-      <% end %>
+    <div style="margin-top: 0.25rem; text-align: center;">
+      <div style="float: left;">
+        <% val = @recipe.main_ingredient ? @recipe.main_ingredient.raw : '' %>
+        <%= text_field_tag :quantity, pretty_ingredient_qty(@recipe.main_ingredient), class: "form-control", style: "width: 9rem; display: inline; text-align: right;", "data-quantity": val, id: "ingredient-qty-input-field" %>
+        <%= collection_select :foo, :input_ingredient, @recipe.ingredients, :id, :name, {selected: @recipe.main_ingredient_id}, class: "form-select", id: "input-ingredients", style: "display: inline-block; width: auto;" %>
+      </div>
+      <%= image_tag asset_path("right_arrow.svg"), style: "width: 1.5rem;" %>
+      <div style="float: right;">
+        <%= image_tag(asset_path("minus-square.svg"), style: "cursor: pointer; width: 1.5rem;", id: "less-servings-button") %>
+        <%= text_field_tag :servings, @recipe.servings, style: "width: 9rem; display: inline; text-align: right;", class: "form-control", id: "servings-input-field", "data-initial": @recipe.servings %>
+        <%= image_tag(asset_path("plus-square.svg"), style: "cursor: pointer; width: 1.5rem;", id: "more-servings-button") %>
+      </div>
     </div>
+  </div>
+
+  <% foods_dup.each do |dup| %>
+    <br>
+    <div>* <b><%= @recipe.ingredients.find_by(food_id: dup).food.name %></b> se retrouve plusieurs fois dans les ingrédients</div>
   <% end %>
-  
-  <h2 class="h2" style="margin-top: 2rem;">Commentaires</h2>
 
-  <%# translated("Aucun commentaire pour l'instant.") %>
-  <p>La section des commentaires n'est pas encore fonctionnelle. Pour toutes questions ou commentaires, vous pouvez me contacter à <%= mail_to "hedacuisine@gmail.com" %></p>
+<% end %>
 
-  <div style="height: 3rem;"></div>
+<% unless @recipe.tools.blank? %> 
+  <h2>Outils</h2>
+
+  <ul style="font-size: 1.1rem;">
+    <% @recipe.tools.order(:name).each do |tool| %>
+      <li>
+        <%= tool.name %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<h2>Instructions</h2>
+
+<div class="recipe-instructions">
+
+  <%= pretty_complete_instructions(@recipe) %>
+  <%# pretty_print_recipe(@recipe) %>
+</div>
+
+<% unless @recipe.similar_recipes.blank? %>
+  <h2>Recettes similaires</h2>
+
+  <h3><%= link_to translated(@recipe.similar_recipes.first.name), @recipe.similar_recipes.first %></h3>
+  <%= pretty_print_recipe(@recipe.similar_recipes.first) %>
+<% end %>
+
+<% unless @recipe.references.blank? %> 
+  <h2>Références</h2>
+
+  <div style="font-size: 1.1rem; margin-left: 1em;">
+    <% @recipe.references.each_with_index do |ref, i| %>
+      <div>
+        <%= i+1 %>.
+        <% if ref.url? %>
+          <%= link_to ref.url, ref.url %>
+        <% else %>
+          <%= ref.raw %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<h2>Commentaires</h2>
+
+<%# translated("Aucun commentaire pour l'instant.") %>
+<p>La section des commentaires n'est pas encore fonctionnelle. Pour toutes questions ou commentaires, vous pouvez me contacter à <%= mail_to "hedacuisine@gmail.com" %></p>
+
+<div style="height: 3rem;"></div>
 </div>
 
 <%# javascript_pack_tag "recipe" %>
