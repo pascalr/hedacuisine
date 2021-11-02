@@ -1,29 +1,18 @@
 <%= link_to 'Show', article_path(@article) %> |
 <%= link_to 'Index', articles_path %>
 
-<h1>Editing <%= @article.name %></h1>
-
 <%= render partial: "layouts/help" %>
 
-<%= form_with(model: @article, local: true) do |form| %>
-  <%= form.label :name %><br>
-  <%= form.text_field :name, size: 80 %><br>
-  <%= form.label :intro %><br>
-  <%= form.text_area :intro, cols: 80, rows: 8 %><br>
-  <%= form.submit %>
-<% end %>
+<br><br>
 
-<h2>Sections</h2>
+<h1 data-model="<%= @article.model_name.to_s.underscore %>" data-url="<%= article_path(@article) %>" data-update-column="name" contenteditable="true"><%= @article.name %></h1>
+<textarea data-model="<%= @article.model_name.to_s.underscore %>" data-url="<%= article_path(@article) %>" data-update-column="intro" style="width: 100%;" rows=8 contenteditable="true"><%= @article.intro %></textarea>
+<br><br>
 
 <% @article.sections.each do |section| %>
-  <hr>
-  <%= form_with(model: section, local: true) do |form| %>
-    <%= form.label :title %><br>
-    <%= form.text_field :title, size: 80 %><br>
-    <%= form.label :content %><br>
-    <%= form.text_area :content, cols: 80, rows: 8 %><br>
-    <%= form.submit %>
-  <% end %>
+  <h2 data-model="<%= section.model_name.to_s.underscore %>" data-url="<%= section_path(section) %>" data-update-column="name" contenteditable="true"><%= section.title %></h2>
+  <textarea data-model="<%= section.model_name.to_s.underscore %>" data-url="<%= section_path(section) %>" data-update-column="content" style="width: 100%;" rows=8 contenteditable="true"><%= section.content %></textarea>
+  <br><br>
 <% end %>
 
 <hr>
@@ -37,3 +26,5 @@
   <%= form.text_area :content, cols: 80, rows: 8 %><br>
   <%= form.submit "Ajouter" %>
 <% end %>
+
+<%= javascript_pack_tag "edit" %>
