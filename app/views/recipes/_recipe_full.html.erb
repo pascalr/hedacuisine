@@ -130,60 +130,62 @@
 <div style="height: 1rem;"></div>
 
 <div class="bg-fill" style="width: 100%; height: 0.5rem;"></div>
-<div class="d-flex bg-fill ps-3" style="font-size: 1.2rem; font-weight: bold; width: 100%; align-items: center; flex-wrap: wrap;">
-  <div style="margin-right: 1rem;"><%= @recipe.name %></div>
+<div class="d-flex bg-fill ps-3 w-100" style="font-size: 1.2rem; align-items: center; flex-wrap: wrap;">
+  <div style="margin-right: 1rem;"><b><%= @recipe.name %></b></div>
 
-  <% if alternatives.blank? %>
-      <div class="btn btn-outline-secondary" style="padding: 0.1rem 0.4rem; background-color: #333; color: white; cursor: unset;">
-        <%= "☆☆☆☆☆ (0)" %>
+  <div class="d-flex" style="flex-grow: 1;">
+    <% if alternatives.blank? %>
+        <div class="btn btn-outline-secondary" style="padding: 0.1rem 0.4rem; background-color: #333; color: white; cursor: unset;">
+          <%= "☆☆☆☆☆ (0)" %>
+        </div>
+    <% else %>
+      <div class="dropdown">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="versionsMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding: 0.1rem 0.4rem; background-color: #333; color: white">
+          <%= @recipe.pretty_version %>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="versionsMenuButton">
+          <% alternatives.each do |alternative| %>
+            <%= link_to alternative.pretty_version, alternative, class: "dropdown-item" %>
+          <% end %>
+        </div>
       </div>
-  <% else %>
-    <div class="dropdown">
-      <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="versionsMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding: 0.1rem 0.4rem; background-color: #333; color: white">
-        <%= @recipe.pretty_version %>
-      </button>
-      <div class="dropdown-menu" aria-labelledby="versionsMenuButton">
-        <% alternatives.each do |alternative| %>
-          <%= link_to alternative.pretty_version, alternative, class: "dropdown-item" %>
-        <% end %>
-      </div>
-    </div>
-  <% end %>
-  <div style="flex-grow: 1; width: 3rem;"></div>
-  <% if user_signed_in? %>
-    <div class="dropdown" style="margin-left: -2rem; padding-right: 1rem;">
-      <%= image_tag asset_path("list-white.svg"), "data-bs-toggle": "dropdown", style: "cursor: pointer;" %>
-      <div class="dropdown-menu">
-        <% if @recipe.owned_by?(current_user) %>
-          <%= link_to 'Modifier', edit_recipe_path(@recipe), class: "dropdown-item" %>
-        <% end %>
-        <% unless @recipe.source.blank? %>
-          <%= link_to 'Voir la source', @recipe.source, class: "dropdown-item" %>
-        <% end %>
-        <%= link_to "Créer une variation", new_variant_recipes_path(base_recipe_id: @recipe.id), class: "dropdown-item" %>
-        <% if user_signed_in? and current_user.id == @recipe.user_id %>
-          <%= form_with(model: @recipe, class: "inline", local: true) do |form| %>
-            <%= form.hidden_field :is_public, value: !@recipe.is_public %>
-            <% if @recipe.is_public %>
-              <%= form.submit "Make private", class: "dropdown-item" %>
-            <% else %>
-              <%= form.submit "Make public", class: "dropdown-item" %>
+    <% end %>
+    <div style="flex-grow: 1;"></div>
+    <% if user_signed_in? %>
+      <div class="dropdown" style="padding: 0 1rem;">
+        <%= image_tag asset_path("list-white.svg"), "data-bs-toggle": "dropdown", style: "cursor: pointer;" %>
+        <div class="dropdown-menu">
+          <% if @recipe.owned_by?(current_user) %>
+            <%= link_to 'Modifier', edit_recipe_path(@recipe), class: "dropdown-item" %>
+          <% end %>
+          <% unless @recipe.source.blank? %>
+            <%= link_to 'Voir la source', @recipe.source, class: "dropdown-item" %>
+          <% end %>
+          <%= link_to "Créer une variation", new_variant_recipes_path(base_recipe_id: @recipe.id), class: "dropdown-item" %>
+          <% if user_signed_in? and current_user.id == @recipe.user_id %>
+            <%= form_with(model: @recipe, class: "inline", local: true) do |form| %>
+              <%= form.hidden_field :is_public, value: !@recipe.is_public %>
+              <% if @recipe.is_public %>
+                <%= form.submit "Make private", class: "dropdown-item" %>
+              <% else %>
+                <%= form.submit "Make public", class: "dropdown-item" %>
+              <% end %>
             <% end %>
           <% end %>
-        <% end %>
-        <% user_recipe = @recipe.user_recipe_for(current_user) %>
-        <% if user_signed_in? and user_recipe %>
-          <%= link_to "Enlever de mes recettes", user_recipe, class: "dropdown-item", method: :delete, data: {confirm: 'Are you sure?'} %>
-        <% else %>
-          <%= form_with(model: UserRecipe.new, class: "inline") do |form| %>
-            <%= form.hidden_field :recipe_id, value: @recipe.id %>
-            <%= form.submit "Ajouter à mes recettes", class: "dropdown-item" %>
+          <% user_recipe = @recipe.user_recipe_for(current_user) %>
+          <% if user_signed_in? and user_recipe %>
+            <%= link_to "Enlever de mes recettes", user_recipe, class: "dropdown-item", method: :delete, data: {confirm: 'Are you sure?'} %>
+          <% else %>
+            <%= form_with(model: UserRecipe.new, class: "inline") do |form| %>
+              <%= form.hidden_field :recipe_id, value: @recipe.id %>
+              <%= form.submit "Ajouter à mes recettes", class: "dropdown-item" %>
+            <% end %>
           <% end %>
-        <% end %>
-        <span data-bs-toggle="collapse" data-bs-target="#calendar" class="dropdown-item" style="cursor: pointer;">Ajouter à mon calendrier</span>
+          <span data-bs-toggle="collapse" data-bs-target="#calendar" class="dropdown-item" style="cursor: pointer;">Ajouter à mon calendrier</span>
+        </div>
       </div>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 </div>
 <div class="bg-fill" style="width: 100%; height: 0.5rem;"></div>
 
