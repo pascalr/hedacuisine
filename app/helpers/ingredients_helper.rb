@@ -305,7 +305,9 @@ module IngredientsHelper
         s = a.split(":", 2)
         args[s[0].to_sym] = s[1].strip unless s[1].nil?
       end
-      if args[:note]
+      if args[:img]
+        render Image.find(args[:img])
+      elsif args[:note]
         "<span id='note-#{args[:note]}'>[#{args[:note]}]</span>"
       elsif args[:link_note]
         link_to args[:label] || "[#{args[:link_note]}]", "#note-#{args[:link_note]}"
@@ -369,6 +371,15 @@ module IngredientsHelper
 
   def description_recipe_ingredients(recipe)
     "Ingrédients: " + recipe.ingredients_ordered_by_weight.map(&:name).join(" · ")
+  end
+
+  def sanitize_article(s)
+    sanitize s, attributes: %w(id class href src)
+  end
+
+  def pretty_article_text(text)
+    replaced = replace_links(text)
+    sanitize_article replaced
   end
   
 end

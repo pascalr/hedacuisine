@@ -19,7 +19,7 @@ class ArticlesController < ApplicationController
 
   def create
     article = Article.create!(article_params)
-    redirect_back fallback_location: article_path(article)
+    redirect_to edit_article_path(article)
   end
 
   def update

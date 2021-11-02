@@ -13,12 +13,12 @@
 <h1><%= @article.name %></h1>
 
 <div>
-  <%= simple_format @article.intro %>
+  <%= pretty_article_text(@article.intro) %>
 </div>
 
 <% @article.sections.each do |section| %>
   <h2><%= sanitize section.title %></h2>
   <div>
-    <%= simple_format section.content %>
+    <%= pretty_article_text(section.content) %>
   </div>
 <% end %>
