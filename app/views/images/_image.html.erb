@@ -1,6 +1,9 @@
+Style: <%= style %>
 <div>
-  <%= image_tag medium_image_path(image), width: 452, height: 304, class: "recipe-show-image", style: "display: block;" %>
-  <% if image.author %>
-    <div style="text-align: center;"><i>Crédit: <%= image.author %></i></div>
-  <% end %>
+  <div style="display: inline-block; <%= style %>">
+    <%= image_tag image.original, style: "width: 100%;" %>
+    <% if image.author %>
+      <div style="text-align: center;"><i>Crédit: <%= image.author %></i></div>
+    <% end %>
+  </div>
 </div>

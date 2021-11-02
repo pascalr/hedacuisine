@@ -308,10 +308,13 @@ module IngredientsHelper
       # FIXME: Don't split in semicolon inside a string
       raw_link[1..-2].split(";").each do |a|
         s = a.split(":", 2)
-        args[s[0].to_sym] = s[1].strip unless s[1].nil?
+        args[s[0].strip.to_sym] = s[1].strip unless s[1].nil?
       end
       if args[:img]
-        render Image.find(args[:img])
+        style = ""
+        style += "width: #{args[:width]};" if args[:width] # FIXME: This is not safe... TODO: Validate. Must be px for now.
+        style += "float: #{args[:float]};" if args[:float] # FIXME: This is not safe...
+        render partial: Image.find(args[:img]), locals: {style: style}
       elsif args[:note]
         "<span id='note-#{args[:note]}'>[#{args[:note]}]</span>"
       elsif args[:link_note]
@@ -379,7 +382,7 @@ module IngredientsHelper
   end
 
   def sanitize_article(s)
-    sanitize s, attributes: %w(id class href src)
+    sanitize s, attributes: %w(id class href src style)
   end
 
   def pretty_article_text(text)

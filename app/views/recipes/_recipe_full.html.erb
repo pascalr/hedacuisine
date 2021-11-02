@@ -15,7 +15,7 @@
     <% if @recipe.image_id and @recipe.image %>
       <%= image_tag medium_image_path(@recipe.image), width: 452, height: 304, class: "recipe-show-image", style: "display: block;" %>
       <% if @recipe.image.author %>
-        <div style="text-align: center;"><i>Crédit photo: <%= @recipe.image.author %></i></div>
+        <div style="text-align: center;"><i>Crédit: <%= link_to @recipe.image.author, @recipe.image.source %></i></div>
       <% end %>
     <% end %>
   </div>
