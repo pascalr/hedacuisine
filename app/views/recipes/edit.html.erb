@@ -17,8 +17,23 @@
     </div>
   <% end %>
   <div>
-    <h1 data-model="<%= @recipe.model_name.to_s.underscore %>" data-url="<%= recipe_path(@recipe) %>" data-update-column="name" class="recipe-title" contenteditable="true"><%= @recipe.name %></h1>
-    <textarea data-model="<%= @recipe.model_name.to_s.underscore %>" data-url="<%= recipe_path(@recipe) %>" data-update-column="description" style="width: 600px;" rows=4 contenteditable="true"><%= @recipe.description %></textarea>
+    <div style="display: flex; align-items: center;">
+      <h1 style="flex-grow: 1;" data-model="<%= @recipe.model_name.to_s.underscore %>" data-url="<%= recipe_path(@recipe) %>" data-update-column="name" class="recipe-title" contenteditable="true"><%= @recipe.name %></h1>
+      <span data-bs-toggle="collapse" data-bs-target="#help-desc" class="btn btn-outline-primary">?</span>
+    </div>
+    <div class="collapse" id="help-desc">
+      <h3>Aide pour la description</h3>
+      <p>
+        1er paragraphe:<br>
+        Commencer par un phrase qui dit c'est quel type de de nourriture cette recette. Expliquer ce qui distingue cette recettes des autres. Ensuite expliquer l'origine de la recette. (Origine Québecoise? Origine du sud de la France?)<br>
+        Ex: Le tofu au beurre est une alternative végétarienne au poulet au beurre.
+      </p>
+      <p>
+        2e paragraphe:<br>
+        Expliquer comment c'est manger habituellement. Selon les régions, comment est-ce que le monde mange cette recette?
+      </p>
+    </div>
+    <textarea data-model="<%= @recipe.model_name.to_s.underscore %>" data-url="<%= recipe_path(@recipe) %>" data-update-column="description" style="width: 600px;" rows=4><%= @recipe.description %></textarea>
     <div style="margin-top: 1.5rem;">
       <%= render partial: "details_medium_version", locals: {recipe: @recipe} %>
     </div>

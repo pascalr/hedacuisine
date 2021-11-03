@@ -4,13 +4,11 @@ class Food < ApplicationRecord
   default_scope {includes(:expression)}
 
   has_many :recipe_ingredients
+  has_many :recipes, through: :recipe_ingredients
 
   has_many :food_recipes
   has_many :producing_recipes, through: :food_recipes, source: :recipe
 
-  has_many :ingredients
-  has_many :recipes, through: :ingredients
-  
   has_many :descriptions, as: :described
 
   #validates :name, presence: true, uniqueness: true

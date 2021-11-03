@@ -24,7 +24,7 @@
       <h1>
         <span class="recipe-title"><%= translated(@recipe.name) %></span>
       </h1>
-      <div style="max-width: 600px;"><%= simple_format @recipe.description %></div>
+      <div style="max-width: 600px;"><%= pretty_article_text @recipe.description %></div>
       <% if user_signed_in? %>
         <%= link_to 'Ajouter à mes recettes', @recipe.source, class: "btn btn-outline-primary", style: "margin-top: 1rem;" %>
       <% end %>

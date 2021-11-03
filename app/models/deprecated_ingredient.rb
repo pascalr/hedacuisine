@@ -1,4 +1,4 @@
-class Ingredient < ApplicationRecord
+class DeprecatedIngredient < ApplicationRecord
   belongs_to :recipe
   belongs_to :food
 
