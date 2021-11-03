@@ -42,6 +42,7 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <div class="dropdown-item disabled"><%= current_user.email %></div>
+            <%= link_to "Mon profil", current_user, class: "dropdown-item" %>
             <%= link_to t("heda.modify"), users_modify_path, class: "dropdown-item" %>
             <%= link_to t("heda.menu.logout"), destroy_user_session_path, method: :delete, class: "dropdown-item"  %>
           </div>

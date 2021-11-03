@@ -4,6 +4,10 @@ class UsersController < ApplicationController
 
   def index
   end
+  
+  def show
+    @user = User.find(params[:id])
+  end
 
   def toggle_favorite_menu
     @menu = Menu.find(params[:menu_id])

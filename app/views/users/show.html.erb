@@ -1,0 +1,7 @@
+<h1><%= @user.name %></h1>
+
+<h2>Recettes (<%= @user.recipes.count %>)</h2>
+
+<% @user.recipes.limit(10).each do |recipe| %>
+  <%= render recipe %>
+<% end %>

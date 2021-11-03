@@ -91,7 +91,7 @@ Rails.application.routes.draw do
   get 'users/index'
   post 'users/toggle_favorite_menu'
   get 'users/modify' # devise already use edit
-#  resources 'users', only: [:edit]
+  resources 'users', only: [:show]
 #  post 'users/toggle_favorite_menu'
 
   resources :descriptions, only: [:create, :update, :destroy]
