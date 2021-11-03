@@ -15,7 +15,11 @@
     <% if @recipe.image_id and @recipe.image %>
       <%= image_tag medium_image_path(@recipe.image), width: 452, height: 304, class: "recipe-show-image", style: "display: block;" %>
       <% unless @recipe.image.author.blank? %>
-        <div style="text-align: center;"><i>Crédit photo: <%= link_to @recipe.image.author, @recipe.image.source %></i></div>
+        <% if @recipe.image.source.blank? %>
+          <div style="text-align: center;"><i>Crédit photo: <%= @recipe.image.author %></i></div>
+        <% else %>
+          <div style="text-align: center;"><i>Crédit photo: </i><u><%= link_to @recipe.image.author, @recipe.image.source, style: "color:black; font-size:0.95em;" %></u></div>
+        <% end %>
       <% end %>
     <% end %>
   </div>
