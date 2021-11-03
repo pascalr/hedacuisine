@@ -1,4 +1,3 @@
-require 'ingredient.rb'
 class MachineFood < ApplicationRecord
   belongs_to :machine
   belongs_to :food
@@ -26,12 +25,14 @@ class MachineFood < ApplicationRecord
   end
 
   def set_grocery_threshold_from_manual
+    raise "deprectated: Use Quantity"
     unless manual_grocery_threshold.blank?
       self.grocery_threshold = Ingredient.parse_quantity_and_unit_given_food(manual_grocery_threshold, food).weight
     end
   end
 
   def set_full_weight_from_manual
+    raise "deprectated: Use Quantity"
     unless manual_full_weight.blank?
       self.full_weight = Ingredient.parse_quantity_and_unit_given_food(manual_full_weight, food).weight
     end
