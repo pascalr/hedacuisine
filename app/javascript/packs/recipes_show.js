@@ -253,6 +253,23 @@ function addFilterTag(color, text) {
   activeFilters.appendChild(_createFilterTag(color, text))
 }
 
+function numDigits(x) {
+  return (Math.log10((x ^ (x >> 31)) - (x >> 31)) | 0) + 1;
+}
+function getIncValue(nb, nb0, positive) {
+  if (positive) {
+    if (nb <= 0.064) {return 0.125}
+    else if (nb <= 0.5) {return nb * 2.0}
+    else if (nb < 1.0) {return 1.0}
+    return nb + Math.pow(10, numDigits(Math.min(nb, nb0))-1)
+  } else {
+    if (nb <= 0.25) {return 0.125}
+    else if (nb <= 1.0) {return nb / 2.0}
+    let i = Math.pow(10, numDigits(Math.min(nb, nb0))-1)
+    return parseInt(nb) == i ? nb - Math.pow(10, numDigits(Math.min(nb, nb0))-2) : nb - i
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function(event) {
   
   const servings = document.getElementById("servings-quantity-value");
@@ -289,11 +306,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
   
   moreButton.addEventListener('click', event => {
-
+    var f0 = parseQuantityFloatAndLabel(servingsField.dataset.initial)[0]
     var s = parseQuantityFloatAndLabel(servingsField.value)
     var f = s[0]; var label = s[1]
-    var v = (f < 1.0) ? f * 2.0 : f + 1
-    if (v < 0.125) {v = 0.125}
+    var v = getIncValue(f, f0, true)
     servingsField.value = prettyFraction(v) + " " + label
     var event = new Event('change');
     event.forced = true
@@ -301,10 +317,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
   })
   
   lessButton.addEventListener('click', event => {
+    var f0 = parseQuantityFloatAndLabel(servingsField.dataset.initial)[0]
     var s = parseQuantityFloatAndLabel(servingsField.value)
     var f = s[0]; var label = s[1]
-    var v = (f <= 1.0) ? f / 2.0 : f - 1
-    if (v < 0.125) {v = 0.125}
+    var v = getIncValue(f, f0, false)
     servingsField.value = prettyFraction(v) + " " + label
     var event = new Event('change');
     event.forced = true

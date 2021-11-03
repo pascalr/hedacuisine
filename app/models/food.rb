@@ -35,10 +35,13 @@ class Food < ApplicationRecord
   def name=(name)
     self.expression = Expression.find_or_create_by(default: name.downcase)
   end
-  #def plural_in(lang)
-  #  return nil if self.expression.nil? || self.expression.in(lang).nil?
-  #  self.expression.in(lang).plural
-  #end
+  def plural
+    raise "deprecated"
+  end
+  def plural_in(lang)
+    return nil if self.expression.nil? || self.expression.in(lang).nil?
+    self.expression.in(lang).plural
+  end
 
   def substitutions(previous=nil)
     explicit_substitutions(previous) + implicit_substitutions(previous)
@@ -53,7 +56,7 @@ class Food < ApplicationRecord
 
   before_save do
     name.downcase!
-    plural.try(:downcase!)
+    #plural.try(:downcase!)
   end
 
   alias tag food_tag
