@@ -1,5 +1,4 @@
 <%= render partial: "recipes/tabs" %>
-<%= render partial: "user_recipes/pills" %>
 
 <%= render partial: "recipes/recipe_carrousel", locals: {title: "Dernières recettes favorites", recipes: current_user.user_recipes.includes(:recipe).where.not(recipe: {image_id: nil}).limit(10).map(&:recipe)} %>
 
@@ -10,8 +9,11 @@
 }
 </style>
 
-<h2>Mes recettes favorites</h2>
-<hr>
+<div style="display: flex; align-items: center; gap: 1.5rem;">
+  <h2>Mes recettes favorites</h2>
+  <%= link_to translated("Modifier"), user_recipes_index_edit_path, class: "btn btn-outline-primary btn-sm" %>
+</div>
+<hr style="margin-top: 0;">
 
 <style>
 .category {
@@ -57,8 +59,11 @@
   <% end %>
 </div>
 
-<h2>Mon livre de recettes</h2>
-<hr>
+<div style="display: flex; align-items: center; gap: 1.5rem;">
+  <h2>Mon livre de recettes</h2>
+  <%= link_to translated("Nouvelle recette"), new_recipe_path, class: "btn btn-outline-primary btn-sm" %>
+</div>
+<hr style="margin-top: 0;">
 
 <%= content_tag(:div, id: "current-page", data: {page: params[:page] || 1, "replace-url": user_recipes_show_recipe_page_path(page: '{{}}')}) do %>
   <%= render partial: "user_recipes/current_page" %>
