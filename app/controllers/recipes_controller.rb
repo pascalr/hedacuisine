@@ -1,5 +1,5 @@
 class RecipesController < ApplicationController
-  before_action :set_recipe, only: [:do_process, :edit, :update, :destroy, :rate, :cheat, :validate]
+  before_action :set_recipe, only: [:do_process, :edit, :update, :destroy, :rate, :cheat, :validate, :view_body]
   skip_before_action :authenticate_user!, only: [:show, :index]
   skip_before_action :only_admin!, only: [:show, :index]
 

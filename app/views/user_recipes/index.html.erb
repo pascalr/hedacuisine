@@ -60,12 +60,28 @@
 <h2>Mon livre de recettes</h2>
 <hr>
 
-<div style="font-size: 1.2rem;">
-  (1 de <%= current_user.recipes.count %>) recettes
+<div style="min-height: 100vh;">
+  <div style="font-size: 1.2rem;">
+    (<span class="page-number"><%= params[:page] || 1 %></span> de <%= current_user.recipes.count %>) recettes
+    <% if params[:page].blank? or params[:page].to_i == 1 %>
+      <%= image_tag asset_path("chevron-left.svg") %>
+    <% else %>
+      <%= link_to image_tag(asset_path("chevron-left.svg")), regional_url_for(page: params[:page].to_i - 1), id: "previous-recipe-link", "data-replace-tag": ".recipe-body" %>
+    <% end %>
+    <% if params[:page].to_i == current_user.recipes.count %>
+      <%= image_tag asset_path("chevron-right.svg") %>
+    <% else %>
+      <%= link_to image_tag(asset_path("chevron-right.svg")), regional_url_for(page: (params[:page] || 1).to_i + 1), id: "next-recipe-link" %>
+    <% end %>
+  </div>
+  <!-- TODO: Pass MAX to js -->
+  <%= content_tag(:div, id: "current-page", data: {page: params[:page] || 1, max: current_user.recipes.count, "replace-url": user_recipes_show_recipe_page_path(page: '{{}}')}) do %>
+    <%= render partial: "recipes/recipe_body", locals: {recipe: @recipe} %>
+  <% end %>
+  <%# current_user.recipes.each do |recipe| %>
+    <%# link_to recipe.name, recipe, style: "color: black;" %><br>
+    <%# end %>
 </div>
-<%= render partial: "recipes/recipe_body", locals: {recipe: current_user.recipes.first} %>
-<%# current_user.recipes.each do |recipe| %>
-  <%# link_to recipe.name, recipe, style: "color: black;" %><br>
-<%# end %>
 
+<%= javascript_pack_tag "user_recipes_index" %>
 <%= javascript_pack_tag "recipe_slider_pack_v2" %>

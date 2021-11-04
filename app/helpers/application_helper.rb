@@ -8,6 +8,10 @@ module ApplicationHelper
     end
   end
 
+  def regional_url_for(args)
+    url_for({locale: current_region.locale}.merge(args))
+  end
+
   def _file_ext(file)
     File.extname(file.filename.to_s)
     #type = file.content_type

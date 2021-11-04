@@ -131,6 +131,7 @@ Rails.application.routes.draw do
     get 'user_recipes/index_with_pictures'
     get 'user_recipes/index_with_details'
     get 'user_recipes/index_edit'
+    get 'user_recipes/show_recipe_page'
 
   end
 
