@@ -1,11 +1,11 @@
 module ApplicationHelper
 
   def dev_url_or(path)
-    #if Rails.env.production? or Rails.env.local?
+    if Rails.env.production? or Rails.env.local?
       home_beta_path(path: URI.encode(path))
-    #else
-    #  path
-    #end
+    else
+      path
+    end
   end
 
   def _file_ext(file)

@@ -25,6 +25,12 @@ class ApplicationController < ActionController::Base
     user_recipes_path
   end
 
+  def after_sign_out_path_for(resource_or_scope)
+    "https://www.hedacuisine.com/"
+    #request.referrer
+  end
+
+
   def default_url_options
     { locale: I18n.locale }
   end
