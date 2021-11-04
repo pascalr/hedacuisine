@@ -12,7 +12,7 @@ class UserRecipesController < ApplicationController
   def show_recipe_page
     @recipes = current_user.recipes.paginate(page: params[:page], per_page: 1)
     @recipe = @recipes.first
-    render partial: "recipes/recipe_body", locals: {recipe: @recipe}, layout: nil
+    render partial: "user_recipes/current_page", locals: {recipe: @recipe}, layout: nil
   end
 
   def index_with_pictures
