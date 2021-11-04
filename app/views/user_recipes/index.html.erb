@@ -1,6 +1,14 @@
 <%= render partial: "recipes/tabs" %>
 <%= render partial: "user_recipes/pills" %>
 
+<h2>Mes recettes favorites avec images</h2>
+<hr>
+
+<%= render partial: "user_recipes/index_with_pictures" %>
+
+<h2>Toutes mes recettes favorites</h2>
+<hr>
+
 <style>
 #user-recipe-list > * + * {
   margin-bottom: 1.5rem;
@@ -10,7 +18,7 @@
 <div id="user-recipe-list">
   <div>
     <% @user_recipes_without_category.each do |user_recipe| %>
-      <%= link_to user_recipe.recipe.name, user_recipe.recipe %><br>
+      <%= link_to user_recipe.recipe.name, user_recipe.recipe, style: "color: black;" %><br>
     <% end %>
     <% if !@user_recipes_without_category.blank? and !@user_recipe_categories.blank? %>
       <div style="height: 20px;"></div>
@@ -26,7 +34,7 @@
         <p>Aucune recettes pour l'instant.</p>
       <% end %>
       <% category.user_recipes.each do |user_recipe| %>
-        <%= link_to user_recipe.recipe.name, user_recipe.recipe %><br>
+        <%= link_to user_recipe.recipe.name, user_recipe.recipe, style: "color: black;" %><br>
       <% end %>
     </div>
   <% end %>
@@ -35,3 +43,10 @@
     <p>Aucune recettes pour l'instant. Ajouter des recettes en cliquant sur l'onglet «Modifier mes recettes»</p>
   <% end %>
 </div>
+
+<h2>Mes recettes à moi (<%= current_user.recipes.count %>)</h2>
+<hr>
+
+<% current_user.recipes.each do |recipe| %>
+  <%= link_to recipe.name, recipe, style: "color: black;" %><br>
+<% end %>

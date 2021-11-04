@@ -1,0 +1,16 @@
+<%= render partial: "recipes/recipe_carrousel", locals: {title: "Recettes sans catégories", recipes: @user_recipes_without_category.map(&:recipe)} %>
+
+<% @user_recipe_categories.each do |category| %>
+  <% next if category.user_recipes.blank? or category.user_recipes.map(&:recipe).select(&:image).blank? %>
+  <% if category.user_recipes.blank? %>
+    <p>Aucune recettes pour l'instant.</p>
+  <% end %>
+  <%= render partial: "recipes/recipe_carrousel", locals: {carrousel_id: category.id, title: category.name, recipes: category.user_recipes.map(&:recipe)} %>
+  <div style="height: 10px;"></div>
+<% end %>
+
+<% if @user_recipes_without_category.blank? and @user_recipe_categories.blank? %>
+  <p>Aucune recettes pour l'instant. Ajouter des recettes en cliquant sur l'onglet «Modifier mes recettes»</p>
+<% end %>
+
+<%= javascript_pack_tag "recipe_slider_pack_v2" %>
