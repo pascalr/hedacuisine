@@ -1,15 +1,22 @@
 <%= render partial: "recipes/tabs" %>
 <%= render partial: "user_recipes/pills" %>
 
-<h2>Mes recettes favorites avec images</h2>
-<hr>
+<%= render partial: "recipes/recipe_carrousel", locals: {title: "Dernières recettes favorites", recipes: current_user.user_recipes.includes(:recipe).where.not(recipe: {image_id: nil}).limit(10).map(&:recipe)} %>
 
-<%= render partial: "user_recipes/index_with_pictures" %>
+<style>
+.recipe-body {
+  border: 1px solid black;
+  padding: 0.5em 0.5em 0 0.5em;
+}
+</style>
 
-<h2>Toutes mes recettes favorites</h2>
+<h2>Mes recettes favorites</h2>
 <hr>
 
 <style>
+.category {
+  margin-bottom: 1.5rem;
+}
 #user-recipe-list > * + * {
   margin-bottom: 1.5rem;
 }
@@ -24,29 +31,41 @@
       <div style="height: 20px;"></div>
     <% end %>
   </div>
-  
-  <% @user_recipe_categories.each do |category| %>
-    <div id="test">
-      <h2 style="font-size: 1.4rem;">
-        <%= category.name %>
-      </h2>
-      <% if category.user_recipes.blank? %>
-        <p>Aucune recettes pour l'instant.</p>
-      <% end %>
-      <% category.user_recipes.each do |user_recipe| %>
-        <%= link_to user_recipe.recipe.name, user_recipe.recipe, style: "color: black;" %><br>
-      <% end %>
-    </div>
-  <% end %>
+
+  <div class="row">
+    <% @halves.each do |categories| %>
+      <div class="col-md-6">
+        <% categories.each do |category| %>
+          <div class="category">
+            <h2 style="font-size: 1.4rem;">
+              <%= category.name %>
+            </h2>
+            <% if category.user_recipes.blank? %>
+              <p>Aucune recettes pour l'instant.</p>
+            <% end %>
+            <% category.user_recipes.each do |user_recipe| %>
+              <%= link_to user_recipe.recipe.name, user_recipe.recipe, style: "color: black;" %><br>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
   
   <% if @user_recipes_without_category.blank? and @user_recipe_categories.blank? %>
     <p>Aucune recettes pour l'instant. Ajouter des recettes en cliquant sur l'onglet «Modifier mes recettes»</p>
   <% end %>
 </div>
 
-<h2>Mes recettes à moi (<%= current_user.recipes.count %>)</h2>
+<h2>Mon livre de recettes</h2>
 <hr>
 
-<% current_user.recipes.each do |recipe| %>
-  <%= link_to recipe.name, recipe, style: "color: black;" %><br>
-<% end %>
+<div style="font-size: 1.2rem;">
+  (1 de <%= current_user.recipes.count %>) recettes
+</div>
+<%= render partial: "recipes/recipe_body", locals: {recipe: current_user.recipes.first} %>
+<%# current_user.recipes.each do |recipe| %>
+  <%# link_to recipe.name, recipe, style: "color: black;" %><br>
+<%# end %>
+
+<%= javascript_pack_tag "recipe_slider_pack_v2" %>

@@ -36,6 +36,10 @@ class UserRecipesController < ApplicationController
     def set_user_recipes
       @user_recipes_without_category = current_user.user_recipes.where(user_recipe_category_id: nil).includes(user_recipes: :recipe)
       @user_recipe_categories = current_user.user_recipe_categories.includes(user_recipes: :recipe).all
+      @halves = @user_recipe_categories.each_slice((@user_recipe_categories.size/2.0).ceil)
+      # OPTIMIZE: A smarter division based on the number of recipes. Makes sure the left column
+      # always has more recipes than the right column. Take as much categories as needed for that.
+      # Inverser les deux colonnes si celle de droite en a plus que celle de gauche?
     end
 
     def set_user_recipe
