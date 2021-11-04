@@ -1,7 +1,9 @@
 class HomeController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:index]
+  skip_before_action :authenticate_user!, only: [:index, :beta]
   skip_before_action :only_admin!
   def index
+  end
+  def beta
   end
   def ecological
   end

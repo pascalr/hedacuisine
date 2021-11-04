@@ -1,5 +1,13 @@
 module ApplicationHelper
 
+  def dev_url_or(path)
+    #if Rails.env.production? or Rails.env.local?
+      home_beta_path(path: URI.encode(path))
+    #else
+    #  path
+    #end
+  end
+
   def _file_ext(file)
     File.extname(file.filename.to_s)
     #type = file.content_type
