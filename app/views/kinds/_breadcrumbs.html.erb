@@ -1,0 +1,10 @@
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><%= link_to "Acceuil", home_path %></li>
+    <li class="breadcrumb-item"><%= link_to "Recettes", recipes_path %></li>
+    <% (leaf.kind ? leaf.kind.ancestors : []).each do |kind| %>
+      <li class="breadcrumb-item"><%= link_to kind.name, kind %></li>
+    <% end %>
+    <li class="breadcrumb-item active" aria-current="page"><%= leaf.name %></li>
+  </ol>
+</nav>

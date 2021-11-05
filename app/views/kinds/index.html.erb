@@ -5,6 +5,8 @@
 <%= form_with(model: Kind.new, local: true) do |form| %>
   <%= form.label :name %>
   <%= form.text_field :name, size: 15 %>
+  <%= form.label :kind_id %>
+  <%= form.collection_select :kind_id, @kinds, :id, :name, include_blank: true %>
   <%= form.submit %>
 <% end %>
 
@@ -12,17 +14,22 @@
   <thead class="thead-dark">
     <tr>
       <th>Nom</th>
-      <th colspan="2"></th>
+      <th>Parent</th>
+      <th colspan="3"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @kinds.each do |abstract| %>
-      <tr>
-        <td><%= abstract.name %></td>
-        <td><%= link_to 'Show', abstract %></td>
-        <td><%= link_to 'Destroy', abstract, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+      <%= form_with(model: abstract) do |form| %>
+        <tr>
+          <td><%= abstract.name %></td>
+          <td><%= form.collection_select :kind_id, @kinds, :id, :name, include_blank: true %></td>
+          <td><%= form.submit 'Update' %></td>
+          <td><%= link_to 'Show', abstract %></td>
+          <td><%= link_to 'Destroy', abstract, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>

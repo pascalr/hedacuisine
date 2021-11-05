@@ -1,28 +1,25 @@
 <%= render partial: "recipes/tabs" %>
 
-<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><%= link_to "Acceuil", home_path %></li>
-    <li class="breadcrumb-item"><%= link_to "Recettes", recipes_path %></li>
-    <li class="breadcrumb-item active" aria-current="page"><%= @kind.name %></li>
-  </ol>
-</nav>
+<%= render partial: "kinds/breadcrumbs", locals: {leaf: @kind} %>
 
 <%= content_for :title, @kind.name.capitalize + " - HedaCuisine" %>
 <%# content_for :description, "TODO along the food description." %>
 
-<%= link_to 'edit', edit_kind_path(@kind) if current_user_admin?  %>
-
 <div style="margin-bottom: 1rem;">
   <h1 style="display: inline;"><%= @kind.name.capitalize %> </h1>
-  <span style="font-size: 1.3rem;"> (<%= @kind.recipes.size%> <%= @kind.recipes.size > 1 ? "recettes" : "recette" %>)</span>
+  <% count = @kind.all_recipes_count %>
+  <span style="font-size: 1.3rem;"> (<%= count %> <%= count > 1 ? "recettes" : "recette" %>)</span>
 </div>
 
-<% if @kind.recipes.blank? %>
+<% @kind.kinds.each do |kind| %>
+  <%= render partial: "recipes/recipe_carrousel", locals: {title: link_to(kind.name, kind, style: "color: black;"), recipes: kind.recipes.all_main.all_public.with_images.limit(10), carrousel_id: kind.id} %>
+<% end %>
+
+<% if count <= 0 %>
   <p>Aucune recette ne contient cet ingrédient pour l'instant.</p>
-<% else %>
-  <% @kind.recipes.each do |recipe| %>
-    <%= render recipe %>
-    <%# link_to translated(recipe.name).capitalize, recipe %>
-  <% end %>
+<% end %>
+
+<% @kind.recipes.each do |recipe| %>
+  <%= render recipe %>
+  <%# link_to translated(recipe.name).capitalize, recipe %>
 <% end %>

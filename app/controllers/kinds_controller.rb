@@ -35,6 +35,6 @@ class KindsController < ApplicationController
     end
 
     def kind_params
-      params.require(:kind).permit(:name, :image_id, :description)
+      params.require(:kind).permit(:name, :image_id, :description, :kind_id)
     end
 end

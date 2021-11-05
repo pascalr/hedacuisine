@@ -1,84 +1,10 @@
 <%= content_for :title, "HedaCuisine - Acceuil" %>
 <%= content_for :description, "Le site officiel de Heda, le robot garde manger. Apprenez-en d'avantages et découvrez des recettes qu'il vous aide à cuisiner." %>
 
-<style>
-  .home-section {
-    margin-top: 8rem;
-    margin-bottom: 8rem;
-    font-size: 1.4rem;
-  }
-  .home-section > div > h2 {
-    font-size: 2rem;
-    font-weight: bold;
-  }
-  .know-more {
-    color: grey;
-  }
-  .img-home-container > img {
-    width: 100%;
-    height: auto;
-  }
+<br>
 
-  @media screen and (max-width: 1500px) {
-    .home-section {
-      font-size: 1.2rem;
-    }
-    .home-section > div > h2 {
-      font-size: 1.6rem;
-    }
-  }
-</style>
+<% @kinds.each do |kind| %>
+  <%= render partial: "recipes/recipe_carrousel", locals: {title: link_to(kind.name, kind, style: "color: black;"), recipes: kind.recipes.all_main.all_public.with_images.limit(10), carrousel_id: kind.id} %>
+<% end %>
 
-<div class="home-section" style="margin-top: 2em;">
-  <div>
-    <div style="max-width: 800px;">
-      <h2>Découvrez de nouvelles recettes</h2>
- 
-      <p>Ce site internet recueille des recettes de gens comme vous et moi. Découvrez  de nouvelles recettes en naviguant dans l'onglet <%= link_to "Recettes", recipes_path %>!</p>
-    </div>
-    <%= render partial: "recipes/recipe_carrousel", locals: {title: "Dernières recettes ajoutées", recipes: Recipe.all_main.all_public.with_images.limit(10)} %>
-  </div>
-</div>
-  
-<div class="home-section row">
-  <div class="col-md-4" style="border: 1px solid black; border-radius: 5px; background-color: #eee;">
-    <h2 style="border-bottom: 1px solid black;padding-left: 0.25rem;font-size: 1.5rem;margin-top: 1.5rem;margin-bottom: 0.5rem;">Recette: Biscuits aux brisures de chocolat</h2>
-    <div class="recipe-instructions">
-      <div>
-        <span class='step-number'>1</span> Dans un grand contenant, battre ensemble
-        <ul class='recipe-ingredient-list dash'>
-          <li>1/2 t de <a href="/qc/aliments/34-beurre">beurre</a></li> <li>2/3 t de <a href="/qc/aliments/50-cassonade">cassonade</a></li>
-          <li>1/3 t de <a href="/qc/aliments/3-sucre">sucre</a></li>
-        </ul>
-      </div>
-      <div>
-        <span class='step-number'>2</span> Incorporer dans le mélange en battant
-        <ul class='recipe-ingredient-list dash'>
-          <li>1 <a href="/qc/aliments/7-oeuf">oeuf</a></li>
-          <li>1 c. à thé d'<a href="/qc/aliments/84-extrait_de_vanille">extrait de vanille</a></li>
-        </ul>
-      </div>
-      <div><span class='step-number'>3</span> Dans un deuxième contenant, combiner
-        <ul class='recipe-ingredient-list dash'>
-          <li>1 1/2 t de <a href="/qc/aliments/4-farine">farine</a></li>
-          <li>1/2 c. à thé de <a href="/qc/aliments/5-sel">sel</a></li>
-          <li>1/2 c. à thé de <a href="/qc/aliments/12-poudre_%C3%A0_p%C3%A2te">poudre à pâte</a></li>
-          <li>1/8 c. à thé de <a href="/qc/aliments/86-bicarbonate_de_soude">bicarbonate de soude</a></li>
-        </ul>
-      </div>
-      <div>
-        <span class='step-number'>4</span> Incorporer en remuant les ingrédients secs et 1 1/2 t de <a href="/qc/aliments/125-brisures_de_chocolat_mi-sucr%C3%A9">brisures de chocolat mi-sucré</a> au premier contenant.
-      </div>
-      <div>
-        <span class='step-number'>5</span>. Déposer des cuillerées de pâte sur une plaque et cuire au four préchauffé à 350 °F (180 °C) de 13 à 15 minutes.
-      </div>
-    </div>
-  </div>
-  <div class="col-md-1"></div>
-  <div class="col-md-7">
-    <h2>Des recettes intelligentes</h2>
-    <p>Les quantités d'ingrédients sont inscrites directement dans les instructions. Ainsi, c'est plus facile de suivre la recette une étape à la fois.</p>
-  </div>
-</div>
-  
 <%= javascript_pack_tag "recipe_slider_pack_v2" %>
