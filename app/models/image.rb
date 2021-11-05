@@ -1,6 +1,8 @@
 class Image < ApplicationRecord
   has_one_attached :original
 
+  has_many :recipes
+
 
   # image_tag user.avatar.variant(resize_to_limit: [100, 100], format: :jpeg, sampling_factor: "4:2:0", strip: true, interlace: "JPEG", colorspace: "sRGB", quality: 80)
 

@@ -189,12 +189,13 @@
   <% else %>
     <ul class="list-group">
       <% @recipe.references.each do |ref| %>
-        <%= form_with(model: [@recipe, ref], local: true) do |form| %>
-          <li>
+        <li>
+          <%= form_with(model: [@recipe, ref], local: true, class: "inline") do |form| %>
             <%= form.text_field :raw, size: 80 %>
-            <%= form.submit "Modifier" %>
-          </li>
-        <% end %>
+            <%= form.submit "Modifier", class: "btn btn-outline-secondary btn-sm" %>
+          <% end %>
+          <%= link_to "Supprimer", [@recipe, ref], method: :delete, "data-confirm": "Êtes vous certain?", class: "btn btn-sm btn-outline-secondary" %>
+        </li>
       <% end %>
     </ul>
   <% end %>
@@ -203,7 +204,7 @@
 <%= form_with(model: [@recipe,Reference.new], local: true) do |form| %>
   <%= form.hidden_field :recipe_id, value: @recipe.id %>
   <%= form.text_field :raw, size: 80 %>
-  <%= form.submit "Ajouter" %>
+  <%= form.submit "Ajouter", class: "btn btn-outline-primary btn-sm" %>
 <% end %>
 
 <div style="height: 5em;"></div>
