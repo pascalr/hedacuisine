@@ -23,7 +23,7 @@
     <% @kinds.each do |abstract| %>
       <%= form_with(model: abstract) do |form| %>
         <tr>
-          <td><%= abstract.name %></td>
+          <td><%= form.text_field :name %></td>
           <td><%= form.collection_select :kind_id, @kinds, :id, :name, include_blank: true %></td>
           <td><%= form.submit 'Update' %></td>
           <td><%= link_to 'Show', abstract %></td>
