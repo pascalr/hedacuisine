@@ -38,10 +38,14 @@ function e(tagName, args={}, children=null) {
 function updateListOrder(event) {
   console.log("Update list order.")
 
-  // TODO: Sort the array again.
   gon.recipe.ingredients.forEach(ing => {
+    let nb = ing.item_nb - 1
     if (ing.id == event.item.dataset.id) {
       ing.item_nb = event.newIndex + 1
+    } else if (nb > event.oldIndex && nb <= event.newIndex) {
+      ing.item_nb -= 1
+    } else if (nb < event.oldIndex && nb >= event.newIndex) {
+      ing.item_nb += 1
     }
   })
 
