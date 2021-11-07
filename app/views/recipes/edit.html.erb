@@ -7,6 +7,7 @@
 <%= link_to 'Fix ingredient numbers', 'TODO', method: :patch %> |
 <%= link_to 'Back', recipes_path %>
 
+<div id="recipe-editor">
 <div class="responsive-above">
   <% if @recipe.image %>
     <div>
@@ -207,7 +208,8 @@
   <%= form.submit "Ajouter", class: "btn btn-outline-primary btn-sm" %>
 <% end %>
 
-<div style="height: 5em;"></div>
+<div style="height: 5em;"/>
+</div>
 
 <%# javascript_pack_tag "recipe_editor.js" %>
 <%# javascript_pack_tag "recipes_edit.js" %>
