@@ -54,12 +54,7 @@ function updateListOrder(event) {
 
   let data = new FormData()
   data.append('item_nb', event.newIndex + 1)
-
-  Rails.ajax({
-    url: url,
-    type: 'PATCH',
-    data: data
-  })
+  Rails.ajax({url: url, type: 'PATCH', data: data})
 
   updateIngList();
 }
