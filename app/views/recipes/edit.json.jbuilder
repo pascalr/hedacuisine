@@ -7,7 +7,11 @@ json.recipe do
     json.raw ing.raw
     json.comment ing.comment
     json.url recipe_recipe_ingredient_path(@recipe, ing)
-    json.food ing.food, :id, :name
+    json.food do
+      json.id ing.food.id
+      json.name ing.food.name
+      json.url food_path(ing.food)
+    end
   end
 end
 

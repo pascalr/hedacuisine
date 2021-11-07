@@ -9,6 +9,11 @@ function e(tagName, args={}, children=null) {
         elem.classList.add(args['className']);
       } else if (key == 'value') {
         elem.value = args['value'] || ''
+      // TODO: Add all events
+      } else if (key == 'onClick') {
+        elem.addEventListener('click', args['onClick'])
+      } else if (key == 'onBlur') { // When a user leaves an input field
+        elem.addEventListener('blur', args['onBlur'])
       } else {
         elem.setAttribute(key, value)
       }
@@ -35,6 +40,55 @@ function e(tagName, args={}, children=null) {
   return elem
 }
 
+// Rails.ajax(success: function(), error: function(), complete: function())
+// success(response, xhr.statusText, xhr);
+
+// https://guides.rubyonrails.org/working_with_javascript_in_rails.html#rails-ujs-event-handlers
+
+// Rails.ajax is not working because it expects Turbolinks for the response.
+// So I am using jQuery.
+
+// Options:
+// type: "PATCH" || "GET" || "POST"
+// url
+// data
+//Heda.ajax = function(options) {
+//  if (!options['type']) {throw "Heda.ajax: type missing. Expected PATCH, GET or POST"}
+//  if (!options['url']) {throw "Heda.ajax: urlmissing."}
+//  if (options['type'] == "PATCH" || options["type"] == "POST") {
+//    if (!options.data) {options.data = {}}
+//    options.data.authenticity_token = $('[name="csrf-token"]')[0].content
+//  }
+//  $.ajax(options);
+//}
+// .done(function() {
+//    alert( "success" );
+//  })
+//  .fail(function() {
+//    alert( "error" );
+//  })
+//  .always(function() {
+//    alert( "complete" );
+//  });
+//
+//    type: "PATCH",
+//    url: url,
+//    data: {
+//      authenticity_token: $('[name="csrf-token"]')[0].content,
+//      [model]: {
+//        [column]: content
+//      }
+//    }
+//  });
+//});
+//
+//.bind("ajax:success", function() {
+//      alert("HELLO");
+//    })
+//    .bind("ajax:error", function() {
+//      alert("GOODBYE");
+//    }
+
 function updateListOrder(event) {
   console.log("Update list order.")
 
@@ -59,6 +113,62 @@ function updateListOrder(event) {
   updateIngList();
 }
 
+function addEmptyIng() {
+  gon.recipe.new_ingredients.push({})
+  updateIngList()
+}
+
+function showError(response, statusText, xhr) {
+  console.log(response)
+  console.log(statusText)
+  console.log(xhr)
+  alert("TODO: showError");
+}
+
+function updateIngQuantityCallback(ing) {
+  return function(evt) {
+    console.log('Update ing quantity.')
+    // TODO: Don't send unless the field was modified
+    let data = new FormData()
+    data.append('recipe_ingredient[raw]', this.value)
+    //Rails.ajax({url: ing.url, type: 'PATCH', data: {recipe_ingredient: {raw: this.value}}, success: function() { alert("HELLO"); }, error: function() { alert("GOODBYE"); }})
+    Rails.ajax({url: ing.url, type: 'PATCH', data: data, error: showError})
+  }
+}
+
+function updateIngCommentCallback(ing) {
+  return function(evt) {
+    console.log('Update ing quantity.')
+    // TODO: Don't send unless the field was modified
+    let data = new FormData()
+    data.append('recipe_ingredient[comment]', this.value)
+    //Rails.ajax({url: ing.url, type: 'PATCH', data: {recipe_ingredient: {raw: this.value}}, success: function() { alert("HELLO"); }, error: function() { alert("GOODBYE"); }})
+    Rails.ajax({url: ing.url, type: 'PATCH', data: data, error: showError})
+  }
+}
+
+function renderUpdateIng(ing) {
+  return [
+    //e("img", {src: "/icons/arrows-move.svg", className: "handle"}),
+    e("span", {style: "padding: 0 10px 0 0;", className: "handle"}, e("b", null, ing.item_nb+".")),
+    e("input", {onBlur: updateIngQuantityCallback(ing), type: "text", size: "8", value: ing.raw, style: "border: none; border-bottom: 1px solid gray;"}),
+    " de ", // " de " ou bien " - " si la quantité n'a pas d'unité => _1_____ - oeuf
+    e("a", {href: ing.food.url}, ing.food.name),
+    e("span", {style: "margin-left: 10px;"}, [
+      "(",
+      e("input", {onBlur: updateIngCommentCallback(ing), type: "text", size: "20", value: ing.comment, style: "border: none; border-bottom: 1px solid gray;"}),
+      ")"
+    ]),
+    e("a", {href: ing.url, "data-confirm": "Are you sure?", "data-method": "delete"},
+      e("img", {src: "/icons/x-lg.svg", style: "float: right;"})
+    )
+  ]
+}
+
+function renderNewIng() {
+  "TODO"
+}
+
 function updateIngList() {
 
   var ingEditor = document.getElementById("ing-editor")
@@ -67,28 +177,18 @@ function updateIngList() {
 
   let list =
     e("ul", {className: "list-group", style: "max-width: 800px;"}, ings.map(ing =>
-      e("li", {className: "list-group-item", "data-id": ing.id}, [
-        //e("img", {src: "/icons/arrows-move.svg", className: "handle"}),
-        e("span", {style: "margin: 0 10px 0 0;"}, e("b", null, ing.item_nb+".")),
-        e("input", {type: "text", size: "10", value: ing.raw, style: "border: none; border-bottom: 1px solid gray;"}),
-        " de ", // " de " ou bien " - " si la quantité n'a pas d'unité => _1_____ - oeuf
-        e("input", {type: "text", size: "10", value: ing.food.name, style: "border: none; border-bottom: 1px solid gray;"}),
-        e("span", {style: "margin-left: 10px;"}, [
-          "(",
-          e("input", {type: "text", size: "20", value: ing.comment, style: "border: none; border-bottom: 1px solid gray;"}),
-          ")"
-        ]),
-        e("img", {src: "/icons/x-lg.svg", style: "float: right;"}),
-        e("img", {src: "/icons/arrows-move.svg", className: "handle", style: "float: right; margin-right: 10px;"})
-      ])
+      e("li", {className: "list-group-item", "data-id": ing.id}, ing.id ? renderUpdateIng(ing) : renderNewIng(ing))
     ))
   Sortable.create(list, {
     handle: ".handle",
     onEnd: updateListOrder
   })
 
+  let addButton = e("img", {src: "/icons/plus-circle.svg", style: "width: 2.5rem; padding: 0.5rem;", onClick: addEmptyIng})
+
   ingEditor.innerHTML = ""
   ingEditor.appendChild(list)
+  ingEditor.appendChild(addButton)
 }
 
 document.addEventListener("DOMContentLoaded", function(event) { 
