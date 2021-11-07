@@ -1,3 +1,5 @@
+import Sortable from "sortablejs"
+
 function e(tagName, args={}, children=null) {
   let elem = document.createElement(tagName)
   if (args != null) {
@@ -15,6 +17,7 @@ function e(tagName, args={}, children=null) {
 
   if (children != null && children.constructor === Array) {
     for (let i = 0; i < children.length; i++) {
+      // FIXME: THIS IS DUPLICATED. I SHOULD USE THE CODE BELOW. SO IT WORKS WITH NUMBERS TOO.
       if (typeof children[i] === 'string' || children[i] instanceof String) {
         elem.appendChild(document.createTextNode(children[i]));
       } else {
@@ -32,18 +35,48 @@ function e(tagName, args={}, children=null) {
   return elem
 }
 
-function renderIngList() {
+function updateListOrder(event) {
+  console.log("Update list order.")
 
-  // " de " ou bien " - " si la quantité n'a pas d'unité
-  // => _1_____ - oeuf
+  // TODO: Sort the array again.
+  gon.recipe.ingredients.forEach(ing => {
+    if (ing.id == event.item.dataset.id) {
+      ing.item_nb = event.newIndex + 1
+    }
+  })
+
+  ////let id = event.item.dataset.id
+  //let url = event.item.dataset.url
+  //let data = new FormData()
+  //data.append('item_nb', event.newIndex + 1) // TODO: Rename item_nb to position
+  //data.append('position', event.newIndex + 1)
+
+  //console.log(event.newIndex + 1)
+
+  ////var region = document.getElementById("region").innerHTML
+
+  //Rails.ajax({
+  //  url: url,//this.data.get("base-url")+"/recipe_ingredients/"+id+"/move",
+  //  type: 'PATCH',
+  //  data: data
+  //})
+
+  updateIngList();
+}
+
+function updateIngList() {
+
+  var ingEditor = document.getElementById("ing-editor")
+
+  let ings = gon.recipe.ingredients.sort((a, b) => a.item_nb - b.item_nb)
 
   let list =
-    e("ul", {className: "list-group", style: "max-width: 800px;"}, gon.recipe.ingredients.map(ing =>
-      e("li", {className: "list-group-item"}, [
+    e("ul", {className: "list-group", style: "max-width: 800px;"}, ings.map(ing =>
+      e("li", {className: "list-group-item", "data-id": ing.id}, [
         //e("img", {src: "/icons/arrows-move.svg", className: "handle"}),
         e("span", {style: "margin: 0 10px 0 0;"}, e("b", null, ing.item_nb+".")),
         e("input", {type: "text", size: "10", value: ing.raw, style: "border: none; border-bottom: 1px solid gray;"}),
-        " de ",
+        " de ", // " de " ou bien " - " si la quantité n'a pas d'unité => _1_____ - oeuf
         e("input", {type: "text", size: "10", value: ing.food.name, style: "border: none; border-bottom: 1px solid gray;"}),
         e("span", {style: "margin-left: 10px;"}, [
           "(",
@@ -54,13 +87,18 @@ function renderIngList() {
         e("img", {src: "/icons/arrows-move.svg", className: "handle", style: "float: right; margin-right: 10px;"})
       ])
     ))
-  return list
+  Sortable.create(list, {
+    handle: ".handle",
+    onEnd: updateListOrder
+  })
+
+  ingEditor.innerHTML = ""
+  ingEditor.appendChild(list)
 }
 
 document.addEventListener("DOMContentLoaded", function(event) { 
 
-  var ingEditor = document.getElementById("ing-editor")
-  ingEditor.appendChild(renderIngList())
+  updateIngList();
 
 //<div>
 //    <ul data-controller="drag" data-drag-base-url="<%= recipe_path(@recipe) %>" data-handle=".handle">
