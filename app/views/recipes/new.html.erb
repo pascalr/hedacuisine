@@ -16,18 +16,13 @@
   <% end %>
 
   <div class="field">
+    <%= form.label :kind_id %>
+    <%= form.collection_select :kind_id, Kind.order(:name), :id, :name, include_blank: true %>
+  </div>
+
+  <div class="field">
     <%= form.label :name %>
     <%= form.text_field :name %>
-  </div>
-
-  <div class="field">
-    <%= form.label :source %>
-    <%= form.text_field :source, size: 80 %>
-  </div>
-
-  <div class="field">
-    <%= form.label :instructions %><br>
-    <%= form.text_area :instructions, cols: 100, rows: 10 %>
   </div>
 
   <%# select_radio_image(form, :recipe, :image_id) %>

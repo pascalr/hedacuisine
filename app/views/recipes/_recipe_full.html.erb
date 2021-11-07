@@ -130,6 +130,10 @@
 <% end %>
 
 <div style="height: 1rem;"></div>
+
+<div style="font-size: 1.2rem;">
+  (<%= params[:page] || 1 %> de <%= versions.size %>) recettes
+</div>
 <%= render partial: "recipes/recipe_body", locals: {recipe: @recipe, alternatives: alternatives} %>
 
 <%# javascript_pack_tag "recipe" %>
