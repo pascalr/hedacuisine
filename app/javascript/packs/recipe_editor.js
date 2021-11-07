@@ -1,34 +1,14 @@
 function e(tagName, args={}, children=null) {
   let elem = document.createElement(tagName)
   if (args != null) {
-    if (args['className']) {
-      elem.classList.add(args['className']);
-    }
-    // TODO: Be smarter than this...
-    if (args['id']) {
-      elem.id = args['id'];
-    }
-    if (args['id']) {
-      elem.id = args['id'];
-    }
-    if (args['style']) {
-      elem.style = args['style'];
-    }
-    if (args['type']) {
-      elem.type = args['type'];
-    }
-    if (args['src']) {
-      elem.src = args['src'];
-    }
-    if (args['size']) {
-      elem.size = args['size'];
-    }
-    if (args['name']) {
-      elem.name = args['name'];
-    }
-    if (args['value']) {
-      elem.value = args['value'];
-    }
+    Object.keys(args).forEach(function(key) {
+      let value = args[key]
+      if (key == 'className') {
+        elem.classList.add(args['className']);
+      } else {
+        elem.setAttribute(key, value)
+      }
+    })
   }
 
   if (children != null && children.constructor === Array) {
