@@ -4,6 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.7.0'
 
 # -------- MINE --------------
+gem 'react-rails'
 gem 'gon'
 gem 'will_paginate', '~> 3.1.0'
 gem 'route_translator'
