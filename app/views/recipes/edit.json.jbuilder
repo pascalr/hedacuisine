@@ -15,4 +15,4 @@ json.recipe do
   end
 end
 
-json.foodList Food.all, :name
+json.foodList Food.all.map(&:name)

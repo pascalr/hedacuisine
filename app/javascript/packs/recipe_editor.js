@@ -116,6 +116,7 @@ function updateListOrder(event) {
 function addEmptyIng() {
   (gon.recipe.new_ingredients ||= []).push({})
   updateIngList()
+  // TODO: Focus last
 }
 
 function showError(response, statusText, xhr) {
@@ -147,11 +148,21 @@ function updateIngCommentCallback(ing) {
   }
 }
 
-function renderUpdateIng(ing) {
-}
-
-function renderNewIng() {
-  "TODO"
+function IngFoodInputField() {
+  var elem = e("input", {type: "text", size: "20"})
+  new autocomplete({
+    selector: elem,
+    minChars: 1,
+    source: function(term, suggest){
+      term = term.toLowerCase();
+      const choices = gon.foodList
+      const matches = [];
+      for (let i = 0; i < choices.length; i++)
+          if (~choices[i].toLowerCase().indexOf(term)) matches.push(choices[i]);
+      suggest(matches);
+    }
+  })
+  return elem
 }
 
 function updateIngList() {
@@ -179,7 +190,7 @@ function updateIngList() {
           )
         ])
       ), ...(gon.recipe.new_ingredients || []).map(ing =>
-        e("li", {className: "list-group-item"}, "TODO")
+        e("li", {className: "list-group-item"}, IngFoodInputField())
       )
       ])
   Sortable.create(list, {
@@ -193,6 +204,13 @@ function updateIngList() {
   ingEditor.appendChild(list)
   ingEditor.appendChild(addButton)
 }
+
+
+//<%= form_with(model: [recipe,RecipeIngredient.new], id: "new-recipe-ingredient-form", class: "invisible") do |form| %>
+//  Qty: <%= form.text_field :raw, id: 'new-raw-quantity' %>
+//  Food: <%= text_field_tag :food_name, nil, "data-autocomplete": "food-list", placeholder: "Food...", autocomplete: :off %>
+//  <%= form.submit "Créer", style: "display: inline-block;" %>
+//<% end %>
 
 document.addEventListener("DOMContentLoaded", function(event) { 
 
