@@ -44,6 +44,10 @@ module ApplicationHelper
     "#{_base_image_path(image)}/thumb#{_file_ext(image.original)}"
   end
 
+  def icon_path(name)
+    "/icons/#{name}"
+  end
+
   def prod_url(path)
     "https://www.hedacuisine.com#{path}"
   end
