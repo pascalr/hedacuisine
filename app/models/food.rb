@@ -35,9 +35,9 @@ class Food < ApplicationRecord
   def name=(name)
     self.expression = Expression.find_or_create_by(default: name.downcase)
   end
-  def plural
-    raise "deprecated"
-  end
+  #def plural
+  #  raise "deprecated"
+  #end
   def plural_in(lang)
     return nil if self.expression.nil? || self.expression.in(lang).nil?
     self.expression.in(lang).plural

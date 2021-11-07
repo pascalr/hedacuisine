@@ -58,6 +58,16 @@ class RecipesController < ApplicationController
   end
 
   def edit
+    #@test = ActionController::Base.helpers.asset_path("arrows-move.svg")
+    gon.jbuilder
+    #gon.test = "Hello world!"
+#<span id="food-list" data-values="<%= Food.all.map(&:name) %>"></span>
+#<span id="data" data-recipe='<%= @recipe.to_json(only: [:id, :name], include: {
+#  ingredients: {only: [:id, :raw, :comment], include: {
+#    food: {only: [:id, :name]
+#    }
+#  }}
+#}) %>'></span>
   end
 
   def create

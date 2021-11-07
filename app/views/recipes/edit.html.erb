@@ -1,11 +1,13 @@
 <%= render partial: "recipes/tabs" %>
 
-<%= link_to 'Show', recipe_path(@recipe) %> |
-<%= link_to 'Validate', validate_recipe_path(@recipe) %> |
-<%= link_to 'Process', do_process_recipe_path(@recipe), method: :patch %> |
-<%= link_to 'Cheat', cheat_recipe_path(@recipe), method: :patch %> |
-<%= link_to 'Fix ingredient numbers', 'TODO', method: :patch %> |
-<%= link_to 'Back', recipes_path %>
+<nav>
+  <%= link_to 'Show', recipe_path(@recipe) %> |
+  <%= link_to 'Validate', validate_recipe_path(@recipe) %> |
+  <%= link_to 'Process', do_process_recipe_path(@recipe), method: :patch %> |
+  <%= link_to 'Cheat', cheat_recipe_path(@recipe), method: :patch %> |
+  <%= link_to 'Fix ingredient numbers', 'TODO', method: :patch %> |
+  <%= link_to 'Back', recipes_path %>
+</nav>
 
 <div id="recipe-editor">
 <div class="responsive-above">
@@ -57,7 +59,9 @@
 
 <h2 class="h2">Ingrédients</h2>
 
-<span id="food-list" data-values="<%= Food.all.map(&:name) %>"/>
+<div id="ing-editor"></div>
+
+<span id="food-list" data-values="<%= Food.all.map(&:name) %>"></span>
   
 <div>
   <% if @recipe.recipe_ingredients.blank? %>
@@ -208,10 +212,10 @@
   <%= form.submit "Ajouter", class: "btn btn-outline-primary btn-sm" %>
 <% end %>
 
-<div style="height: 5em;"/>
+<div style="height: 5em;"></div>
 </div>
 
-<%# javascript_pack_tag "recipe_editor.js" %>
+<%= javascript_pack_tag "recipe_editor.js" %>
 <%# javascript_pack_tag "recipes_edit.js" %>
 <%= javascript_pack_tag "recipes_edit" %>
 <%= javascript_pack_tag "edit" %>

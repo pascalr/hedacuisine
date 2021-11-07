@@ -25,6 +25,7 @@
       <span id="region" hidden><%= current_region.code %></span>
     <% end %>
     <%= yield(:og_tags) %>
+    <%= include_gon %>
   </head>
   <body>
     <div id="top-search">
