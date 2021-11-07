@@ -14,8 +14,20 @@ function e(tagName, args={}, children=null) {
     if (args['style']) {
       elem.style = args['style'];
     }
+    if (args['type']) {
+      elem.type = args['type'];
+    }
     if (args['src']) {
       elem.src = args['src'];
+    }
+    if (args['size']) {
+      elem.size = args['size'];
+    }
+    if (args['name']) {
+      elem.name = args['name'];
+    }
+    if (args['value']) {
+      elem.value = args['value'];
     }
   }
 
@@ -44,6 +56,7 @@ function renderIngList() {
     e("li", {className: "list-group-item"}, [
       e("img", {src: "/icons/arrows-move.svg", className: "handle"}),
       e("span", {style: "margin: 0 10px;"}, e("b", null, ing.item_nb+".")),
+      e("input", {type: "text", size: "10", value: ing.raw, style: "border: none; border-bottom: 1px solid gray;"}),
       ing.food.name
     ])
   ))
