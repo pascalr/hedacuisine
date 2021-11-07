@@ -5,6 +5,8 @@ function e(tagName, args={}, children=null) {
       let value = args[key]
       if (key == 'className') {
         elem.classList.add(args['className']);
+      } else if (key == 'value') {
+        elem.value = args['value'] || ''
       } else {
         elem.setAttribute(key, value)
       }
@@ -31,15 +33,27 @@ function e(tagName, args={}, children=null) {
 }
 
 function renderIngList() {
-  let recipe = gon.recipe
-  let list = e("ul", {className: "list-group", style: "max-width: 800px;"}, recipe.ingredients.map(ing =>
-    e("li", {className: "list-group-item"}, [
-      e("img", {src: "/icons/arrows-move.svg", className: "handle"}),
-      e("span", {style: "margin: 0 10px;"}, e("b", null, ing.item_nb+".")),
-      e("input", {type: "text", size: "10", value: ing.raw, style: "border: none; border-bottom: 1px solid gray;"}),
-      ing.food.name
-    ])
-  ))
+
+  // " de " ou bien " - " si la quantité n'a pas d'unité
+  // => _1_____ - oeuf
+
+  let list =
+    e("ul", {className: "list-group", style: "max-width: 800px;"}, gon.recipe.ingredients.map(ing =>
+      e("li", {className: "list-group-item"}, [
+        //e("img", {src: "/icons/arrows-move.svg", className: "handle"}),
+        e("span", {style: "margin: 0 10px 0 0;"}, e("b", null, ing.item_nb+".")),
+        e("input", {type: "text", size: "10", value: ing.raw, style: "border: none; border-bottom: 1px solid gray;"}),
+        " de ",
+        e("input", {type: "text", size: "10", value: ing.food.name, style: "border: none; border-bottom: 1px solid gray;"}),
+        e("span", {style: "margin-left: 10px;"}, [
+          "(",
+          e("input", {type: "text", size: "20", value: ing.comment, style: "border: none; border-bottom: 1px solid gray;"}),
+          ")"
+        ]),
+        e("img", {src: "/icons/x-lg.svg", style: "float: right;"}),
+        e("img", {src: "/icons/arrows-move.svg", className: "handle", style: "float: right; margin-right: 10px;"})
+      ])
+    ))
   return list
 }
 
