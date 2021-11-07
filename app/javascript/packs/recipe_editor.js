@@ -114,7 +114,7 @@ function updateListOrder(event) {
 }
 
 function addEmptyIng() {
-  gon.recipe.new_ingredients.push({})
+  (gon.recipe.new_ingredients ||= []).push({})
   updateIngList()
 }
 
@@ -148,21 +148,6 @@ function updateIngCommentCallback(ing) {
 }
 
 function renderUpdateIng(ing) {
-  return [
-    //e("img", {src: "/icons/arrows-move.svg", className: "handle"}),
-    e("span", {style: "padding: 0 10px 0 0;", className: "handle"}, e("b", null, ing.item_nb+".")),
-    e("input", {onBlur: updateIngQuantityCallback(ing), type: "text", size: "8", value: ing.raw, style: "border: none; border-bottom: 1px solid gray;"}),
-    " de ", // " de " ou bien " - " si la quantité n'a pas d'unité => _1_____ - oeuf
-    e("a", {href: ing.food.url}, ing.food.name),
-    e("span", {style: "margin-left: 10px;"}, [
-      "(",
-      e("input", {onBlur: updateIngCommentCallback(ing), type: "text", size: "20", value: ing.comment, style: "border: none; border-bottom: 1px solid gray;"}),
-      ")"
-    ]),
-    e("a", {href: ing.url, "data-confirm": "Are you sure?", "data-method": "delete"},
-      e("img", {src: "/icons/x-lg.svg", style: "float: right;"})
-    )
-  ]
 }
 
 function renderNewIng() {
@@ -176,9 +161,25 @@ function updateIngList() {
   let ings = gon.recipe.ingredients
 
   let list =
-    e("ul", {className: "list-group", style: "max-width: 800px;"}, ings.map(ing =>
-      e("li", {className: "list-group-item", "data-id": ing.id}, ing.id ? renderUpdateIng(ing) : renderNewIng(ing))
-    ))
+    e("ul", {className: "list-group", style: "max-width: 800px;"}, [...ings.map(ing =>
+      e("li", {className: "list-group-item", "data-id": ing.id}, [
+        //e("img", {src: "/icons/arrows-move.svg", className: "handle"}),
+        e("span", {style: "padding: 0 10px 0 0;", className: "handle"}, e("b", null, ing.item_nb+".")),
+        e("input", {onBlur: updateIngQuantityCallback(ing), type: "text", size: "8", value: ing.raw, style: "border: none; border-bottom: 1px solid gray;"}),
+        " de ", // " de " ou bien " - " si la quantité n'a pas d'unité => _1_____ - oeuf
+        e("a", {href: ing.food.url}, ing.food.name),
+        e("span", {style: "margin-left: 10px;"}, [
+          "(",
+          e("input", {onBlur: updateIngCommentCallback(ing), type: "text", size: "20", value: ing.comment, style: "border: none; border-bottom: 1px solid gray;"}),
+          ")"
+        ]),
+        e("a", {href: ing.url, "data-confirm": "Are you sure?", "data-method": "delete"},
+          e("img", {src: "/icons/x-lg.svg", style: "float: right;"})
+        )
+      ])
+    ), ...(gon.recipe.new_ingredients || []).map(ing =>
+      e("li", {className: "list-group-item"}, "TODO")
+    )])
   Sortable.create(list, {
     handle: ".handle",
     onEnd: updateListOrder
