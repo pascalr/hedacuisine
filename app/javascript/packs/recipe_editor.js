@@ -38,9 +38,11 @@ function e(tagName, args={}, children=null) {
 function updateListOrder(event) {
   console.log("Update list order.")
 
+  let url = null
   gon.recipe.ingredients.forEach(ing => {
     let nb = ing.item_nb - 1
     if (ing.id == event.item.dataset.id) {
+      url = ing.url + "/move"
       ing.item_nb = event.newIndex + 1
     } else if (nb > event.oldIndex && nb <= event.newIndex) {
       ing.item_nb -= 1
@@ -48,22 +50,16 @@ function updateListOrder(event) {
       ing.item_nb += 1
     }
   })
+  gon.recipe.ingredients.sort((a, b) => a.item_nb - b.item_nb)
 
-  ////let id = event.item.dataset.id
-  //let url = event.item.dataset.url
-  //let data = new FormData()
-  //data.append('item_nb', event.newIndex + 1) // TODO: Rename item_nb to position
-  //data.append('position', event.newIndex + 1)
+  let data = new FormData()
+  data.append('item_nb', event.newIndex + 1)
 
-  //console.log(event.newIndex + 1)
-
-  ////var region = document.getElementById("region").innerHTML
-
-  //Rails.ajax({
-  //  url: url,//this.data.get("base-url")+"/recipe_ingredients/"+id+"/move",
-  //  type: 'PATCH',
-  //  data: data
-  //})
+  Rails.ajax({
+    url: url,
+    type: 'PATCH',
+    data: data
+  })
 
   updateIngList();
 }
@@ -72,7 +68,7 @@ function updateIngList() {
 
   var ingEditor = document.getElementById("ing-editor")
 
-  let ings = gon.recipe.ingredients.sort((a, b) => a.item_nb - b.item_nb)
+  let ings = gon.recipe.ingredients
 
   let list =
     e("ul", {className: "list-group", style: "max-width: 800px;"}, ings.map(ing =>

@@ -6,6 +6,7 @@ json.recipe do
     json.item_nb ing.item_nb
     json.raw ing.raw
     json.comment ing.comment
+    json.url recipe_recipe_ingredient_path(@recipe, ing)
     json.food ing.food, :id, :name
   end
 end
