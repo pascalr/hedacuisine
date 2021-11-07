@@ -7,8 +7,8 @@
   <span style="font-size: 1.4rem; font-weight: bold;"><%= title %></span>
   
   
-  <span id="prev-recipe-carrousel-<%= carrousel_id %>" class="my-tns-control"><%= image_tag "left_arrow.svg", size: "15x15" %></span>
-  <span id="next-recipe-carrousel-<%= carrousel_id %>" class="my-tns-control"><%= image_tag "right_arrow.svg", size: "15x15" %></span>
+  <span id="prev-recipe-carrousel-<%= carrousel_id %>" class="my-tns-control"><%= image_tag icon_path("left_arrow.svg"), size: "15x15" %></span>
+  <span id="next-recipe-carrousel-<%= carrousel_id %>" class="my-tns-control"><%= image_tag icon_path("right_arrow.svg"), size: "15x15" %></span>
 
   <div id="recipe-carrousel-<%= carrousel_id %>" class="recipe-carrousel" style="display: flex;">
     <% recipes.select(&:image).each do |recipe| %>

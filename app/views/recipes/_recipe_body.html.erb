@@ -25,7 +25,7 @@
     <div style="flex-grow: 1;"></div>
     <% if user_signed_in? %>
       <div class="dropdown" style="padding: 0 1rem;">
-        <%= image_tag asset_path("list-white.svg"), "data-bs-toggle": "dropdown", style: "cursor: pointer;" %>
+        <%= image_tag icon_path("list-white.svg"), "data-bs-toggle": "dropdown", style: "cursor: pointer;" %>
         <div class="dropdown-menu">
           <% if recipe.owned_by?(current_user) %>
             <%= link_to 'Modifier', edit_recipe_path(recipe), class: "dropdown-item" %>
@@ -76,7 +76,7 @@
           <%= scalable_detailed_ingredient(ing) %><%# "*" if foods_dup.include?(ing.food_id) %>
 
           <div class="dropdown" style="display: inline-block; float: right">
-             <%= image_tag asset_path("pencil-square.svg"), "data-bs-toggle": "dropdown", style: "cursor: pointer;" %>
+             <%= image_tag icon_path("pencil-square.svg"), "data-bs-toggle": "dropdown", style: "cursor: pointer;" %>
             <div class="dropdown-menu">
               <a class="dropdown-item disabled" href="#">Retirer</a>
               <% unless ing.food.substitutions.blank? %>
@@ -87,7 +87,7 @@
               <% end %>
             </div>
           </div>
-          <%# link_to image_tag(asset_path("pencil-square.svg")), "FIXME", style: "float: right;" %>
+          <%# link_to image_tag(icon_path("pencil-square.svg")), "FIXME", style: "float: right;" %>
         </li>
       <% end %>
     </ul>
@@ -101,12 +101,12 @@
       <div style="display: flex; justify-content: space-between; flex-grow: 1;">
         <div></div>
         <div style="flex-grow: 1;"></div>
-        <%= image_tag asset_path("right_arrow.svg"), style: "width: 1.5rem; margin-top: 4px;" %>
+        <%= image_tag icon_path("right_arrow.svg"), style: "width: 1.5rem; margin-top: 4px;" %>
         <div style="flex-grow: 1;"></div>
         <div style="margin-top: 4px;">
-          <%= image_tag(asset_path("minus-square.svg"), style: "cursor: pointer; width: 1.5rem;", id: "less-servings-button") %>
+          <%= image_tag(icon_path("minus-square.svg"), style: "cursor: pointer; width: 1.5rem;", id: "less-servings-button") %>
           <%= text_field_tag :servings, recipe.servings, style: "width: 9rem; display: inline; text-align: right;", class: "form-control", id: "servings-input-field", "data-initial": recipe.servings %>
-          <%= image_tag(asset_path("plus-square.svg"), style: "cursor: pointer; width: 1.5rem;", id: "more-servings-button") %>
+          <%= image_tag(icon_path("plus-square.svg"), style: "cursor: pointer; width: 1.5rem;", id: "more-servings-button") %>
         </div>
       </div>
     </div>

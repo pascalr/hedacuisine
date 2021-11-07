@@ -42,7 +42,7 @@ function renderIngList() {
   let recipe = gon.recipe
   let list = e("ul", {className: "list-group", style: "max-width: 800px;"}, recipe.ingredients.map(ing =>
     e("li", {className: "list-group-item"}, [
-      e("img", {src: gon.assetPath.arrowsMove, className: "handle"}),
+      e("img", {src: "/icons/arrows-move.svg", className: "handle"}),
       e("span", {style: "margin: 0 10px;"}, e("b", null, ing.item_nb+".")),
       ing.food.name
     ])

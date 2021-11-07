@@ -58,7 +58,6 @@ class RecipesController < ApplicationController
   end
 
   def edit
-    #@test = ActionController::Base.helpers.asset_path("arrows-move.svg")
     gon.jbuilder
     #gon.test = "Hello world!"
 #<span id="food-list" data-values="<%= Food.all.map(&:name) %>"></span>

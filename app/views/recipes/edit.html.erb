@@ -70,7 +70,7 @@
     <ul class="list-group" style="max-width: 800px;" data-controller="drag" data-drag-base-url="<%= recipe_path(@recipe) %>" data-handle=".handle">
       <% @recipe.recipe_ingredients.order(:item_nb).each do |ingredient| %>
         <li class="list-group-item" data-url="<%= recipe_recipe_ingredient_move_path(@recipe, ingredient) %>">
-          <%= image_tag asset_path("arrows-move.svg"), class: "handle" %>
+          <%= image_tag icon_path("arrows-move.svg"), class: "handle" %>
           <span style="margin: 0 10px;"><b><%= ingredient.item_nb %>.</b></span>
           <%= form_with(model: [@recipe, ingredient], local: true, class: "inline") do |form| %>
             <%= form.text_field :raw, size: "10" %>

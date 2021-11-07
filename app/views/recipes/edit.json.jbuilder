@@ -11,8 +11,3 @@ json.recipe do
 end
 
 json.foodList Food.all, :name
-
-json.assetPath do
-  #json.arrowsMove asset_path("arrows-move.svg")
-  json.arrowsMove ActionController::Base.helpers.asset_path("arrows-move.svg")
-end
