@@ -1,6 +1,7 @@
 json.recipe do
   json.id @recipe.id
   json.name @recipe.name
+  json.move_ing_url move_ing_recipe_path(@recipe)
   json.ingredients @recipe.ingredients.order(:item_nb) do |ing|
     json.id ing.id
     json.item_nb ing.item_nb

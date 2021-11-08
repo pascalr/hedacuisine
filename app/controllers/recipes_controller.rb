@@ -1,5 +1,5 @@
 class RecipesController < ApplicationController
-  before_action :set_recipe, only: [:do_process, :edit, :update, :destroy, :rate, :cheat, :validate, :view_body]
+  before_action :set_recipe, only: [:do_process, :edit, :update, :destroy, :rate, :cheat, :validate, :view_body, :move_ing]
   skip_before_action :authenticate_user!, only: [:show, :index]
   skip_before_action :only_admin!, only: [:show, :index]
 
@@ -14,6 +14,12 @@ class RecipesController < ApplicationController
     #@tags = Tag.order(priority: :desc)
     #@recipes = Recipe.order(:name).all
     #@items = Item.order(:name).all
+  end
+
+  def move_ing
+    ing = @recipe.ingredients.find(params[:ing_id])
+    ing.insert_at(params[:position].to_i)
+    head :ok
   end
 
   def validate

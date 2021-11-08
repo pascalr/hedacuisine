@@ -116,6 +116,7 @@ Rails.application.routes.draw do
         patch 'do_process', param: 'slug'
         patch 'cheat', param: 'slug'
         get 'validate'#, param: 'slug'
+        patch 'move_ing', param: 'slug'
       end
 
       collection do

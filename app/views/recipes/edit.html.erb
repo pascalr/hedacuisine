@@ -61,8 +61,6 @@
 
 <h2 class="h2">Ingrédients</h2>
 
-<div id="ing-editor"></div>
-
 <span id="food-list" data-values="<%= Food.all.map(&:name) %>"></span>
   
 <div>
@@ -217,7 +215,7 @@
 <div style="height: 5em;"></div>
 </div>
 
-<%= javascript_pack_tag "recipe_editor.js" %>
+<%# javascript_pack_tag "recipe_editor.js" %>
 <%# javascript_pack_tag "recipes_edit.js" %>
 <%= javascript_pack_tag "recipes_edit" %>
 <%= javascript_pack_tag "edit" %>

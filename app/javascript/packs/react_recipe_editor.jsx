@@ -54,7 +54,7 @@ const EditableIngredient = (props) => {
   }
 
   return (<>
-    <span style={{padding: "0 10px 0 0"}}><b>{ing.item_nb}.</b></span>
+    <span style={{padding: "0 10px 0 0"}}><b>{props.position}.</b></span>
     <input onBlur={updateIngQuantityCallback} type="text" size="8" defaultValue={ing.raw} style={{border: "none", borderBottom: "1px solid gray"}} />
     <span> de </span>{/*" de " ou bien " - " si la quantité n'a pas d'unité => _1_____ - oeuf*/}
     <a href={ing.food.url}>{ing.food.name}</a>
@@ -106,6 +106,15 @@ class RecipeEditor extends React.Component {
     const [reorderedItem] = updatedList.splice(droppedItem.source.index, 1);
     // Add dropped item
     updatedList.splice(droppedItem.destination.index, 0, reorderedItem);
+
+    console.log(droppedItem)
+
+    let data = new FormData()
+    //data.append('recipe_ingredient[raw]', this.value)
+    data.append('ing_id', droppedItem.draggableId)
+    data.append('position', droppedItem.destination.index+1)
+    // TODO: error: () => {}
+    Rails.ajax({url: gon.recipe.move_ing_url, type: 'PATCH', data: data})
     this.setState({ingIds: updatedList})
   }
   
@@ -118,11 +127,11 @@ class RecipeEditor extends React.Component {
   render() {
 
     const Ingredients = this.state.ingIds.map((id, index) =>
-      <Draggable key={id} draggableId={'ing-'+id} index={index}>
+      <Draggable key={id} draggableId={id.toString()} index={index}>
         {(provided) => (
           <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
             <li className="list-group-item">
-              {<EditableIngredient objId={id}/>}
+              {<EditableIngredient objId={id} position={index+1}/>}
             </li>
           </div>
         )}
@@ -152,7 +161,7 @@ class RecipeEditor extends React.Component {
     
     return (
       <div id="recipe-editor-v2">
-        <h2>Ingredients</h2>
+        <h2>Ingrédients</h2>
         {IngredientList}
         <img src="/icons/plus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}} onClick={this.addEmptyIng} />
       </div>
