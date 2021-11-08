@@ -28,13 +28,36 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Raleway&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
 
-
-/* When the input field gets focus, change its width to 100% */
-input[type=text]:focus {
-  width: 100%;
+// FIXME: Move this elsewhere, unless I use it for the top search too?
+.react-autosuggest__suggestion--first {
+  padding-top: 0.25rem;
+}
+.react-autosuggest__suggestion {
+  list-style-type: none;
+  padding: 0 0.25rem 0.25rem 0.25rem;
+  font-size: 1.1em;
+}
+.react-autosuggest__suggestions-list {
+  padding-left: 0.25em;
+}
+.react-autosuggest__container--open {
+  display: inline-block;
+  border: 1px solid black;
+  max-height: 300px;
+  overflow-y: scroll;
+  /*scrollbar-color: rebeccapurple green;*/
+  scrollbar-width: thin;
 }
 
-.btn-image {
+.plain-input {
+  border: none;
+  //font-family: inherit;
+  //font-size: inherit;
+  padding: 0;
+  width: auto;
+}
+
+.plain-btn, .btn-image {
 	background: none;
 	color: inherit;
 	border: none;

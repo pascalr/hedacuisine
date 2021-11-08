@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
-import PropTypes from 'prop-types'
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Autosuggest from 'react-autosuggest'
 
-// import style.css stylesheet
-//import './style.css'
+//import './style.css' // import style.css stylesheet
 
 function updateIngQuantityCallback() {
 }
@@ -29,8 +27,7 @@ const NewIngInputField = props => {
     }
   }, [newlyAdded]);
 
-  // Autosuggest will pass through all these props to the input.
-  const inputProps = {
+  const inputFieldProps = {
     placeholder: 'Sélectionner un aliment',
     value,
     onChange: (e, {newValue}) => setValue(newValue),
@@ -53,7 +50,6 @@ const NewIngInputField = props => {
           food.name.includes(inputValue)
         )
         // Order the matches by relevance?
-        console.log(matched)
         setSuggestions(matched)
       }}
       onSuggestionsClearRequested={() => setSuggestions([])}
@@ -64,7 +60,7 @@ const NewIngInputField = props => {
         </div>
       )}
       onSuggestionSelected={addIngredient}
-      inputProps={inputProps}
+      inputProps={inputFieldProps}
     />
   )
 
@@ -136,19 +132,27 @@ class RecipeEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      name: gon.recipe.name,
       ingIds: gon.recipe.ingredients.map(obj => obj.id),
       newIngs: [],
     };
 
     this.addEmptyIng = this.addEmptyIng.bind(this);
     this.handleDropIng = this.handleDropIng.bind(this);
+    this.updateName = this.updateName.bind(this);
   }
 
   //swapIng(dragIndex, dropIndex) {
   //  let swappedIngs = swapArrayPositions(this.state.ings, dragIndex, dropIndex);
   //  this.setState({ings: swappedIngs})
   //}
-  
+
+  updateName() {
+    let data = new FormData()
+    data.append('recipe[name]', this.state.name)
+    Rails.ajax({url: gon.recipe.url, type: 'PATCH', data: data})
+  }
+
   handleDropIng(droppedItem) {
     console.log('Handle drop ing')
     // Ignore drop outside droppable container
@@ -162,10 +166,8 @@ class RecipeEditor extends React.Component {
     console.log(droppedItem)
 
     let data = new FormData()
-    //data.append('recipe_ingredient[raw]', this.value)
     data.append('ing_id', droppedItem.draggableId)
     data.append('position', droppedItem.destination.index+1)
-    // TODO: error: () => {}
     Rails.ajax({url: gon.recipe.move_ing_url, type: 'PATCH', data: data})
     this.setState({ingIds: updatedList})
   }
@@ -212,7 +214,14 @@ class RecipeEditor extends React.Component {
       </ul>
     
     return (
-      <div id="recipe-editor-v2">
+      <div className="recipe-body">
+
+        <div className="bg-fill" style={{width: "100%", height: "0.5rem"}}></div>
+        <div className="d-flex bg-fill ps-3 w-100" style={{fontSize: "1.2rem", alignItems: "center", flexWrap: "wrap", fontWeight: "bold"}}>
+          <input className="bg-fill plain-input" type="text" value={this.state.name} onChange={(e) => this.setState({name: e.target.value})} onBlur={this.updateName} />
+        </div>
+        <div className="bg-fill" style={{width: "100%", height: "0.5rem"}}></div>
+
         <h2>Ingrédients</h2>
         {IngredientList}
         <img src="/icons/plus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}} onClick={this.addEmptyIng} />
@@ -220,18 +229,6 @@ class RecipeEditor extends React.Component {
     )
   }
 }
-
-//const Hello = props => (
-//  <div>Hello {props.name}!</div>
-//)
-//
-//Hello.defaultProps = {
-//  name: 'David'
-//}
-//
-//Hello.propTypes = {
-//  name: PropTypes.string
-//}
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(<RecipeEditor />, document.getElementById('root'))
