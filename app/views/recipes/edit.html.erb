@@ -55,6 +55,8 @@
 
 <br>
 
+<div id="root"></div>
+
 <% @units = Unit.all %>
 
 <h2 class="h2">Ingrédients</h2>
@@ -219,3 +221,5 @@
 <%# javascript_pack_tag "recipes_edit.js" %>
 <%= javascript_pack_tag "recipes_edit" %>
 <%= javascript_pack_tag "edit" %>
+
+<%= javascript_pack_tag 'react_recipe_editor' %>
