@@ -3,6 +3,10 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import Autosuggest from 'react-autosuggest'
+
+// import style.css stylesheet
+//import './style.css'
 
 function updateIngQuantityCallback() {
 }
@@ -10,27 +14,75 @@ function updateIngQuantityCallback() {
 function updateListOrder() {
 }
 
-// FIXME: I think I should use onChange instead of onBlur
-// And I think I should use value instead of defaultValue
-  
-//var elem = e("input", {type: "text", size: "20"})
-//new autocomplete({
-//  selector: elem,
-//  minChars: 1,
-//  source: function(term, suggest){
-//    term = term.toLowerCase();
-//    const choices = gon.foodList
-//    const matches = [];
-//    for (let i = 0; i < choices.length; i++)
-//        if (~choices[i].toLowerCase().indexOf(term)) matches.push(choices[i]);
-//    suggest(matches);
-//  }
-//})
-//return elem
+const NewIngInputField = props => {
 
-const NewIngInputField = props => (
-  <input type="text" size="20"/>
-)
+  const [value, setValue] = useState('')
+  const [suggestions, setSuggestions] = useState([])
+  const [newlyAdded, setNewlyAdded] = useState(true);
+
+  const inputField = useRef(null);
+
+  useEffect(() => {
+    if (newlyAdded) {
+      inputField.current.focus()
+      setNewlyAdded(false)
+    }
+  }, [newlyAdded]);
+
+  // Autosuggest will pass through all these props to the input.
+  const inputProps = {
+    placeholder: 'Sélectionner un aliment',
+    value,
+    onChange: (e, {newValue}) => setValue(newValue),
+    ref: inputField
+  };
+
+  const addIngredient = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
+    console.log('Add ingredient')
+    // TODO
+  }
+
+  return (
+    <Autosuggest
+      suggestions={suggestions}
+      onSuggestionsFetchRequested={({value}) => {
+        const inputValue = value.trim().toLowerCase();
+        const inputLength = inputValue.length;
+       
+        const matched = inputLength === 0 ? [] : gon.foodList.filter(food =>
+          food.name.includes(inputValue)
+        )
+        // Order the matches by relevance?
+        console.log(matched)
+        setSuggestions(matched)
+      }}
+      onSuggestionsClearRequested={() => setSuggestions([])}
+      getSuggestionValue={suggestion => suggestion.name}
+      renderSuggestion={(suggestion, { isHighlighted }) => (
+        <div style={{ background: isHighlighted ? '#4095bf' : 'white', color: isHighlighted ? 'white' : 'black' }}>
+          {suggestion.name}
+        </div>
+      )}
+      onSuggestionSelected={addIngredient}
+      inputProps={inputProps}
+    />
+  )
+
+  //return (
+  //  <Autocomplete
+  //    getItemValue={(item) => item.label}
+  //    items={gon.foodList}
+  //    renderItem={(item, isHighlighted) =>
+  //      <div style={{ background: isHighlighted ? '#4095bf' : 'white', color: isHighlighted ? 'white' : 'black' }}>
+  //        {item.label}
+  //      </div>
+  //    }
+  //    value={value}
+  //    onChange={(e) => setValue(e.target.value)}
+  //    onSelect={(val) => setValue(val)}
+  //  />
+  //)
+}
 
 const EditableIngredient = (props) => {
 
@@ -138,8 +190,8 @@ class RecipeEditor extends React.Component {
       </Draggable>
     )
 
-    const NewIngs = this.state.newIngs.map(ing =>
-      <li className="list-group-item">
+    const NewIngs = this.state.newIngs.map((ing, i) =>
+      <li key={i} className="list-group-item">
         <NewIngInputField/>
       </li>
     )

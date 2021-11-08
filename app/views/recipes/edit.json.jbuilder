@@ -16,4 +16,6 @@ json.recipe do
   end
 end
 
-json.foodList Food.all.map(&:name)
+#json.foodList Food.all.map(&:name)
+#json.foodList Food.all.map {|food| {label: food.name}}
+json.foodList Food.all.map {|food| {id: food.id, name: food.name.downcase}}
