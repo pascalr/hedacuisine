@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 
@@ -32,27 +32,25 @@ const NewIngInputField = props => (
   <input type="text" size="20"/>
 )
 
-const EditableIngredient = (ing) => {
+const EditableIngredient = (props) => {
 
-  const renderComment = (ing) => {
+  const ing = gon.recipe.ingredients.find(el => (el.id == props.objId))
 
-    const addComment = (evt) => {
-      //this.setState()
+  const [comment, setComment] = useState(ing.comment == "" ? null : ing.comment);
+  const [newlyAdded, setNewlyAdded] = useState(false);
+
+  const commentInput = useRef(null);
+
+  useEffect(() => {
+    if (newlyAdded) {
+      commentInput.current.focus()
+      setNewlyAdded(false)
     }
-
-    if (ing.comment == null) {
-      return (
-        <button className="btn-image" onClick={addComment}>
-          <img src="/icons/chat-left.svg" style={{marginLeft: "10px"}}/>
-        </button>
-      )
-    } else {
-      return (
-        <span style={{marginLeft: "10px"}}>
-          (<input type="text" size="20" defaultValue={ing.comment} style={{border: "none", borderBottom: "1px solid gray"}} />)
-        </span>
-      )
-    }
+  }, [newlyAdded]);
+      
+  const addComment = (evt) => {
+    setComment("")
+    setNewlyAdded(true)
   }
 
   return (<>
@@ -60,7 +58,23 @@ const EditableIngredient = (ing) => {
     <input onBlur={updateIngQuantityCallback} type="text" size="8" defaultValue={ing.raw} style={{border: "none", borderBottom: "1px solid gray"}} />
     <span> de </span>{/*" de " ou bien " - " si la quantité n'a pas d'unité => _1_____ - oeuf*/}
     <a href={ing.food.url}>{ing.food.name}</a>
-    {renderComment(ing)}
+    {(() => {
+      if (comment == null) {
+        return (
+          <button className="btn-image" onClick={addComment}>
+            <img src="/icons/chat-left.svg" style={{marginLeft: "10px"}}/>
+          </button>
+        )
+      } else {
+        const style = {border: "none", borderBottom: "1px solid gray", transition: "width 0.4s ease-in-out"}
+        style.width = newlyAdded ? "0px" : "200px"
+        return (
+          <div style={{display: "inline-block", marginLeft: "10px"}}>
+            (<input type="text" defaultValue={comment} style={style} ref={commentInput} />)
+          </div>
+        )
+      }
+    })()}
     <a href={ing.url} data-confirm="Are you sure?" data-method="delete"><img src="/icons/x-lg.svg" style={{float: "right"}}/></a>
   </>)
 }
@@ -70,7 +84,7 @@ class RecipeEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      ings: gon.recipe.ingredients,
+      ingIds: gon.recipe.ingredients.map(obj => obj.id),
       newIngs: [],
     };
 
@@ -87,12 +101,12 @@ class RecipeEditor extends React.Component {
     console.log('Handle drop ing')
     // Ignore drop outside droppable container
     if (!droppedItem.destination) return;
-    var updatedList = [...this.state.ings];
+    var updatedList = [...this.state.ingIds];
     // Remove dragged item
     const [reorderedItem] = updatedList.splice(droppedItem.source.index, 1);
     // Add dropped item
     updatedList.splice(droppedItem.destination.index, 0, reorderedItem);
-    this.setState({ings: updatedList})
+    this.setState({ingIds: updatedList})
   }
   
   addEmptyIng() {
@@ -103,12 +117,12 @@ class RecipeEditor extends React.Component {
 
   render() {
 
-    const Ingredients = this.state.ings.map((ing, index) =>
-      <Draggable key={ing.id} draggableId={'ing-'+ing.id} index={index}>
+    const Ingredients = this.state.ingIds.map((id, index) =>
+      <Draggable key={id} draggableId={'ing-'+id} index={index}>
         {(provided) => (
           <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
             <li className="list-group-item">
-              {<EditableIngredient {...ing}/>}
+              {<EditableIngredient objId={id}/>}
             </li>
           </div>
         )}
