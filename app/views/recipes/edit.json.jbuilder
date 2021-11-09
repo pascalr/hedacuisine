@@ -16,6 +16,7 @@ json.recipe do
       json.url food_path(ing.food)
     end
   end
+  json.tools @recipe.tools.inject({}) {|tools_by_id, tool| tools_by_id[tool.id] = {name: tool.name}; tools_by_id }
 end
 
 json.units Unit.all, :name, :value, :is_weight, :is_volume, :show_fraction

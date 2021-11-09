@@ -188,6 +188,7 @@ class RecipeEditor extends React.Component {
     this.state = {
       name: gon.recipe.name,
       ingIds: gon.recipe.ingredients.map(obj => obj.id),
+      toolIds: Object.keys(gon.recipe.tools),
       showAddNewIng: false
     };
     this.handleDropIng = this.handleDropIng.bind(this);
@@ -267,6 +268,12 @@ class RecipeEditor extends React.Component {
         </DragDropContext>
         {NewIng}
       </ul>
+
+    const Tools = this.state.toolIds.map(id => (
+      <li key={id}>
+        {gon.recipe.tools[id].name}
+      </li>
+    ))
     
     return (
       <div className="recipe-body">
@@ -282,9 +289,10 @@ class RecipeEditor extends React.Component {
         <img src={this.state.showAddNewIng ? "/icons/minus-circle.svg" : "/icons/plus-circle.svg"} style={{width: "2.5rem", padding: "0.5rem"}}
              onClick={() => this.setState({showAddNewIng: !this.state.showAddNewIng})} />
       
-
         <h2>Outils</h2>
-        <img src="/icons/plus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}} />
+        <ul style={{fontSize: "1.1rem"}}>
+          {Tools}
+        </ul>
         
         <h2>Informations</h2>
         
