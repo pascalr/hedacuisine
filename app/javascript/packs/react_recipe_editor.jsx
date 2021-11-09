@@ -125,7 +125,7 @@ const EditableIngredientComment = (props) => {
       </button>
     )
   } else {
-    const style = {border: "none", borderBottom: "1px solid gray", transition: "width 0.4s ease-in-out"}
+    const style = {border: "none", borderBottom: "1px dashed gray", transition: "width 0.4s ease-in-out"}
     style.width = visual == VisualState.EXPANDED ? "200px" : "0px"
     return (
       <div style={{display: "inline-block", marginLeft: "10px"}}>
@@ -177,6 +177,15 @@ const EditableIngredient = (props) => {
     </Row>
   )
   //<a href={ing.url} data-confirm="Are you sure?" data-method="delete"><img src="/icons/x-lg.svg" style={{float: "right"}}/></a>
+}
+
+const TextInputField = ({model, field}) => {
+  return (
+    <div className="field">
+      <b><label htmlFor={field}>{field}</label></b>{': '}
+      <input type="text" defaultValue={gon.recipe[field]} name={model+"["+field+"]"} id={field} />
+    </div>
+  )
 }
 
 //<img src="/icons/plus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}} />
@@ -295,6 +304,13 @@ class RecipeEditor extends React.Component {
         </ul>
         
         <h2>Informations</h2>
+
+        <TextInputField model="recipe" field="base_recipe_id"></TextInputField>
+        <TextInputField model="recipe" field="preparation_time"></TextInputField>
+        <TextInputField model="recipe" field="cooking_time"></TextInputField>
+        <TextInputField model="recipe" field="total_time"></TextInputField>
+        <TextInputField model="recipe" field="raw_servings"></TextInputField>
+        <div>main_ingredient_id</div>
         
         <h2>Instructions</h2>
         

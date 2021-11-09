@@ -3,6 +3,11 @@ json.recipe do
   json.url recipe_path(@recipe)
   json.new_ingredient_url recipe_recipe_ingredients_path(@recipe)
   json.name @recipe.name
+  json.base_recipe_id @recipe.base_recipe_id
+  json.preparation_time @recipe.preparation_time
+  json.cooking_time @recipe.cooking_time
+  json.total_time @recipe.total_time
+  json.raw_servings @recipe.raw_servings
   json.move_ing_url move_ing_recipe_path(@recipe)
   json.ingredients @recipe.ingredients.order(:item_nb) do |ing|
     json.id ing.id
