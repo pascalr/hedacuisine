@@ -84,21 +84,8 @@ const NewIngInputField = props => {
 
 // props: {comment}
 const EditableIngredientComment = (props) => {
-  
-  // TODO: Put comment into it's own container.
-  //onBlur: () => {
-  //  console.log('On blur')
-  //  if (value == "") {
-  //    setValue(null)
-  //  }
-  //},
-}
 
-const EditableIngredient = (props) => {
-
-  const ing = gon.recipe.ingredients.find(el => (el.id == props.objId))
-
-  const [comment, setComment] = useState(ing.comment == "" ? null : ing.comment);
+  const [comment, setComment] = useState(props.comment == "" ? null : props.comment);
   const [newlyAdded, setNewlyAdded] = useState(false);
 
   const commentInput = useRef(null);
@@ -114,6 +101,33 @@ const EditableIngredient = (props) => {
     setComment("")
     setNewlyAdded(true)
   }
+  
+  const updateComment = () => {
+    let data = new FormData()
+    data.append('recipe_ingredient[comment]', comment)
+    Rails.ajax({url: props.ingUrl, type: 'PATCH', data: data})
+  }
+
+  if (comment == null) {
+    return (
+      <button className="btn-image" onClick={addComment}>
+        <img src="/icons/chat-left.svg" style={{marginLeft: "10px"}}/>
+      </button>
+    )
+  } else {
+    const style = {border: "none", borderBottom: "1px solid gray", transition: "width 0.4s ease-in-out"}
+    style.width = newlyAdded ? "0px" : "200px"
+    return (
+      <div style={{display: "inline-block", marginLeft: "10px"}}>
+        (<input type="text" value={comment} style={style} ref={commentInput} onChange={(e) => setComment(e.target.value)} onBlur={updateComment} />)
+      </div>
+    )
+  }
+}
+
+const EditableIngredient = (props) => {
+
+  const ing = gon.recipe.ingredients.find(el => (el.id == props.objId))
 
   return (
     <Row alignItems="center" gap="5px">
@@ -121,23 +135,7 @@ const EditableIngredient = (props) => {
       <input onBlur={updateIngQuantityCallback} type="text" size="8" defaultValue={ing.raw} style={{border: "none", borderBottom: "1px dashed #444"}} />
       de{/*" de " ou bien " - " si la quantité n'a pas d'unité => _1_____ - oeuf*/}
       <a href={ing.food.url}>{ing.food.name}</a>
-      {(() => {
-        if (comment == null) {
-          return (
-            <button className="btn-image" onClick={addComment}>
-              <img src="/icons/chat-left.svg" style={{marginLeft: "10px"}}/>
-            </button>
-          )
-        } else {
-          const style = {border: "none", borderBottom: "1px solid gray", transition: "width 0.4s ease-in-out"}
-          style.width = newlyAdded ? "0px" : "200px"
-          return (
-            <div style={{display: "inline-block", marginLeft: "10px"}}>
-              (<input type="text" defaultValue={comment} style={style} ref={commentInput} />)
-            </div>
-          )
-        }
-      })()}
+      <EditableIngredientComment ingUrl={ing.url} comment={ing.comment} />
       <Block flexGrow="1" />
       <a href={ing.url} data-confirm="Are you sure?" data-method="delete"><img src="/icons/x-lg.svg" style={{float: "right"}}/></a>
     </Row>
