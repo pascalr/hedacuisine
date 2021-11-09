@@ -13,6 +13,4 @@
   <meta property="og:description" content="<%= description %>">
 <% end %>
 
-<span id="unit-list" data-values="<%= Unit.all.map {|u| u.attributes.slice('name', 'value', 'is_weight', 'is_volume', 'show_fraction')}.to_json %>"/>
-
 <%= render partial: "recipes/recipe_full" %>

@@ -44,9 +44,10 @@ class RecipesController < ApplicationController
   end
 
   def show
+    @recipe = Recipe.includes(recipe_ingredients: {food: [:direct_substitutions, :indirect_substitutions]}).find(params[:slug].split('-')[0])
+    gon.jbuilder
     # FIXME: This allows any user to read any recipe. Ensure permission
     # if I allow private recipes.
-    @recipe = Recipe.includes(recipe_ingredients: {food: [:direct_substitutions, :indirect_substitutions]}).find(params[:slug].split('-')[0])
     #redirect_to group_path(id: @recipe.group.id, recipe_id: @recipe.id) if @recipe.group
   end
 

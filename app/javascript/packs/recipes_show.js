@@ -1,4 +1,52 @@
 // https://stackoverflow.com/questions/25888963/min-by-max-by-equivalent-functions-in-javascript
+
+//export default class Quantity {
+class Quantity {
+
+  constructor(args = {}) {
+    this.raw = args.raw
+    this.nb = null
+    this.label = null
+
+    this.ml = null
+    this.grams = null
+    this.total = null
+
+    this.unit = null
+
+    if (this.raw != null) {
+      let s = this.raw.match(/^\d+( \d)?([,.\/]\d+)?/g)
+      let qty_s = s[0]
+      this.label = this.raw.substr(qty_s.length).trim()
+      this.nb = Quantity.parseFloatOrFraction(qty_s)
+      this.unit = gon.units.find(unit => unit.name == this.label)
+    }
+  }
+
+  static parseFractionFloat(str) {
+    var split = str.split('/')
+    return split[0]/split[1]
+  }
+
+  static parseFloatOrFraction(str) {
+
+    if (!str) {return null;}
+    var qty_s = str.trim()
+    if (qty_s.includes("/")) {
+      if (qty_s.includes(" ")) {
+        var s = qty_s.split(' ')
+        var whole = s[0]
+        var fraction = s[1]
+        return parseInt(whole, 10) + parseFractionFloat(fraction)
+      } else {
+        return parseFractionFloat(qty_s)
+      }
+    } else {
+      return parseFloat(qty_s)
+    }
+  }
+}
+
 function minBy(array, fn) { 
   return extremumBy(array, fn, Math.min); 
 };
@@ -20,16 +68,6 @@ function extremumBy(array, pluck, extremum) {
 
 function translated(str) {
   return str
-}
-
-function unitByName(name) {
-  const units = JSON.parse(document.getElementById("unit-list").dataset.values)
-  return units.find(unit => unit['name'] == name)
-}
-
-function ingredientById(id) {
-  const ings = JSON.parse(document.getElementById("ingredient-list").dataset.values)
-  return ings[id]
 }
 
 function toGrams(val, unit, unit_weight, density) {
@@ -88,9 +126,9 @@ function prettyIngredient(ing) {
 
   if (ing.dataset.raw == null || ing.dataset.raw == "") {return linkSingular}
 
-  var s = parseQuantityFloatAndLabel(ing.dataset.raw)
-  var unit = unitByName(s[1])
-  var qty = s[0] * window.scale
+  var quantity = new Quantity({raw: ing.dataset.raw})
+  var unit = quantity.unit
+  var qty = quantity.nb * window.scale
   if (unit) {qty *= unit.value}
 
   if (unit && unit.is_weight) {
@@ -117,9 +155,9 @@ function prettyDetailedIngredient(ing) {
   
   var r = prettyIngredient(ing)
   if (ing.dataset.raw == null || ing.dataset.raw == "") {return r}
-
-  var s = parseQuantityFloatAndLabel(ing.dataset.raw)
-  var unit = unitByName(s[1])
+  
+  var quantity = new Quantity({raw: ing.dataset.raw})
+  var unit = quantity.unit
   var grams = ing.dataset.grams * window.scale
   var ml = ing.dataset.ml * window.scale
   
@@ -143,35 +181,6 @@ function parseFractionFloat(str) {
   return split[0]/split[1]
 }
 
-function parseQuantityFloat(str) {
-
-  if (!str) {return null;}
-  var qty_s = str.trim()
-  if (qty_s.includes("/")) {
-    if (qty_s.includes(" ")) {
-      var s = qty_s.split(' ')
-      var whole = s[0]
-      var fraction = s[1]
-      return parseInt(whole, 10) + parseFractionFloat(fraction)
-    } else {
-      return parseFractionFloat(qty_s)
-    }
-  } else {
-    return parseFloat(qty_s)
-  }
-}
-
-function parseQuantityFloatAndLabel(raw) {
-
-  if (!raw) {return null}
-  var s = raw.match(/^\d+( \d)?([,.\/]\d+)?/g)
-  var qty_s = s[0]
-  var label = raw.substr(qty_s.length).trim()
-  //console.log("Qty_s: " + qty_s)
-  //console.log("Label: " + label)
-  return [parseQuantityFloat(qty_s), label]
-}
-
 function calcScale(inc) {
   const servings = document.getElementById("servings-quantity-value");
   window.currentServings = window.currentServings + inc
@@ -180,10 +189,9 @@ function calcScale(inc) {
 
 function scaleRaw(raw) {
   if (!raw) {return ""}
-  var s = parseQuantityFloatAndLabel(raw)
-  var f = s[0]; var label = s[1]
-  var v = prettyFraction(f*window.scale)
-  if (label) {return v + " " + label}
+  var quantity = new Quantity({raw: raw})
+  var v = prettyFraction(quantity.nb*window.scale)
+  if (quantity.label) {return v + " " + quantity.label}
   return v
 }
 
@@ -306,32 +314,29 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
   
   moreButton.addEventListener('click', event => {
-    var f0 = parseQuantityFloatAndLabel(servingsField.dataset.initial)[0]
-    var s = parseQuantityFloatAndLabel(servingsField.value)
-    var f = s[0]; var label = s[1]
-    var v = getIncValue(f, f0, true)
-    servingsField.value = prettyFraction(v) + " " + label
+    var f0 = new Quantity({raw: servingsField.dataset.initial}).nb
+    var qty = new Quantity({raw: servingsField.value})
+    var v = getIncValue(qty.nb, f0, true)
+    servingsField.value = prettyFraction(v) + " " + qty.label
     var event = new Event('change');
     event.forced = true
     servingsField.dispatchEvent(event);
   })
   
   lessButton.addEventListener('click', event => {
-    var f0 = parseQuantityFloatAndLabel(servingsField.dataset.initial)[0]
-    var s = parseQuantityFloatAndLabel(servingsField.value)
-    var f = s[0]; var label = s[1]
-    var v = getIncValue(f, f0, false)
-    servingsField.value = prettyFraction(v) + " " + label
+    var f0 = new Quantity({raw: servingsField.dataset.initial}).nb
+    var qty = new Quantity({raw: servingsField.value})
+    var v = getIncValue(qty.nb, f0, false)
+    servingsField.value = prettyFraction(v) + " " + qty.label
     var event = new Event('change');
     event.forced = true
     servingsField.dispatchEvent(event);
   })
   
   inField.addEventListener('change', event => {
-    var s = parseQuantityFloatAndLabel(inField.value)
-    var f = s[0]; var unit = unitByName(s[1])
-    const inIng = ingredientById(inIngs.value);
-    var grams = toGrams(f, unit, inIng.unit_weight, inIng.density)
+    var qty = new Quantity({raw: inField.value})
+    const inIng = gon.ingredients[inIngs.value]
+    var grams = toGrams(qty.nb, qty.unit, inIng.unit_weight, inIng.density)
     window.scale = grams / inIng.grams
     //console.log(f)
     //console.log(grams)
@@ -346,11 +351,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
   })
   
   servingsField.addEventListener('change', event => {
-    var s0 = parseQuantityFloatAndLabel(servingsField.dataset.initial)
-    var f0 = s0[0]; var label = s0[1]
-    var f = parseQuantityFloatAndLabel(servingsField.value)[0]
-    servingsField.value = (event.forced ? prettyFraction(f) : f.toString()) + " " + label
-    window.scale = f / f0
+    var qty0 = new Quantity({raw: servingsField.dataset.initial})
+    var f = new Quantity({raw: servingsField.value}).nb
+    servingsField.value = (event.forced ? prettyFraction(f) : f.toString()) + " " + qty0.label
+    window.scale = f / qty0.nb
     //console.log(f)
     //console.log(f0)
     //console.log(scale)
@@ -363,7 +367,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   })
   
   inIngs.addEventListener('change', event => {
-    const inIng = ingredientById(inIngs.value);
+    const inIng = gon.ingredients[inIngs.value]
     inField.value = scaleRaw(inIng.raw)
   })
   

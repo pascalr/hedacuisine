@@ -18,6 +18,7 @@ json.recipe do
   end
 end
 
+json.units Unit.all, :name, :value, :is_weight, :is_volume, :show_fraction
 
 #json.foodList Food.all.map(&:name)
 #json.foodList Food.all.map {|food| {label: food.name}}
