@@ -87,6 +87,7 @@ const EditableIngredientComment = (props) => {
 
   const [comment, setComment] = useState(props.comment == "" ? null : props.comment);
   const [newlyAdded, setNewlyAdded] = useState(false);
+  const [showInput, setShowInput] = useState(comment && comment != '');
 
   const commentInput = useRef(null);
 
@@ -103,6 +104,7 @@ const EditableIngredientComment = (props) => {
   }
   
   const updateComment = () => {
+    if (comment == props.comment) {return;}
     let data = new FormData()
     data.append('recipe_ingredient[comment]', comment)
     Rails.ajax({url: props.ingUrl, type: 'PATCH', data: data})
@@ -167,6 +169,7 @@ class RecipeEditor extends React.Component {
   }
 
   updateName() {
+    if (this.name == gon.recipe.name) {return;}
     let data = new FormData()
     data.append('recipe[name]', this.state.name)
     Rails.ajax({url: gon.recipe.url, type: 'PATCH', data: data})
