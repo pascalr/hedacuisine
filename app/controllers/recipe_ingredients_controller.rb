@@ -3,11 +3,14 @@ class RecipeIngredientsController < ApplicationController
   before_action :set_recipe_ingredient, only: [:update, :destroy, :move]
 
   def create
-    recipe_ingredient = @recipe.recipe_ingredients.build
-    recipe_ingredient.food = Food.find_by!(name: params[:food_name])
-    recipe_ingredient.assign_attributes(recipe_ingredient_params)
-    recipe_ingredient.save!
-    redirect_back fallback_location: recipe_path(@recipe)
+    ing = @recipe.recipe_ingredients.build
+    ing.food = Food.find_by!(name: params[:food_name])
+    ing.assign_attributes(recipe_ingredient_params)
+    ing.save!
+    respond_to do |format|
+      format.js {render json: {id: ing.id, food: {url: food_path(ing.food), name: ing.food.name}, url: recipe_recipe_ingredient_path(@recipe, ing)}}
+      format.html {redirect_back fallback_location: recipe_path(@recipe)}
+    end
   end
 
   def move

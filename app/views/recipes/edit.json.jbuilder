@@ -1,6 +1,7 @@
 json.recipe do
   json.id @recipe.id
   json.url recipe_path(@recipe)
+  json.new_ingredient_url recipe_recipe_ingredients_path(@recipe)
   json.name @recipe.name
   json.move_ing_url move_ing_recipe_path(@recipe)
   json.ingredients @recipe.ingredients.order(:item_nb) do |ing|
@@ -16,6 +17,7 @@ json.recipe do
     end
   end
 end
+
 
 #json.foodList Food.all.map(&:name)
 #json.foodList Food.all.map {|food| {label: food.name}}

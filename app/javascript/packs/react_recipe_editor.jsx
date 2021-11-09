@@ -35,8 +35,15 @@ const NewIngInputField = props => {
   };
 
   const addIngredient = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
-    console.log('Add ingredient')
-    // TODO
+    let data = new FormData()
+    data.append('recipe_ingredient[food_id]', suggestion.id)
+    Rails.ajax({url: gon.recipe.new_ingredient_url, type: 'POST', data: data, success: (raw) => {
+      const response = JSON.parse(raw)
+      //gon.recipe.ingredients.push({url: response.url, food: {name: response.food_name, url: response.food_url}})
+      gon.recipe.ingredients.push(response)
+      window.recipe_editor.current.addIng(response.id)
+      setValue('')
+    }})
   }
 
   return (
@@ -63,21 +70,6 @@ const NewIngInputField = props => {
       inputProps={inputFieldProps}
     />
   )
-
-  //return (
-  //  <Autocomplete
-  //    getItemValue={(item) => item.label}
-  //    items={gon.foodList}
-  //    renderItem={(item, isHighlighted) =>
-  //      <div style={{ background: isHighlighted ? '#4095bf' : 'white', color: isHighlighted ? 'white' : 'black' }}>
-  //        {item.label}
-  //      </div>
-  //    }
-  //    value={value}
-  //    onChange={(e) => setValue(e.target.value)}
-  //    onSelect={(val) => setValue(val)}
-  //  />
-  //)
 }
 
 const EditableIngredient = (props) => {
@@ -136,7 +128,6 @@ class RecipeEditor extends React.Component {
       ingIds: gon.recipe.ingredients.map(obj => obj.id),
       newIngs: [],
     };
-
     this.addEmptyIng = this.addEmptyIng.bind(this);
     this.handleDropIng = this.handleDropIng.bind(this);
     this.updateName = this.updateName.bind(this);
@@ -146,6 +137,10 @@ class RecipeEditor extends React.Component {
   //  let swappedIngs = swapArrayPositions(this.state.ings, dragIndex, dropIndex);
   //  this.setState({ings: swappedIngs})
   //}
+
+  addIng(id) {
+    this.setState({ingIds: [...this.state.ingIds, id]})
+  }
 
   updateName() {
     let data = new FormData()
@@ -225,11 +220,22 @@ class RecipeEditor extends React.Component {
         <h2>Ingrédients</h2>
         {IngredientList}
         <img src="/icons/plus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}} onClick={this.addEmptyIng} />
+
+        <h2>Outils</h2>
+        <img src="/icons/plus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}} />
+        
+        <h2>Informations</h2>
+        
+        <h2>Instructions</h2>
+        
+        <h2>Références</h2>
+
       </div>
     )
   }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  ReactDOM.render(<RecipeEditor />, document.getElementById('root'))
+  window.recipe_editor = React.createRef()
+  ReactDOM.render(<RecipeEditor ref={window.recipe_editor}/>, document.getElementById('root'))
 })
