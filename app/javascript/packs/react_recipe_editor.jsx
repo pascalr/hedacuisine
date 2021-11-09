@@ -47,7 +47,8 @@ const NewIngInputField = props => {
       //gon.recipe.ingredients.push({url: response.url, food: {name: response.food_name, url: response.food_url}})
       gon.recipe.ingredients.push(response)
       window.recipe_editor.current.addIng(response.id)
-      setValue('')
+      setValue(''); setQty('');
+      quantityInputField.current.focus()
     }})
   }
 
