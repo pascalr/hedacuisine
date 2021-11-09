@@ -6,6 +6,10 @@ import Autosuggest from 'react-autosuggest'
 
 import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from 'jsxstyle'
 
+import Popover from '@mui/material/Popover';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+
 //import './style.css' // import style.css stylesheet
 
 function updateIngQuantityCallback() {
@@ -133,7 +137,18 @@ const EditableIngredientComment = (props) => {
 
 const EditableIngredient = (props) => {
 
+  // For popover. See https://mui.com/components/popover/
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
   const ing = gon.recipe.ingredients.find(el => (el.id == props.objId))
+  if (ing == null) {return null;}
+
+  const removeIngredient = (evt) => {
+    Rails.ajax({url: ing.url, type: 'DELETE', success: (raw) => {
+      window.recipe_editor.current.removeIng(ing.id)
+      gon.recipe.ingredients = gon.recipe.ingredients.filter(item => item.id != ing.id);
+    }})
+  }
 
   return (
     <Row alignItems="center" gap="5px">
@@ -143,9 +158,25 @@ const EditableIngredient = (props) => {
       <a href={ing.food.url}>{ing.food.name}</a>
       <EditableIngredientComment ingUrl={ing.url} comment={ing.comment} />
       <Block flexGrow="1" />
-      <a href={ing.url} data-confirm="Are you sure?" data-method="delete"><img src="/icons/x-lg.svg" style={{float: "right"}}/></a>
+      <button aria-describedby={'delete-popover'} className="btn-image" onClick={(evt) => setAnchorEl(evt.currentTarget)}>
+        <img src="/icons/x-lg.svg"/>
+      </button>
+      <Popover
+        id='delete-popover'
+        open={anchorEl != null}
+        anchorEl={anchorEl}
+        onClose={() => setAnchorEl(null)}
+        anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
+        transformOrigin={{vertical: 'bottom', horizontal: 'right'}}
+      >
+        <Typography sx={{ p: 2 }}>
+          Je veux enlever cet ingrédient?
+          <button className="btn btn-primary" style={{marginLeft: "10px"}} onClick={removeIngredient}>Oui</button>
+        </Typography>
+      </Popover>
     </Row>
   )
+  //<a href={ing.url} data-confirm="Are you sure?" data-method="delete"><img src="/icons/x-lg.svg" style={{float: "right"}}/></a>
 }
 
 //<img src="/icons/plus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}} />
@@ -170,6 +201,10 @@ class RecipeEditor extends React.Component {
 
   addIng(id) {
     this.setState({ingIds: [...this.state.ingIds, id]})
+  }
+  removeIng(id) {
+    let ids = this.state.ingIds.filter(item => item != id)
+    this.setState({ingIds: ids})
   }
 
   updateName() {
