@@ -82,46 +82,50 @@ const NewIngInputField = props => {
   )
 }
 
+const VisualState = {
+  CLOSED: 1,
+  EXPANDING: 2,
+  EXPANDED: 3,
+}
+
 // props: {comment}
 const EditableIngredientComment = (props) => {
 
-  const [comment, setComment] = useState(props.comment == "" ? null : props.comment);
-  const [newlyAdded, setNewlyAdded] = useState(false);
-  const [showInput, setShowInput] = useState(comment && comment != '');
+  const [comment, setComment] = useState(props.comment);
+  const [visual, setVisual] = useState(comment && comment != '' ? VisualState.EXPANDED : VisualState.CLOSED);
 
   const commentInput = useRef(null);
 
   useEffect(() => {
-    if (newlyAdded) {
+    if (visual == VisualState.EXPANDING) {
+      setVisual(VisualState.EXPANDED)
       commentInput.current.focus()
-      setNewlyAdded(false)
     }
-  }, [newlyAdded]);
-      
-  const addComment = (evt) => {
-    setComment("")
-    setNewlyAdded(true)
-  }
-  
+  }, [visual]);
+
   const updateComment = () => {
-    if (comment == props.comment) {return;}
-    let data = new FormData()
-    data.append('recipe_ingredient[comment]', comment)
-    Rails.ajax({url: props.ingUrl, type: 'PATCH', data: data})
+    if (comment != props.comment) {
+      let data = new FormData()
+      data.append('recipe_ingredient[comment]', comment)
+      Rails.ajax({url: props.ingUrl, type: 'PATCH', data: data})
+    }
+    if (!comment || comment == '') {
+      setVisual(VisualState.CLOSED)
+    }
   }
 
-  if (comment == null) {
+  if (visual == VisualState.CLOSED) {
     return (
-      <button className="btn-image" onClick={addComment}>
+      <button className="btn-image" onClick={() => setVisual(VisualState.EXPANDING)}>
         <img src="/icons/chat-left.svg" style={{marginLeft: "10px"}}/>
       </button>
     )
   } else {
     const style = {border: "none", borderBottom: "1px solid gray", transition: "width 0.4s ease-in-out"}
-    style.width = newlyAdded ? "0px" : "200px"
+    style.width = visual == VisualState.EXPANDED ? "200px" : "0px"
     return (
       <div style={{display: "inline-block", marginLeft: "10px"}}>
-        (<input type="text" value={comment} style={style} ref={commentInput} onChange={(e) => setComment(e.target.value)} onBlur={updateComment} />)
+        (<input type="text" value={comment || ''} style={style} ref={commentInput} onChange={(e) => setComment(e.target.value)} onBlur={updateComment} />)
       </div>
     )
   }
