@@ -8,7 +8,7 @@ class RecipeIngredientsController < ApplicationController
     ing.assign_attributes(recipe_ingredient_params)
     ing.save!
     respond_to do |format|
-      format.js {render json: {id: ing.id, food: {url: food_path(ing.food), name: ing.food.name}, url: recipe_recipe_ingredient_path(@recipe, ing)}}
+      format.js {render json: {id: ing.id, raw: ing.raw, food: {url: food_path(ing.food), name: ing.food.name}, url: recipe_recipe_ingredient_path(@recipe, ing)}}
       format.html {redirect_back fallback_location: recipe_path(@recipe)}
     end
   end

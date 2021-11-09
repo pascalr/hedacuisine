@@ -17,14 +17,16 @@ function updateListOrder() {
 const NewIngInputField = props => {
 
   const [value, setValue] = useState('')
+  const [qty, setQty] = useState('')
   const [suggestions, setSuggestions] = useState([])
   const [newlyAdded, setNewlyAdded] = useState(true);
 
-  const inputField = useRef(null);
+  //const foodInputField = useRef(null);
+  const quantityInputField = useRef(null);
 
   useEffect(() => {
     if (newlyAdded) {
-      inputField.current.focus()
+      quantityInputField.current.focus()
       setNewlyAdded(false)
     }
   }, [newlyAdded]);
@@ -33,11 +35,12 @@ const NewIngInputField = props => {
     placeholder: 'Sélectionner un aliment',
     value,
     onChange: (e, {newValue}) => setValue(newValue),
-    ref: inputField,
+    //ref: foodInputField,
   };
 
   const addIngredient = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
     let data = new FormData()
+    data.append('recipe_ingredient[raw]', qty)
     data.append('recipe_ingredient[food_id]', suggestion.id)
     Rails.ajax({url: gon.recipe.new_ingredient_url, type: 'POST', data: data, success: (raw) => {
       const response = JSON.parse(raw)
@@ -49,8 +52,8 @@ const NewIngInputField = props => {
   }
 
   return (
-    <Row gap="7px">
-      <input type="text" size="8" style={{border: "none", borderBottom: "1px dashed #444"}} />
+    <Row gap="7px" align-items="flex-start">
+      <input type="text" size="8" style={{border: "none", borderBottom: "1px dashed #444"}} value={qty} onChange={(e) => setQty(e.target.value)} ref={quantityInputField} />
       de
       <Autosuggest
         suggestions={suggestions}
@@ -144,9 +147,8 @@ class RecipeEditor extends React.Component {
     this.state = {
       name: gon.recipe.name,
       ingIds: gon.recipe.ingredients.map(obj => obj.id),
-      newIngs: [],
+      showAddNewIng: false
     };
-    this.addEmptyIng = this.addEmptyIng.bind(this);
     this.handleDropIng = this.handleDropIng.bind(this);
     this.updateName = this.updateName.bind(this);
   }
@@ -184,12 +186,6 @@ class RecipeEditor extends React.Component {
     Rails.ajax({url: gon.recipe.move_ing_url, type: 'PATCH', data: data})
     this.setState({ingIds: updatedList})
   }
-  
-  addEmptyIng() {
-    this.setState(prevState => {
-      return {newIngs: [...prevState.newIngs, {}]}
-    })
-  }
 
   render() {
 
@@ -205,8 +201,8 @@ class RecipeEditor extends React.Component {
       </Draggable>
     )
 
-    const NewIngs = this.state.newIngs.map((ing, i) =>
-      <li key={i} className="list-group-item" style={{height: "37.2px"}}>
+    const NewIng = !this.state.showAddNewIng ? null : (
+      <li key={99999} className="list-group-item" style={{height: "37.2px"}}>
         <NewIngInputField/>
       </li>
     )
@@ -223,7 +219,7 @@ class RecipeEditor extends React.Component {
             )}
           </Droppable>
         </DragDropContext>
-        {NewIngs}
+        {NewIng}
       </ul>
     
     return (
@@ -237,7 +233,9 @@ class RecipeEditor extends React.Component {
 
         <h2>Ingrédients</h2>
         {IngredientList}
-        <img src="/icons/plus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}} onClick={this.addEmptyIng} />
+        <img src={this.state.showAddNewIng ? "/icons/minus-circle.svg" : "/icons/plus-circle.svg"} style={{width: "2.5rem", padding: "0.5rem"}}
+             onClick={() => this.setState({showAddNewIng: !this.state.showAddNewIng})} />
+      
 
         <h2>Outils</h2>
         <img src="/icons/plus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}} />
