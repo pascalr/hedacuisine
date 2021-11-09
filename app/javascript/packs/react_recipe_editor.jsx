@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom'
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Autosuggest from 'react-autosuggest'
 
+import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from 'jsxstyle'
+
 //import './style.css' // import style.css stylesheet
 
 function updateIngQuantityCallback() {
@@ -31,7 +33,7 @@ const NewIngInputField = props => {
     placeholder: 'Sélectionner un aliment',
     value,
     onChange: (e, {newValue}) => setValue(newValue),
-    ref: inputField
+    ref: inputField,
   };
 
   const addIngredient = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
@@ -47,29 +49,45 @@ const NewIngInputField = props => {
   }
 
   return (
-    <Autosuggest
-      suggestions={suggestions}
-      onSuggestionsFetchRequested={({value}) => {
-        const inputValue = value.trim().toLowerCase();
-        const inputLength = inputValue.length;
-       
-        const matched = inputLength === 0 ? [] : gon.foodList.filter(food =>
-          food.name.includes(inputValue)
-        )
-        // Order the matches by relevance?
-        setSuggestions(matched)
-      }}
-      onSuggestionsClearRequested={() => setSuggestions([])}
-      getSuggestionValue={suggestion => suggestion.name}
-      renderSuggestion={(suggestion, { isHighlighted }) => (
-        <div style={{ background: isHighlighted ? '#4095bf' : 'white', color: isHighlighted ? 'white' : 'black' }}>
-          {suggestion.name}
-        </div>
-      )}
-      onSuggestionSelected={addIngredient}
-      inputProps={inputFieldProps}
-    />
+    <Row gap="7px">
+      <input type="text" size="8" style={{border: "none", borderBottom: "1px dashed #444"}} />
+      de
+      <Autosuggest
+        suggestions={suggestions}
+        onSuggestionsFetchRequested={({value}) => {
+          const inputValue = value.trim().toLowerCase();
+          const inputLength = inputValue.length;
+         
+          const matched = inputLength === 0 ? [] : gon.foodList.filter(food =>
+            food.name.includes(inputValue)
+          )
+          // Order the matches by relevance?
+          setSuggestions(matched)
+        }}
+        onSuggestionsClearRequested={() => setSuggestions([])}
+        getSuggestionValue={suggestion => suggestion.name}
+        renderSuggestion={(suggestion, { isHighlighted }) => (
+          <div style={{ background: isHighlighted ? '#4095bf' : 'white', color: isHighlighted ? 'white' : 'black' }}>
+            {suggestion.name}
+          </div>
+        )}
+        onSuggestionSelected={addIngredient}
+        inputProps={inputFieldProps}
+      />
+    </Row>
   )
+}
+
+// props: {comment}
+const EditableIngredientComment = (props) => {
+  
+  // TODO: Put comment into it's own container.
+  //onBlur: () => {
+  //  console.log('On blur')
+  //  if (value == "") {
+  //    setValue(null)
+  //  }
+  //},
 }
 
 const EditableIngredient = (props) => {
@@ -95,7 +113,7 @@ const EditableIngredient = (props) => {
 
   return (<>
     <span style={{padding: "0 10px 0 0"}}><b>{props.position}.</b></span>
-    <input onBlur={updateIngQuantityCallback} type="text" size="8" defaultValue={ing.raw} style={{border: "none", borderBottom: "1px solid gray"}} />
+    <input onBlur={updateIngQuantityCallback} type="text" size="8" defaultValue={ing.raw} style={{border: "none", borderBottom: "1px dashed #444"}} />
     <span> de </span>{/*" de " ou bien " - " si la quantité n'a pas d'unité => _1_____ - oeuf*/}
     <a href={ing.food.url}>{ing.food.name}</a>
     {(() => {
@@ -188,7 +206,7 @@ class RecipeEditor extends React.Component {
     )
 
     const NewIngs = this.state.newIngs.map((ing, i) =>
-      <li key={i} className="list-group-item">
+      <li key={i} className="list-group-item" style={{height: "37.2px"}}>
         <NewIngInputField/>
       </li>
     )
