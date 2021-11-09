@@ -115,32 +115,37 @@ const EditableIngredient = (props) => {
     setNewlyAdded(true)
   }
 
-  return (<>
-    <span style={{padding: "0 10px 0 0"}}><b>{props.position}.</b></span>
-    <input onBlur={updateIngQuantityCallback} type="text" size="8" defaultValue={ing.raw} style={{border: "none", borderBottom: "1px dashed #444"}} />
-    <span> de </span>{/*" de " ou bien " - " si la quantité n'a pas d'unité => _1_____ - oeuf*/}
-    <a href={ing.food.url}>{ing.food.name}</a>
-    {(() => {
-      if (comment == null) {
-        return (
-          <button className="btn-image" onClick={addComment}>
-            <img src="/icons/chat-left.svg" style={{marginLeft: "10px"}}/>
-          </button>
-        )
-      } else {
-        const style = {border: "none", borderBottom: "1px solid gray", transition: "width 0.4s ease-in-out"}
-        style.width = newlyAdded ? "0px" : "200px"
-        return (
-          <div style={{display: "inline-block", marginLeft: "10px"}}>
-            (<input type="text" defaultValue={comment} style={style} ref={commentInput} />)
-          </div>
-        )
-      }
-    })()}
-    <a href={ing.url} data-confirm="Are you sure?" data-method="delete"><img src="/icons/x-lg.svg" style={{float: "right"}}/></a>
-  </>)
+  return (
+    <Row alignItems="center" gap="5px">
+      <span style={{padding: "0 10px 0 0"}}><b>{props.position}.</b></span>
+      <input onBlur={updateIngQuantityCallback} type="text" size="8" defaultValue={ing.raw} style={{border: "none", borderBottom: "1px dashed #444"}} />
+      de{/*" de " ou bien " - " si la quantité n'a pas d'unité => _1_____ - oeuf*/}
+      <a href={ing.food.url}>{ing.food.name}</a>
+      {(() => {
+        if (comment == null) {
+          return (
+            <button className="btn-image" onClick={addComment}>
+              <img src="/icons/chat-left.svg" style={{marginLeft: "10px"}}/>
+            </button>
+          )
+        } else {
+          const style = {border: "none", borderBottom: "1px solid gray", transition: "width 0.4s ease-in-out"}
+          style.width = newlyAdded ? "0px" : "200px"
+          return (
+            <div style={{display: "inline-block", marginLeft: "10px"}}>
+              (<input type="text" defaultValue={comment} style={style} ref={commentInput} />)
+            </div>
+          )
+        }
+      })()}
+      <Block flexGrow="1" />
+      <a href={ing.url} data-confirm="Are you sure?" data-method="delete"><img src="/icons/x-lg.svg" style={{float: "right"}}/></a>
+    </Row>
+  )
 }
 
+//<img src="/icons/plus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}} />
+      
 class RecipeEditor extends React.Component {
   
   constructor(props) {
