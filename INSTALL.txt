@@ -15,7 +15,7 @@ rails db:create
 
 # Did at the beginning:
 # heroku create
-# heroku stack:set heroku-18
+# heroku stack:set heroku-20
 # git push heroku main
 # heroku run rake db:migrate
 # heroku run rake db:seed
@@ -28,3 +28,7 @@ https://blog.makersacademy.com/how-to-install-bootstrap-and-jquery-on-rails-6-da
 https://getbootstrap.com/docs/4.0/components/navbar/
 
 heroku git:remote -a aqueous-fortress-30634
+
+# ruby
+# Follow install instructions for rbenv here
+# https://github.com/rbenv/rbenv
