@@ -213,44 +213,51 @@ const EditableIngredient = (props) => {
   //<a href={ing.url} data-confirm="Are you sure?" data-method="delete"><img src="/icons/x-lg.svg" style={{float: "right"}}/></a>
 }
 
-const ModelFields = (props) => {
-  let elements = React.Children.toArray(props.children).map(child => {
-    return React.cloneElement(child, { modelName: props.name, initial: gon[props.name][child.props.field] })
-  })
-  return <>{elements}</>
-}
-
-const TextInputField = ({modelName, field, initial}) => {
-  const [value, setValue] = useState(initial)
-
-  const name = modelName+"["+field+"]"
-
-  const updateField = () => {
-    if (value != initial) {
+class Model {
+  constructor(name, data) {
+    this.name = name
+    this.data = data
+  }
+  currentValue(field) {
+    return this.data[field]
+  }
+  fieldName(field) {
+    return this.name+"["+field+"]"
+  }
+  updateValue = (field, value, successCallback=null) => {
+    if (value != this.currentValue(field)) {
+  
       let data = new FormData()
-      data.append(name, value)
-      // FIXME: URL
-      Rails.ajax({url: gon.recipe.url+".js", type: 'PATCH', data: data, error: (errors) => {
+      data.append(this.fieldName(field), value)
+      Rails.ajax({url: this.data.url+".js", type: 'PATCH', data: data, success: () => {
+        this.data[field] = value
+        if (successCallback) {successCallback()}
+      }, error: (errors) => {
         toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
       }})
     }
   }
+}
+
+const TextInputField = ({model, field}) => {
+  const [value, setValue] = useState(model.currentValue(field))
 
   return (
     <div className="field">
       <b><label htmlFor={field}>{field}</label></b>{': '}
-      <input type="text" value={value||''} name={name} style={{border: "none", borderBottom: "1px dashed #444"}} id={field} onChange={(e) => setValue(e.target.value)} onBlur={updateField} />
+      <input type="text" value={value||''} name={model.fieldName(field)} style={{border: "none", borderBottom: "1px dashed #444"}} id={field}
+        onChange={(e) => setValue(e.target.value)} onBlur={() => model.updateValue(field, value)} />
     </div>
   )
 }
 
-const TextAreaField = ({modelName, field, initial, cols, rows}) => {
-  const [value, setValue] = useState(initial)
+const TextAreaField = ({model, field, cols, rows}) => {
+  const [value, setValue] = useState(model.currentValue(field))
 
-  const name = modelName+"["+field+"]"
+  const name = model.name+"["+field+"]"
 
   const updateField = () => {
-    if (value != initial) {
+    if (value != model.currentValue(field)) {
       let data = new FormData()
       data.append(name, value)
       // FIXME: URL
@@ -267,14 +274,14 @@ const TextAreaField = ({modelName, field, initial, cols, rows}) => {
   )
 }
 
-const CollectionSelect = ({modelName, field, initial, options, showOption, includeBlank}) => {
-  const [value, setValue] = useState(initial)
+const CollectionSelect = ({model, field, options, showOption, includeBlank}) => {
+  const [value, setValue] = useState(model.currentValue(field))
 
-  const name = modelName+"["+field+"]"
+  const name = model.name+"["+field+"]"
           
   const updateField = (e) => {
     let val = e.target.value
-    if (val != initial) {
+    if (val != model.currentValue(field)) {
       let data = new FormData()
       data.append(name, val)
       // FIXME: URL
@@ -402,6 +409,9 @@ class RecipeEditor extends React.Component {
         {gon.recipe.tools[id].name}
       </li>
     ))
+
+    const model = new Model("recipe", gon.recipe)
+    console.log(model)
     
     return (
       <div className="recipe-body">
@@ -423,20 +433,16 @@ class RecipeEditor extends React.Component {
         </ul>
         
         <h2>Informations</h2>
-        <ModelFields name="recipe">
-          <TextInputField field="base_recipe_id"></TextInputField>
-          <TextInputField field="preparation_time"></TextInputField>
-          <TextInputField field="cooking_time"></TextInputField>
-          <TextInputField field="total_time"></TextInputField>
-          <TextInputField field="raw_servings"></TextInputField>
-          <CollectionSelect field="main_ingredient_id" options={this.state.ingIds} showOption={(ingId) => gon.recipe.ingredients[ingId].food.name} includeBlank="true"></CollectionSelect>
-        </ModelFields>
+        <TextInputField model={model} field="base_recipe_id"></TextInputField>
+        <TextInputField model={model} field="preparation_time"></TextInputField>
+        <TextInputField model={model} field="cooking_time"></TextInputField>
+        <TextInputField model={model} field="total_time"></TextInputField>
+        <TextInputField model={model} field="raw_servings"></TextInputField>
+        <CollectionSelect model={model} field="main_ingredient_id" options={this.state.ingIds} showOption={(ingId) => gon.recipe.ingredients[ingId].food.name} includeBlank="true"></CollectionSelect>
         
         <h2>Instructions</h2>
         <InstructionsHelp/>
-        <ModelFields name="recipe">
-          <TextAreaField field="complete_instructions" cols="100" rows="10"></TextAreaField>
-        </ModelFields>
+        <TextAreaField model={model} field="complete_instructions" cols="100" rows="10"></TextAreaField>
         
         <h2>Références</h2>
 
@@ -449,3 +455,10 @@ document.addEventListener('DOMContentLoaded', () => {
   window.recipe_editor = React.createRef()
   ReactDOM.render(<RecipeEditor ref={window.recipe_editor}/>, document.getElementById('root'))
 })
+
+//const ModelFields = (props) => {
+//  let elements = React.Children.toArray(props.children).map(child => {
+//    return React.cloneElement(child, { modelName: props.name, initial: gon[props.name][child.props.field] })
+//  })
+//  return <>{elements}</>
+//}
