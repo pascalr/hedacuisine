@@ -3,24 +3,29 @@ json.recipe do
   json.url recipe_path(@recipe)
   json.new_ingredient_url recipe_recipe_ingredients_path(@recipe)
   json.name @recipe.name
+  json.main_ingredient_id @recipe.main_ingredient_id
   json.base_recipe_id @recipe.base_recipe_id
   json.preparation_time @recipe.preparation_time
   json.cooking_time @recipe.cooking_time
   json.total_time @recipe.total_time
   json.raw_servings @recipe.raw_servings
   json.move_ing_url move_ing_recipe_path(@recipe)
-  json.ingredients @recipe.ingredients.order(:item_nb) do |ing|
-    json.id ing.id
-    json.item_nb ing.item_nb
-    json.raw ing.raw
-    json.comment ing.comment
-    json.url recipe_recipe_ingredient_path(@recipe, ing)
-    json.food do
-      json.id ing.food.id
-      json.name ing.food.name
-      json.url food_path(ing.food)
+  json.ingredients do
+    @recipe.ingredients.order(:item_nb).each do |ing|
+      json.set! ing.id do
+        json.id ing.id
+        json.item_nb ing.item_nb
+        json.raw ing.raw
+        json.comment ing.comment
+        json.url recipe_recipe_ingredient_path(@recipe, ing)
+        json.food do
+          json.id ing.food.id
+          json.name ing.food.name
+          json.url food_path(ing.food)
+        end
+      end
     end
-  end
+  end 
   json.tools @recipe.tools.inject({}) {|tools_by_id, tool| tools_by_id[tool.id] = {name: tool.name}; tools_by_id }
 end
 

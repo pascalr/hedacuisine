@@ -49,7 +49,7 @@ const NewIngInputField = props => {
     Rails.ajax({url: gon.recipe.new_ingredient_url, type: 'POST', data: data, success: (raw) => {
       const response = JSON.parse(raw)
       //gon.recipe.ingredients.push({url: response.url, food: {name: response.food_name, url: response.food_url}})
-      gon.recipe.ingredients.push(response)
+      gon.recipe.ingredients[response.id] = response
       window.recipe_editor.current.addIng(response.id)
       setValue(''); setQty('');
       quantityInputField.current.focus()
@@ -140,13 +140,13 @@ const EditableIngredient = (props) => {
   // For popover. See https://mui.com/components/popover/
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const ing = gon.recipe.ingredients.find(el => (el.id == props.objId))
+  const ing = gon.recipe.ingredients[props.objId]
   if (ing == null) {return null;}
 
   const removeIngredient = (evt) => {
     Rails.ajax({url: ing.url, type: 'DELETE', success: (raw) => {
       window.recipe_editor.current.removeIng(ing.id)
-      gon.recipe.ingredients = gon.recipe.ingredients.filter(item => item.id != ing.id);
+      delete gon.recipe.ingredients[ing.id]
     }})
   }
 
@@ -180,9 +180,9 @@ const EditableIngredient = (props) => {
 }
 
 const ModelFields = (props) => {
-  let elements = React.Children.toArray(props.children).map(child => (
-    React.cloneElement(child, { modelName: props.name, initial: gon[props.name][child.field] })
-  ))
+  let elements = React.Children.toArray(props.children).map(child => {
+    return React.cloneElement(child, { modelName: props.name, initial: gon[props.name][child.props.field] })
+  })
   return <>{elements}</>
 }
 
@@ -198,7 +198,6 @@ const TextInputField = ({modelName, field, initial}) => {
       // FIXME: URL
       Rails.ajax({url: gon.recipe.url+".js", type: 'PATCH', data: data, error: (errors) => {
         toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
-
       }})
     }
   }
@@ -211,15 +210,35 @@ const TextInputField = ({modelName, field, initial}) => {
   )
 }
 
-const CollectionSelect = ({modelName, field, options, showOption}) => {
+const CollectionSelect = ({modelName, field, initial, options, showOption, includeBlank}) => {
+  const [value, setValue] = useState(initial)
 
   const name = modelName+"["+field+"]"
+          
+  const updateField = (e) => {
+    let val = e.target.value
+    if (val != initial) {
+      let data = new FormData()
+      data.append(name, val)
+      // FIXME: URL
+      Rails.ajax({url: gon.recipe.url+".js", type: 'PATCH', data: data, 
+        success: () => {setValue(val)},
+        error: (errors) => {
+          toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
+      }})
+    }
+  }
 
   return (
     <div className="field">
       <b><label htmlFor={field}>{field}</label></b>{': '}
-      <select name={name} id={field}>
-        {options.map((opt, i) => <option value={opt} key={i}>{showOption(opt)}</option>)}
+      <select name={name} id={field} value={value||''} onChange={updateField}>
+        {includeBlank ? <option value="" key="1" label=" "></option> : null}
+        {options.map((opt, i) => {
+          console.log(opt)
+          console.log(value == opt)
+          return <option value={opt} key={i+2}>{showOption(opt)}</option>
+        })}
       </select>
     </div>
   )
@@ -241,7 +260,7 @@ class RecipeEditor extends React.Component {
     super(props);
     this.state = {
       name: gon.recipe.name,
-      ingIds: gon.recipe.ingredients.map(obj => obj.id),
+      ingIds: Object.keys(gon.recipe.ingredients),
       toolIds: Object.keys(gon.recipe.tools),
       showAddNewIng: false
     };
@@ -355,7 +374,7 @@ class RecipeEditor extends React.Component {
           <TextInputField field="cooking_time"></TextInputField>
           <TextInputField field="total_time"></TextInputField>
           <TextInputField field="raw_servings"></TextInputField>
-          <CollectionSelect field="main_ingredient_id" options={this.state.ingIds} showOption={(ingId) => gon.recipe.ingredients.find(ing => ing.id == ingId).food.name}></CollectionSelect>
+          <CollectionSelect field="main_ingredient_id" options={this.state.ingIds} showOption={(ingId) => gon.recipe.ingredients[ingId].food.name} includeBlank="true"></CollectionSelect>
         </ModelFields>
         
         <h2>Instructions</h2>
