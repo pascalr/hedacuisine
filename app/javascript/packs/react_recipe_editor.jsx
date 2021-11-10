@@ -12,6 +12,156 @@ import Button from '@mui/material/Button';
 
 //import './style.css' // import style.css stylesheet
 
+// TODO: Rename if this works with tokens too
+function findMatchingChar(str, start, ch, notCh) {
+  let depth = 0
+  for (let i = start; i < str.length; i++) {
+    if (str[i] == notCh) {
+      depth += 1
+    } else if (str[i] == ch) {
+      if (depth <= 0) {return i}
+      depth -= 1
+    }
+  }
+  console.log("Unable to find matching char "+ch)
+  console.log("Depth", depth)
+  throw 'Missing matching char!';
+}
+
+const TokenType = {
+  LINK: 1,
+}
+
+class Token {
+  constructor({value, type}) {
+    this.value = value
+    this.type = type
+  }
+}
+
+function tokenizeLine(line) {
+  let tokens = []
+  let str = ""
+  for (let i = 0; i < line.length; i++) {
+    // TODO: Clean this. Remove duplication...
+    if (line.charAt(i) == "[") {
+      if (str != '') {tokens.push(str); str = ''}
+      let endIndex = findMatchingChar(line, i+1, "]", "[")
+      tokens.push(line.slice(i,endIndex+1))
+      i = endIndex
+    } else if (line.charAt(i) == "<") {
+      if (str != '') {tokens.push(str); str = ''}
+        let endIndex = findMatchingChar(line, i+1, ">", "<")
+      tokens.push(line.slice(i,endIndex+1))
+      i = endIndex
+    } else if (line.charAt(i) == "{") {
+      if (str != '') {tokens.push(str); str = ''}
+        let endIndex = findMatchingChar(line, i+1, "}", "{")
+      tokens.push(line.slice(i,endIndex+1))
+      i = endIndex
+    } else {
+      str += line.charAt(i)
+    }
+  }
+  if (str != '') {tokens.push(str); str = ''}
+  return tokens
+}
+
+// link syntaxes:
+// [note: 1]
+// [link_note: 1]
+// [recipe: 100]
+// [food: 100]
+// [url: "http://www.hedacuisine.com/"]
+// [label: "home", url: "http://www.hedacuisine.com/"]
+function replaceLink(token) {
+
+  let args = {}
+  // FIXME: Don't split in semicolon inside a string
+  token.slice(1, -1).split(";").forEach(a => {
+    let s = a.split(":", 2)
+    if (s[1]) {args[s[0].trim()] = s[1].trim()}
+  })
+  if (args.note) {
+    //return `<span id="note-${args.note}">[{args.note}]</span>`
+    return <span id={"note-"+args.note}>[{args.note}]</span>
+  } else if (args.link_note) {
+    return <a href={"#note-"+args.link_note}>{args.label || "["+args.link_note+"]"}</a>
+  }
+  console.log("Oups, this kind of link is not yet supported!", args)
+  return token
+}
+
+function replaceIngredients(token) {
+
+  // FFFFFFFFUUUUUUUUUUUUUUUUUUCCCCCCCCCCCCCCCKKKKKKKKKKKKKKKKKKKKKKKKKKKKK Les ingrédients doivent être une liste... pas un hash map... parce que l'ordre des ingrédients est important...
+  //let q = token.slice(1, -1)
+  //if (parseInt(q) == q) {
+  //  let ing = gon.recipe.ingredients[parseInt(q)]
+  //  return <a href={ing.id}>{ing.food.name}</a>
+  //} else {
+    return token
+  //}
+}
+
+function processTokens(tokens) {
+  let processed = []
+  for (let i = 0; i < tokens.length; i++) {
+    let token = tokens[i]
+    if (token.startsWith("[")) {
+      processed.push(replaceLink(token))
+    } else if (token.startsWith("{")) {
+      processed.push(replaceIngredients(token))
+    } else if (token.startsWith("<")) {
+      let tag = token.slice(1,-1)
+      let endIndex = findMatchingChar(tokens, i+1, `</${tag}>`, `<${tag}>`)
+      processed.push(<sup>{processTokens(tokens.slice(i+1,endIndex))}</sup>)
+      i = endIndex
+    } else {
+      processed.push(token)
+    }
+  }
+
+  return processed
+}
+
+function processInstructionText(text) {
+  let tokens = tokenizeLine(text)
+  return processTokens(tokens)
+}
+
+const InstructionsPreview = ({instructions}) => {
+
+  let stepNb = 1
+
+  let lines = instructions.split('\n').map((raw, i) => {
+    let line = raw.trim()
+    if (line.startsWith("/")) {
+      return <p key={i}><i>{processInstructionText(line.slice(1).trim())}</i></p>
+    } else if (line.startsWith("$$$")) {
+      return <h5>{line.slice(1).trim()}</h5>
+    } else if (line.startsWith("$$")) {
+      return <h4>{line.slice(1).trim()}</h4>
+    } else if (line.startsWith("$")) {
+      return <h3>{line.slice(1).trim()}</h3>
+    } else if (line.startsWith("#")) {
+      return <div key={i}><span className="step-number">{stepNb}</span>{processInstructionText(line.slice(1).trim())}</div>
+      stepNb += 1
+    } else {
+      return <p key={i}>{processInstructionText(line)}</p>
+    }
+  })
+  for(var i = 0;i < lines.length;i++){
+      //code here using lines[i] which will give you each line
+  }
+
+  return (<>
+    <div>
+      {lines}
+    </div>
+  </>)
+}
+
 function updateIngQuantityCallback() {
 }
 
@@ -251,13 +401,15 @@ const TextInputField = ({model, field}) => {
   )
 }
 
-const TextAreaField = ({model, field, cols, rows}) => {
+const TextAreaField = ({model, field, cols, rows, changeCallback=null}) => {
   const [value, setValue] = useState(model.currentValue(field))
 
   return (
     <div className="field">
-      <textarea value={value||''} name={model.fieldName(field)} id={field} cols={cols} rows={rows}
-        onChange={(e) => setValue(e.target.value)} onBlur={() => model.updateValue(field, value)} />
+      <textarea value={value||''} name={model.fieldName(field)} id={field} cols={cols} rows={rows} onChange={(e) => {
+        setValue(e.target.value);
+        if(changeCallback) {changeCallback(e.target.value)}
+      }} onBlur={() => model.updateValue(field, value)} />
     </div>
   )
 }
@@ -291,7 +443,8 @@ class RecipeEditor extends React.Component {
       name: gon.recipe.name,
       ingIds: Object.keys(gon.recipe.ingredients),
       toolIds: Object.keys(gon.recipe.tools),
-      showAddNewIng: false
+      instructionsSlave: gon.recipe.complete_instructions,
+      showAddNewIng: false,
     };
     this.handleDropIng = this.handleDropIng.bind(this);
     this.updateName = this.updateName.bind(this);
@@ -377,10 +530,14 @@ class RecipeEditor extends React.Component {
       </li>
     ))
 
+    //const nbInstructionLines = (this.state.instructionsSlave.match(/\n/g)||[]).length + 2
+    const cols = 80
+    const nbInstructionLines = this.state.instructionsSlave.split('\n').reduce((a, l) => a + Math.ceil((l.length||1) / cols), 0)
+
     const model = new Model("recipe", gon.recipe)
     console.log(model)
     
-    return (
+    return (<>
       <div className="recipe-body">
 
         <div className="bg-fill" style={{width: "100%", height: "0.5rem"}}></div>
@@ -394,6 +551,22 @@ class RecipeEditor extends React.Component {
         <img src={this.state.showAddNewIng ? "/icons/minus-circle.svg" : "/icons/plus-circle.svg"} style={{width: "2.5rem", padding: "0.5rem"}}
              onClick={() => this.setState({showAddNewIng: !this.state.showAddNewIng})} />
       
+        <h2>Instructions</h2>
+        <InstructionsHelp/>
+      </div>
+        <Row gap="10px">
+          <div>
+            <h3>Format Heda</h3>
+            <TextAreaField model={model} field="complete_instructions" cols={cols} rows={nbInstructionLines} changeCallback={modified => this.setState({instructionsSlave: modified})}></TextAreaField>
+          </div>
+          <div>
+            <h3>Live preview</h3>
+            <InstructionsPreview instructions={this.state.instructionsSlave} />
+          </div>
+        </Row>
+        
+      <div className="recipe-body">
+        
         <h2>Outils</h2>
         <ul style={{fontSize: "1.1rem"}}>
           {Tools}
@@ -406,15 +579,11 @@ class RecipeEditor extends React.Component {
         <TextInputField model={model} field="total_time"></TextInputField>
         <TextInputField model={model} field="raw_servings"></TextInputField>
         <CollectionSelect model={model} field="main_ingredient_id" options={this.state.ingIds} showOption={(ingId) => gon.recipe.ingredients[ingId].food.name} includeBlank="true"></CollectionSelect>
-        
-        <h2>Instructions</h2>
-        <InstructionsHelp/>
-        <TextAreaField model={model} field="complete_instructions" cols="100" rows="10"></TextAreaField>
-        
+
         <h2>Références</h2>
 
       </div>
-    )
+    </>)
   }
 }
 
