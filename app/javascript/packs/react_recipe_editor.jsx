@@ -254,22 +254,10 @@ const TextInputField = ({model, field}) => {
 const TextAreaField = ({model, field, cols, rows}) => {
   const [value, setValue] = useState(model.currentValue(field))
 
-  const name = model.name+"["+field+"]"
-
-  const updateField = () => {
-    if (value != model.currentValue(field)) {
-      let data = new FormData()
-      data.append(name, value)
-      // FIXME: URL
-      Rails.ajax({url: gon.recipe.url+".js", type: 'PATCH', data: data, error: (errors) => {
-        toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
-      }})
-    }
-  }
-
   return (
     <div className="field">
-      <textarea value={value||''} name={name} id={field} cols={cols} rows={rows} onChange={(e) => setValue(e.target.value)} onBlur={updateField} />
+      <textarea value={value||''} name={model.fieldName(field)} id={field} cols={cols} rows={rows}
+        onChange={(e) => setValue(e.target.value)} onBlur={() => model.updateValue(field, value)} />
     </div>
   )
 }
@@ -277,26 +265,15 @@ const TextAreaField = ({model, field, cols, rows}) => {
 const CollectionSelect = ({model, field, options, showOption, includeBlank}) => {
   const [value, setValue] = useState(model.currentValue(field))
 
-  const name = model.name+"["+field+"]"
-          
   const updateField = (e) => {
     let val = e.target.value
-    if (val != model.currentValue(field)) {
-      let data = new FormData()
-      data.append(name, val)
-      // FIXME: URL
-      Rails.ajax({url: gon.recipe.url+".js", type: 'PATCH', data: data, 
-        success: () => {setValue(val)},
-        error: (errors) => {
-          toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
-      }})
-    }
+    model.updateValue(field, val, () => setValue(val))
   }
 
   return (
     <div className="field">
       <b><label htmlFor={field}>{field}</label></b>{': '}
-      <select name={name} id={field} value={value||''} onChange={updateField}>
+      <select name={model.fieldName(field)} id={field} value={value||''} onChange={updateField}>
         {includeBlank ? <option value="" key="1" label=" "></option> : null}
         {options.map((opt, i) => {
           return <option value={opt} key={i+2}>{showOption(opt)}</option>
@@ -304,18 +281,8 @@ const CollectionSelect = ({model, field, options, showOption, includeBlank}) => 
       </select>
     </div>
   )
-  //<select name="recipe[main_ingredient_id]" id="recipe_main_ingredient_id"><option value="" label=" "></option>
-  //  <option value="229">sucre</option>
-  //  <option value="230">huile</option>
-  //  <option value="512">eau tiède</option>
-  //  <option value="644">sel</option>
-  //  <option value="227">levure sèche active</option>
-  //  <option selected="selected" value="228">farine</option>
-  //</select>
 }
 
-//<img src="/icons/plus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}} />
-      
 class RecipeEditor extends React.Component {
   
   constructor(props) {
