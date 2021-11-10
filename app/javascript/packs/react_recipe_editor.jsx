@@ -18,6 +18,40 @@ function updateIngQuantityCallback() {
 function updateListOrder() {
 }
 
+const InstructionsHelp = props => (
+  <>
+    <button className="btn-image" onClick={() => setVisual(VisualState.EXPANDING)}>
+      <img src="/icons/question-circle-blue.svg" data-bs-toggle="collapse" data-bs-target="#show-help" style={{width: "2em"}}></img>
+    </button>
+    <div className="collapse" id="show-help">
+      <h2>Aide</h2>
+      <h3>Instructions</h3>
+      <ul>
+        <li><b>#</b>: Commencer une ligne avec «#» pour chaque étape de la recette.</li>
+        <li><b>$</b>: Commencer une ligne avec «$» pour un grand titre.</li>
+        <li><b>$$</b>: Commencer une ligne avec «$$» pour un moyen titre.</li>
+        <li><b>$$$</b>: Commencer une ligne avec «$$$» pour un petit titre.</li>
+        <li><b>/</b>: Commencer une ligne avec «/» pour faire un paragraph en italique.</li>
+        <li><b>{"{3}"}</b>: Afficher l'ingrédient 3</li>
+        <li><b>{"{3-5}"}</b>: Afficher les ingrédients 3, 4 et 5</li>
+        <li><b>{"{3,5}"}</b>: Afficher les ingrédients 3 et 5</li>
+        <li><b>{"{3;}"}</b>: TODO: Afficher le nombre 3 qui scale avec la recette</li>
+        <li><b>{"{3;pomme}"}</b>: TODO: Afficher la quantité 3 pomme qui scale avec la recette</li>
+        <li><b>{"{2;pomme,3-5}"}</b>: TODO: Afficher la quantité 3 pomme qui scale avec la recette et les ingrédients 3, 4 et 5.</li>
+        <li><b>[1]</b>: TODO: Lien vers la note 1</li>
+        <li><b>[1;Section name]</b>: TODO: Lien vers la section de l'article</li>
+        <li><b>[note: 1]</b></li>
+        <li><b>[link_note: 1]</b></li>
+        <li><b>[recipe: 100]</b></li>
+        <li><b>[food: 100]</b></li>
+        <li><b>[url: "http://www.hedacuisine.com/"]</b></li>
+        <li><b>[label: "home", url: "http://www.hedacuisine.com/"]</b></li>
+        <li><b>[img: 10]</b></li>
+      </ul>
+    </div>
+  </>
+)
+
 const NewIngInputField = props => {
 
   const [value, setValue] = useState('')
@@ -205,7 +239,30 @@ const TextInputField = ({modelName, field, initial}) => {
   return (
     <div className="field">
       <b><label htmlFor={field}>{field}</label></b>{': '}
-      <input type="text" value={value||''} name={name} id={field} onChange={(e) => setValue(e.target.value)} onBlur={updateField} />
+      <input type="text" value={value||''} name={name} style={{border: "none", borderBottom: "1px dashed #444"}} id={field} onChange={(e) => setValue(e.target.value)} onBlur={updateField} />
+    </div>
+  )
+}
+
+const TextAreaField = ({modelName, field, initial, cols, rows}) => {
+  const [value, setValue] = useState(initial)
+
+  const name = modelName+"["+field+"]"
+
+  const updateField = () => {
+    if (value != initial) {
+      let data = new FormData()
+      data.append(name, value)
+      // FIXME: URL
+      Rails.ajax({url: gon.recipe.url+".js", type: 'PATCH', data: data, error: (errors) => {
+        toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
+      }})
+    }
+  }
+
+  return (
+    <div className="field">
+      <textarea value={value||''} name={name} id={field} cols={cols} rows={rows} onChange={(e) => setValue(e.target.value)} onBlur={updateField} />
     </div>
   )
 }
@@ -235,8 +292,6 @@ const CollectionSelect = ({modelName, field, initial, options, showOption, inclu
       <select name={name} id={field} value={value||''} onChange={updateField}>
         {includeBlank ? <option value="" key="1" label=" "></option> : null}
         {options.map((opt, i) => {
-          console.log(opt)
-          console.log(value == opt)
           return <option value={opt} key={i+2}>{showOption(opt)}</option>
         })}
       </select>
@@ -378,6 +433,10 @@ class RecipeEditor extends React.Component {
         </ModelFields>
         
         <h2>Instructions</h2>
+        <InstructionsHelp/>
+        <ModelFields name="recipe">
+          <TextAreaField field="complete_instructions" cols="100" rows="10"></TextAreaField>
+        </ModelFields>
         
         <h2>Références</h2>
 

@@ -4,6 +4,7 @@ json.recipe do
   json.new_ingredient_url recipe_recipe_ingredients_path(@recipe)
   json.name @recipe.name
   json.main_ingredient_id @recipe.main_ingredient_id
+  json.complete_instructions @recipe.complete_instructions
   json.base_recipe_id @recipe.base_recipe_id
   json.preparation_time @recipe.preparation_time
   json.cooking_time @recipe.cooking_time
