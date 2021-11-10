@@ -179,11 +179,27 @@ const EditableIngredient = (props) => {
   //<a href={ing.url} data-confirm="Are you sure?" data-method="delete"><img src="/icons/x-lg.svg" style={{float: "right"}}/></a>
 }
 
-const TextInputField = ({model, field}) => {
+const TextInputField = ({model, field, initial}) => {
+  const [value, setValue] = useState(initial)
+
+  const name = model+"["+field+"]"
+
+  const updateField = () => {
+    if (value != initial) {
+      let data = new FormData()
+      data.append(name, value)
+      // FIXME: URL
+      Rails.ajax({url: gon.recipe.url+".js", type: 'PATCH', data: data, error: (errors) => {
+        toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
+
+      }})
+    }
+  }
+
   return (
     <div className="field">
       <b><label htmlFor={field}>{field}</label></b>{': '}
-      <input type="text" defaultValue={gon.recipe[field]} name={model+"["+field+"]"} id={field} />
+      <input type="text" value={value||''} name={name} id={field} onChange={(e) => setValue(e.target.value)} onBlur={updateField} />
     </div>
   )
 }
@@ -304,12 +320,11 @@ class RecipeEditor extends React.Component {
         </ul>
         
         <h2>Informations</h2>
-
-        <TextInputField model="recipe" field="base_recipe_id"></TextInputField>
-        <TextInputField model="recipe" field="preparation_time"></TextInputField>
-        <TextInputField model="recipe" field="cooking_time"></TextInputField>
-        <TextInputField model="recipe" field="total_time"></TextInputField>
-        <TextInputField model="recipe" field="raw_servings"></TextInputField>
+        <TextInputField model="recipe" initial={gon.recipe.base_recipe_id} field="base_recipe_id"></TextInputField>
+        <TextInputField model="recipe" initial={gon.recipe.preparation_time} field="preparation_time"></TextInputField>
+        <TextInputField model="recipe" initial={gon.recipe.cooking_time} field="cooking_time"></TextInputField>
+        <TextInputField model="recipe" initial={gon.recipe.total_time} field="total_time"></TextInputField>
+        <TextInputField model="recipe" initial={gon.recipe.raw_servings} field="raw_servings"></TextInputField>
         <div>main_ingredient_id</div>
         
         <h2>Instructions</h2>

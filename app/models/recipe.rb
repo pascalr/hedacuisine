@@ -1,4 +1,15 @@
+class RecipeValidator < ActiveModel::Validator
+  def validate(record)
+    if record.base_recipe_id == record.id
+      record.errors.add :base, "A recipe cannot be based on itself."
+    end
+  end
+end
+
 class Recipe < ApplicationRecord
+
+  validates_with RecipeValidator
+
   scope :all_main, -> { where(base_recipe_id: nil) }
   scope :with_images, -> { where.not(image_id: nil) }
 

@@ -19,6 +19,7 @@ require("channels")
 require("jquery")
 require("tiny-slider")
 global.toastr = require("toastr")
+global.toastr.options.closeButton = true;
 
 window.Heda = {}
 window.Heda.getLocale = function() { // TODO: RENAME TO getRegion

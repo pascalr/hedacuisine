@@ -125,6 +125,7 @@ class RecipesController < ApplicationController
       else
         format.html { render :edit }
         format.json { render json: @recipe.errors, status: :unprocessable_entity }
+        format.js { render json: @recipe.errors, status: :unprocessable_entity }
       end
     end
   end

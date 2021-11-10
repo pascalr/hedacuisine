@@ -32,3 +32,6 @@ heroku git:remote -a aqueous-fortress-30634
 # ruby
 # Follow install instructions for rbenv here
 # https://github.com/rbenv/rbenv
+# In ~/.bashrc:
+# eval "$(rbenv init -)"
+# rbenv shell 3.0.2
