@@ -179,10 +179,17 @@ const EditableIngredient = (props) => {
   //<a href={ing.url} data-confirm="Are you sure?" data-method="delete"><img src="/icons/x-lg.svg" style={{float: "right"}}/></a>
 }
 
-const TextInputField = ({model, field, initial}) => {
+const ModelFields = (props) => {
+  let elements = React.Children.toArray(props.children).map(child => (
+    React.cloneElement(child, { modelName: props.name, initial: gon[props.name][child.field] })
+  ))
+  return <>{elements}</>
+}
+
+const TextInputField = ({modelName, field, initial}) => {
   const [value, setValue] = useState(initial)
 
-  const name = model+"["+field+"]"
+  const name = modelName+"["+field+"]"
 
   const updateField = () => {
     if (value != initial) {
@@ -202,6 +209,28 @@ const TextInputField = ({model, field, initial}) => {
       <input type="text" value={value||''} name={name} id={field} onChange={(e) => setValue(e.target.value)} onBlur={updateField} />
     </div>
   )
+}
+
+const CollectionSelect = ({modelName, field, options, showOption}) => {
+
+  const name = modelName+"["+field+"]"
+
+  return (
+    <div className="field">
+      <b><label htmlFor={field}>{field}</label></b>{': '}
+      <select name={name} id={field}>
+        {options.map((opt, i) => <option value={opt} key={i}>{showOption(opt)}</option>)}
+      </select>
+    </div>
+  )
+  //<select name="recipe[main_ingredient_id]" id="recipe_main_ingredient_id"><option value="" label=" "></option>
+  //  <option value="229">sucre</option>
+  //  <option value="230">huile</option>
+  //  <option value="512">eau tiède</option>
+  //  <option value="644">sel</option>
+  //  <option value="227">levure sèche active</option>
+  //  <option selected="selected" value="228">farine</option>
+  //</select>
 }
 
 //<img src="/icons/plus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}} />
@@ -320,12 +349,14 @@ class RecipeEditor extends React.Component {
         </ul>
         
         <h2>Informations</h2>
-        <TextInputField model="recipe" initial={gon.recipe.base_recipe_id} field="base_recipe_id"></TextInputField>
-        <TextInputField model="recipe" initial={gon.recipe.preparation_time} field="preparation_time"></TextInputField>
-        <TextInputField model="recipe" initial={gon.recipe.cooking_time} field="cooking_time"></TextInputField>
-        <TextInputField model="recipe" initial={gon.recipe.total_time} field="total_time"></TextInputField>
-        <TextInputField model="recipe" initial={gon.recipe.raw_servings} field="raw_servings"></TextInputField>
-        <div>main_ingredient_id</div>
+        <ModelFields name="recipe">
+          <TextInputField field="base_recipe_id"></TextInputField>
+          <TextInputField field="preparation_time"></TextInputField>
+          <TextInputField field="cooking_time"></TextInputField>
+          <TextInputField field="total_time"></TextInputField>
+          <TextInputField field="raw_servings"></TextInputField>
+          <CollectionSelect field="main_ingredient_id" options={this.state.ingIds} showOption={(ingId) => gon.recipe.ingredients.find(ing => ing.id == ingId).food.name}></CollectionSelect>
+        </ModelFields>
         
         <h2>Instructions</h2>
         
