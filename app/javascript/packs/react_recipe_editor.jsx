@@ -10,9 +10,75 @@ import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
+import Quantity from 'models/quantity'
 import Utils from "recipe_utils"
 
 //import './style.css' // import style.css stylesheet
+
+class Ingredient {
+  constructor(args = {}) {
+    if (args.raw) {
+      [this.qty, this.foodName] = Ingredient.parseRaw(args.raw)
+    }
+    if (args.qty) {this.qty = args.qty}
+    if (args.foodName) {this.qty = args.foodName}
+  }
+  simple() {
+    if (!this.qty) {return ''}
+    if (!this.qty.unit) {return `${this.qty.pretty()} ${this.foodName}`}
+    return `${this.qty.pretty()} ${Utils.prettyPreposition(this.foodName)}${this.foodName}`
+  }
+  detailed() {
+    return this.simple()
+  }
+  static parseRaw(raw) {
+    const separators = ["de", "d'"]
+    for (let i = 0; i < separators.length; i++) {
+      if (raw.includes(separators[i])) {
+        const s = raw.split(separators[i])
+        let rawQty = s[0].trim()
+        let foodName = s[1].trim()
+        let qty = new Quantity({raw: rawQty})
+        return [qty, foodName]
+      }
+    }
+    let qty = new Quantity({raw: raw})
+    let food = qty.label
+    qty.label = null
+    return [qty, food]
+  }
+}
+
+function prettyIngredient(ing) {
+
+  var linkSingular = "<a href='/foods/"+ing.dataset.foodId+"'>"+ing.dataset.foodNameSingular+"</a> "
+
+  if (ing.dataset.raw == null || ing.dataset.raw == "") {return linkSingular}
+
+  var quantity = new Quantity({raw: ing.dataset.raw})
+  var unit = quantity.unit
+  var qty = quantity.nb * window.scale
+  if (unit) {qty *= unit.value}
+
+  if (unit && unit.is_weight) {
+    var r = Utils.prettyWeight(qty) + " "
+  } else if (unit && unit.is_volume) {
+    var r = Utils.prettyVolume(qty) + " "
+  } else {
+    var r = Utils.prettyFraction(qty) + " "
+    if (unit) {r += unit.name + " "}
+  }
+  if (unit && ing.dataset.preposition) {r += ing.dataset.preposition }
+  if ((!unit || (!unit.is_volume && !unit.is_weight)) && qty > 1) {
+    r += "<a href='/foods/"+ing.dataset.foodId+"'>"+ing.dataset.foodNamePlural+"</a> "
+  } else {
+    r += linkSingular 
+  }
+  if (ing.dataset.comment) {
+    r += " " + ing.dataset.comment + " "
+  }
+  return r
+}
 
 // TODO: Rename if this works with tokens too
 function findMatchingChar(str, start, ch, notCh) {
@@ -132,51 +198,51 @@ function processInstructionText(text) {
   return processTokens(tokens)
 }
 
-function parseIng(raw) {
-  if (raw.includes(":")) {
-    const s = raw.split(":")
-    const qty = s[0]
-    const food = s[1]
-  } else {
-    throw "Unable to parse this ingredient yet: "+raw;
-  }
-  return raw
-}
-
 const RecipePreview = ({instructions}) => {
 
   if (!instructions) {return null}
 
   let stepNb = 1
-
   let ings = []
+  let lines = null
+  try {
 
-  let lines = instructions.split('\n').map((raw, i) => {
-    let line = raw.trim()
-    if (line.startsWith("/")) {
-      return <p key={i}><i>{processInstructionText(line.slice(1).trim())}</i></p>
-    } else if (line.startsWith("$$$")) {
-      return <h5>{line.slice(1).trim()}</h5>
-    } else if (line.startsWith("$$")) {
-      return <h4>{line.slice(1).trim()}</h4>
-    } else if (line.startsWith("$")) {
-      return <h3>{line.slice(1).trim()}</h3>
-    } else if (line.startsWith("-")) {
-      ings.push(parseIng(line.slice(1).trim()))
-    } else if (line.startsWith("#")) {
-      return <div key={i}><span className="step-number">{stepNb}</span>{' '}{processInstructionText(line.slice(1).trim())}</div>
-      stepNb += 1
-    } else {
-      return <p key={i}>{processInstructionText(line)}</p>
+    lines = instructions.split('\n').map((raw, i) => {
+      let line = raw.trim()
+      if (line.startsWith("/")) {
+        return <p key={i}><i>{processInstructionText(line.slice(1).trim())}</i></p>
+      } else if (line.startsWith("$$$")) {
+        return <h5>{line.slice(1).trim()}</h5>
+      } else if (line.startsWith("$$")) {
+        return <h4>{line.slice(1).trim()}</h4>
+      } else if (line.startsWith("$")) {
+        return <h3>{line.slice(1).trim()}</h3>
+      } else if (line.startsWith("-")) {
+        ings.push(new Ingredient({raw: line.slice(1).trim()}))
+      } else if (line.startsWith("#")) {
+        return <div key={i}><span className="step-number">{stepNb}</span>{' '}{processInstructionText(line.slice(1).trim())}</div>
+        stepNb += 1
+      } else {
+        return <p key={i}>{processInstructionText(line)}</p>
+      }
+    })
+    for(var i = 0;i < lines.length;i++){
+        //code here using lines[i] which will give you each line
     }
-  })
-  for(var i = 0;i < lines.length;i++){
-      //code here using lines[i] which will give you each line
+  } catch (e) {
+    console.error(e);
+    return <Block color="red">Syntax error</Block>
   }
 
   return (<>
     <h2>Ingrédients</h2>
-      {ings}
+      <ul className="list-group" style={{maxWidth: "800px"}}>
+        {ings.map(ing => (
+          <li className="list-group-item" >
+            {ing.detailed()}
+          </li>
+        ))}
+      </ul>
     <h2>Instructions</h2>
     <div>
       {lines}
@@ -229,7 +295,7 @@ function updateListOrder() {
 
 const InstructionsHelp = props => (
   <>
-    <button className="btn-image" onClick={() => setVisual(VisualState.EXPANDING)}>
+    <button className="btn-image">
       <img src="/icons/question-circle-blue.svg" data-bs-toggle="collapse" data-bs-target="#show-help" style={{width: "2em"}}></img>
     </button>
     <div className="collapse" id="show-help">

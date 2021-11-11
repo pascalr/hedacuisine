@@ -42,4 +42,12 @@ export default class Quantity {
       return parseFloat(qty_s)
     }
   }
+
+  pretty() {
+    if (!this.label) {
+      return this.nb.toString()
+    } else {
+      return this.raw
+    }
+  }
 }

@@ -75,6 +75,11 @@ const Utils = {
     return `${Utils.prettyFraction(ml/0.31)} ${Utils.translated("pincée")}`
   },
 
+  prettyPreposition(foodName) {
+    return foodName.startsWith('a','e','i','o','u','y','é') ? "d'" : "de "// if exp.contract_preposition.nil?
+    //exp.contract_preposition ? "d'" : "de "
+  }
+
 };
 export default Utils;
 
