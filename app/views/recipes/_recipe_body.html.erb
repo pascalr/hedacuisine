@@ -146,6 +146,9 @@
   <%= pretty_print_recipe(recipe.similar_recipes.first) %>
 <% end %>
 
+<h2>Instructions V2</h2>
+<%= recipe.text %>
+
 <% unless recipe.references.blank? %> 
   <h2>Références</h2>
 

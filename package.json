@@ -9,6 +9,7 @@
     "@mui/styled-engine-sc": "^5.1.0",
     "@popperjs/core": "^2.10.1",
     "@rails/actioncable": "^6.0.0",
+    "@rails/actiontext": "^6.1.4-1",
     "@rails/activestorage": "^6.0.0",
     "@rails/ujs": "^6.0.0",
     "@rails/webpacker": "4.3.0",
@@ -34,6 +35,7 @@
     "svgexport": "^0.4.1",
     "tiny-slider": "^2.9.3",
     "toastr": "^2.1.4",
+    "trix": "^1.2.0",
     "turbolinks": "^5.2.0"
   },
   "version": "0.1.0",

@@ -24,6 +24,8 @@ class Recipe < ApplicationRecord
       SimilarRecipe.where(similar_recipe_id: self.id).map(&:recipe)
   end
 
+  has_rich_text :text
+
   belongs_to :image, optional: true
 
   has_many :references

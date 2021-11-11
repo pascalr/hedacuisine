@@ -14,6 +14,7 @@
  *= require easy-autocomplete
  *= require simple_calendar
  *= require_self
+ *= require actiontext
  */
 
 @import "bootstrap/scss/bootstrap";
@@ -27,6 +28,13 @@
 //@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Raleway&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
+
+.trix-content > ol > li::marker {
+  font-weight: bold;
+}
+.trix-content > ol > li + li {
+  margin-top: 1rem;
+}
 
 // FIXME: Move this elsewhere, unless I use it for the top search too?
 .react-autosuggest__suggestion--first {
