@@ -1,79 +1,7 @@
 // https://stackoverflow.com/questions/25888963/min-by-max-by-equivalent-functions-in-javascript
 
+import Utils from "recipe_utils"
 import Quantity from 'models/quantity'
-
-function minBy(array, fn) { 
-  return extremumBy(array, fn, Math.min); 
-};
-function maxBy(array, fn) { 
-  return extremumBy(array, fn, Math.max);
-};
-function extremumBy(array, pluck, extremum) {
-  return array.reduce(function(best, next) {
-    var pair = [ pluck(next), next ];
-    if (!best) {
-       return pair;
-    } else if (extremum.apply(null, [ best[0], pair[0] ]) == best[0]) {
-       return best;
-    } else {
-       return pair;
-    }
-  },null)[1];
-}
-
-function translated(str) {
-  return str
-}
-
-function toGrams(val, unit, unit_weight, density) {
-  if (!unit) {
-    return val * unit_weight
-  } else if (unit.is_weight) {
-    return val * unit.value
-  } else if (unit.is_volume) {
-    return val * unit.value * density
-  }
-  return val * unit.value * unit_weight
-}
-  
-function prettyFraction(value) {
-  var fractions = [0, 1/8, 1/4, 1/3, 1/2, 2/3, 3/4, 7/8, 1]
-  var pp_fractions = ["0", "1/8", "1/4", "1/3", "1/2", "2/3", "3/4", "7/8", "1"]
-  var i_part = parseInt(value, 10)
-  var f_part = value % 1
-  var f = minBy(fractions, x => Math.abs(f_part-x))
-  if (f == 0) {return i_part.toString();}
-  if (f == 1) {return (i_part+1).toString();}
-  var pf = pp_fractions[fractions.indexOf(f)]
-  if (i_part == 0) {return pf;}
-  return `${i_part} ${pf}`
-}
-
-function prettyWeight(grams) {
-  if (!grams) {return "";}
-  if (grams >= 1000.0) {return `${prettyNumber(grams/1000.0)} kg`;} 
-  return `${prettyNumber(grams)} g`
-}
-
-function prettyMetricVolume(ml) {
-  if (!ml) {return "";}
-  if (ml >= 1000.0) {return `${prettyNumber(ml/1000.0)} L`;} 
-  return `${prettyNumber(ml)} mL`
-}
-
-function prettyNumber(nb) {
-  //return Math.round(nb*100)/100
-  return Number.parseFloat(Number.parseFloat(nb).toPrecision(3));
-}
-
-function prettyVolume(ml, is_liquid) {
-  if (!ml) {return "";}
-  if (is_liquid && ml >= 1000.0) {return `${prettyFraction(ml/1000.0)} ${translated("L")}`;} 
-  if (ml >= 60.0) {return `${prettyFraction(ml/250.0)} ${translated("t")}`;} 
-  if (ml >= 15.0) {return `${prettyFraction(ml/15.0)} ${translated("c. à soupe")}`;}
-  if (ml >= 5.0/8.0) {return `${prettyFraction(ml/5.0)} ${translated("c. à thé")}`;}
-  return `${prettyFraction(ml/0.31)} ${translated("pincée")}`
-}
 
 function prettyIngredient(ing) {
 
@@ -87,11 +15,11 @@ function prettyIngredient(ing) {
   if (unit) {qty *= unit.value}
 
   if (unit && unit.is_weight) {
-    var r = prettyWeight(qty) + " "
+    var r = Utils.prettyWeight(qty) + " "
   } else if (unit && unit.is_volume) {
-    var r = prettyVolume(qty) + " "
+    var r = Utils.prettyVolume(qty) + " "
   } else {
-    var r = prettyFraction(qty) + " "
+    var r = Utils.prettyFraction(qty) + " "
     if (unit) {r += unit.name + " "}
   }
   if (unit && ing.dataset.preposition) {r += ing.dataset.preposition }
@@ -119,21 +47,16 @@ function prettyDetailedIngredient(ing) {
   r += "<span class='ingredient-details'>("
   if (unit && unit.is_weight) {
     // TODO: Show unit quantity if food can be unit.
-    r += `${prettyVolume(ml)} · ${prettyMetricVolume(ml)}`
+    r += `${Utils.prettyVolume(ml)} · ${Utils.prettyMetricVolume(ml)}`
   } else if (unit && unit.is_volume) {
     // TODO: Show unit quantity if food can be unit.
     // FIXME: What if it is already metric???
-    r += `${prettyMetricVolume(ml)} · ${prettyWeight(grams)}`
+    r += `${Utils.prettyMetricVolume(ml)} · ${Utils.prettyWeight(grams)}`
   } else {
-    r += `${prettyWeight(grams)}`
+    r += `${Utils.prettyWeight(grams)}`
   }
   r += ")</span>"
   return r
-}
-
-function parseFractionFloat(str) {
-  var split = str.split('/')
-  return split[0]/split[1]
 }
 
 function calcScale(inc) {
@@ -145,7 +68,7 @@ function calcScale(inc) {
 function scaleRaw(raw) {
   if (!raw) {return ""}
   var quantity = new Quantity({raw: raw})
-  var v = prettyFraction(quantity.nb*window.scale)
+  var v = Utils.prettyFraction(quantity.nb*window.scale)
   if (quantity.label) {return v + " " + quantity.label}
   return v
 }
@@ -165,7 +88,7 @@ function updateScalableQuantities() {
   for (const elem of elements) {
     const original = elem.dataset.scalableQty
     //var val = parseFloat(elem.innerHTML)
-    elem.innerHTML = "" + prettyFraction(original*window.scale)
+    elem.innerHTML = "" + Utils.prettyFraction(original*window.scale)
   }
 }
 
@@ -174,7 +97,7 @@ function updateScalableVolumes() {
   for (const elem of elements) {
     const ml = elem.dataset.scalableVolume
     //var val = parseFloat(elem.innerHTML)
-    elem.innerHTML = "" + prettyVolume(ml*window.scale, elem.dataset.isLiquid)
+    elem.innerHTML = "" + Utils.prettyVolume(ml*window.scale, elem.dataset.isLiquid)
   }
 }
 
@@ -182,7 +105,7 @@ function updateScalableWeights() {
   var elements = document.querySelectorAll('[data-scalable-weight]');
   for (const elem of elements) {
     const grams = elem.dataset.scalableWeight
-    elem.innerHTML = "" + prettyWeight(grams*window.scale)
+    elem.innerHTML = "" + Utils.prettyWeight(grams*window.scale)
   }
 }
 
@@ -272,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     var f0 = new Quantity({raw: servingsField.dataset.initial}).nb
     var qty = new Quantity({raw: servingsField.value})
     var v = getIncValue(qty.nb, f0, true)
-    servingsField.value = prettyFraction(v) + " " + qty.label
+    servingsField.value = Utils.prettyFraction(v) + " " + qty.label
     var event = new Event('change');
     event.forced = true
     servingsField.dispatchEvent(event);
@@ -282,7 +205,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     var f0 = new Quantity({raw: servingsField.dataset.initial}).nb
     var qty = new Quantity({raw: servingsField.value})
     var v = getIncValue(qty.nb, f0, false)
-    servingsField.value = prettyFraction(v) + " " + qty.label
+    servingsField.value = Utils.prettyFraction(v) + " " + qty.label
     var event = new Event('change');
     event.forced = true
     servingsField.dispatchEvent(event);
@@ -291,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   inField.addEventListener('change', event => {
     var qty = new Quantity({raw: inField.value})
     const inIng = gon.ingredients[inIngs.value]
-    var grams = toGrams(qty.nb, qty.unit, inIng.unit_weight, inIng.density)
+    var grams = Utils.toGrams(qty.nb, qty.unit, inIng.unit_weight, inIng.density)
     window.scale = grams / inIng.grams
     //console.log(f)
     //console.log(grams)
@@ -308,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   servingsField.addEventListener('change', event => {
     var qty0 = new Quantity({raw: servingsField.dataset.initial})
     var f = new Quantity({raw: servingsField.value}).nb
-    servingsField.value = (event.forced ? prettyFraction(f) : f.toString()) + " " + qty0.label
+    servingsField.value = (event.forced ? Utils.prettyFraction(f) : f.toString()) + " " + qty0.label
     window.scale = f / qty0.nb
     //console.log(f)
     //console.log(f0)

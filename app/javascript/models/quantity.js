@@ -34,9 +34,9 @@ export default class Quantity {
         var s = qty_s.split(' ')
         var whole = s[0]
         var fraction = s[1]
-        return parseInt(whole, 10) + parseFractionFloat(fraction)
+        return parseInt(whole, 10) + Quantity.parseFractionFloat(fraction)
       } else {
-        return parseFractionFloat(qty_s)
+        return Quantity.parseFractionFloat(qty_s)
       }
     } else {
       return parseFloat(qty_s)

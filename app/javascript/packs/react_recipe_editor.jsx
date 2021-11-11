@@ -10,6 +10,8 @@ import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
+import Utils from "recipe_utils"
+
 //import './style.css' // import style.css stylesheet
 
 // TODO: Rename if this works with tokens too
@@ -128,6 +130,61 @@ function processTokens(tokens) {
 function processInstructionText(text) {
   let tokens = tokenizeLine(text)
   return processTokens(tokens)
+}
+
+function parseIng(raw) {
+  if (raw.includes(":")) {
+    const s = raw.split(":")
+    const qty = s[0]
+    const food = s[1]
+  } else {
+    throw "Unable to parse this ingredient yet: "+raw;
+  }
+  return raw
+}
+
+const RecipePreview = ({instructions}) => {
+
+  if (!instructions) {return null}
+
+  let stepNb = 1
+
+  let ings = []
+
+  let lines = instructions.split('\n').map((raw, i) => {
+    let line = raw.trim()
+    if (line.startsWith("/")) {
+      return <p key={i}><i>{processInstructionText(line.slice(1).trim())}</i></p>
+    } else if (line.startsWith("$$$")) {
+      return <h5>{line.slice(1).trim()}</h5>
+    } else if (line.startsWith("$$")) {
+      return <h4>{line.slice(1).trim()}</h4>
+    } else if (line.startsWith("$")) {
+      return <h3>{line.slice(1).trim()}</h3>
+    } else if (line.startsWith("-")) {
+      ings.push(parseIng(line.slice(1).trim()))
+    } else if (line.startsWith("#")) {
+      return <div key={i}><span className="step-number">{stepNb}</span>{' '}{processInstructionText(line.slice(1).trim())}</div>
+      stepNb += 1
+    } else {
+      return <p key={i}>{processInstructionText(line)}</p>
+    }
+  })
+  for(var i = 0;i < lines.length;i++){
+      //code here using lines[i] which will give you each line
+  }
+
+  return (<>
+    <h2>Ingrédients</h2>
+      {ings}
+    <h2>Instructions</h2>
+    <div>
+      {lines}
+    </div>
+    <h2>Outils</h2>
+    <h2>Informations</h2>
+    <h2>Références</h2>
+  </>)
 }
 
 const InstructionsPreview = ({instructions}) => {
@@ -611,7 +668,7 @@ class RecipeTextEditor extends React.Component {
 
     const model = new Model("recipe", gon.recipe)
     console.log(model)
-    
+
     return (<>
       <Row gap="10px">
         <div>
@@ -627,7 +684,7 @@ class RecipeTextEditor extends React.Component {
               <input className="bg-fill plain-input" type="text" value={this.state.name} onChange={(e) => this.setState({name: e.target.value})} onBlur={this.updateName} />
             </div>
             <div className="bg-fill" style={{width: "100%", height: "0.5rem"}}></div>
-            <InstructionsPreview instructions={this.state.contentSlave} />
+            <RecipePreview instructions={this.state.contentSlave} />
           </div>
         </div>
       </Row>
