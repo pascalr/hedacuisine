@@ -1,5 +1,5 @@
 class RecipesController < ApplicationController
-  before_action :set_recipe, only: [:do_process, :edit, :update, :destroy, :rate, :cheat, :validate, :view_body, :move_ing]
+  before_action :set_recipe, only: [:do_process, :edit, :update, :destroy, :rate, :cheat, :validate, :view_body, :move_ing, :edit_text]
   skip_before_action :authenticate_user!, only: [:show, :index]
   skip_before_action :only_admin!, only: [:show, :index]
 
@@ -64,16 +64,11 @@ class RecipesController < ApplicationController
     #@recipe.version_name = nil
   end
 
+  def edit_text
+    gon.jbuilder
+  end
   def edit
     gon.jbuilder
-    #gon.test = "Hello world!"
-#<span id="food-list" data-values="<%= Food.all.map(&:name) %>"></span>
-#<span id="data" data-recipe='<%= @recipe.to_json(only: [:id, :name], include: {
-#  ingredients: {only: [:id, :raw, :comment], include: {
-#    food: {only: [:id, :name]
-#    }
-#  }}
-#}) %>'></span>
   end
 
   def create
