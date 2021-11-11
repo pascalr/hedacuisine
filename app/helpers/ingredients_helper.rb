@@ -388,7 +388,7 @@ module IngredientsHelper
   def pretty_instruction_text(recipe)
     return nil if recipe.blank? || recipe.text.blank?
     #translated = my_sanitize(translate_complete_instructions(recipe))
-    replaced = replace_ingredients(recipe, recipe.text.to_plain_text)
+    replaced = replace_ingredients(recipe, recipe.text.body.to_trix_html)
     my_sanitize(replaced)
   end
 
