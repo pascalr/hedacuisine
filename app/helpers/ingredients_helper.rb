@@ -384,6 +384,13 @@ module IngredientsHelper
   def sanitize_article(s)
     sanitize s, attributes: %w(id class href src style)
   end
+  
+  def pretty_instruction_text(recipe)
+    return nil if recipe.blank? || recipe.text.blank?
+    #translated = my_sanitize(translate_complete_instructions(recipe))
+    replaced = replace_ingredients(recipe, recipe.text.to_plain_text)
+    my_sanitize(replaced)
+  end
 
   def pretty_article_text(text)
     replaced = replace_links(text)

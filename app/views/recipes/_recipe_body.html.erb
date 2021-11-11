@@ -147,7 +147,9 @@
 <% end %>
 
 <h2>Instructions V2</h2>
-<%= recipe.text %>
+<div class="instruction-text">
+  <%= pretty_instruction_text(recipe) %>
+</div>
 
 <% unless recipe.references.blank? %> 
   <h2>Références</h2>
