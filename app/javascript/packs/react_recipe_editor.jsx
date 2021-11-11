@@ -132,6 +132,8 @@ function processInstructionText(text) {
 
 const InstructionsPreview = ({instructions}) => {
 
+  if (!instructions) {return null}
+
   let stepNb = 1
 
   let lines = instructions.split('\n').map((raw, i) => {
@@ -145,7 +147,7 @@ const InstructionsPreview = ({instructions}) => {
     } else if (line.startsWith("$")) {
       return <h3>{line.slice(1).trim()}</h3>
     } else if (line.startsWith("#")) {
-      return <div key={i}><span className="step-number">{stepNb}</span>{processInstructionText(line.slice(1).trim())}</div>
+      return <div key={i}><span className="step-number">{stepNb}</span>{' '}{processInstructionText(line.slice(1).trim())}</div>
       stepNb += 1
     } else {
       return <p key={i}>{processInstructionText(line)}</p>
@@ -587,9 +589,58 @@ class RecipeEditor extends React.Component {
   }
 }
 
+class RecipeTextEditor extends React.Component {
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: gon.recipe.name,
+      contentSlave: gon.recipe.content,
+    };
+    this.updateName = this.updateName.bind(this);
+  }
+
+  updateName() {
+    if (this.name == gon.recipe.name) {return;}
+    let data = new FormData()
+    data.append('recipe[name]', this.state.name)
+    Rails.ajax({url: gon.recipe.url, type: 'PATCH', data: data})
+  }
+
+  render() {
+
+    const model = new Model("recipe", gon.recipe)
+    console.log(model)
+    
+    return (<>
+      <Row gap="10px">
+        <div>
+          <h3>Format Heda</h3>
+          <InstructionsHelp/>
+          <TextAreaField model={model} field="content" cols={80} rows={30} changeCallback={modified => this.setState({contentSlave: modified})}></TextAreaField>
+        </div>
+        <div>
+          <h3>Live preview</h3>
+          <div className="recipe-body">
+            <div className="bg-fill" style={{width: "100%", height: "0.5rem"}}></div>
+            <div className="d-flex bg-fill ps-3 w-100" style={{fontSize: "1.2rem", alignItems: "center", flexWrap: "wrap", fontWeight: "bold"}}>
+              <input className="bg-fill plain-input" type="text" value={this.state.name} onChange={(e) => this.setState({name: e.target.value})} onBlur={this.updateName} />
+            </div>
+            <div className="bg-fill" style={{width: "100%", height: "0.5rem"}}></div>
+            <InstructionsPreview instructions={this.state.contentSlave} />
+          </div>
+        </div>
+      </Row>
+    </>)
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   window.recipe_editor = React.createRef()
-  ReactDOM.render(<RecipeEditor ref={window.recipe_editor}/>, document.getElementById('root'))
+  const root = document.getElementById('root')
+  const rootText = document.getElementById('root-text')
+  if (root) {ReactDOM.render(<RecipeEditor ref={window.recipe_editor}/>, root)}
+  if (rootText) {ReactDOM.render(<RecipeTextEditor ref={window.recipe_editor}/>, rootText)}
 })
 
 //const ModelFields = (props) => {
