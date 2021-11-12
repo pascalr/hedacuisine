@@ -13,6 +13,8 @@ import Button from '@mui/material/Button';
 import Quantity from 'models/quantity'
 import Utils from "recipe_utils"
 
+import Quill from "quill"
+
 //import './style.css' // import style.css stylesheet
 
 class Ingredient {
@@ -842,27 +844,40 @@ const CustomToolbar = () => (<>
 
 document.addEventListener('DOMContentLoaded', () => {
   window.recipe_editor = React.createRef()
-  const trixToolbar = document.getElementById('trix-toolbar')
-  if (trixToolbar) {
-    Trix.config.blockAttributes.heading = {
-      tagName: "h3",
-      terminal: true,
-      breakOnReturn: true,
-      group: false
-    }
-    Trix.config.blockAttributes.subHeading = {
-      tagName: "h4",
-      terminal: true,
-      breakOnReturn: true,
-      group: false
-    }
-    window.trixEditor
-    var editor = document.querySelector("trix-editor").editor
-    ReactDOM.render(<TrixToolbar editor={editor}/>, trixToolbar)
+  var quill = new Quill('#quill-editor', {
+    modules: { toolbar: true },
+    theme: 'snow'
+  });
+  quill.setContents([
+    { insert: gon.recipe.text'This is a test!' },
+  ]);
 
-    const oldButtons = document.getElementsByClassName("trix-button-row")[0];
-    ReactDOM.render(<CustomToolbar />, oldButtons)
-  }
+
+  //const trixToolbar = document.getElementById('trix-toolbar')
+  //if (trixToolbar) {
+  //  Trix.config.blockAttributes.heading = {
+  //    tagName: "h3",
+  //    terminal: true,
+  //    breakOnReturn: true,
+  //    group: false
+  //  }
+  //  Trix.config.blockAttributes.subHeading = {
+  //    tagName: "h4",
+  //    terminal: true,
+  //    breakOnReturn: true,
+  //    group: false
+  //  }
+  //  window.trixEditor
+  //  var editor = document.querySelector("trix-editor").editor
+  //  ReactDOM.render(<TrixToolbar editor={editor}/>, trixToolbar)
+
+  //  const oldButtons = document.getElementsByClassName("trix-button-row")[0];
+  //  const customButtons = document.getElementById("custom-trix-buttons")
+  //  oldButtons.innerHTML = customButtons.innerHTML
+  //  //oldButtons.appendChild(customButtons)
+  //  //customButtons.style.display = "block"
+  //  //ReactDOM.render(<CustomToolbar />, oldButtons)
+  //}
   const root = document.getElementById('root')
   const rootText = document.getElementById('root-text')
   if (root) {ReactDOM.render(<RecipeEditor ref={window.recipe_editor}/>, root)}
@@ -875,3 +890,16 @@ document.addEventListener('DOMContentLoaded', () => {
 //  })
 //  return <>{elements}</>
 //}
+//
+//
+//  <%= form_with(model: @recipe, local: true) do |form| %>
+//  
+//    <h2 class="h2">Instructions V2</h2>
+//  
+//    <div id="trix-toolbar"></div>
+//    <%= form.rich_text_area :text %>
+//  
+//    <div class="actions">
+//      <%= form.submit %>
+//    </div>
+//  <% end %>

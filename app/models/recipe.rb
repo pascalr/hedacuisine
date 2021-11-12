@@ -24,7 +24,7 @@ class Recipe < ApplicationRecord
       SimilarRecipe.where(similar_recipe_id: self.id).map(&:recipe)
   end
 
-  has_rich_text :text
+  has_rich_text :rich_text
 
   belongs_to :image, optional: true
 
