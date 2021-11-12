@@ -295,7 +295,7 @@ function updateListOrder() {
 
 const InstructionsHelp = props => (
   <>
-    <button className="btn-image">
+    <button type="button" className="btn-image">
       <img src="/icons/question-circle-blue.svg" data-bs-toggle="collapse" data-bs-target="#show-help" style={{width: "2em"}}></img>
     </button>
     <div className="collapse" id="show-help">
@@ -429,7 +429,7 @@ const EditableIngredientComment = (props) => {
 
   if (visual == VisualState.CLOSED) {
     return (
-      <button className="btn-image" onClick={() => setVisual(VisualState.EXPANDING)}>
+      <button type="button" className="btn-image" onClick={() => setVisual(VisualState.EXPANDING)}>
         <img src="/icons/chat-left.svg" style={{marginLeft: "10px"}}/>
       </button>
     )
@@ -467,7 +467,7 @@ const EditableIngredient = (props) => {
       <a href={ing.food.url}>{ing.food.name}</a>
       <EditableIngredientComment ingUrl={ing.url} comment={ing.comment} />
       <Block flexGrow="1" />
-      <button aria-describedby={'delete-popover'} className="btn-image" onClick={(evt) => setAnchorEl(evt.currentTarget)}>
+      <button type="button" aria-describedby={'delete-popover'} className="btn-image" onClick={(evt) => setAnchorEl(evt.currentTarget)}>
         <img src="/icons/x-lg.svg"/>
       </button>
       <Popover
@@ -480,7 +480,7 @@ const EditableIngredient = (props) => {
       >
         <Typography sx={{ p: 2 }}>
           Je veux enlever cet ingrédient?
-          <button className="btn btn-primary" style={{marginLeft: "10px"}} onClick={removeIngredient}>Oui</button>
+          <button type="button" className="btn btn-primary" style={{marginLeft: "10px"}} onClick={removeIngredient}>Oui</button>
         </Typography>
       </Popover>
     </Row>
@@ -758,12 +758,57 @@ class RecipeTextEditor extends React.Component {
   }
 }
 
+// Why this is not a method of Trix.Editor is beyond me...
+function toggleTrixAttribute(editor, attr) {
+  if (editor.attributeIsActive(attr)) {
+    editor.deactivateAttribute(attr)
+  } else {
+    editor.activateAttribute(attr)
+  }
+}
+
+const TrixToolbar = ({editor}) => {
+  return (
+    <Row>
+      <button type="button" className="btn-image" onClick={() => toggleTrixAttribute(editor, "bold")}>
+        <img src="/icons/type-bold.svg" style={{width: "2em"}}></img>
+      </button>
+      <button type="button" className="btn-image" onClick={() => toggleTrixAttribute(editor, "heading")}>
+        <img src="/icons/type-h1.svg" style={{width: "2em"}}></img>
+      </button>
+      <button type="button" className="btn-image" onClick={() => toggleTrixAttribute(editor, "subHeading")}>
+        <img src="/icons/type-h2.svg" style={{width: "2em"}}></img>
+      </button>
+      <button type="button" className="btn-image" onClick={() => toggleTrixAttribute(editor, "bold")}>
+        <img src="/icons/type-h3.svg" style={{width: "2em"}}></img>
+      </button>
+    </Row>
+  )
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   window.recipe_editor = React.createRef()
   const root = document.getElementById('root')
   const rootText = document.getElementById('root-text')
+  const trixToolbar = document.getElementById('trix-toolbar')
   if (root) {ReactDOM.render(<RecipeEditor ref={window.recipe_editor}/>, root)}
   if (rootText) {ReactDOM.render(<RecipeTextEditor ref={window.recipe_editor}/>, rootText)}
+  if (trixToolbar) {
+    Trix.config.blockAttributes.heading = {
+      tagName: "h3",
+      terminal: true,
+      breakOnReturn: true,
+      group: false
+    }
+    Trix.config.blockAttributes.subHeading = {
+      tagName: "h4",
+      terminal: true,
+      breakOnReturn: true,
+      group: false
+    }
+    var editor = document.querySelector("trix-editor").editor
+    ReactDOM.render(<TrixToolbar editor={editor}/>, trixToolbar)
+  }
 })
 
 //const ModelFields = (props) => {
