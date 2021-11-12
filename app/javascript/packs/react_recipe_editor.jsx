@@ -675,7 +675,6 @@ class RecipeEditor extends React.Component {
              onClick={() => this.setState({showAddNewIng: !this.state.showAddNewIng})} />
       
         <h2>Instructions</h2>
-        <InstructionsHelp/>
         <Partial partialId="partial-editor"/>
       </div>
         

@@ -13,6 +13,7 @@
  * require_tree .
  *= require easy-autocomplete
  *= require simple_calendar
+ *= require quill-snow
  *= require_self
  *= require actiontext
  */
@@ -28,6 +29,20 @@
 //@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Raleway&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
+
+.ql-editor ol {
+  padding-left: 0;
+}
+.ql-editor > ol > li::before {
+  font-weight: bold;
+}
+.ql-editor > ol > li + li {
+  margin-top: 1rem;
+}
+.ql-editor, #ing_list {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1rem;
+}
 
 .instruction-text > ol > li::marker {
   font-weight: bold;
