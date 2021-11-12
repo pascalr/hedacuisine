@@ -844,13 +844,54 @@ const CustomToolbar = () => (<>
 
 document.addEventListener('DOMContentLoaded', () => {
   window.recipe_editor = React.createRef()
+
+  // https://quilljs.com/playground/#autosave
+  var Delta = Quill.import('delta');
   var quill = new Quill('#quill-editor', {
-    modules: { toolbar: true },
+    modules: {
+      toolbar: true
+    },
+    placeholder: 'Écrire les instructions...',
     theme: 'snow'
   });
-  quill.setContents([
-    { insert: gon.recipe.text'This is a test!' },
-  ]);
+  
+  // Store accumulated changes
+  var change = new Delta();
+  quill.on('text-change', function(delta) {
+    change = change.compose(delta);
+  });
+  
+  // Save periodically
+  setInterval(function() {
+    if (change.length() > 0) {
+      console.log('Saving changes', quill.root.innerHTML);
+
+      let data = new FormData()
+      data.append('recipe[text]', quill.root.innerHTML)
+      Rails.ajax({url: gon.recipe.url, type: 'PATCH', data: data})
+      /*
+      Send partial changes
+      $.post('/your-endpoint', {
+        partial: JSON.stringify(change)
+      });
+      */
+      change = new Delta();
+    }
+  }, 5*1000);
+  
+  // Check for unsaved data
+  window.onbeforeunload = function() {
+    if (change.length() > 0) {
+      return 'There are unsaved changes. Are you sure you want to leave?';
+    }
+  }
+
+  //<button id="quill-save-button" type="button">Enregistrer</button>
+  //const saveButton = document.getElementById('quill-save-button')
+  //if (saveButton) {
+  //  saveButton.addEventListener("click", function(evt) {
+  //  })
+  //}
 
 
   //const trixToolbar = document.getElementById('trix-toolbar')

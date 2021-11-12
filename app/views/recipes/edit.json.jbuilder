@@ -3,7 +3,6 @@ json.recipe do
   json.url recipe_path(@recipe)
   json.new_ingredient_url recipe_recipe_ingredients_path(@recipe)
   json.name @recipe.name
-  json.text @recipe.text.body.to_trix_html
   json.main_ingredient_id @recipe.main_ingredient_id
   json.complete_instructions @recipe.complete_instructions
   json.base_recipe_id @recipe.base_recipe_id
