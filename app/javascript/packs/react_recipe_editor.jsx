@@ -655,10 +655,6 @@ class RecipeEditor extends React.Component {
       </li>
     ))
 
-    //const nbInstructionLines = (this.state.instructionsSlave.match(/\n/g)||[]).length + 2
-    const cols = 80
-    const nbInstructionLines = this.state.instructionsSlave.split('\n').reduce((a, l) => a + Math.ceil((l.length||1) / cols), 0)
-
     const model = new Model("recipe", gon.recipe)
     console.log(model)
     
@@ -678,17 +674,8 @@ class RecipeEditor extends React.Component {
       
         <h2>Instructions</h2>
         <InstructionsHelp/>
+        <Partial partialId="partial-editor"/>
       </div>
-        <Row gap="10px">
-          <div>
-            <h3>Format Heda</h3>
-            <TextAreaField model={model} field="complete_instructions" cols={cols} rows={nbInstructionLines} changeCallback={modified => this.setState({instructionsSlave: modified})}></TextAreaField>
-          </div>
-          <div>
-            <h3>Live preview</h3>
-            <InstructionsPreview instructions={this.state.instructionsSlave} />
-          </div>
-        </Row>
         
       <div className="recipe-body">
         
@@ -759,7 +746,8 @@ class RecipeTextEditor extends React.Component {
 }
 
 // Why this is not a method of Trix.Editor is beyond me...
-function toggleTrixAttribute(editor, attr) {
+function toggleTrixAttribute(getTrixEditor, attr) {
+  const editor = getTrixEditor()
   if (editor.attributeIsActive(attr)) {
     editor.deactivateAttribute(attr)
   } else {
@@ -767,23 +755,59 @@ function toggleTrixAttribute(editor, attr) {
   }
 }
 
-const TrixToolbar = ({editor}) => {
+const TrixToolbar = ({getTrixEditor}) => {
   return (
     <Row>
-      <button type="button" className="btn-image" onClick={() => toggleTrixAttribute(editor, "bold")}>
+      <button type="button" className="btn-image" onClick={() => toggleTrixAttribute(getTrixEditor, "bold")}>
         <img src="/icons/type-bold.svg" style={{width: "2em"}}></img>
       </button>
-      <button type="button" className="btn-image" onClick={() => toggleTrixAttribute(editor, "heading")}>
+      <button type="button" className="btn-image" onClick={() => toggleTrixAttribute(getTrixEditor, "heading")}>
         <img src="/icons/type-h1.svg" style={{width: "2em"}}></img>
       </button>
-      <button type="button" className="btn-image" onClick={() => toggleTrixAttribute(editor, "subHeading")}>
+      <button type="button" className="btn-image" onClick={() => toggleTrixAttribute(getTrixEditor, "subHeading")}>
         <img src="/icons/type-h2.svg" style={{width: "2em"}}></img>
       </button>
-      <button type="button" className="btn-image" onClick={() => toggleTrixAttribute(editor, "bold")}>
+      <button type="button" className="btn-image" onClick={() => toggleTrixAttribute(getTrixEditor, "bold")}>
         <img src="/icons/type-h3.svg" style={{width: "2em"}}></img>
       </button>
     </Row>
   )
+}
+
+// https://reactjs.org/docs/integrating-with-other-libraries.html
+class Partial extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.partialId = props.partialId
+  }
+
+  componentDidMount() {
+    let el = document.getElementById(this.partialId)
+    el.style.display = "block"
+    this.ref.appendChild(el)
+  }
+
+  render() {
+    return <div ref={el => this.ref = el} />;
+  }
+}
+
+const RichTextEditor = (props) => {
+  
+  const editorRef = useRef(null);
+  const getTrixEditor = () => editorRef.current.editor
+
+  return (<>
+    <TrixToolbar getTrixEditor={getTrixEditor}/>
+    <trix-editor class="trix-content" ref={editorRef} dangerouslySetInnerHTML={{__html: "<p>Your html code here.<p>"}}></trix-editor>
+  </>)
+    //<trix-editor id="recipe_text_2"
+    //  class="trix-content"
+    //  data-direct-upload-url="http://localhost:3000/rails/active_storage/direct_uploads?locale=fr-CA"
+    //  data-blob-url-template="http://localhost:3000/rails/active_storage/blobs/redirect/:signed_id/:filename?locale=fr-CA"
+    //</trix-editor>
+  //
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -806,6 +830,7 @@ document.addEventListener('DOMContentLoaded', () => {
       breakOnReturn: true,
       group: false
     }
+    window.trixEditor
     var editor = document.querySelector("trix-editor").editor
     ReactDOM.render(<TrixToolbar editor={editor}/>, trixToolbar)
   }

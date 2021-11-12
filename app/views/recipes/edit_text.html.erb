@@ -5,6 +5,7 @@
     <span class="nav-item navbar-brand"><b>Mode</b></span>
     <%= link_to_active_if action_name == "edit", translated("Graphique"), edit_recipe_path(@recipe), class: "nav-item nav-link" %>
     <%= link_to_active_if action_name == "edit_text", translated("Texte"), edit_text_recipe_path(@recipe), class: "nav-item nav-link" %>
+    <%= link_to_active_if action_name == "old_edit", translated("Classic"), old_edit_recipe_path(@recipe), class: "nav-item nav-link" %>
   </ul>
 </nav>
 

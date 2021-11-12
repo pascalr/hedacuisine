@@ -1,0 +1,227 @@
+<%= render partial: "recipes/tabs" %>
+
+<nav>
+  <ul class="nav nav-pills" style="margin-bottom: 10px;">
+    <span class="nav-item navbar-brand"><b>Mode</b></span>
+    <%= link_to_active_if action_name == "edit", translated("Graphique"), edit_recipe_path(@recipe), class: "nav-item nav-link" %>
+    <%= link_to_active_if action_name == "edit_text", translated("Texte"), edit_text_recipe_path(@recipe), class: "nav-item nav-link" %>
+    <%= link_to_active_if action_name == "old_edit", translated("Classic"), old_edit_recipe_path(@recipe), class: "nav-item nav-link" %>
+  </ul>
+</nav>
+
+<nav>
+  <%= link_to 'Show', recipe_path(@recipe) %> |
+  <%= link_to 'Validate', validate_recipe_path(@recipe) %> |
+  <%= link_to 'Process', do_process_recipe_path(@recipe), method: :patch %> |
+  <%= link_to 'Cheat', cheat_recipe_path(@recipe), method: :patch %> |
+  <%= link_to 'Fix ingredient numbers', 'TODO', method: :patch %> |
+  <%= link_to 'Back', recipes_path %>
+</nav>
+
+<div id="recipe-editor">
+
+<div class="responsive-above">
+  <% if @recipe.image %>
+    <div>
+      <%= image_tag medium_image_path(@recipe.image), style: "margin-right: 20px; width: 452px; height: 304px;" %>
+    </div>
+  <% else %>
+    <div style="width: 452px; height: 304px; border: 1px solid black;">
+    </div>
+  <% end %>
+  <div>
+    <div style="display: flex; align-items: center;">
+      <h1 style="flex-grow: 1;" data-model="<%= @recipe.model_name.to_s.underscore %>" data-url="<%= recipe_path(@recipe) %>" data-update-column="name" class="recipe-title" contenteditable="true"><%= @recipe.name %></h1>
+      <span data-bs-toggle="collapse" data-bs-target="#help-desc" class="btn btn-outline-primary">?</span>
+    </div>
+    <div class="collapse" id="help-desc">
+      <h3>Aide pour la description</h3>
+      <p>
+        1er paragraphe:<br>
+        Commencer par un phrase qui dit c'est quel type de de nourriture cette recette. Expliquer ce qui distingue cette recettes des autres. Ensuite expliquer l'origine de la recette. (Origine Québecoise? Origine du sud de la France?)<br>
+        Ex: Le tofu au beurre est une alternative végétarienne au poulet au beurre.
+      </p>
+      <p>
+        2e paragraphe:<br>
+        Expliquer comment c'est manger habituellement. Selon les régions, comment est-ce que le monde mange cette recette?
+      </p>
+    </div>
+    <textarea data-model="<%= @recipe.model_name.to_s.underscore %>" data-url="<%= recipe_path(@recipe) %>" data-update-column="description" style="width: 600px;" rows=4><%= @recipe.description %></textarea>
+    <div style="margin-top: 1.5rem;">
+      <%= render partial: "details_medium_version", locals: {recipe: @recipe} %>
+    </div>
+  </div>
+</div>
+<%= form_with(model: @recipe, local: true) do |form| %>
+  <b><%= form.label :image_id %></b>
+  <%= form.number_field :image_id %>
+  <%= form.submit "modifier" %>
+<% end %>
+<%= form_with(model: @recipe, local: true) do |form| %>
+  <b><%= form.label :kind_id %></b>
+  <%= form.collection_select :kind_id, Kind.all.order(:name), :id, :name, include_blank: true %>
+  <%= form.submit "modifier" %>
+<% end %>
+
+<% @units = Unit.all %>
+
+<h2 class="h2">Ingrédients</h2>
+
+<span id="food-list" data-values="<%= Food.all.map(&:name) %>"></span>
+  
+<div>
+  <% if @recipe.recipe_ingredients.blank? %>
+    Il n'y a pas encore d'ingrédients.
+  <% else %>
+    <ul class="list-group" style="max-width: 800px;" data-controller="drag" data-drag-base-url="<%= recipe_path(@recipe) %>" data-handle=".handle">
+      <% @recipe.recipe_ingredients.order(:item_nb).each do |ingredient| %>
+        <li class="list-group-item" data-url="<%= recipe_recipe_ingredient_move_path(@recipe, ingredient) %>">
+          <%= image_tag icon_path("arrows-move.svg"), class: "handle" %>
+          <span style="margin: 0 10px;"><b><%= ingredient.item_nb %>.</b></span>
+          <%= form_with(model: [@recipe, ingredient], local: true, class: "inline") do |form| %>
+            <%= form.text_field :raw, size: "10" %>
+            <%= link_to ingredient.food.name, ingredient.food %>
+            <div style="float: right;">
+              <%= form.text_field :comment, size: "18", style: "margin-right: 2rem;" %>
+              <%= form.submit 'modifier' %>
+              <%= link_to 'x', [@recipe, ingredient], method: :delete, data: {confirm: 'Are you sure?'} %>
+            </div>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>
+
+<button id="add-recipe-ingredient-form">Ajouter</button>
+
+<%= render partial: "recipes/form_for_new_recipe_ingredient", locals: {recipe: @recipe} %>
+
+<h2 class="h2">Outils</h2>
+
+<div>
+  <% if @recipe.tools.blank? %>
+    Il n'y a pas encore d'outils.
+  <% else %>
+    <ul class="list-group">
+      <% @recipe.tools.order(:name).each do |tool| %>
+        <li><%= tool.name %></li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>
+
+<%= form_with(model: [@recipe,RecipeTool.new], id: "new-recipe-tool-form", local: true) do |form| %>
+  <%= form.hidden_field :recipe_id, value: @recipe.id %>
+  <%= form.collection_select :tool_id, Tool.order(:name).all, :id, :name, include_blank: true %>
+  <%= form.submit "Ajouter" %>
+<% end %>
+
+<h2 class="h2">Détails</h2>
+
+<%= form_with(model: @recipe, local: true) do |form| %>
+  <% if @recipe.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@recipe.errors.count, "error") %> prohibited this recipe from being saved:</h2>
+
+      <ul>
+        <% @recipe.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <div class="field">
+    <b><%= form.label :base_recipe_id %></b>
+    <%= form.text_field :base_recipe_id %>
+  </div>
+  
+  <div class="field">
+    <b><%= form.label :version_name %></b>
+    <%= form.text_field :version_name %>
+  </div>
+
+  <div class="field">
+    <b><%= form.label :source %></b>
+    <%= form.text_field :source, size: 80 %>
+  </div>
+  
+  <div class="field">
+    <b><%= form.label :preparation_time %></b>
+    <%= form.number_field :preparation_time %>
+  </div>
+  
+  <div class="field">
+    <b><%= form.label :cooking_time %></b>
+    <%= form.number_field :cooking_time %>
+  </div>
+  
+  <div class="field">
+    <b><%= form.label :total_time %></b>
+    <%= form.number_field :total_time %>
+  </div>
+  
+  <div class="field">
+    <b><%= form.label :raw_servings %></b>
+    <%= form.text_field :raw_servings %>
+  </div>
+  
+  <div class="field">
+    <b><%= form.label :main_ingredient_id %></b>
+    <%= form.collection_select :main_ingredient_id, @recipe.ingredients, :id, :name, include_blank: true %>
+  </div>
+
+  <br><br>
+  <h2 class="h2">Instructions</h2>
+
+  <%= render partial: "layouts/help" %>
+  
+  <div class="field">
+    <b><%= form.label :complete_instructions %></b><br>
+    <%= form.text_area :complete_instructions, cols: 100, rows: 10 %>
+  </div>
+  
+  <!--<div class="field">
+    <b><%# form.label :instructions %></b><br>
+    <%# form.text_area :instructions, cols: 100, rows: 10 %>
+  </div>-->
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+
+<h2 class="h2">Références</h2>
+
+<div>
+  <% if @recipe.references.blank? %>
+    Aucune références
+  <% else %>
+    <ul class="list-group">
+      <% @recipe.references.each do |ref| %>
+        <li>
+          <%= form_with(model: [@recipe, ref], local: true, class: "inline") do |form| %>
+            <%= form.text_field :raw, size: 80 %>
+            <%= form.submit "Modifier", class: "btn btn-outline-secondary btn-sm" %>
+          <% end %>
+          <%= link_to "Supprimer", [@recipe, ref], method: :delete, "data-confirm": "Êtes vous certain?", class: "btn btn-sm btn-outline-secondary" %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>
+
+<%= form_with(model: [@recipe,Reference.new], local: true) do |form| %>
+  <%= form.hidden_field :recipe_id, value: @recipe.id %>
+  <%= form.text_field :raw, size: 80 %>
+  <%= form.submit "Ajouter", class: "btn btn-outline-primary btn-sm" %>
+<% end %>
+
+<div style="height: 5em;"></div>
+</div>
+
+<%# javascript_pack_tag "recipe_editor.js" %>
+<%# javascript_pack_tag "recipes_edit.js" %>
+<%= javascript_pack_tag "recipes_edit" %>
+<%= javascript_pack_tag "edit" %>

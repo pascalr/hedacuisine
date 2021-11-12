@@ -114,6 +114,7 @@ Rails.application.routes.draw do
 
       member do
         get 'edit_text'
+        get 'old_edit'
         patch 'do_process', param: 'slug'
         patch 'cheat', param: 'slug'
         get 'validate'#, param: 'slug'
