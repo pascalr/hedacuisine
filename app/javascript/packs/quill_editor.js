@@ -4,11 +4,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // https://quilljs.com/docs/modules/toolbar/
   var toolbarOptions = [
+    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
     [{ 'header': [3, 4, 5, false] }],
     //[{ 'header': 3 }, { 'header': 4 }, { 'header': 5 }],               // custom button values
     [{ 'list': 'ordered'}],
     [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-    //['bold', 'italic', 'underline', 'strike'],        // toggled buttons
     //['blockquote', 'code-block'],
     //[{ 'list': 'ordered'}, { 'list': 'bullet' }],
     //[{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
