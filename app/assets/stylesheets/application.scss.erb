@@ -30,10 +30,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Raleway&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
 
-.ql-snow .ql-editor h3 {
+.ql-snow.ql-editor {
+  cursor: pointer;
+  /*height: 100%;*/
+  /*outline: none;*/
+  /*overflow-y: auto;*/
+  padding: 0;
+  /*tab-size: 4;*/
+  /*-moz-tab-size: 4;*/
+  white-space: normal;
+  word-wrap: normal;
+}
+
+.ql-snow.ql-editor h3 {
   font-size: 1.4rem;
   font-weight: bold;
   margin-top: 1rem;
+  margin-bottom: 0.5rem;
 }
 .ql-editor ol {
   padding-left: 0;
@@ -47,6 +60,18 @@
 .ql-editor, #ing_list {
   font-family: 'Raleway', sans-serif;
   font-size: 1rem;
+}
+// https://stackoverflow.com/questions/61887712/is-there-a-pure-css-way-to-continue-ordered-list-numbering-across-2-seperated-or
+.ql-editor ol {
+  /* Remove default numbering */
+  list-style-type: none;
+}
+.ql-editor ol > li:before {
+  counter-increment: mycounter;
+  content: counter(mycounter) ". ";
+}
+.ql-editor ol:first-of-type {
+  counter-reset: mycounter;
 }
 
 .instruction-text > ol > li::marker {
