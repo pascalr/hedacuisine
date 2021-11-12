@@ -13,8 +13,6 @@ import Button from '@mui/material/Button';
 import Quantity from 'models/quantity'
 import Utils from "recipe_utils"
 
-import Quill from "quill"
-
 //import './style.css' // import style.css stylesheet
 
 class Ingredient {
@@ -843,47 +841,33 @@ const CustomToolbar = () => (<>
 
 document.addEventListener('DOMContentLoaded', () => {
   window.recipe_editor = React.createRef()
+  const root = document.getElementById('root')
+  const rootText = document.getElementById('root-text')
+  if (root) {ReactDOM.render(<RecipeEditor ref={window.recipe_editor}/>, root)}
+  if (rootText) {ReactDOM.render(<RecipeTextEditor ref={window.recipe_editor}/>, rootText)}
+})
 
-  // https://quilljs.com/playground/#autosave
-  var Delta = Quill.import('delta');
-  var quill = new Quill('#quill-editor', {
-    modules: {
-      toolbar: true
-    },
-    placeholder: 'Écrire les instructions...',
-    theme: 'snow'
-  });
-  
-  // Store accumulated changes
-  var change = new Delta();
-  quill.on('text-change', function(delta) {
-    change = change.compose(delta);
-  });
-  
-  // Save periodically
-  setInterval(function() {
-    if (change.length() > 0) {
-      console.log('Saving changes', quill.root.innerHTML);
-
-      let data = new FormData()
-      data.append('recipe[text]', quill.root.innerHTML)
-      Rails.ajax({url: gon.recipe.url, type: 'PATCH', data: data})
-      /*
-      Send partial changes
-      $.post('/your-endpoint', {
-        partial: JSON.stringify(change)
-      });
-      */
-      change = new Delta();
-    }
-  }, 5*1000);
-  
-  // Check for unsaved data
-  window.onbeforeunload = function() {
-    if (change.length() > 0) {
-      return 'There are unsaved changes. Are you sure you want to leave?';
-    }
-  }
+//const ModelFields = (props) => {
+//  let elements = React.Children.toArray(props.children).map(child => {
+//    return React.cloneElement(child, { modelName: props.name, initial: gon[props.name][child.props.field] })
+//  })
+//  return <>{elements}</>
+//}
+//
+//
+//  <%= form_with(model: @recipe, local: true) do |form| %>
+//  
+//    <h2 class="h2">Instructions V2</h2>
+//  
+//    <div id="trix-toolbar"></div>
+//    <%= form.rich_text_area :text %>
+//  
+//    <div class="actions">
+//      <%= form.submit %>
+//    </div>
+//  <% end %>
+//
+//
 
   //<button id="quill-save-button" type="button">Enregistrer</button>
   //const saveButton = document.getElementById('quill-save-button')
@@ -918,28 +902,3 @@ document.addEventListener('DOMContentLoaded', () => {
   //  //customButtons.style.display = "block"
   //  //ReactDOM.render(<CustomToolbar />, oldButtons)
   //}
-  const root = document.getElementById('root')
-  const rootText = document.getElementById('root-text')
-  if (root) {ReactDOM.render(<RecipeEditor ref={window.recipe_editor}/>, root)}
-  if (rootText) {ReactDOM.render(<RecipeTextEditor ref={window.recipe_editor}/>, rootText)}
-})
-
-//const ModelFields = (props) => {
-//  let elements = React.Children.toArray(props.children).map(child => {
-//    return React.cloneElement(child, { modelName: props.name, initial: gon[props.name][child.props.field] })
-//  })
-//  return <>{elements}</>
-//}
-//
-//
-//  <%= form_with(model: @recipe, local: true) do |form| %>
-//  
-//    <h2 class="h2">Instructions V2</h2>
-//  
-//    <div id="trix-toolbar"></div>
-//    <%= form.rich_text_area :text %>
-//  
-//    <div class="actions">
-//      <%= form.submit %>
-//    </div>
-//  <% end %>
