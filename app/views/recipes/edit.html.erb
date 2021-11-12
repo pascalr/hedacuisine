@@ -24,7 +24,7 @@
 
 <div id="partial-editor" style="display: none;">
   <div id="quill-editor">
-    <%= @recipe.text.html_safe %>
+    <%= @recipe.text.html_safe if @recipe.text %>
   </div>
 </div>
 
