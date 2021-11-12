@@ -133,20 +133,6 @@
 
 <h2>Instructions</h2>
 
-<div class="recipe-instructions">
-
-  <%= pretty_complete_instructions(recipe) %>
-  <%# pretty_print_recipe(recipe) %>
-</div>
-
-<% unless recipe.similar_recipes.blank? %>
-  <h2>Recettes similaires</h2>
-
-  <h3><%= link_to translated(recipe.similar_recipes.first.name), recipe.similar_recipes.first %></h3>
-  <%= pretty_print_recipe(recipe.similar_recipes.first) %>
-<% end %>
-
-<h2>Instructions V2</h2>
 <div class="instruction-text">
   <%= pretty_instruction_text(recipe) %>
 </div>
@@ -166,6 +152,13 @@
       </div>
     <% end %>
   </div>
+<% end %>
+
+<% unless recipe.similar_recipes.blank? %>
+  <h2>Recettes similaires</h2>
+
+  <h3><%= link_to translated(recipe.similar_recipes.first.name), recipe.similar_recipes.first %></h3>
+  <%= pretty_print_recipe(recipe.similar_recipes.first) %>
 <% end %>
 
 <h2>Commentaires</h2>
