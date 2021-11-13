@@ -1,11 +1,18 @@
 import Quill from "quill"
 
+import eggIcon from '../../../public/icons/egg.svg';
+
 document.addEventListener('DOMContentLoaded', () => {
 
   //Block, Inline, and Embed
-  //let Inline = Quill.import('blots/inline');
+  let Inline = Quill.import('blots/inline');
   var Delta = Quill.import('delta');
   var Parchment = Quill.import('parchment');
+ 
+  var icons = Quill.import('ui/icons');
+  let test = document.createElement('img')
+  test.src = '/icons/egg.svg'
+  icons['mark'] = eggIcon;//'<img src="/icons/egg.svg">';
 
   //https://stackoverflow.com/questions/47418954/quill-toolbar-alignment-buttons
 
@@ -19,10 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let Id = new Parchment.Attributor.Attribute('id', 'id');
   Parchment.register(Id);
 
-  //class IdBlot extends Inline { };
-  //MarkBlot.blotName = 'id-blot';
-  //MarkBlot.tagName = 'div';
-  //Quill.register(IdBlot);
+  class MarkBlot extends Inline { };
+  MarkBlot.blotName = 'mark';
+  MarkBlot.tagName = 'mark';
+  Quill.register(MarkBlot);
 
   // https://quilljs.com/docs/modules/toolbar/
   var toolbarOptions = [
@@ -32,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     [{ 'list': 'ordered'}],
     [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
     ['link'],
+    ['mark']
     //['blockquote', 'code-block'],
     //[{ 'list': 'ordered'}, { 'list': 'bullet' }],
     //[{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
@@ -43,15 +51,29 @@ document.addEventListener('DOMContentLoaded', () => {
     //['clean']                                         // remove formatting button
   ];
 
+  //var formatWhitelist = ['bold','italic','underline','strike','mark'];
+
   // https://quilljs.com/playground/#autosave
   var quill = new Quill('#quill-editor', {
     modules: {
-      //toolbar: '#quill-toobar'
-      toolbar: toolbarOptions
+      toolbar: '#custom-toolbar'
+      //toolbar: toolbarOptions
     },
+    //formats: formatWhitelist,
     placeholder: 'Écrire les instructions...',
     theme: 'snow'
   });
+
+  // ADDING A CUSTOM BUTTON VERSION 1
+  let test2 = document.createElement('img')
+  test2.src = '/icons/egg.svg'
+  const toolbar = quill.getModule('toolbar')
+  toolbar.container.appendChild(test2)
+
+  // https://github.com/T-vK/DynamicQuillTools/blob/master/DynamicQuillTools.js
+  //me.toolbar = quill.getModule('toolbar')
+  //me.toolbarEl = me.toolbar.container
+  //me.toolbarEl.appendChild(me.qlFormatsEl)
   
   // Store accumulated changes
   var change = new Delta();

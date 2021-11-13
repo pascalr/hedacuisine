@@ -23,19 +23,37 @@
 <div id="root"></div>
 
 <div id="partial-editor" style="display: none;">
-  <div id="custom-quill-toolbar" class="ql-toolbar ql-snow" hidden>
+  <div id="custom-toolbar" class="toolbar">
     <span class="ql-formats">
-      <button type="button" class="ql-bold"><%= image_tag "/icons/type-bold.svg" %></button>
-      <button type="button" class="ql-italic"><%= image_tag "/icons/type-italic.svg" %></button>
-      <button type="button" class="ql-mark"><b>M</b></button>
+      <select class="ql-header">
+        <option value="3">Titre</option>
+        <option value="4">Sous-titre</option>
+        <option value="5">Sous-sous-titre</option>
+        <option selected>Normal</option>
+      </select>
     </span>
     <span class="ql-formats">
-      <select class="ql-box">
-        <option selected>None</option>
-        <option value="double">Double</option>
-        <option value="solid">Solid</option>
-        <option value="dotted">Dotted</option>
-      </select>
+      <button class="ql-bold"></button>
+      <button class="ql-italic"></button>
+      <button class="ql-underline"></button>
+      <button class="ql-strike"></button>
+      <button class="ql-mark"></button>
+    </span>
+    <span class="ql-formats">
+      <button class="ql-list" value="ordered"></button>
+      <button class="ql-list" value="bullet"></button>
+    </span>
+    <span class="ql-formats">
+      <button class="ql-link"></button>
+      <button class="ql-image"></button>
+      <button class="ql-video"></button>
+    </span>
+    <span class="ql-formats">
+      <button class="ql-formula"></button>
+      <button class="ql-code-block"></button>
+    </span>
+    <span class="ql-formats">
+      <button class="ql-clean"></button>
     </span>
   </div>
   <div id="quill-editor">
