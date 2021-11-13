@@ -2,6 +2,28 @@ import Quill from "quill"
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  //Block, Inline, and Embed
+  //let Inline = Quill.import('blots/inline');
+  var Delta = Quill.import('delta');
+  var Parchment = Quill.import('parchment');
+
+  //https://stackoverflow.com/questions/47418954/quill-toolbar-alignment-buttons
+
+  //var icons = Quill.import('ui/icons');
+  //icons['bold'] = '<i class="fa fa-bold" aria-hidden="true"></i>';
+  //icons['italic'] = '<i class="fa fa-italic" aria-hidden="true"></i>';
+  //icons['underline'] = '<i class="fa fa-underline" aria-hidden="true"></i>';
+  //icons['image'] = '<i class="fa fa-picture-o" aria-hidden="true"></i>';
+  //icons['code'] = '<i class="fa fa-code" aria-hidden="true"></i>';
+  
+  let Id = new Parchment.Attributor.Attribute('id', 'id');
+  Parchment.register(Id);
+
+  //class IdBlot extends Inline { };
+  //MarkBlot.blotName = 'id-blot';
+  //MarkBlot.tagName = 'div';
+  //Quill.register(IdBlot);
+
   // https://quilljs.com/docs/modules/toolbar/
   var toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -9,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //[{ 'header': 3 }, { 'header': 4 }, { 'header': 5 }],               // custom button values
     [{ 'list': 'ordered'}],
     [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+    ['link'],
     //['blockquote', 'code-block'],
     //[{ 'list': 'ordered'}, { 'list': 'bullet' }],
     //[{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
@@ -21,9 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   // https://quilljs.com/playground/#autosave
-  var Delta = Quill.import('delta');
   var quill = new Quill('#quill-editor', {
     modules: {
+      //toolbar: '#quill-toobar'
       toolbar: toolbarOptions
     },
     placeholder: 'Écrire les instructions...',

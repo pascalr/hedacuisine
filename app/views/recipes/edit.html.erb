@@ -23,6 +23,21 @@
 <div id="root"></div>
 
 <div id="partial-editor" style="display: none;">
+  <div id="custom-quill-toolbar" class="ql-toolbar ql-snow" hidden>
+    <span class="ql-formats">
+      <button type="button" class="ql-bold"><%= image_tag "/icons/type-bold.svg" %></button>
+      <button type="button" class="ql-italic"><%= image_tag "/icons/type-italic.svg" %></button>
+      <button type="button" class="ql-mark"><b>M</b></button>
+    </span>
+    <span class="ql-formats">
+      <select class="ql-box">
+        <option selected>None</option>
+        <option value="double">Double</option>
+        <option value="solid">Solid</option>
+        <option value="dotted">Dotted</option>
+      </select>
+    </span>
+  </div>
   <div id="quill-editor">
     <%= @recipe.text.html_safe if @recipe.text %>
   </div>
