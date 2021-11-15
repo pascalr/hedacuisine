@@ -30,8 +30,6 @@ const Toolbar = ({ editor }) => {
   //onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
   //      className={editor.isActive('heading', { level: 4 }) ? 'is-active' : ''}
   //    >
-  window.editor = editor
-
   // { 'is-active': editor.isActive('heading', { level: 1 }) }
   //
   //  onClick={() => editor.chain().focus().setParagraph().run()}
@@ -122,7 +120,14 @@ const Tiptap = () => {
       StarterKit,
     ],
     content: gon.recipe.text,
+    // triggered on every change
+    onUpdate: ({ editor }) => {
+      console.log('Editor onUpdate')
+      const json = editor.getHTML()
+      // send the content to an API here
+    },
   })
+  window.tiptap_editor = editor
 
   return (
     <div>
@@ -964,6 +969,29 @@ document.addEventListener('DOMContentLoaded', () => {
   const rootText = document.getElementById('root-text')
   if (root) {ReactDOM.render(<RecipeEditor ref={window.recipe_editor}/>, root)}
   if (rootText) {ReactDOM.render(<RecipeTextEditor ref={window.recipe_editor}/>, rootText)}
+
+  var savedHTML = gon.recipe.text
+  setInterval(function() {
+    if (!window.tiptap_editor) {return}
+    let current = window.tiptap_editor.getHTML()
+    if (current != savedHTML) {
+      console.log('Saving changes');
+
+      let data = new FormData()
+      data.append('recipe[text]', current)
+      Rails.ajax({url: gon.recipe.url, type: 'PATCH', data: data, success: () => {
+        savedHTML = current
+      }})
+    }
+  }, 5*1000);
+  
+  // Check for unsaved data
+  window.onbeforeunload = function() {
+    if (window.tiptap_editor && window.tiptap_editor.getHTML() != savedHTML) {
+      return 'There are unsaved changes. Are you sure you want to leave?';
+    }
+  }
+
 })
 
 //const ModelFields = (props) => {
