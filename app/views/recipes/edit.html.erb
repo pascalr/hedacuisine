@@ -49,8 +49,8 @@
           </svg>
         </button>
         <ul class="dropdown-menu" aria-labelledby="ingDropdown">
-          <% @recipe.ingredients.each do |ing| %>
-            <li><button type="button" class="dropdown-item"><%= strip_tags(pretty_ingredient(ing)) %></button></li>
+          <% @recipe.ingredients.order(:item_nb).each do |ing| %>
+            <li><a class="dropdown-item" data-add-ing="<%= ing.item_nb %>" href="#"><%= strip_tags(pretty_ingredient(ing)) %></a></li>
           <% end %>
         </ul>
       </span>

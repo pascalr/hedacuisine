@@ -65,6 +65,43 @@ document.addEventListener('DOMContentLoaded', () => {
   IngredientList.tagName = 'div';
   Quill.register(IngredientList);
 
+  class SingleIngredient extends Inline {
+    static create(value) {
+
+      const ing = gon.recipe.ingredients[value]
+      let text = ing.raw
+      if (ing.raw && ing.raw != '') {text += ' '}
+      
+      const node = document.createElement('span');
+      node.appendChild(document.createTextNode(text));
+      const child = document.createElement('a');
+      child.appendChild(document.createTextNode(ing.food.name));
+      child.href = ing.food.url
+      node.appendChild(child)
+      //const node = super.create(value);
+      //node.setAttribute('data-debug', value);
+      return node;
+    }
+  
+    static formats(domNode) {
+      return false; // FIXME: HOW TO KNOW IF IT FORMATS THE NODE???
+      return domNode.getAttribute('data-debug');
+    }
+  
+    format(name, value) {
+      console.log("format: name, value", [name, value])
+      if (name !== this.statics.blotName || !value) {
+        console.log('Here')
+        super.format(name, value);
+      } else {
+        console.log('There')
+        this.domNode.setAttribute('data-debug', value);
+      }
+    }
+  }
+  SingleIngredient.blotName = 'ing';
+  SingleIngredient.tagName = 'span';
+  Quill.register(SingleIngredient);
 
   let Id = new Parchment.Attributor.Attribute('id', 'id');
   Parchment.register(Id);
@@ -86,6 +123,22 @@ document.addEventListener('DOMContentLoaded', () => {
     placeholder: 'Écrire les instructions...',
     theme: 'snow'
   });
+
+  for (const elem of document.querySelectorAll('[data-add-ing]')) {
+    elem.addEventListener('click', (evt) => {
+      evt.preventDefault(); 
+      const selection = quill.getSelection(true)//: { index: Number, length: Number }
+      quill.insertText(selection.index, `{${elem.dataset.addIng}}`)
+      //quill.insertText(selection.index, elem.innerHTML, 'ing', elem.dataset.addIng)
+      //quill.insertText(0, 'Hello', 'bold', true);
+      //quill.insertText(5, 'Quill', {
+      //  'color': '#ffff00',
+      //  'italic': true
+      //});
+
+      return false;
+    })
+  }
 
   //// ADDING A CUSTOM BUTTON VERSION 1
   // This adds physically a custom button to the toolbar
