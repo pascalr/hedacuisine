@@ -22,6 +22,7 @@ import StarterKit from '@tiptap/starter-kit'
 import '../styles/prose_mirror.scss'
 
 const Toolbar = ({ editor }) => {
+  if (!editor) {return null}
 
   const width = 24
   const height = 24
@@ -29,16 +30,34 @@ const Toolbar = ({ editor }) => {
   //onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
   //      className={editor.isActive('heading', { level: 4 }) ? 'is-active' : ''}
   //    >
+  window.editor = editor
 
-  if (!editor) {return null}
+  // { 'is-active': editor.isActive('heading', { level: 1 }) }
+  //
+  //  onClick={() => editor.chain().focus().setParagraph().run()}
+  //      className={editor.isActive('paragraph') ? 'is-active' : ''}
+
+  // REALLY UGLY
+  let selectedHeader = "0";
+  if (editor.isActive('heading', { level: 3 })) {selectedHeader = "3"}
+  if (editor.isActive('heading', { level: 4 })) {selectedHeader = "4"}
+  if (editor.isActive('heading', { level: 5 })) {selectedHeader = "5"}
+
   return (
     <div className="toolbar">
       <Inline padding="0 1em">
-        <select class="ql-header">
+        <select value={selectedHeader} onChange={(e) => {
+          let val = parseInt(e.target.value)
+          if (!val) {
+            editor.chain().focus().setParagraph().run()
+          } else {
+            editor.chain().focus().toggleHeading({ level: val }).run()
+          }
+        }}>
           <option value="3">Titre 1</option>
           <option value="4">Titre 2</option>
           <option value="5">Titre 3</option>
-          <option selected>Normal</option>
+          <option value="0">Normal</option>
         </select>
       </Inline>
       <Inline padding="0 1em">
@@ -61,24 +80,30 @@ const Toolbar = ({ editor }) => {
       <Inline padding="0 1em">
         <button>
           <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-list-ol" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5z"/>
+            <path fillRule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5z"/>
             <path d="M1.713 11.865v-.474H2c.217 0 .363-.137.363-.317 0-.185-.158-.31-.361-.31-.223 0-.367.152-.373.31h-.59c.016-.467.373-.787.986-.787.588-.002.954.291.957.703a.595.595 0 0 1-.492.594v.033a.615.615 0 0 1 .569.631c.003.533-.502.8-1.051.8-.656 0-1-.37-1.008-.794h.582c.008.178.186.306.422.309.254 0 .424-.145.422-.35-.002-.195-.155-.348-.414-.348h-.3zm-.004-4.699h-.604v-.035c0-.408.295-.844.958-.844.583 0 .96.326.96.756 0 .389-.257.617-.476.848l-.537.572v.03h1.054V9H1.143v-.395l.957-.99c.138-.142.293-.304.293-.508 0-.18-.147-.32-.342-.32a.33.33 0 0 0-.342.338v.041zM2.564 5h-.635V2.924h-.031l-.598.42v-.567l.629-.443h.635V5z"/>
           </svg>
         </button> 
         <button>
           <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-list-check" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3.854 2.146a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 3.293l1.146-1.147a.5.5 0 0 1 .708 0zm0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 7.293l1.146-1.147a.5.5 0 0 1 .708 0zm0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z"/>
+            <path fillRule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3.854 2.146a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 3.293l1.146-1.147a.5.5 0 0 1 .708 0zm0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 7.293l1.146-1.147a.5.5 0 0 1 .708 0zm0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z"/>
           </svg>
         </button> 
         <span className="dropdown">
           <button type="button" className="dropdown-toggle" id="ingDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-egg-fried" viewBox="0 0 16 16">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" className="bi bi-egg-fried" viewBox="0 0 16 16">
               <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
               <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
             </svg>
           </button>
-          <ul class="dropdown-menu" aria-labelledby="ingDropdown">
-            <li><a class="dropdown-item" href="#">TODO</a></li>
+          <ul className="dropdown-menu" aria-labelledby="ingDropdown">
+            {Object.keys(gon.recipe.ingredients).map(ingId => {
+              const ing = gon.recipe.ingredients[ingId]
+              let text = ing.raw
+              if (ing.raw && ing.raw != '') {text += ' '}
+              text += ing.food.name
+              return <li key={ing.id}><a className="dropdown-item" href="#">{text}</a></li>
+            })}
           </ul>
         </span>
       </Inline>
