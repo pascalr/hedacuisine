@@ -50,11 +50,23 @@
 
 .toolbar {
 
+  border: 1px solid #bbb;
+
   button {
 	  background: none;
 	  color: inherit;
 	  border: none;
-	  padding: 0;
+	  padding: 0.6em 0.1em;
+	  font: inherit;
+	  cursor: pointer;
+	  outline: inherit;
+  }
+
+  select {
+	  background: none;
+	  color: inherit;
+	  border: none;
+	  padding: 0.6em 0.1em;
 	  font: inherit;
 	  cursor: pointer;
 	  outline: inherit;
