@@ -15,7 +15,89 @@ import Utils from "recipe_utils"
 
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+import { Node, mergeAttributes } from '@tiptap/core'
 
+import { Node as ProseMirrorNode } from 'prosemirror-model'
+
+const IngredientNode = Node.create({
+  name: 'ingredient',
+  group: 'inline',
+  inline: true,
+  selectable: false,
+  //atom: true, // What is this???
+
+  addOptions() {
+    return {
+      HTMLAttributes: {},
+    }
+  },
+
+  addAttributes() {
+    return {
+      ingredientId: {
+        default: null,
+        parseHTML: element => element.getAttribute('data-ingredient-id'),
+        renderHTML: attributes => {
+          if (!attributes.ingredientId) {return {}}
+
+          return {'data-ingredient-id': attributes.ingredientId}
+        },
+      },
+    }
+  },
+
+
+  renderHTML({ node, HTMLAttributes }) {
+    const ing = gon.recipe.ingredients[HTMLAttributes['data-ingredient-id']]
+    let children = []
+    if (ing) {
+      let text = ing.raw
+      if (ing.raw && ing.raw != '') {text += ' '}
+      children.push(text)
+      children.push([
+        'a', {href: ing.food.url}, ing.food.name,
+      ])//`<a href="${ing.food.url}">${ing.food.name}</a>`)
+    }
+    return [
+      'span',
+      mergeAttributes({ 'data-ingredient-id': '' }, this.options.HTMLAttributes, HTMLAttributes),
+      ...children,
+    ]
+  },
+
+  parseHTML() {
+    return [
+      {
+        tag: 'span[data-ingredient-id]',
+      },
+    ]
+  },
+
+  addCommands() {
+    //.insertContent('Example Text')
+    return {
+      setIngredient: (ingId) => ({ commands }) => {
+        console.log("setIngredient", ingId)
+        return commands.insertContent(`<span data-ingredient-id="${ingId}">TESTING1212</span>`)
+        //return commands.setNode('ingredient')
+      },
+    }
+  },
+
+  //addCommands() {
+  //  return {
+  //    setBold: () => ({ commands }) => {
+  //      return commands.setMark('bold')
+  //    },
+  //    toggleBold: () => ({ commands }) => {
+  //      return commands.toggleMark('bold')
+  //    },
+  //    unsetBold: () => ({ commands }) => {
+  //      return commands.unsetMark('bold')
+  //    },
+  //  }
+  //},
+})
 
 //import './style.css' // import style.css stylesheet
 //
@@ -100,7 +182,7 @@ const Toolbar = ({ editor }) => {
               let text = ing.raw
               if (ing.raw && ing.raw != '') {text += ' '}
               text += ing.food.name
-              return <li key={ing.id}><a className="dropdown-item" href="#">{text}</a></li>
+              return <li key={ing.id}><a className="dropdown-item" data-ingredient-id={ingId} onClick={(evt) => editor.chain().focus().setIngredient(evt.target.dataset.ingredientId).run()}>{text}</a></li>
             })}
           </ul>
         </span>
@@ -118,14 +200,9 @@ const Tiptap = () => {
   const editor = useEditor({
     extensions: [
       StarterKit,
+      IngredientNode,
     ],
     content: gon.recipe.text,
-    // triggered on every change
-    onUpdate: ({ editor }) => {
-      console.log('Editor onUpdate')
-      const json = editor.getHTML()
-      // send the content to an API here
-    },
   })
   window.tiptap_editor = editor
 
@@ -1049,3 +1126,8 @@ document.addEventListener('DOMContentLoaded', () => {
   //  //customButtons.style.display = "block"
   //  //ReactDOM.render(<CustomToolbar />, oldButtons)
   //}
+//
+//
+//
+//
+//
