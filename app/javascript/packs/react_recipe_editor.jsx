@@ -15,6 +15,8 @@ import Utils from "recipe_utils"
 
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+import Subscript from '@tiptap/extension-subscript'
+import Superscript from '@tiptap/extension-superscript'
 import { Node, mergeAttributes } from '@tiptap/core'
 
 import { Node as ProseMirrorNode } from 'prosemirror-model'
@@ -156,6 +158,18 @@ const Toolbar = ({ editor }) => {
             <path d="M6.333 5.686c0 .31.083.581.27.814H5.166a2.776 2.776 0 0 1-.099-.76c0-1.627 1.436-2.768 3.48-2.768 1.969 0 3.39 1.175 3.445 2.85h-1.23c-.11-1.08-.964-1.743-2.25-1.743-1.23 0-2.18.602-2.18 1.607zm2.194 7.478c-2.153 0-3.589-1.107-3.705-2.81h1.23c.144 1.06 1.129 1.703 2.544 1.703 1.34 0 2.31-.705 2.31-1.675 0-.827-.547-1.374-1.914-1.675L8.046 8.5H1v-1h14v1h-3.504c.468.437.675.994.675 1.697 0 1.826-1.436 2.967-3.644 2.967z"/>
           </svg>
         </button> 
+        <button onClick={() => editor.chain().focus().toggleSubscript().run()} className={editor.isActive('subscript') ? 'is-active' : ''}>
+          <svg width={width} height={height} viewBox="0 0 18 18">
+            <path className="ql-fill" d="M15.5,15H13.861a3.858,3.858,0,0,0,1.914-2.975,1.8,1.8,0,0,0-1.6-1.751A1.921,1.921,0,0,0,12.021,11.7a0.50013,0.50013,0,1,0,.957.291h0a0.914,0.914,0,0,1,1.053-.725,0.81,0.81,0,0,1,.744.762c0,1.076-1.16971,1.86982-1.93971,2.43082A1.45639,1.45639,0,0,0,12,15.5a0.5,0.5,0,0,0,.5.5h3A0.5,0.5,0,0,0,15.5,15Z"/>
+            <path className="ql-fill" d="M9.65,5.241a1,1,0,0,0-1.409.108L6,7.964,3.759,5.349A1,1,0,0,0,2.192,6.59178Q2.21541,6.6213,2.241,6.649L4.684,9.5,2.241,12.35A1,1,0,0,0,3.71,13.70722q0.02557-.02768.049-0.05722L6,11.036,8.241,13.65a1,1,0,1,0,1.567-1.24277Q9.78459,12.3777,9.759,12.35L7.316,9.5,9.759,6.651A1,1,0,0,0,9.65,5.241Z"/>
+          </svg>
+        </button> 
+        <button onClick={() => editor.chain().focus().toggleSuperscript().run()} className={editor.isActive('superscript') ? 'is-active' : ''}>
+          <svg width={width} height={height} viewBox="0 0 18 18">
+            <path className="ql-fill" d="M15.5,7H13.861a4.015,4.015,0,0,0,1.914-2.975,1.8,1.8,0,0,0-1.6-1.751A1.922,1.922,0,0,0,12.021,3.7a0.5,0.5,0,1,0,.957.291,0.917,0.917,0,0,1,1.053-.725,0.81,0.81,0,0,1,.744.762c0,1.077-1.164,1.925-1.934,2.486A1.423,1.423,0,0,0,12,7.5a0.5,0.5,0,0,0,.5.5h3A0.5,0.5,0,0,0,15.5,7Z"/>
+            <path className="ql-fill" d="M9.651,5.241a1,1,0,0,0-1.41.108L6,7.964,3.759,5.349a1,1,0,1,0-1.519,1.3L4.683,9.5,2.241,12.35a1,1,0,1,0,1.519,1.3L6,11.036,8.241,13.65a1,1,0,0,0,1.519-1.3L7.317,9.5,9.759,6.651A1,1,0,0,0,9.651,5.241Z"/>
+          </svg>
+        </button> 
       </Inline>
       <Inline padding="0 1em">
         <button>
@@ -201,6 +215,8 @@ const Tiptap = () => {
     extensions: [
       StarterKit,
       IngredientNode,
+      Subscript,
+      Superscript
     ],
     content: gon.recipe.text,
   })
@@ -899,81 +915,6 @@ class RecipeEditor extends React.Component {
   }
 }
 
-class RecipeTextEditor extends React.Component {
-  
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: gon.recipe.name,
-      contentSlave: gon.recipe.content,
-    };
-    this.updateName = this.updateName.bind(this);
-  }
-
-  updateName() {
-    if (this.name == gon.recipe.name) {return;}
-    let data = new FormData()
-    data.append('recipe[name]', this.state.name)
-    Rails.ajax({url: gon.recipe.url, type: 'PATCH', data: data})
-  }
-
-  render() {
-
-    const model = new Model("recipe", gon.recipe)
-    console.log(model)
-
-    return (<>
-      <Row gap="10px">
-        <div>
-          <h3>Format Heda</h3>
-          <InstructionsHelp/>
-          <TextAreaField model={model} field="content" cols={80} rows={30} changeCallback={modified => this.setState({contentSlave: modified})}></TextAreaField>
-        </div>
-        <div>
-          <h3>Live preview</h3>
-          <div className="recipe-body">
-            <div className="bg-fill" style={{width: "100%", height: "0.5rem"}}></div>
-            <div className="d-flex bg-fill ps-3 w-100" style={{fontSize: "1.2rem", alignItems: "center", flexWrap: "wrap", fontWeight: "bold"}}>
-              <input className="bg-fill plain-input" type="text" value={this.state.name} onChange={(e) => this.setState({name: e.target.value})} onBlur={this.updateName} />
-            </div>
-            <div className="bg-fill" style={{width: "100%", height: "0.5rem"}}></div>
-            <RecipePreview instructions={this.state.contentSlave} />
-          </div>
-        </div>
-      </Row>
-    </>)
-  }
-}
-
-// Why this is not a method of Trix.Editor is beyond me...
-function toggleTrixAttribute(getTrixEditor, attr) {
-  const editor = getTrixEditor()
-  if (editor.attributeIsActive(attr)) {
-    editor.deactivateAttribute(attr)
-  } else {
-    editor.activateAttribute(attr)
-  }
-}
-
-const TrixToolbar = ({getTrixEditor}) => {
-  return (
-    <Row>
-      <button type="button" className="btn-image" onClick={() => toggleTrixAttribute(getTrixEditor, "bold")}>
-        <img src="/icons/type-bold.svg" style={{width: "2em"}}></img>
-      </button>
-      <button type="button" className="btn-image" onClick={() => toggleTrixAttribute(getTrixEditor, "heading")}>
-        <img src="/icons/type-h1.svg" style={{width: "2em"}}></img>
-      </button>
-      <button type="button" className="btn-image" onClick={() => toggleTrixAttribute(getTrixEditor, "subHeading")}>
-        <img src="/icons/type-h2.svg" style={{width: "2em"}}></img>
-      </button>
-      <button type="button" className="btn-image" onClick={() => toggleTrixAttribute(getTrixEditor, "bold")}>
-        <img src="/icons/type-h3.svg" style={{width: "2em"}}></img>
-      </button>
-    </Row>
-  )
-}
-
 // https://reactjs.org/docs/integrating-with-other-libraries.html
 class Partial extends React.Component {
 
@@ -993,59 +934,10 @@ class Partial extends React.Component {
   }
 }
 
-const RichTextEditor = (props) => {
-  
-  const editorRef = useRef(null);
-  const getTrixEditor = () => editorRef.current.editor
-
-  return (<>
-    <TrixToolbar getTrixEditor={getTrixEditor}/>
-    <trix-editor class="trix-content" ref={editorRef} dangerouslySetInnerHTML={{__html: "<p>Your html code here.<p>"}}></trix-editor>
-  </>)
-    //<trix-editor id="recipe_text_2"
-    //  class="trix-content"
-    //  data-direct-upload-url="http://localhost:3000/rails/active_storage/direct_uploads?locale=fr-CA"
-    //  data-blob-url-template="http://localhost:3000/rails/active_storage/blobs/redirect/:signed_id/:filename?locale=fr-CA"
-    //</trix-editor>
-  //
-}
-
-//<button type="button" class="trix-button trix-button--icon trix-button--icon-code" data-trix-attribute="code" title="Code" tabindex="-1" disabled="">Code</button>
-const CustomToolbar = () => (<>
-  <span class="trix-button-group trix-button-group--text-tools" data-trix-button-group="text-tools">
-    <button type="button" class="trix-button trix-button--icon trix-button--icon-bold" data-trix-attribute="bold" data-trix-key="b" title="Bold" tabindex="-1">Bold</button>
-    <button type="button" class="trix-button trix-button--icon trix-button--icon-italic" data-trix-attribute="italic" data-trix-key="i" title="Italic" tabindex="-1">Italic</button>
-    <button type="button" class="trix-button trix-button--icon trix-button--icon-strike" data-trix-attribute="strike" title="Strikethrough" tabindex="-1">Strikethrough</button>
-    <button type="button" class="trix-button trix-button--icon trix-button--icon-link" data-trix-attribute="href" data-trix-action="link" data-trix-key="k" title="Link" tabindex="-1">Link</button>
-  </span>
-
-  <span class="trix-button-group trix-button-group--block-tools" data-trix-button-group="block-tools">
-    <button type="button" class="trix-button trix-button--icon trix-button--icon-heading-1 trix-active" data-trix-attribute="heading1" title="Heading" tabindex="-1" data-trix-active="">Heading</button>
-    <button type="button" class="trix-button trix-button--icon trix-button--icon-quote" data-trix-attribute="quote" title="Quote" tabindex="-1" disabled="">Quote</button>
-    <button type="button" class="trix-button trix-button--icon trix-button--icon-bullet-list" data-trix-attribute="bullet" title="Bullets" tabindex="-1" disabled="">Bullets</button>
-    <button type="button" class="trix-button trix-button--icon trix-button--icon-number-list" data-trix-attribute="number" title="Numbers" tabindex="-1" disabled="">Numbers</button>
-    <button type="button" class="trix-button trix-button--icon trix-button--icon-decrease-nesting-level" data-trix-action="decreaseNestingLevel" title="Decrease Level" tabindex="-1" disabled="">Decrease Level</button>
-    <button type="button" class="trix-button trix-button--icon trix-button--icon-increase-nesting-level" data-trix-action="increaseNestingLevel" title="Increase Level" tabindex="-1" disabled="">Increase Level</button>
-  </span>
-
-  <span class="trix-button-group trix-button-group--file-tools" data-trix-button-group="file-tools">
-    <button type="button" class="trix-button trix-button--icon trix-button--icon-attach" data-trix-action="attachFiles" title="Attach Files" tabindex="-1">Attach Files</button>
-  </span>
-
-  <span class="trix-button-group-spacer"></span>
-
-  <span class="trix-button-group trix-button-group--history-tools" data-trix-button-group="history-tools">
-    <button type="button" class="trix-button trix-button--icon trix-button--icon-undo" data-trix-action="undo" data-trix-key="z" title="Undo" tabindex="-1" disabled="">Undo</button>
-    <button type="button" class="trix-button trix-button--icon trix-button--icon-redo" data-trix-action="redo" data-trix-key="shift+z" title="Redo" tabindex="-1" disabled="">Redo</button>
-  </span>
-</>)
-
 document.addEventListener('DOMContentLoaded', () => {
   window.recipe_editor = React.createRef()
   const root = document.getElementById('root')
-  const rootText = document.getElementById('root-text')
   if (root) {ReactDOM.render(<RecipeEditor ref={window.recipe_editor}/>, root)}
-  if (rootText) {ReactDOM.render(<RecipeTextEditor ref={window.recipe_editor}/>, rootText)}
 
   var savedHTML = gon.recipe.text
   setInterval(function() {
@@ -1070,64 +962,3 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 })
-
-//const ModelFields = (props) => {
-//  let elements = React.Children.toArray(props.children).map(child => {
-//    return React.cloneElement(child, { modelName: props.name, initial: gon[props.name][child.props.field] })
-//  })
-//  return <>{elements}</>
-//}
-//
-//
-//  <%= form_with(model: @recipe, local: true) do |form| %>
-//  
-//    <h2 class="h2">Instructions V2</h2>
-//  
-//    <div id="trix-toolbar"></div>
-//    <%= form.rich_text_area :text %>
-//  
-//    <div class="actions">
-//      <%= form.submit %>
-//    </div>
-//  <% end %>
-//
-//
-
-  //<button id="quill-save-button" type="button">Enregistrer</button>
-  //const saveButton = document.getElementById('quill-save-button')
-  //if (saveButton) {
-  //  saveButton.addEventListener("click", function(evt) {
-  //  })
-  //}
-
-
-  //const trixToolbar = document.getElementById('trix-toolbar')
-  //if (trixToolbar) {
-  //  Trix.config.blockAttributes.heading = {
-  //    tagName: "h3",
-  //    terminal: true,
-  //    breakOnReturn: true,
-  //    group: false
-  //  }
-  //  Trix.config.blockAttributes.subHeading = {
-  //    tagName: "h4",
-  //    terminal: true,
-  //    breakOnReturn: true,
-  //    group: false
-  //  }
-  //  window.trixEditor
-  //  var editor = document.querySelector("trix-editor").editor
-  //  ReactDOM.render(<TrixToolbar editor={editor}/>, trixToolbar)
-
-  //  const oldButtons = document.getElementsByClassName("trix-button-row")[0];
-  //  const customButtons = document.getElementById("custom-trix-buttons")
-  //  oldButtons.innerHTML = customButtons.innerHTML
-  //  //oldButtons.appendChild(customButtons)
-  //  //customButtons.style.display = "block"
-  //  //ReactDOM.render(<CustomToolbar />, oldButtons)
-  //}
-//
-//
-//
-//
-//
