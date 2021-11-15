@@ -3,8 +3,12 @@
     margin-top: 0.75em;
   }
 
+  p {
+    margin-bottom: 0;
+  }
+
   ul, ol {
-    padding: 0 1rem;
+    padding: 0 1.5rem;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -45,6 +49,17 @@
     border: none;
     border-top: 2px solid rgba(#0D0D0D, 0.1);
     margin: 2rem 0;
+  }
+
+  font-family: 'Raleway', sans-serif;
+  p {
+    margin-bottom: 0;
+  }
+  li::marker {
+    font-weight: bold;
+  }
+  ol > li + li {
+    margin-top: 0.75rem;
   }
 }
 
