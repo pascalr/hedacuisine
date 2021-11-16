@@ -21,6 +21,8 @@ import { Node, mergeAttributes, nodeInputRule } from '@tiptap/core'
 
 import { Node as ProseMirrorNode } from 'prosemirror-model'
 
+import '../styles/prose_mirror.scss'
+
 const IngredientNode = Node.create({
   name: 'ingredient',
   group: 'inline',
@@ -208,10 +210,6 @@ const IngredientListNode = Node.create({
   },
 
 })
-
-//import './style.css' // import style.css stylesheet
-//
-import '../styles/prose_mirror.scss'
 
 const Toolbar = ({ editor }) => {
   if (!editor) {return null}
