@@ -1,7 +1,31 @@
 // https://stackoverflow.com/questions/25888963/min-by-max-by-equivalent-functions-in-javascript
 
-import Utils from "recipe_utils"
+import {Utils} from "recipe_utils"
 import Quantity from 'models/quantity'
+
+function prettyIngredientV2(ing) {
+
+  var linkSingular = "<a href='/foods/"+ing.food_id+"'>"+ing.food_name+"</a> "
+
+  if (ing.raw == null || ing.raw == "") {return linkSingular}
+
+  var quantity = new Quantity({raw: ing.raw})
+  let r = Utils.prettyQuantityFor(quantity, {id: ing.food_id, name: ing.food_name}, window.scale)
+  
+  // FIXME: This should belongs to quantity. Should do quantity.scale(window.scale). Then get quantity.total
+  var qty = quantity.nb * scale
+  if (quantity.unit) {qty *= quantity.unit.value}
+
+  if ((!quantity.unit || (!quantity.unit.is_volume && !quantity.unit.is_weight)) && qty > 1) {
+    r += "<a href='/foods/"+ing.food_id+"'>"+ing.food_plural+"</a> "
+  } else {
+    r += linkSingular 
+  }
+  if (ing.comment) {
+    r += " " + ing.comment + " "
+  }
+  return r
+}
 
 function prettyIngredient(ing) {
 
@@ -123,6 +147,14 @@ function updateScalableIngredients() {
   }
 }
 
+function updateIngredientsWithId() {
+  var elements = document.querySelectorAll('[data-ingredient-id]');
+  for (const elem of elements) {
+    const ing = gon.ingredients[elem.dataset.ingredientId]
+    elem.innerHTML = "" + prettyIngredientV2(ing)
+  }
+}
+
 function _createFilterTag(color, text) {
   var span = document.createElement('span')
   span.className = "filter-" + color
@@ -226,6 +258,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     updateScalableWeights()
     updateScalableIngredients()
     updateScalableDetailedIngredients()
+    updateIngredientsWithId()
   })
   
   servingsField.addEventListener('change', event => {
@@ -242,6 +275,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     updateScalableWeights()
     updateScalableIngredients()
     updateScalableDetailedIngredients()
+    updateIngredientsWithId()
   })
   
   inIngs.addEventListener('change', event => {

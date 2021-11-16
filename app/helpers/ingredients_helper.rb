@@ -333,7 +333,7 @@ module IngredientsHelper
   end
 
   def my_sanitize(s)
-    sanitize s, attributes: %w(id class href data-ingredient-id data-ingredient-ids)
+    sanitize s, attributes: %w(id class href data-ingredient-id)
   end
 
   def pretty_complete_instructions(recipe)

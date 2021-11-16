@@ -64,7 +64,7 @@ const IngredientNode = Node.create({
     const ing = gon.recipe.ingredients[HTMLAttributes['data-ingredient-id']]
     let children = []
     if (ing) {
-      let text = Utils.prettyQuantity(ing.raw)
+      let text = Utils.prettyQuantityFor(ing.raw, ing.food)
       if (text && text != '') {children.push(text)}
       children.push([
         'a', {href: ing.food.url}, ing.food.name,
@@ -165,10 +165,10 @@ const IngredientListNode = Node.create({
       const ing = gon.recipe.ingredients[id]
       if (ing) {
         let children = []
-        let text = Utils.prettyQuantity(ing.raw)
-        if (text && text != '') {children.push(text+' ')}
+        let text = Utils.prettyQuantityFor(ing.raw, ing.food)
+        if (text && text != '') {children.push(text)}
         children.push(['a', {href: ing.food.url}, ing.food.name])
-        return ['li', {}, ...children]
+        return ['li', {'data-ingredient-id': ing.id}, ...children]
       }
     })
     if (!list || list.length == 0) {list = ''}
@@ -198,7 +198,7 @@ const IngredientListNode = Node.create({
   addInputRules() {
     return [
       nodeInputRule({
-        find: /({(\d+(,\d+)*(-\d+)*)})$/,
+        find: /({(\d+(,\d+|-\d+)+)})$/,
         type: this.type,
         getAttributes: match => {
           console.log(match)

@@ -82,11 +82,32 @@ export const Utils = {
     //exp.contract_preposition ? "d'" : "de "
   },
 
-  prettyQuantity(raw) {
+  prettyQuantity(raw, food) {
     if (!raw || raw == '') {return ''}
     let qty = new Quantity({raw: raw})
-    return qty.pretty()
-  }
+    return qty.pretty() + ' ' + Utils.prettyPreposition(food.name)
+  },
+
+  prettyQuantityFor(quantity, food, scale=1.0) {
+    if (typeof quantity === 'string' || quantity instanceof String) {
+      quantity = new Quantity({raw: quantity})
+    }
+    var unit = quantity.unit
+    var qty = quantity.nb * scale
+    if (unit) {qty *= unit.value}
+
+    let r = ''
+    if (unit && unit.is_weight) {
+      r = Utils.prettyWeight(qty) + " "
+    } else if (unit && unit.is_volume) {
+      r = Utils.prettyVolume(qty) + " "
+    } else {
+      r = Utils.prettyFraction(qty) + " "
+      if (unit) {r += unit.name + " "}
+    }
+    r += Utils.prettyPreposition(food.name)
+    return r
+  },
 
 };
 
