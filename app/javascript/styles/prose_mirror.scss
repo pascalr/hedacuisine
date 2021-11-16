@@ -79,6 +79,9 @@ span[data-ingredient-ids] {
 span[data-ingredient-ids] > ul {
   display: inline-block;
 }
+span[data-ingredient] {
+  font-style: italic;
+}
 
 .toolbar {
 

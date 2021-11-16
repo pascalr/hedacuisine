@@ -106,7 +106,9 @@ export const Utils = {
       r = Utils.prettyFraction(qty) + " "
       if (unit) {r += unit.name + " "}
     }
-    r += Utils.prettyPreposition(food.name)
+    if ((!quantity.unit || (!quantity.unit.is_volume && !quantity.unit.is_weight)) && qty > 1) {
+      r += Utils.prettyPreposition(food.name)
+    }
     return r
   },
 

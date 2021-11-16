@@ -14,6 +14,9 @@ import { Node as ProseMirrorNode } from 'prosemirror-model'
 import Quantity from 'models/quantity'
 import { Ingredient, Utils } from "recipe_utils"
 
+function parseItemNbOrRaw(raw) {
+}
+
 const IngredientNode = Node.create({
   name: 'ingredient',
   group: 'inline',
@@ -29,22 +32,13 @@ const IngredientNode = Node.create({
 
   addAttributes() {
     return {
-      ingredientId: {
+      ingredient: {
         default: null,
-        parseHTML: element => element.getAttribute('data-ingredient-id'),
+        parseHTML: element => element.getAttribute('data-ingredient'),
         renderHTML: attributes => {
-          if (!attributes.ingredientId) {return {}}
+          if (!attributes.ingredient) {return {}}
 
-          return {'data-ingredient-id': attributes.ingredientId}
-        },
-      },
-      itemNb: {
-        default: null,
-        renderHTML: attributes => {
-          if (!attributes.itemNb) {return {}}
-          const ing = Object.values(gon.recipe.ingredients).find(ing => ing.item_nb == attributes.itemNb)
-          if (!ing) {return {}}
-          return {'data-ingredient-id': ing.id}
+          return {'data-ingredient': attributes.ingredient}
         },
       },
     }
@@ -52,7 +46,7 @@ const IngredientNode = Node.create({
 
 
   renderHTML({ node, HTMLAttributes }) {
-    const ing = gon.recipe.ingredients[HTMLAttributes['data-ingredient-id']]
+    const ing = gon.recipe.ingredients[HTMLAttributes['data-ingredient']]
     let children = []
     if (ing) {
       let text = Utils.prettyQuantityFor(ing.raw, ing.food)
@@ -64,13 +58,13 @@ const IngredientNode = Node.create({
     // Return: ['tagName', {attributeName: 'attributeValue'}, child1, child2, ...children]
     return [
       'span',
-      mergeAttributes({ 'data-ingredient-id': '' }, this.options.HTMLAttributes, HTMLAttributes),
+      mergeAttributes({ 'data-ingredient': '' }, this.options.HTMLAttributes, HTMLAttributes),
       ...children,
     ]
   },
 
   parseHTML() {
-    return [{tag: 'span[data-ingredient-id]'}]
+    return [{tag: 'span[data-ingredient]'}]
   },
 
   addCommands() {
@@ -78,7 +72,7 @@ const IngredientNode = Node.create({
     return {
       setIngredient: (ingId) => ({ commands }) => {
         console.log("setIngredient", ingId)
-        return commands.insertContent(`<span data-ingredient-id="${ingId}"/>`)
+        return commands.insertContent(`<span data-ingredient="${ingId}"/>`)
         //return commands.setNode('ingredient')
       },
     }
@@ -93,7 +87,10 @@ const IngredientNode = Node.create({
           console.log(match)
           const [,,itemNb] = match
 
-          return { itemNb }
+          const ing = Object.values(gon.recipe.ingredients).find(ing => ing.item_nb == itemNb)
+          if (!ing) {return {}}
+          console.log("ingredient", ing.id)
+          return {ingredient: ing.id}
         },
       }),
     ]
@@ -159,7 +156,7 @@ const IngredientListNode = Node.create({
         let text = Utils.prettyQuantityFor(ing.raw, ing.food)
         if (text && text != '') {children.push(text)}
         children.push(['a', {href: ing.food.url}, ing.food.name])
-        return ['li', {'data-ingredient-id': ing.id}, ...children]
+        return ['li', {'data-ingredient': ing.id}, ...children]
       }
     })
     if (!list || list.length == 0) {list = ''}
