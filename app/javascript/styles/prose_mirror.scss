@@ -55,8 +55,14 @@
   p {
     margin-bottom: 0;
   }
-  li::marker {
+  ol > li::marker {
     font-weight: bold;
+  }
+  ul > li::marker {
+    content: "- ";
+  }
+  ul {
+    font-style: italic;
   }
   ol > li + li {
     margin-top: 0.75rem;

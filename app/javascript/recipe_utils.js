@@ -1,4 +1,6 @@
-const Utils = {
+import Quantity from 'models/quantity'
+
+export const Utils = {
 
   translated(str) {
     return str
@@ -78,8 +80,55 @@ const Utils = {
   prettyPreposition(foodName) {
     return foodName.startsWith('a','e','i','o','u','y','é') ? "d'" : "de "// if exp.contract_preposition.nil?
     //exp.contract_preposition ? "d'" : "de "
+  },
+
+  prettyQuantity(raw) {
+    if (!raw || raw == '') {return ''}
+    let qty = new Quantity({raw: raw})
+    return qty.pretty()
   }
 
 };
-export default Utils;
 
+export class Ingredient {
+  constructor(args = {}) {
+    if (args.id) {
+      const ing = gon.recipe.ingredients[args.id]
+      if (ing) {
+        this.qty = new Quantity({raw: ing.raw})
+        this.food = ing.food
+        this.foodName = ing.food.name
+      }
+    }
+    if (args.raw) {
+      [this.qty, this.foodName] = Ingredient.parseRaw(args.raw)
+    }
+    if (args.qty) {this.qty = args.qty}
+    if (args.foodName) {this.qty = args.foodName}
+  }
+  simple() {
+    if (!this.qty) {return ''}
+    if (!this.qty.unit) {return `${this.qty.pretty()} ${this.foodName}`}
+    return `${this.qty.pretty()} ${Utils.prettyPreposition(this.foodName)}${this.foodName}`
+  }
+  detailed() {
+    return this.simple()
+  }
+  // This is not even used. Maybe allow this to create ingredients in the editor? - 4 t de farine-
+  static parseRaw(raw) {
+    const separators = ["de", "d'"]
+    for (let i = 0; i < separators.length; i++) {
+      if (raw.includes(separators[i])) {
+        const s = raw.split(separators[i])
+        let rawQty = s[0].trim()
+        let foodName = s[1].trim()
+        let qty = new Quantity({raw: rawQty})
+        return [qty, foodName]
+      }
+    }
+    let qty = new Quantity({raw: raw})
+    let food = qty.label
+    qty.label = null
+    return [qty, food]
+  }
+}

@@ -10,17 +10,17 @@ import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
-import Quantity from 'models/quantity'
-import Utils from "recipe_utils"
-
+// TIPTAP
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Subscript from '@tiptap/extension-subscript'
 import Superscript from '@tiptap/extension-superscript'
 import { Node, mergeAttributes, nodeInputRule } from '@tiptap/core'
-
 import { Node as ProseMirrorNode } from 'prosemirror-model'
 
+// MINE
+import Quantity from 'models/quantity'
+import { Ingredient, Utils } from "recipe_utils"
 import '../styles/prose_mirror.scss'
 
 const IngredientNode = Node.create({
@@ -64,9 +64,8 @@ const IngredientNode = Node.create({
     const ing = gon.recipe.ingredients[HTMLAttributes['data-ingredient-id']]
     let children = []
     if (ing) {
-      let text = ing.raw
-      if (ing.raw && ing.raw != '') {text += ' '}
-      children.push(text)
+      let text = Utils.prettyQuantity(ing.raw)
+      if (text && text != '') {children.push(text)}
       children.push([
         'a', {href: ing.food.url}, ing.food.name,
       ])//`<a href="${ing.food.url}">${ing.food.name}</a>`)
@@ -165,10 +164,11 @@ const IngredientListNode = Node.create({
     let list = ids.split(',').map(id => {
       const ing = gon.recipe.ingredients[id]
       if (ing) {
-        let text = ing.raw
-        if (ing.raw && ing.raw != '') {text += ' '}
-        const link = ['a', {href: ing.food.url}, ing.food.name]
-        return ['li', {}, text, link]
+        let children = []
+        let text = Utils.prettyQuantity(ing.raw)
+        if (text && text != '') {children.push(text+' ')}
+        children.push(['a', {href: ing.food.url}, ing.food.name])
+        return ['li', {}, ...children]
       }
     })
     if (!list || list.length == 0) {list = ''}
@@ -337,41 +337,6 @@ const Tiptap = () => {
   )
 }
 
-export default Tiptap
-
-class Ingredient {
-  constructor(args = {}) {
-    if (args.raw) {
-      [this.qty, this.foodName] = Ingredient.parseRaw(args.raw)
-    }
-    if (args.qty) {this.qty = args.qty}
-    if (args.foodName) {this.qty = args.foodName}
-  }
-  simple() {
-    if (!this.qty) {return ''}
-    if (!this.qty.unit) {return `${this.qty.pretty()} ${this.foodName}`}
-    return `${this.qty.pretty()} ${Utils.prettyPreposition(this.foodName)}${this.foodName}`
-  }
-  detailed() {
-    return this.simple()
-  }
-  static parseRaw(raw) {
-    const separators = ["de", "d'"]
-    for (let i = 0; i < separators.length; i++) {
-      if (raw.includes(separators[i])) {
-        const s = raw.split(separators[i])
-        let rawQty = s[0].trim()
-        let foodName = s[1].trim()
-        let qty = new Quantity({raw: rawQty})
-        return [qty, foodName]
-      }
-    }
-    let qty = new Quantity({raw: raw})
-    let food = qty.label
-    qty.label = null
-    return [qty, food]
-  }
-}
 
 function prettyIngredient(ing) {
 

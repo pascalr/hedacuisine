@@ -333,7 +333,7 @@ module IngredientsHelper
   end
 
   def my_sanitize(s)
-    sanitize s, attributes: %w(id class href)
+    sanitize s, attributes: %w(id class href data-ingredient-id data-ingredient-ids)
   end
 
   def pretty_complete_instructions(recipe)
@@ -389,8 +389,8 @@ module IngredientsHelper
     return nil if recipe.blank? || recipe.text.blank?
     #translated = my_sanitize(translate_complete_instructions(recipe))
     #replaced = replace_ingredients(recipe, recipe.text.body.to_trix_html)
-    replaced = replace_ingredients(recipe, recipe.text)
-    my_sanitize(replaced)
+    #replaced = replace_ingredients(recipe, recipe.text)
+    my_sanitize(recipe.text)
   end
 
   def pretty_article_text(text)
