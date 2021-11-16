@@ -24,16 +24,10 @@ const IngredientNode = Node.create({
   selectable: false,
   //atom: true, // What is this???
 
-  addOptions() {
-    return {
-      HTMLAttributes: {},
-    }
-  },
-
   addAttributes() {
     return {
       ingredient: {
-        default: null,
+        default: {'data-ingredient': ''},
         parseHTML: element => element.getAttribute('data-ingredient'),
         renderHTML: attributes => {
           if (!attributes.ingredient) {return {}}
@@ -44,8 +38,9 @@ const IngredientNode = Node.create({
     }
   },
 
-
+  // HTMLAttributes here comes from attributes.renderHTML as defined in addAttributes().
   renderHTML({ node, HTMLAttributes }) {
+
     const ing = gon.recipe.ingredients[HTMLAttributes['data-ingredient']]
     let children = []
     if (ing) {
@@ -56,11 +51,7 @@ const IngredientNode = Node.create({
       ])//`<a href="${ing.food.url}">${ing.food.name}</a>`)
     }
     // Return: ['tagName', {attributeName: 'attributeValue'}, child1, child2, ...children]
-    return [
-      'span',
-      mergeAttributes({ 'data-ingredient': '' }, this.options.HTMLAttributes, HTMLAttributes),
-      ...children,
-    ]
+    return ['span', HTMLAttributes, ...children]
   },
 
   parseHTML() {
@@ -287,10 +278,8 @@ const Toolbar = ({ editor }) => {
           <ul className="dropdown-menu" aria-labelledby="ingDropdown">
             {Object.keys(gon.recipe.ingredients).map(ingId => {
               const ing = gon.recipe.ingredients[ingId]
-              let text = ing.raw
-              if (ing.raw && ing.raw != '') {text += ' '}
-              text += ing.food.name
-              return <li key={ing.id}><a className="dropdown-item" data-ingredient-id={ingId} onClick={(evt) => editor.chain().focus().setIngredient(evt.target.dataset.ingredientId).run()}>{text}</a></li>
+              let text = Utils.prettyQuantityFor(ing.raw, ing.food)
+              return <li key={ing.id}><a className="dropdown-item" style={{cursor: 'pointer'}} onClick={(evt) => editor.chain().focus().setIngredient(ingId).run()}>{text}<Inline color="#0d6efd">{ing.food.name}</Inline></a></li>
             })}
           </ul>
         </span>
