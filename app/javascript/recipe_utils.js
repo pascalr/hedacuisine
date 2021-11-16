@@ -92,6 +92,7 @@ export const Utils = {
     if (typeof quantity === 'string' || quantity instanceof String) {
       quantity = new Quantity({raw: quantity})
     }
+    if (!quantity) {return ''}
     var unit = quantity.unit
     var qty = quantity.nb * scale
     if (unit) {qty *= unit.value}
