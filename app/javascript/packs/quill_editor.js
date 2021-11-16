@@ -253,3 +253,55 @@ document.addEventListener('DOMContentLoaded', () => {
 //    <%= @recipe.text.html_safe if @recipe.text %>
 //  </div>
 //</div>
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//<div>
+//  <div id="custom-toolbar" class="toolbar">
+//    <span class="ql-formats">
+//      <select class="ql-header">
+//        <option value="3">Titre 1</option>
+//        <option value="4">Titre 2</option>
+//        <option value="5">Titre 3</option>
+//        <option selected>Normal</option>
+//      </select>
+//    </span>
+//    <span class="ql-formats">
+//      <button class="ql-bold"></button>
+//      <button class="ql-italic"></button>
+//      <button class="ql-underline"></button>
+//      <button class="ql-strike"></button>
+//    </span>
+//    <span class="ql-formats">
+//      <button class="ql-list" value="ordered"></button>
+//      <button class="ql-ing-list"></button>
+//      <span class="dropdown">
+//        <button type="button" class="dropdown-toggle" id="ingDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+//          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-egg-fried" viewBox="0 0 16 16">
+//            <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+//            <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+//          </svg>
+//        </button>
+//        <ul class="dropdown-menu" aria-labelledby="ingDropdown">
+//          <% @recipe.ingredients.order(:item_nb).each do |ing| %>
+//            <li><a class="dropdown-item" data-add-ing="<%= ing.item_nb %>" href="#"><%= strip_tags(pretty_ingredient(ing)) %></a></li>
+//          <% end %>
+//        </ul>
+//      </span>
+//    </span>
+//    <span class="ql-formats">
+//      <button class="ql-link"></button>
+//      <button class="ql-image"></button>
+//      <button class="ql-video"></button>
+//    </span>
+//  </div>
+//  <div id="quill-editor">
+//    <%= @recipe.text.html_safe if @recipe.text %>
+//  </div>
+//</div>

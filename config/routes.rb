@@ -113,7 +113,6 @@ Rails.application.routes.draw do
       resources :references, only: [:create, :update, :destroy]
 
       member do
-        get 'edit_text'
         get 'old_edit'
         patch 'do_process', param: 'slug'
         patch 'cheat', param: 'slug'
