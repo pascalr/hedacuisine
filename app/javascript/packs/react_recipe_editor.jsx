@@ -80,7 +80,93 @@ const IngredientNode = Node.create({
     return {
       setIngredient: (ingId) => ({ commands }) => {
         console.log("setIngredient", ingId)
-        return commands.insertContent(`<span data-ingredient-id="${ingId}">TESTING1212</span>`)
+        return commands.insertContent(`<span data-ingredient-id="${ingId}"/>`)
+        //return commands.setNode('ingredient')
+      },
+    }
+  },
+
+  //addCommands() {
+  //  return {
+  //    setBold: () => ({ commands }) => {
+  //      return commands.setMark('bold')
+  //    },
+  //    toggleBold: () => ({ commands }) => {
+  //      return commands.toggleMark('bold')
+  //    },
+  //    unsetBold: () => ({ commands }) => {
+  //      return commands.unsetMark('bold')
+  //    },
+  //  }
+  //},
+})
+
+const IngredientListNode = Node.create({
+  name: 'ingredient-list',
+  group: 'block',
+  //inline: true,
+  //selectable: false,
+  //atom: true, // What is this???
+
+  addOptions() {
+    return {
+      HTMLAttributes: {},
+    }
+  },
+
+  addAttributes() {
+    return {
+      ingredientIds: {
+        default: null,
+        parseHTML: element => element.getAttribute('data-ingredient-ids'),
+        renderHTML: attributes => {
+          if (!attributes.ingredientIds) {return {}}
+
+          return {'data-ingredient-ids': attributes.ingredientIds}
+        },
+      },
+    }
+  },
+
+  renderHTML({ node, HTMLAttributes }) {
+    const ids = HTMLAttributes['data-ingredient-ids'] || []
+    let list = ids.map(id => {
+      const ing = gon.recipe.ingredients[id]
+      if (ing) {
+        let text = ing.raw
+        if (ing.raw && ing.raw != '') {text += ' '}
+        return [
+          'li', [
+            //text,
+            ['a', {href: ing.food.url}, ing.food.name],
+          ]
+        ]
+      }
+    })
+    if (!list || list.length == 0) {list = ''}
+    return [
+      'span',
+      mergeAttributes({ 'data-ingredient-ids': '' }, this.options.HTMLAttributes, HTMLAttributes),
+      [
+        'ul', list
+      ],
+    ]
+  },
+
+  parseHTML() {
+    return [
+      {
+        tag: 'span[data-ingredient-ids]',
+      },
+    ]
+  },
+
+  addCommands() {
+    //.insertContent('Example Text')
+    return {
+      setIngredientList: (ingIds) => ({ commands }) => {
+        console.log("setIngredients", ingIds)
+        return commands.insertContent(`<span data-ingredient-ids="${ingIds}"/>`)
         //return commands.setNode('ingredient')
       },
     }
@@ -178,7 +264,7 @@ const Toolbar = ({ editor }) => {
             <path d="M1.713 11.865v-.474H2c.217 0 .363-.137.363-.317 0-.185-.158-.31-.361-.31-.223 0-.367.152-.373.31h-.59c.016-.467.373-.787.986-.787.588-.002.954.291.957.703a.595.595 0 0 1-.492.594v.033a.615.615 0 0 1 .569.631c.003.533-.502.8-1.051.8-.656 0-1-.37-1.008-.794h.582c.008.178.186.306.422.309.254 0 .424-.145.422-.35-.002-.195-.155-.348-.414-.348h-.3zm-.004-4.699h-.604v-.035c0-.408.295-.844.958-.844.583 0 .96.326.96.756 0 .389-.257.617-.476.848l-.537.572v.03h1.054V9H1.143v-.395l.957-.99c.138-.142.293-.304.293-.508 0-.18-.147-.32-.342-.32a.33.33 0 0 0-.342.338v.041zM2.564 5h-.635V2.924h-.031l-.598.42v-.567l.629-.443h.635V5z"/>
           </svg>
         </button> 
-        <button>
+        <button onClick={(evt) => editor.chain().focus().setIngredientList([]).run()}>
           <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-list-check" viewBox="0 0 16 16">
             <path fillRule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3.854 2.146a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 3.293l1.146-1.147a.5.5 0 0 1 .708 0zm0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 7.293l1.146-1.147a.5.5 0 0 1 .708 0zm0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z"/>
           </svg>
@@ -215,6 +301,7 @@ const Tiptap = () => {
     extensions: [
       StarterKit,
       IngredientNode,
+      IngredientListNode,
       Subscript,
       Superscript
     ],
