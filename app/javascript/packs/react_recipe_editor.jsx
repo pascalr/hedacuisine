@@ -17,7 +17,7 @@ import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Subscript from '@tiptap/extension-subscript'
 import Superscript from '@tiptap/extension-superscript'
-import { Node, mergeAttributes } from '@tiptap/core'
+import { Node, mergeAttributes, nodeInputRule } from '@tiptap/core'
 
 import { Node as ProseMirrorNode } from 'prosemirror-model'
 
@@ -45,6 +45,15 @@ const IngredientNode = Node.create({
           return {'data-ingredient-id': attributes.ingredientId}
         },
       },
+      itemNb: {
+        default: null,
+        renderHTML: attributes => {
+          if (!attributes.itemNb) {return {}}
+          const ing = Object.values(gon.recipe.ingredients).find(ing => ing.item_nb == attributes.itemNb)
+          if (!ing) {return {}}
+          return {'data-ingredient-id': ing.id}
+        },
+      },
     }
   },
 
@@ -60,6 +69,7 @@ const IngredientNode = Node.create({
         'a', {href: ing.food.url}, ing.food.name,
       ])//`<a href="${ing.food.url}">${ing.food.name}</a>`)
     }
+    // Return: ['tagName', {attributeName: 'attributeValue'}, child1, child2, ...children]
     return [
       'span',
       mergeAttributes({ 'data-ingredient-id': '' }, this.options.HTMLAttributes, HTMLAttributes),
@@ -68,11 +78,7 @@ const IngredientNode = Node.create({
   },
 
   parseHTML() {
-    return [
-      {
-        tag: 'span[data-ingredient-id]',
-      },
-    ]
+    return [{tag: 'span[data-ingredient-id]'}]
   },
 
   addCommands() {
@@ -86,19 +92,21 @@ const IngredientNode = Node.create({
     }
   },
 
-  //addCommands() {
-  //  return {
-  //    setBold: () => ({ commands }) => {
-  //      return commands.setMark('bold')
-  //    },
-  //    toggleBold: () => ({ commands }) => {
-  //      return commands.toggleMark('bold')
-  //    },
-  //    unsetBold: () => ({ commands }) => {
-  //      return commands.unsetMark('bold')
-  //    },
-  //  }
-  //},
+  addInputRules() {
+    return [
+      nodeInputRule({
+        find: /({(\d+)})$/,
+        type: this.type,
+        getAttributes: match => {
+          console.log(match)
+          const [,,itemNb] = match
+
+          return { itemNb }
+        },
+      }),
+    ]
+  },
+
 })
 
 const IngredientListNode = Node.create({
@@ -125,40 +133,53 @@ const IngredientListNode = Node.create({
           return {'data-ingredient-ids': attributes.ingredientIds}
         },
       },
+      itemNbs: {
+        default: null,
+        renderHTML: attributes => {
+          if (!attributes.itemNbs) {return {}}
+          let nbs = []
+          let s = attributes.itemNbs.split(',')
+          s.forEach(c => {
+            if (c.includes('-')) {
+              let [start, end] = c.split('-')
+              for (let i = start; i <= end; i++) {
+                nbs.push(i)
+              }
+            } else {
+              nbs.push(c)
+            }
+          })
+          let ingIds = nbs.map(itemNb => (
+            Object.values(gon.recipe.ingredients).find(ing => ing.item_nb == itemNb)
+          )).map(ing => ing.id)
+          return {'data-ingredient-ids': ingIds.join(',')}
+        },
+      },
     }
   },
 
   renderHTML({ node, HTMLAttributes }) {
     const ids = HTMLAttributes['data-ingredient-ids'] || []
-    let list = ids.map(id => {
+    let list = ids.split(',').map(id => {
       const ing = gon.recipe.ingredients[id]
       if (ing) {
         let text = ing.raw
         if (ing.raw && ing.raw != '') {text += ' '}
-        return [
-          'li', [
-            //text,
-            ['a', {href: ing.food.url}, ing.food.name],
-          ]
-        ]
+        const link = ['a', {href: ing.food.url}, ing.food.name]
+        return ['li', {}, text, link]
       }
     })
     if (!list || list.length == 0) {list = ''}
+    // Return: ['tagName', {attributeName: 'attributeValue'}, child1, child2, ...children]
     return [
       'span',
       mergeAttributes({ 'data-ingredient-ids': '' }, this.options.HTMLAttributes, HTMLAttributes),
-      [
-        'ul', list
-      ],
+      ['ul', {}, ...list]
     ]
   },
 
   parseHTML() {
-    return [
-      {
-        tag: 'span[data-ingredient-ids]',
-      },
-    ]
+    return [{tag: 'span[data-ingredient-ids]'}]
   },
 
   addCommands() {
@@ -172,19 +193,20 @@ const IngredientListNode = Node.create({
     }
   },
 
-  //addCommands() {
-  //  return {
-  //    setBold: () => ({ commands }) => {
-  //      return commands.setMark('bold')
-  //    },
-  //    toggleBold: () => ({ commands }) => {
-  //      return commands.toggleMark('bold')
-  //    },
-  //    unsetBold: () => ({ commands }) => {
-  //      return commands.unsetMark('bold')
-  //    },
-  //  }
-  //},
+  addInputRules() {
+    return [
+      nodeInputRule({
+        find: /({(\d+(,\d+)*(-\d+)*)})$/,
+        type: this.type,
+        getAttributes: match => {
+          console.log(match)
+          const [,,itemNbs] = match
+          return { itemNbs }
+        },
+      }),
+    ]
+  },
+
 })
 
 //import './style.css' // import style.css stylesheet
