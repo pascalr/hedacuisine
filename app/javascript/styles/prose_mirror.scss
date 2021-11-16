@@ -69,6 +69,17 @@
   }
 }
 
+.ProseMirror-selectednode > * {
+  border: 1px solid blue;
+}
+
+span[data-ingredient-ids] {
+  display: block;
+}
+span[data-ingredient-ids] > ul {
+  display: inline-block;
+}
+
 .toolbar {
 
   border: 1px solid #bbb;

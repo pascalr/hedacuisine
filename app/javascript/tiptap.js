@@ -133,7 +133,7 @@ const IngredientListNode = Node.create({
           let s = attributes.itemNbs.split(',')
           s.forEach(c => {
             if (c.includes('-')) {
-              let [start, end] = c.split('-')
+              let [start, end] = c.split('-').map(i => parseInt(i))
               for (let i = start; i <= end; i++) {
                 nbs.push(i)
               }
