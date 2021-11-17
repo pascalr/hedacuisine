@@ -4,7 +4,6 @@ import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from '
 
 // TIPTAP
 import { useEditor, EditorContent } from '@tiptap/react'
-//import StarterKit from '@tiptap/starter-kit'
 import Bold from '@tiptap/extension-bold'
 //import BulletList from '@tiptap/extension-bullet-list'
 import Document from '@tiptap/extension-document'
@@ -356,15 +355,14 @@ const Toolbar = ({ editor }) => {
 export const Tiptap = () => {
   const editor = useEditor({
     extensions: [
-      //StarterKit,
       Bold,
       Italic,
       OrderedList,
       //BulletList,
       ListItem,
       //HorizontalRule,
-      Document, // What is this?
-      // Dropcursor, Gapcursor, HardBreak, what are those???
+      Document,
+      //HardBreak,
       Paragraph,
       Strike,
       Text,
