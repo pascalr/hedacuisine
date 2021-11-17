@@ -17,7 +17,7 @@ import { Ingredient, Utils } from "recipe_utils"
 function parseItemNbOrRaw(raw) {
 }
         
-const singleIngredientRegex = "\\\d+|\\\(\\\d+[^-,\\\(\\\)\\\}\\\{]*\\\)"
+const singleIngredientRegex = "(\\\d+|\\\(\\\d+[^-,\\\(\\\)\\\}\\\{]*\\\))"
 //const signleIngredientRegex = '({(\d+|\(\d+[^\(\)\}\{]*\))})$'
 
 const IngredientNode = Node.create({
@@ -214,8 +214,8 @@ const IngredientListNode = Node.create({
   addInputRules() {
     return [
       nodeInputRule({
-        find: /({(\d+(,\d+|-\d+)+)})$/,
-        //find: new RegExp(`({(${singleIngredientRegex}(,${singleIngredientRegex}|-${singleIngredientRegex})+)})$`),
+        //find: /({(\d+(,\d+|-\d+)+)})$/,
+        find: new RegExp(`({(${singleIngredientRegex}(,${singleIngredientRegex}|-${singleIngredientRegex})+)})$`),
         type: this.type,
         getAttributes: match => {
           const [,,inner] = match
