@@ -4,7 +4,22 @@ import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from '
 
 // TIPTAP
 import { useEditor, EditorContent } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
+//import StarterKit from '@tiptap/starter-kit'
+import Bold from '@tiptap/extension-bold'
+//import BulletList from '@tiptap/extension-bullet-list'
+import Document from '@tiptap/extension-document'
+//import Dropcursor from '@tiptap/extension-dropcursor'
+//import Gapcursor from '@tiptap/extension-gapcursor'
+//import HardBreak from '@tiptap/extension-hard-break'
+import Heading from '@tiptap/extension-heading'
+import History from '@tiptap/extension-history'
+//import HorizontalRule from '@tiptap/extension-horizontal-rule'
+import Italic from '@tiptap/extension-italic'
+import ListItem from '@tiptap/extension-list-item'
+import OrderedList from '@tiptap/extension-ordered-list'
+import Paragraph from '@tiptap/extension-paragraph'
+import Strike from '@tiptap/extension-strike'
+import Text from '@tiptap/extension-text'
 import Subscript from '@tiptap/extension-subscript'
 import Superscript from '@tiptap/extension-superscript'
 import { Node, mergeAttributes, nodeInputRule } from '@tiptap/core'
@@ -91,6 +106,7 @@ const IngredientNode = Node.create({
     //.insertContent('Example Text')
     return {
       setIngredient: (ingId) => ({ commands }) => {
+        console.log("setIngredient")
         return commands.insertContent(`<span data-ingredient="${ingId}"/>`)
         //return commands.setNode('ingredient')
       },
@@ -316,10 +332,9 @@ const Toolbar = ({ editor }) => {
             </svg>
           </button>
           <ul className="dropdown-menu" aria-labelledby="ingDropdown">
-            {Object.keys(gon.recipe.ingredients).map(ingId => {
-              const ing = gon.recipe.ingredients[ingId]
+            {Object.values(gon.recipe.ingredients).map(ing => {
               let text = Utils.prettyQuantityFor(ing.raw, ing.food.name)
-              return <li key={ing.id}><a className="dropdown-item" style={{cursor: 'pointer'}} onClick={(evt) => editor.chain().focus().setIngredient(ingId).run()}>{text}<Inline color="#0d6efd">{ing.food.name}</Inline></a></li>
+              return <li key={ing.id}><a className="dropdown-item" style={{cursor: 'pointer'}} onClick={(evt) => editor.chain().focus().setIngredient(ing.item_nb).run()}>{text}<Inline color="#0d6efd">{ing.food.name}</Inline></a></li>
             })}
           </ul>
         </span>
@@ -341,7 +356,20 @@ const Toolbar = ({ editor }) => {
 export const Tiptap = () => {
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      //StarterKit,
+      Bold,
+      Italic,
+      OrderedList,
+      //BulletList,
+      ListItem,
+      //HorizontalRule,
+      Document, // What is this?
+      // Dropcursor, Gapcursor, HardBreak, what are those???
+      Paragraph,
+      Strike,
+      Text,
+      Heading,
+      History,
       IngredientNode,
       IngredientListNode,
       Subscript,
