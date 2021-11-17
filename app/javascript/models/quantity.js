@@ -20,6 +20,26 @@ export default class Quantity {
     }
   }
 
+  // TODO: Try to parse complete ingredient separated by de or d'
+  // Then, try to parse quantity. Check if label is a unit. Check if label is a food.
+  static parseQuantityAndFoodName(raw) {
+    const separators = ["de", "d'"]
+    for (let i = 0; i < separators.length; i++) {
+      if (raw.includes(separators[i])) {
+        const s = raw.split(separators[i])
+        let rawQty = s[0].trim()
+        let foodName = s[1].trim()
+        let qty = new Quantity({raw: rawQty})
+        return [qty, foodName]
+      }
+    }
+    let qty = new Quantity({raw: raw})
+    if (qty.unit) {return [qty, null] }
+    let foodName = qty.label
+    qty.label = null
+    return [qty, foodName]
+  }
+
   static parseFractionFloat(str) {
     var split = str.split('/')
     return split[0]/split[1]

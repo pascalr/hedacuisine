@@ -10,7 +10,7 @@ function prettyIngredientV2(ing) {
   if (ing.raw == null || ing.raw == "") {return linkSingular}
 
   var quantity = new Quantity({raw: ing.raw})
-  let r = Utils.prettyQuantityFor(quantity, {id: ing.food_id, name: ing.food_name}, window.scale)
+  let r = Utils.prettyQuantityFor(quantity, ing.food_name, window.scale)
   
   // FIXME: This should belongs to quantity. Should do quantity.scale(window.scale). Then get quantity.total
   var qty = quantity.nb * scale

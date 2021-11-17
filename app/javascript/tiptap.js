@@ -31,27 +31,55 @@ const IngredientNode = Node.create({
         parseHTML: element => element.getAttribute('data-ingredient'),
         renderHTML: attributes => {
           if (!attributes.ingredient) {return {}}
-
           return {'data-ingredient': attributes.ingredient}
         },
       },
+      //rawIngredient: {
+      //  default: {'data-raw-ingredient': null},
+      //  parseHTML: element => element.getAttribute('data-raw-ingredient'),
+      //  renderHTML: attributes => {
+      //    if (!attributes.rawIngredient) {return {}}
+
+      //    return {'data-raw-ingredient': attributes.rawIngredient}
+      //  },
+      //},
     }
   },
 
   // HTMLAttributes here comes from attributes.renderHTML as defined in addAttributes().
   renderHTML({ node, HTMLAttributes }) {
 
-    const ing = gon.recipe.ingredients[HTMLAttributes['data-ingredient']]
-    let children = []
-    if (ing) {
-      let text = Utils.prettyQuantityFor(ing.raw, ing.food)
+    const ingredient = HTMLAttributes['data-ingredient']
+    console.log(ingredient)
+    if (ingredient.startsWith("(")) {
+      const raw = ingredient.slice(1,-1)
+      console.log('RAW', raw)
+      const [qty, foodName] = Quantity.parseQuantityAndFoodName(raw)
+      let children = []
+      let text = Utils.prettyQuantityFor(qty.raw, foodName)
       if (text && text != '') {children.push(text)}
-      children.push([
-        'a', {href: ing.food.url}, ing.food.name,
-      ])//`<a href="${ing.food.url}">${ing.food.name}</a>`)
+      const food = gon.foodList.find(food => food.name == foodName)
+      if (food) {
+        // TODO: Find food id
+        //children.push([
+        //  'a', {href: ing.food.url}, ing.food.name,
+        //])//`<a href="${ing.food.url}">${ing.food.name}</a>`)
+      }
+      return ['span', HTMLAttributes, ...children]
+      return ['span', HTMLAttributes, "INVALID INGREDIENT"]
+    } else {
+      const ing = Object.values(gon.recipe.ingredients).find(ing => ing.item_nb == ingredient)
+      let children = []
+      if (ing) {
+        let text = Utils.prettyQuantityFor(ing.raw, ing.food.name)
+        if (text && text != '') {children.push(text)}
+        children.push([
+          'a', {href: ing.food.url}, ing.food.name,
+        ])//`<a href="${ing.food.url}">${ing.food.name}</a>`)
+      }
+      // Return: ['tagName', {attributeName: 'attributeValue'}, child1, child2, ...children]
+      return ['span', HTMLAttributes, ...children]
     }
-    // Return: ['tagName', {attributeName: 'attributeValue'}, child1, child2, ...children]
-    return ['span', HTMLAttributes, ...children]
   },
 
   parseHTML() {
@@ -72,18 +100,32 @@ const IngredientNode = Node.create({
   addInputRules() {
     return [
       nodeInputRule({
-        find: /({(\d+)})$/,
+        find: /({(\d+|\(\d+[^\(\)\}\{]*\))})$/,
         type: this.type,
         getAttributes: match => {
           console.log(match)
-          const [,,itemNb] = match
+          const [,,inner] = match
+          return {ingredient: inner}
 
-          const ing = Object.values(gon.recipe.ingredients).find(ing => ing.item_nb == itemNb)
-          if (!ing) {return {}}
-          console.log("ingredient", ing.id)
-          return {ingredient: ing.id}
+          //const ing = Object.values(gon.recipe.ingredients).find(ing => ing.item_nb == itemNb)
+          //if (!ing) {return {}}
+          //console.log("ingredient", ing.id)
+          //return {ingredient: ing.id}
         },
       }),
+      //nodeInputRule({
+      //  find: /({(\(\d+[^\(\)\}\{]*)}\))$/,
+      //  type: this.type,
+      //  getAttributes: match => {
+      //    console.log(match)
+      //    const [,,itemNb] = match
+
+      //    const raw = match.slice(1, -1)
+      //    console.log(raw)
+      //    //const ing = new Ingredient({raw})
+      //    return {'rawIngredient': raw}
+      //  },
+      //}),
     ]
   },
 
@@ -144,7 +186,7 @@ const IngredientListNode = Node.create({
       const ing = gon.recipe.ingredients[id]
       if (ing) {
         let children = []
-        let text = Utils.prettyQuantityFor(ing.raw, ing.food)
+        let text = Utils.prettyQuantityFor(ing.raw, ing.food.name)
         if (text && text != '') {children.push(text)}
         children.push(['a', {href: ing.food.url}, ing.food.name])
         return ['li', {'data-ingredient': ing.id}, ...children]
@@ -278,7 +320,7 @@ const Toolbar = ({ editor }) => {
           <ul className="dropdown-menu" aria-labelledby="ingDropdown">
             {Object.keys(gon.recipe.ingredients).map(ingId => {
               const ing = gon.recipe.ingredients[ingId]
-              let text = Utils.prettyQuantityFor(ing.raw, ing.food)
+              let text = Utils.prettyQuantityFor(ing.raw, ing.food.name)
               return <li key={ing.id}><a className="dropdown-item" style={{cursor: 'pointer'}} onClick={(evt) => editor.chain().focus().setIngredient(ingId).run()}>{text}<Inline color="#0d6efd">{ing.food.name}</Inline></a></li>
             })}
           </ul>

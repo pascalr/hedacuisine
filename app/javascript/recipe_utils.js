@@ -78,6 +78,7 @@ export const Utils = {
   },
 
   prettyPreposition(foodName) {
+    if (foodName == null) {return ''}
     return foodName.startsWith('a','e','i','o','u','y','é') ? "d'" : "de "// if exp.contract_preposition.nil?
     //exp.contract_preposition ? "d'" : "de "
   },
@@ -88,7 +89,7 @@ export const Utils = {
     return qty.pretty() + ' ' + Utils.prettyPreposition(food.name)
   },
 
-  prettyQuantityFor(quantity, food, scale=1.0) {
+  prettyQuantityFor(quantity, foodName, scale=1.0) {
     if (typeof quantity === 'string' || quantity instanceof String) {
       quantity = new Quantity({raw: quantity})
     }
@@ -107,13 +108,14 @@ export const Utils = {
       if (unit) {r += unit.name + " "}
     }
     if (quantity.unit && (quantity.unit.is_volume || quantity.unit.is_weight)) {
-      r += Utils.prettyPreposition(food.name)
+      r += Utils.prettyPreposition(foodName)
     }
     return r
   },
 
 };
 
+// DEPRECATED. Use Quantity
 export class Ingredient {
   constructor(args = {}) {
     if (args.id) {
@@ -138,7 +140,8 @@ export class Ingredient {
   detailed() {
     return this.simple()
   }
-  // This is not even used. Maybe allow this to create ingredients in the editor? - 4 t de farine-
+  // TODO: Try to parse complete ingredient separated by de or d'
+  // Then, try to parse quantity. Check if label is a unit. Check if label is a food.
   static parseRaw(raw) {
     const separators = ["de", "d'"]
     for (let i = 0; i < separators.length; i++) {
