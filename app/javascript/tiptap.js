@@ -16,6 +16,9 @@ import { Ingredient, Utils } from "recipe_utils"
 
 function parseItemNbOrRaw(raw) {
 }
+        
+const singleIngredientRegex = "\\\d+|\\\(\\\d+[^-,\\\(\\\)\\\}\\\{]*\\\)"
+//const signleIngredientRegex = '({(\d+|\(\d+[^\(\)\}\{]*\))})$'
 
 const IngredientNode = Node.create({
   name: 'ingredient',
@@ -50,10 +53,8 @@ const IngredientNode = Node.create({
   renderHTML({ node, HTMLAttributes }) {
 
     const ingredient = HTMLAttributes['data-ingredient']
-    console.log(ingredient)
     if (ingredient.startsWith("(")) {
       const raw = ingredient.slice(1,-1)
-      console.log('RAW', raw)
       const [qty, foodName] = Quantity.parseQuantityAndFoodName(raw)
       let children = []
       let text = Utils.prettyQuantityFor(qty.raw, foodName)
@@ -90,7 +91,6 @@ const IngredientNode = Node.create({
     //.insertContent('Example Text')
     return {
       setIngredient: (ingId) => ({ commands }) => {
-        console.log("setIngredient", ingId)
         return commands.insertContent(`<span data-ingredient="${ingId}"/>`)
         //return commands.setNode('ingredient')
       },
@@ -100,10 +100,11 @@ const IngredientNode = Node.create({
   addInputRules() {
     return [
       nodeInputRule({
-        find: /({(\d+|\(\d+[^\(\)\}\{]*\))})$/,
+        find: new RegExp(`({(${singleIngredientRegex})})$`),
         type: this.type,
         getAttributes: match => {
-          console.log(match)
+          console.log("MATCH", match)
+          console.log("INNER", inner)
           const [,,inner] = match
           return {ingredient: inner}
 
@@ -148,83 +149,80 @@ const IngredientListNode = Node.create({
     return {
       ingredientIds: {
         default: null,
-        parseHTML: element => element.getAttribute('data-ingredient-ids'),
+        parseHTML: element => element.getAttribute('data-ingredients'),
         renderHTML: attributes => {
           if (!attributes.ingredientIds) {return {}}
 
-          return {'data-ingredient-ids': attributes.ingredientIds}
+          return {'data-ingredients': attributes.ingredientIds}
         },
       },
-      itemNbs: {
+      ingredients: {
         default: null,
         renderHTML: attributes => {
-          if (!attributes.itemNbs) {return {}}
-          let nbs = []
-          let s = attributes.itemNbs.split(',')
+          if (!attributes.ingredients) {return {}}
+          let ings = []
+          let s = attributes.ingredients.split(',')
           s.forEach(c => {
             if (c.includes('-')) {
               let [start, end] = c.split('-').map(i => parseInt(i))
               for (let i = start; i <= end; i++) {
-                nbs.push(i)
+                ings.push(i)
               }
             } else {
-              nbs.push(c)
+              ings.push(c)
             }
           })
-          let ingIds = nbs.map(itemNb => (
-            Object.values(gon.recipe.ingredients).find(ing => ing.item_nb == itemNb)
-          )).map(ing => ing.id)
-          return {'data-ingredient-ids': ingIds.join(',')}
+          //let ingIds = nbs.map(itemNb => (
+          //  Object.values(gon.recipe.ingredients).find(ing => ing.item_nb == itemNb)
+          //)).map(ing => ing.id)
+          return {'data-ingredients': ings.join(',')}
         },
       },
     }
   },
 
   renderHTML({ node, HTMLAttributes }) {
-    const ids = HTMLAttributes['data-ingredient-ids'] || []
-    let list = ids.split(',').map(id => {
-      const ing = gon.recipe.ingredients[id]
-      if (ing) {
-        let children = []
-        let text = Utils.prettyQuantityFor(ing.raw, ing.food.name)
-        if (text && text != '') {children.push(text)}
-        children.push(['a', {href: ing.food.url}, ing.food.name])
-        return ['li', {'data-ingredient': ing.id}, ...children]
+    const ingredients = HTMLAttributes['data-ingredients']
+    const ids = HTMLAttributes['data-ingredients'] || []
+    let list = ids.split(',').map(ingredient => {
+      if (ingredient.startsWith("(")) {
+        return ['li', HTMLAttributes, "TODO"]
+      } else {
+        const ing = Object.values(gon.recipe.ingredients).find(ing => ing.item_nb == ingredient)
+        if (ing) {
+          let children = []
+          let text = Utils.prettyQuantityFor(ing.raw, ing.food.name)
+          if (text && text != '') {children.push(text)}
+          children.push(['a', {href: ing.food.url}, ing.food.name])
+          return ['li', {'data-ingredient': ing.id}, ...children]
+        }
       }
     })
     if (!list || list.length == 0) {list = ''}
     // Return: ['tagName', {attributeName: 'attributeValue'}, child1, child2, ...children]
     return [
       'span',
-      mergeAttributes({ 'data-ingredient-ids': '' }, this.options.HTMLAttributes, HTMLAttributes),
+      mergeAttributes({ 'data-ingredients': '' }, this.options.HTMLAttributes, HTMLAttributes),
       ['ul', {}, ...list]
     ]
   },
 
   parseHTML() {
-    return [{tag: 'span[data-ingredient-ids]'}]
-  },
-
-  addCommands() {
-    //.insertContent('Example Text')
-    return {
-      setIngredientList: (ingIds) => ({ commands }) => {
-        console.log("setIngredients", ingIds)
-        return commands.insertContent(`<span data-ingredient-ids="${ingIds}"/>`)
-        //return commands.setNode('ingredient')
-      },
-    }
+    return [{tag: 'span[data-ingredients]'}]
   },
 
   addInputRules() {
     return [
       nodeInputRule({
         find: /({(\d+(,\d+|-\d+)+)})$/,
+        //find: new RegExp(`({(${singleIngredientRegex}(,${singleIngredientRegex}|-${singleIngredientRegex})+)})$`),
         type: this.type,
         getAttributes: match => {
-          console.log(match)
-          const [,,itemNbs] = match
-          return { itemNbs }
+          const [,,inner] = match
+          console.log("REGEX", `({(${singleIngredientRegex}(,${singleIngredientRegex}|-${singleIngredientRegex})+)})$`)
+          console.log("MATCH", match)
+          console.log("INNER", inner)
+          return { ingredients: inner }
         },
       }),
     ]
