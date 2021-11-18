@@ -21,18 +21,111 @@ import Strike from '@tiptap/extension-strike'
 import Text from '@tiptap/extension-text'
 import Subscript from '@tiptap/extension-subscript'
 import Superscript from '@tiptap/extension-superscript'
-import { Node, mergeAttributes, nodeInputRule } from '@tiptap/core'
+import { Node, mergeAttributes, nodeInputRule, textblockTypeInputRule } from '@tiptap/core'
 import { Node as ProseMirrorNode } from 'prosemirror-model'
 
 // MINE
 import Quantity from 'models/quantity'
 import { Ingredient, Utils } from "recipe_utils"
 
+const CustomHeading = Heading.extend({
+  //addInputRules() {
+  //  return this.options.levels.map(level => {
+  //    return textblockTypeInputRule({
+  //      find: new RegExp(`^(#{1,${level}})\\s$`),
+  //      type: this.type,
+  //      getAttributes: {
+  //        level,
+  //      },
+  //    })
+  //  })
+  //},
+  addInputRules() {
+    return [3,4,5].map(level => {
+      return textblockTypeInputRule({
+        find: new RegExp("^(\\\${"+(level-2)+"})\\s$"),
+        type: this.type,
+        getAttributes: {level},
+      })
+    })
+  },
+})
+
 function parseItemNbOrRaw(raw) {
 }
         
 const singleIngredientRegex = "(\\\d+|\\\(\\\d+[^-,\\\(\\\)\\\}\\\{]*\\\))"
 //const signleIngredientRegex = '({(\d+|\(\d+[^\(\)\}\{]*\))})$'
+
+const StepNode = Node.create({
+  name: 'step',
+  content: 'inline*',
+  group: 'block',
+  defining: true,
+
+  addAttributes() {
+    return {
+      first: {
+        default: false,
+        parseHTML: element => element.getAttribute('data-step'),
+        renderHTML: attributes => {
+          if (attributes.first == null) {return {}}
+          return {'data-step': attributes.first}
+        },
+      },
+    }
+  },
+
+  parseHTML() {
+    return [{tag: 'div[data-step]'}]
+  },
+  //parseHTML() {
+  //  return this.options.levels
+  //    .map((level: Level) => ({
+  //      tag: `h${level}`,
+  //      attrs: { level },
+  //    }))
+  //},
+
+  renderHTML({ node, HTMLAttributes }) {
+    //const hasLevel = this.options.levels.includes(node.attrs.level)
+    //const level = hasLevel
+    //  ? node.attrs.level
+    //  : this.options.levels[0]
+
+    //return [`h${level}`, mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0]
+    return [`div`, HTMLAttributes, 0]
+  },
+
+  addCommands() {
+    return {
+      setStep: attributes => ({ commands }) => {
+        return commands.setNode('step', attributes)
+      },
+      toggleStep: attributes => ({ commands }) => {
+        return commands.toggleNode('step', 'paragraph', attributes)
+      },
+    }
+  },
+
+  //addKeyboardShortcuts() {
+  //  return this.options.levels.reduce((items, level) => ({
+  //    ...items,
+  //    ...{
+  //      [`Mod-Alt-${level}`]: () => this.editor.commands.toggleHeading({ level }),
+  //    },
+  //  }), {})
+  //},
+
+  addInputRules() {
+    return [
+      textblockTypeInputRule({
+        find: new RegExp(`^(#)\\s$`),
+        type: this.type,
+      })
+    ]
+  },
+})
 
 const IngredientNode = Node.create({
   name: 'ingredient',
@@ -44,7 +137,7 @@ const IngredientNode = Node.create({
   addAttributes() {
     return {
       ingredient: {
-        default: {'data-ingredient': ''},
+        default: null,
         parseHTML: element => element.getAttribute('data-ingredient'),
         renderHTML: attributes => {
           if (!attributes.ingredient) {return {}}
@@ -312,6 +405,11 @@ const Toolbar = ({ editor }) => {
         </button> 
       </Inline>
       <Inline padding="0 1em">
+        <button onClick={() => editor.chain().focus().toggleStep().run()} className={editor.isActive('step') ? 'is-active' : ''}>
+          <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-hash" viewBox="0 0 16 16">
+            <path d="M8.39 12.648a1.32 1.32 0 0 0-.015.18c0 .305.21.508.5.508.266 0 .492-.172.555-.477l.554-2.703h1.204c.421 0 .617-.234.617-.547 0-.312-.188-.53-.617-.53h-.985l.516-2.524h1.265c.43 0 .618-.227.618-.547 0-.313-.188-.524-.618-.524h-1.046l.476-2.304a1.06 1.06 0 0 0 .016-.164.51.51 0 0 0-.516-.516.54.54 0 0 0-.539.43l-.523 2.554H7.617l.477-2.304c.008-.04.015-.118.015-.164a.512.512 0 0 0-.523-.516.539.539 0 0 0-.531.43L6.53 5.484H5.414c-.43 0-.617.22-.617.532 0 .312.187.539.617.539h.906l-.515 2.523H4.609c-.421 0-.609.219-.609.531 0 .313.188.547.61.547h.976l-.516 2.492c-.008.04-.015.125-.015.18 0 .305.21.508.5.508.265 0 .492-.172.554-.477l.555-2.703h2.242l-.515 2.492zm-1-6.109h2.266l-.515 2.563H6.859l.532-2.563z"/>
+          </svg>
+        </button> 
         <button onClick={() => editor.chain().focus().toggleOrderedList().run()} className={editor.isActive('orderedList') ? 'is-active' : ''}>
           <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-list-ol" viewBox="0 0 16 16">
             <path fillRule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5z"/>
@@ -337,6 +435,14 @@ const Toolbar = ({ editor }) => {
             })}
           </ul>
         </span>
+      </Inline>
+      <Inline padding="0 1em">
+        <button onClick={() => {let html = editor.getHTML(); console.log(html); alert(html)}}>
+          <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-eye" viewBox="0 0 16 16">
+            <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+            <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+          </svg>
+        </button> 
       </Inline>
     </div>
   )
@@ -366,10 +472,11 @@ export const Tiptap = () => {
       Paragraph,
       Strike,
       Text,
-      Heading,
+      CustomHeading,
       History,
       IngredientNode,
       IngredientListNode,
+      StepNode,
       Subscript,
       Superscript
     ],
