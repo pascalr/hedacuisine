@@ -78,8 +78,8 @@ export const Utils = {
   },
 
   prettyPreposition(foodName) {
-    if (foodName == null) {return ''}
-    return foodName.startsWith('a','e','i','o','u','y','é') ? "d'" : "de "// if exp.contract_preposition.nil?
+    if (foodName == null || foodName.length <= 0) {return ''}
+    return ['a','e','i','o','u','y','é'].includes(foodName[0]) ? "d'" : "de "// if exp.contract_preposition.nil?
     //exp.contract_preposition ? "d'" : "de "
   },
 
