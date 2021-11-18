@@ -15,7 +15,7 @@ class Quantity
       return self
     end
     @ml = @grams / @food.density if @food && !@food.density.nil?
-    @total = @grams / @food.unit_weight if !@grams.nil? && @food && !@food.unit_weight.nil?
+    @total = @grams / @food.unit_weight if @food && !@food.unit_weight.nil?
     self
   end
 

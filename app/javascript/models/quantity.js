@@ -13,10 +13,12 @@ export default class Quantity {
 
     if (this.raw != null) {
       let s = this.raw.match(/^\d+( \d)?([,.\/]\d+)?/g)
-      let qty_s = s[0]
-      this.label = this.raw.substr(qty_s.length).trim()
-      this.nb = Quantity.parseFloatOrFraction(qty_s)
-      this.unit = gon.units.find(unit => unit.name == this.label)
+      if (s != null) {
+        let qty_s = s[0]
+        this.label = this.raw.substr(qty_s.length).trim()
+        this.nb = Quantity.parseFloatOrFraction(qty_s)
+        this.unit = gon.units.find(unit => unit.name == this.label)
+      }
     }
   }
 
