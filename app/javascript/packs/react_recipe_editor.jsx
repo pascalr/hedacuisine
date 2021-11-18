@@ -532,9 +532,10 @@ class RecipeEditor extends React.Component {
   
   constructor(props) {
     super(props);
+    let ids = Object.values(gon.recipe.ingredients).sort((a,b) => a.item_nb - b.item_nb).map(ing => ing.id)
     this.state = {
       name: gon.recipe.name,
-      ingIds: Object.keys(gon.recipe.ingredients),
+      ingIds: ids,
       toolIds: Object.keys(gon.recipe.tools),
       instructionsSlave: gon.recipe.complete_instructions,
       showAddNewIng: false,
