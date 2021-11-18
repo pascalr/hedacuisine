@@ -2,7 +2,8 @@ module ApplicationHelper
 
   def dev_url_or(path)
     if Rails.env.production? or Rails.env.local?
-      home_beta_path(path: URI.encode(path))
+      home_beta_path(path: URI.encode_www_form_component(path))
+      #home_beta_path(path: URI.encode(path))
     else
       path
     end
