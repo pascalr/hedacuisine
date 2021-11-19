@@ -493,6 +493,9 @@ const Toolbar = ({ editor }) => {
 //        </button> 
 }
 
+export const registerEditor = (editor, field) => {
+}
+
 export const Tiptap = () => {
   const editor = useEditor({
     extensions: [Bold, Italic, Document, Paragraph, Strike, Text, CustomHeading,
@@ -501,6 +504,14 @@ export const Tiptap = () => {
     content: gon.recipe.text,
   })
 
+  // FIXME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+  // FIXME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+  // FIXME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+  // FIXME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+  // Use registerEditor
+  // FIXME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+  // FIXME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+  // FIXME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
   var savedHTML = gon.recipe.text
   setInterval(function() {
     if (!editor) {return}

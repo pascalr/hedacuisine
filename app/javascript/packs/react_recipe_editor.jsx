@@ -13,7 +13,7 @@ import Button from '@mui/material/Button';
 import Quantity from 'models/quantity'
 import { Ingredient, Utils } from "recipe_utils"
 
-import { Tiptap, BubbleTiptap } from 'tiptap'
+import { Tiptap, BubbleTiptap, registerEditor } from 'tiptap'
 import '../styles/prose_mirror.scss'
 
 
