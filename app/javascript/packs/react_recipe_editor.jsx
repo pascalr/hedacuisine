@@ -16,212 +16,6 @@ import { Ingredient, Utils } from "recipe_utils"
 import { Tiptap } from 'tiptap'
 import '../styles/prose_mirror.scss'
 
-// TODO: Rename if this works with tokens too
-function findMatchingChar(str, start, ch, notCh) {
-  let depth = 0
-  for (let i = start; i < str.length; i++) {
-    if (str[i] == notCh) {
-      depth += 1
-    } else if (str[i] == ch) {
-      if (depth <= 0) {return i}
-      depth -= 1
-    }
-  }
-  console.log("Unable to find matching char "+ch)
-  console.log("Depth", depth)
-  throw 'Missing matching char!';
-}
-
-const TokenType = {
-  LINK: 1,
-}
-
-class Token {
-  constructor({value, type}) {
-    this.value = value
-    this.type = type
-  }
-}
-
-function tokenizeLine(line) {
-  let tokens = []
-  let str = ""
-  for (let i = 0; i < line.length; i++) {
-    // TODO: Clean this. Remove duplication...
-    if (line.charAt(i) == "[") {
-      if (str != '') {tokens.push(str); str = ''}
-      let endIndex = findMatchingChar(line, i+1, "]", "[")
-      tokens.push(line.slice(i,endIndex+1))
-      i = endIndex
-    } else if (line.charAt(i) == "<") {
-      if (str != '') {tokens.push(str); str = ''}
-        let endIndex = findMatchingChar(line, i+1, ">", "<")
-      tokens.push(line.slice(i,endIndex+1))
-      i = endIndex
-    } else if (line.charAt(i) == "{") {
-      if (str != '') {tokens.push(str); str = ''}
-        let endIndex = findMatchingChar(line, i+1, "}", "{")
-      tokens.push(line.slice(i,endIndex+1))
-      i = endIndex
-    } else {
-      str += line.charAt(i)
-    }
-  }
-  if (str != '') {tokens.push(str); str = ''}
-  return tokens
-}
-
-// link syntaxes:
-// [note: 1]
-// [link_note: 1]
-// [recipe: 100]
-// [food: 100]
-// [url: "http://www.hedacuisine.com/"]
-// [label: "home", url: "http://www.hedacuisine.com/"]
-function replaceLink(token) {
-
-  let args = {}
-  // FIXME: Don't split in semicolon inside a string
-  token.slice(1, -1).split(";").forEach(a => {
-    let s = a.split(":", 2)
-    if (s[1]) {args[s[0].trim()] = s[1].trim()}
-  })
-  if (args.note) {
-    //return `<span id="note-${args.note}">[{args.note}]</span>`
-    return <span id={"note-"+args.note}>[{args.note}]</span>
-  } else if (args.link_note) {
-    return <a href={"#note-"+args.link_note}>{args.label || "["+args.link_note+"]"}</a>
-  }
-  console.log("Oups, this kind of link is not yet supported!", args)
-  return token
-}
-
-function replaceIngredients(token) {
-
-  // FFFFFFFFUUUUUUUUUUUUUUUUUUCCCCCCCCCCCCCCCKKKKKKKKKKKKKKKKKKKKKKKKKKKKK Les ingrédients doivent être une liste... pas un hash map... parce que l'ordre des ingrédients est important...
-  //let q = token.slice(1, -1)
-  //if (parseInt(q) == q) {
-  //  let ing = gon.recipe.ingredients[parseInt(q)]
-  //  return <a href={ing.id}>{ing.food.name}</a>
-  //} else {
-    return token
-  //}
-}
-
-function processTokens(tokens) {
-  let processed = []
-  for (let i = 0; i < tokens.length; i++) {
-    let token = tokens[i]
-    if (token.startsWith("[")) {
-      processed.push(replaceLink(token))
-    } else if (token.startsWith("{")) {
-      processed.push(replaceIngredients(token))
-    } else if (token.startsWith("<")) {
-      let tag = token.slice(1,-1)
-      let endIndex = findMatchingChar(tokens, i+1, `</${tag}>`, `<${tag}>`)
-      processed.push(<sup>{processTokens(tokens.slice(i+1,endIndex))}</sup>)
-      i = endIndex
-    } else {
-      processed.push(token)
-    }
-  }
-
-  return processed
-}
-
-function processInstructionText(text) {
-  let tokens = tokenizeLine(text)
-  return processTokens(tokens)
-}
-
-const RecipePreview = ({instructions}) => {
-
-  if (!instructions) {return null}
-
-  let stepNb = 1
-  let ings = []
-  let lines = null
-  try {
-
-    lines = instructions.split('\n').map((raw, i) => {
-      let line = raw.trim()
-      if (line.startsWith("/")) {
-        return <p key={i}><i>{processInstructionText(line.slice(1).trim())}</i></p>
-      } else if (line.startsWith("$$$")) {
-        return <h5>{line.slice(1).trim()}</h5>
-      } else if (line.startsWith("$$")) {
-        return <h4>{line.slice(1).trim()}</h4>
-      } else if (line.startsWith("$")) {
-        return <h3>{line.slice(1).trim()}</h3>
-      } else if (line.startsWith("-")) {
-        ings.push(new Ingredient({raw: line.slice(1).trim()}))
-      } else if (line.startsWith("#")) {
-        return <div key={i}><span className="step-number">{stepNb}</span>{' '}{processInstructionText(line.slice(1).trim())}</div>
-        stepNb += 1
-      } else {
-        return <p key={i}>{processInstructionText(line)}</p>
-      }
-    })
-    for(var i = 0;i < lines.length;i++){
-        //code here using lines[i] which will give you each line
-    }
-  } catch (e) {
-    console.error(e);
-    return <Block color="red">Syntax error</Block>
-  }
-
-  return (<>
-    <h2>Ingrédients</h2>
-      <ul className="list-group" style={{maxWidth: "800px"}}>
-        {ings.map(ing => (
-          <li className="list-group-item" >
-            {ing.detailed()}
-          </li>
-        ))}
-      </ul>
-    <h2>Instructions</h2>
-    <div>
-      {lines}
-    </div>
-    <h2>Outils</h2>
-    <h2>Informations</h2>
-    <h2>Références</h2>
-  </>)
-}
-
-const InstructionsPreview = ({instructions}) => {
-
-  if (!instructions) {return null}
-
-  let stepNb = 1
-
-  let lines = instructions.split('\n').map((raw, i) => {
-    let line = raw.trim()
-    if (line.startsWith("/")) {
-      return <p key={i}><i>{processInstructionText(line.slice(1).trim())}</i></p>
-    } else if (line.startsWith("$$$")) {
-      return <h5>{line.slice(1).trim()}</h5>
-    } else if (line.startsWith("$$")) {
-      return <h4>{line.slice(1).trim()}</h4>
-    } else if (line.startsWith("$")) {
-      return <h3>{line.slice(1).trim()}</h3>
-    } else if (line.startsWith("#")) {
-      return <div key={i}><span className="step-number">{stepNb}</span>{' '}{processInstructionText(line.slice(1).trim())}</div>
-      stepNb += 1
-    } else {
-      return <p key={i}>{processInstructionText(line)}</p>
-    }
-  })
-  for(var i = 0;i < lines.length;i++){
-      //code here using lines[i] which will give you each line
-  }
-
-  return (<>
-    <div>
-      {lines}
-    </div>
-  </>)
-}
 
 function updateIngQuantityCallback() {
 }
@@ -739,3 +533,211 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 })
+
+
+//// TODO: Rename if this works with tokens too
+//function findMatchingChar(str, start, ch, notCh) {
+//  let depth = 0
+//  for (let i = start; i < str.length; i++) {
+//    if (str[i] == notCh) {
+//      depth += 1
+//    } else if (str[i] == ch) {
+//      if (depth <= 0) {return i}
+//      depth -= 1
+//    }
+//  }
+//  console.log("Unable to find matching char "+ch)
+//  console.log("Depth", depth)
+//  throw 'Missing matching char!';
+//}
+//
+//const TokenType = {
+//  LINK: 1,
+//}
+//
+//class Token {
+//  constructor({value, type}) {
+//    this.value = value
+//    this.type = type
+//  }
+//}
+//
+//function tokenizeLine(line) {
+//  let tokens = []
+//  let str = ""
+//  for (let i = 0; i < line.length; i++) {
+//    // TODO: Clean this. Remove duplication...
+//    if (line.charAt(i) == "[") {
+//      if (str != '') {tokens.push(str); str = ''}
+//      let endIndex = findMatchingChar(line, i+1, "]", "[")
+//      tokens.push(line.slice(i,endIndex+1))
+//      i = endIndex
+//    } else if (line.charAt(i) == "<") {
+//      if (str != '') {tokens.push(str); str = ''}
+//        let endIndex = findMatchingChar(line, i+1, ">", "<")
+//      tokens.push(line.slice(i,endIndex+1))
+//      i = endIndex
+//    } else if (line.charAt(i) == "{") {
+//      if (str != '') {tokens.push(str); str = ''}
+//        let endIndex = findMatchingChar(line, i+1, "}", "{")
+//      tokens.push(line.slice(i,endIndex+1))
+//      i = endIndex
+//    } else {
+//      str += line.charAt(i)
+//    }
+//  }
+//  if (str != '') {tokens.push(str); str = ''}
+//  return tokens
+//}
+//
+//// link syntaxes:
+//// [note: 1]
+//// [link_note: 1]
+//// [recipe: 100]
+//// [food: 100]
+//// [url: "http://www.hedacuisine.com/"]
+//// [label: "home", url: "http://www.hedacuisine.com/"]
+//function replaceLink(token) {
+//
+//  let args = {}
+//  // FIXME: Don't split in semicolon inside a string
+//  token.slice(1, -1).split(";").forEach(a => {
+//    let s = a.split(":", 2)
+//    if (s[1]) {args[s[0].trim()] = s[1].trim()}
+//  })
+//  if (args.note) {
+//    //return `<span id="note-${args.note}">[{args.note}]</span>`
+//    return <span id={"note-"+args.note}>[{args.note}]</span>
+//  } else if (args.link_note) {
+//    return <a href={"#note-"+args.link_note}>{args.label || "["+args.link_note+"]"}</a>
+//  }
+//  console.log("Oups, this kind of link is not yet supported!", args)
+//  return token
+//}
+//
+//function replaceIngredients(token) {
+//
+//  // FFFFFFFFUUUUUUUUUUUUUUUUUUCCCCCCCCCCCCCCCKKKKKKKKKKKKKKKKKKKKKKKKKKKKK Les ingrédients doivent être une liste... pas un hash map... parce que l'ordre des ingrédients est important...
+//  //let q = token.slice(1, -1)
+//  //if (parseInt(q) == q) {
+//  //  let ing = gon.recipe.ingredients[parseInt(q)]
+//  //  return <a href={ing.id}>{ing.food.name}</a>
+//  //} else {
+//    return token
+//  //}
+//}
+//
+//function processTokens(tokens) {
+//  let processed = []
+//  for (let i = 0; i < tokens.length; i++) {
+//    let token = tokens[i]
+//    if (token.startsWith("[")) {
+//      processed.push(replaceLink(token))
+//    } else if (token.startsWith("{")) {
+//      processed.push(replaceIngredients(token))
+//    } else if (token.startsWith("<")) {
+//      let tag = token.slice(1,-1)
+//      let endIndex = findMatchingChar(tokens, i+1, `</${tag}>`, `<${tag}>`)
+//      processed.push(<sup>{processTokens(tokens.slice(i+1,endIndex))}</sup>)
+//      i = endIndex
+//    } else {
+//      processed.push(token)
+//    }
+//  }
+//
+//  return processed
+//}
+//
+//function processInstructionText(text) {
+//  let tokens = tokenizeLine(text)
+//  return processTokens(tokens)
+//}
+//
+//const RecipePreview = ({instructions}) => {
+//
+//  if (!instructions) {return null}
+//
+//  let stepNb = 1
+//  let ings = []
+//  let lines = null
+//  try {
+//
+//    lines = instructions.split('\n').map((raw, i) => {
+//      let line = raw.trim()
+//      if (line.startsWith("/")) {
+//        return <p key={i}><i>{processInstructionText(line.slice(1).trim())}</i></p>
+//      } else if (line.startsWith("$$$")) {
+//        return <h5>{line.slice(1).trim()}</h5>
+//      } else if (line.startsWith("$$")) {
+//        return <h4>{line.slice(1).trim()}</h4>
+//      } else if (line.startsWith("$")) {
+//        return <h3>{line.slice(1).trim()}</h3>
+//      } else if (line.startsWith("-")) {
+//        ings.push(new Ingredient({raw: line.slice(1).trim()}))
+//      } else if (line.startsWith("#")) {
+//        return <div key={i}><span className="step-number">{stepNb}</span>{' '}{processInstructionText(line.slice(1).trim())}</div>
+//        stepNb += 1
+//      } else {
+//        return <p key={i}>{processInstructionText(line)}</p>
+//      }
+//    })
+//    for(var i = 0;i < lines.length;i++){
+//        //code here using lines[i] which will give you each line
+//    }
+//  } catch (e) {
+//    console.error(e);
+//    return <Block color="red">Syntax error</Block>
+//  }
+//
+//  return (<>
+//    <h2>Ingrédients</h2>
+//      <ul className="list-group" style={{maxWidth: "800px"}}>
+//        {ings.map(ing => (
+//          <li className="list-group-item" >
+//            {ing.detailed()}
+//          </li>
+//        ))}
+//      </ul>
+//    <h2>Instructions</h2>
+//    <div>
+//      {lines}
+//    </div>
+//    <h2>Outils</h2>
+//    <h2>Informations</h2>
+//    <h2>Références</h2>
+//  </>)
+//}
+//
+//const InstructionsPreview = ({instructions}) => {
+//
+//  if (!instructions) {return null}
+//
+//  let stepNb = 1
+//
+//  let lines = instructions.split('\n').map((raw, i) => {
+//    let line = raw.trim()
+//    if (line.startsWith("/")) {
+//      return <p key={i}><i>{processInstructionText(line.slice(1).trim())}</i></p>
+//    } else if (line.startsWith("$$$")) {
+//      return <h5>{line.slice(1).trim()}</h5>
+//    } else if (line.startsWith("$$")) {
+//      return <h4>{line.slice(1).trim()}</h4>
+//    } else if (line.startsWith("$")) {
+//      return <h3>{line.slice(1).trim()}</h3>
+//    } else if (line.startsWith("#")) {
+//      return <div key={i}><span className="step-number">{stepNb}</span>{' '}{processInstructionText(line.slice(1).trim())}</div>
+//      stepNb += 1
+//    } else {
+//      return <p key={i}>{processInstructionText(line)}</p>
+//    }
+//  })
+//  for(var i = 0;i < lines.length;i++){
+//      //code here using lines[i] which will give you each line
+//  }
+//
+//  return (<>
+//    <div>
+//      {lines}
+//    </div>
+//  </>)
+//}
