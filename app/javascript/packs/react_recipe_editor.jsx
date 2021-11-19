@@ -262,6 +262,46 @@ const InstructionsShortcuts = props => (
   </>
 )
 
+const NewNoteInputField = props => {
+
+  const [value, setValue] = useState('')
+  const [newlyAdded, setNewlyAdded] = useState(true);
+
+  const contentInputField = useRef(null);
+
+  useEffect(() => {
+    if (newlyAdded) {
+      contentInputField.current.focus()
+      setNewlyAdded(false)
+    }
+  }, [newlyAdded]);
+
+  const inputFieldProps = {
+    placeholder: 'Sélectionner un aliment',
+    value,
+    onChange: (e, {newValue}) => setValue(newValue),
+    //ref: foodInputField,
+  };
+
+  //const addNote = () => {
+  //  let data = new FormData()
+  //  data.append('recipe_ingredient[raw]', qty)
+  //  data.append('recipe_ingredient[food_id]', suggestion.id)
+  //  Rails.ajax({url: gon.recipe.new_ingredient_url, type: 'POST', data: data, success: (raw) => {
+  //    const response = JSON.parse(raw)
+  //    //gon.recipe.ingredients.push({url: response.url, food: {name: response.food_name, url: response.food_url}})
+  //    gon.recipe.ingredients[response.id] = response
+  //    window.recipe_editor.current.addIng(response.id)
+  //    setValue(''); setQty('');
+  //    quantityInputField.current.focus()
+  //  }})
+  //}
+
+        //<Tiptap/>
+  return (<div>TODO</div>
+  )
+}
+
 const NewIngInputField = props => {
 
   const [value, setValue] = useState('')
@@ -626,7 +666,11 @@ class RecipeEditor extends React.Component {
         <InstructionsShortcuts/>
         
         <h3>Notes</h3>
-        {NoteList}
+        <Toggleable style={{float: "left"}}>
+          <NewNoteInputField/>
+          <img src="/icons/plus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}}/>
+          <img src="/icons/minus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}}/>
+        </Toggleable>
         
         <h2>Outils</h2>
         <ul style={{fontSize: "1.1rem"}}>
