@@ -528,6 +528,20 @@ const CollectionSelect = ({model, field, options, showOption, includeBlank}) => 
   )
 }
 
+const Toggleable = ({children, ...props}) => {
+  const [showToggled, setShowToggled] = useState(false)
+
+  if (children.length <= 1) {throw "Toggleable requires 2 or 3 children. The first is the toggled. The second is the toggler. The third, if present, is the toggler active."}
+
+  // TODO: Allow to be a div or link instead of a button? Who cares for now.
+  return (<div {...props}>
+    {showToggled ? children[0] : null}
+    <button className="plain-btn" onClick={() => setShowToggled(!showToggled)}>
+      {!showToggled ? children[1] : (children.length >= 2 ? children[2] : children[1])}
+    </button>
+  </div>)
+}
+
 class RecipeEditor extends React.Component {
   
   constructor(props) {
@@ -585,38 +599,39 @@ class RecipeEditor extends React.Component {
 
   render() {
 
-    const Ingredients = this.state.ingIds.map((id, index) =>
-      <Draggable key={id} draggableId={id.toString()} index={index}>
-        {(provided) => (
-          <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
-            <li className="list-group-item">
-              {<EditableIngredient objId={id} position={index+1}/>}
-            </li>
-          </div>
-        )}
-      </Draggable>
-    )
-
-    const NewIng = !this.state.showAddNewIng ? null : (
-      <li key={99999} className="list-group-item" style={{height: "37.2px"}}>
-        <NewIngInputField/>
-      </li>
-    )
-
     const IngredientList = 
       <ul className="list-group" style={{maxWidth: "800px"}}>
         <DragDropContext onDragEnd={this.handleDropIng}>
           <Droppable droppableId="list-container">
             {(provided) => (
               <div className="list-container" {...provided.droppableProps} ref={provided.innerRef}>
-                {Ingredients}
+                {this.state.ingIds.map((id, index) =>
+                  <Draggable key={id} draggableId={id.toString()} index={index}>
+                    {(provided) => (
+                      <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
+                        <li className="list-group-item">
+                          {<EditableIngredient objId={id} position={index+1}/>}
+                        </li>
+                      </div>
+                    )}
+                  </Draggable>
+                )}
                 {provided.placeholder}
               </div>
             )}
           </Droppable>
         </DragDropContext>
-        {NewIng}
+        <Toggleable style={{float: "left"}}>
+          <li key={99999} className="list-group-item" style={{height: "37.2px"}}>
+            <NewIngInputField/>
+          </li>
+          <img src="/icons/plus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}}/>
+          <img src="/icons/minus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}}/>
+        </Toggleable>
       </ul>
+
+
+    const NoteList = null//<ModelList newComponent={<NewNoteInputField/>} />
 
     const Tools = this.state.toolIds.map(id => (
       <li key={id}>
@@ -638,15 +653,13 @@ class RecipeEditor extends React.Component {
 
         <h2>Ingrédients</h2>
         {IngredientList}
-        <img src={this.state.showAddNewIng ? "/icons/minus-circle.svg" : "/icons/plus-circle.svg"} style={{width: "2.5rem", padding: "0.5rem"}}
-             onClick={() => this.setState({showAddNewIng: !this.state.showAddNewIng})} />
       
         <h2>Instructions</h2>
         <Tiptap/>
         <InstructionsShortcuts/>
-      </div>
         
-      <div className="recipe-body">
+        <h3>Notes</h3>
+        {NoteList}
         
         <h2>Outils</h2>
         <ul style={{fontSize: "1.1rem"}}>

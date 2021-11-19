@@ -106,6 +106,9 @@ Rails.application.routes.draw do
     resources :foods, param: 'slug'
     resources :recipes, param: 'slug' do
       
+      resources :recipe_notes, only: [:create, :update, :destroy] do
+        patch :move
+      end
       resources :recipe_ingredients, only: [:create, :update, :destroy] do
         patch :move
       end
