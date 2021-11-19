@@ -86,7 +86,10 @@ span[data-ingredient] {
   font-style: italic;
 }
 
-.toolbar {
+.tippy-content {
+  background-color: white;
+}
+.toolbar, .tippy-content {
 
   border: 1px solid #bbb;
 

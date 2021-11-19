@@ -13,7 +13,7 @@ import Button from '@mui/material/Button';
 import Quantity from 'models/quantity'
 import { Ingredient, Utils } from "recipe_utils"
 
-import { Tiptap } from 'tiptap'
+import { Tiptap, BubbleTiptap } from 'tiptap'
 import '../styles/prose_mirror.scss'
 
 
@@ -59,23 +59,16 @@ const InstructionsShortcuts = props => (
 const NewNoteInputField = props => {
 
   const [value, setValue] = useState('')
-  const [newlyAdded, setNewlyAdded] = useState(true);
+  //const [newlyAdded, setNewlyAdded] = useState(true);
 
-  const contentInputField = useRef(null);
+  //const contentInputField = useRef(null);
 
-  useEffect(() => {
-    if (newlyAdded) {
-      contentInputField.current.focus()
-      setNewlyAdded(false)
-    }
-  }, [newlyAdded]);
-
-  const inputFieldProps = {
-    placeholder: 'Sélectionner un aliment',
-    value,
-    onChange: (e, {newValue}) => setValue(newValue),
-    //ref: foodInputField,
-  };
+  //useEffect(() => {
+  //  if (newlyAdded && contentInputField.current) {
+  //    contentInputField.current.focus()
+  //    setNewlyAdded(false)
+  //  }
+  //}, [newlyAdded]);
 
   //const addNote = () => {
   //  let data = new FormData()
@@ -92,8 +85,7 @@ const NewNoteInputField = props => {
   //}
 
         //<Tiptap/>
-  return (<div>TODO</div>
-  )
+  return <BubbleTiptap/>
 }
 
 const NewIngInputField = props => {
@@ -460,8 +452,8 @@ class RecipeEditor extends React.Component {
         <InstructionsShortcuts/>
         
         <h3>Notes</h3>
-        <Toggleable style={{float: "left"}}>
-          <NewNoteInputField/>
+        <Toggleable>
+          <BubbleTiptap/>
           <img src="/icons/plus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}}/>
           <img src="/icons/minus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}}/>
         </Toggleable>
