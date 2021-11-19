@@ -500,7 +500,29 @@ export const Tiptap = () => {
     ],
     content: gon.recipe.text,
   })
-  window.tiptap_editor = editor
+
+  var savedHTML = gon.recipe.text
+  setInterval(function() {
+    if (!editor) {return}
+    let current = editor.getHTML()
+    if (current != savedHTML) {
+      console.log('Saving changes');
+
+      let data = new FormData()
+      data.append('recipe[text]', current)
+      Rails.ajax({url: gon.recipe.url, type: 'PATCH', data: data, success: () => {
+        savedHTML = current
+      }})
+    }
+  }, 5*1000);
+ 
+  // FIXME: This does not work with multiple editors...
+  // Check for unsaved data
+  window.onbeforeunload = function() {
+    if (editor && editor.getHTML() != savedHTML) {
+      return 'There are unsaved changes. Are you sure you want to leave?';
+    }
+  }
 
   return (
     <div>
@@ -510,18 +532,14 @@ export const Tiptap = () => {
   )
 }
 
-export const BubbleTiptap = () => {
+export const BubbleTiptap = ({content}) => {
 
   const width = 24
   const height = 24
 
   const editor = useEditor({
     extensions: [Bold, Italic, Strike, Document, History, Text, Paragraph, Link],
-    content: `
-      <p>
-        Hey, try to select some text here. There will popup a menu for selecting some inline styles. Remember: you have full control about content and styling of this menu.
-      </p>
-    `,
+    content: content,
   })
 
   return (

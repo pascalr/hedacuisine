@@ -339,13 +339,14 @@ class RecipeEditor extends React.Component {
   
   constructor(props) {
     super(props);
-    let ids = Object.values(gon.recipe.ingredients).sort((a,b) => a.item_nb - b.item_nb).map(ing => ing.id)
+    let ingIds = Object.values(gon.recipe.ingredients).sort((a,b) => a.item_nb - b.item_nb).map(ing => ing.id)
+    let noteIds = Object.values(gon.recipe.notes).sort((a,b) => a.item_nb - b.item_nb).map(ing => ing.id)
     this.state = {
       name: gon.recipe.name,
-      ingIds: ids,
+      ingIds: ingIds,
+      noteIds: noteIds,
       toolIds: Object.keys(gon.recipe.tools),
       instructionsSlave: gon.recipe.complete_instructions,
-      showAddNewIng: false,
     };
     this.handleDropIng = this.handleDropIng.bind(this);
     this.updateName = this.updateName.bind(this);
@@ -369,6 +370,12 @@ class RecipeEditor extends React.Component {
     let data = new FormData()
     data.append('recipe[name]', this.state.name)
     Rails.ajax({url: gon.recipe.url, type: 'PATCH', data: data})
+  }
+  
+  appendNote() {
+    let data = new FormData()
+    data.append('recipe_note[content]', '')
+    Rails.ajax({url: gon.recipe.new_note_url, type: 'POST', data: data})
   }
 
   handleDropIng(droppedItem) {
@@ -424,7 +431,14 @@ class RecipeEditor extends React.Component {
       </ul>
 
 
-    const NoteList = null//<ModelList newComponent={<NewNoteInputField/>} />
+    const NoteList = this.state.noteIds.map(id => (
+      <Row key={id} gap="5px" marginBottom="5px">
+        [{gon.recipe.notes[id].item_nb}]
+        <Block flexGrow="1">
+          <BubbleTiptap content={gon.recipe.notes[id].content}/>
+        </Block>
+      </Row>
+    ))
 
     const Tools = this.state.toolIds.map(id => (
       <li key={id}>
@@ -452,11 +466,10 @@ class RecipeEditor extends React.Component {
         <InstructionsShortcuts/>
         
         <h3>Notes</h3>
-        <Toggleable>
-          <BubbleTiptap/>
+        {NoteList}
+        <button type="button" className="plain-btn" onClick={() => this.appendNote()}>
           <img src="/icons/plus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}}/>
-          <img src="/icons/minus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}}/>
-        </Toggleable>
+        </button>
         
         <h2>Outils</h2>
         <ul style={{fontSize: "1.1rem"}}>
@@ -501,29 +514,6 @@ document.addEventListener('DOMContentLoaded', () => {
   window.recipe_editor = React.createRef()
   const root = document.getElementById('root')
   if (root) {ReactDOM.render(<RecipeEditor ref={window.recipe_editor}/>, root)}
-
-  var savedHTML = gon.recipe.text
-  setInterval(function() {
-    if (!window.tiptap_editor) {return}
-    let current = window.tiptap_editor.getHTML()
-    if (current != savedHTML) {
-      console.log('Saving changes');
-
-      let data = new FormData()
-      data.append('recipe[text]', current)
-      Rails.ajax({url: gon.recipe.url, type: 'PATCH', data: data, success: () => {
-        savedHTML = current
-      }})
-    }
-  }, 5*1000);
-  
-  // Check for unsaved data
-  window.onbeforeunload = function() {
-    if (window.tiptap_editor && window.tiptap_editor.getHTML() != savedHTML) {
-      return 'There are unsaved changes. Are you sure you want to leave?';
-    }
-  }
-
 })
 
 

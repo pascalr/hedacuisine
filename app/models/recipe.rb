@@ -56,6 +56,7 @@ class Recipe < ApplicationRecord
   has_many :user_recipes
 
   has_many :recipe_ingredients, dependent: :delete_all#, foreign_key: 'recipe_id'
+  has_many :recipe_notes, dependent: :delete_all#, foreign_key: 'recipe_id'
 
   before_save do
     instructions.try :gsub!, /[\u2018\u2019]/, "'"
@@ -258,4 +259,5 @@ class Recipe < ApplicationRecord
   #end
   
   alias ingredients recipe_ingredients
+  alias notes recipe_notes
 end
