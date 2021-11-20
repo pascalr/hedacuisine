@@ -13,7 +13,7 @@ import Button from '@mui/material/Button';
 import Quantity from 'models/quantity'
 import { Ingredient, Utils } from "recipe_utils"
 
-import { Tiptap, BubbleTiptap, registerEditor } from 'tiptap'
+import { Tiptap, BubbleTiptap, ModificationsHandler } from 'tiptap'
 import '../styles/prose_mirror.scss'
 
 
@@ -274,6 +274,7 @@ class Model {
     }
   }
 }
+//const RECIPE_MODEL = new Model("recipe")
 
 const TextInputField = ({model, field}) => {
   const [value, setValue] = useState(model.currentValue(field))
@@ -339,8 +340,8 @@ class RecipeEditor extends React.Component {
   
   constructor(props) {
     super(props);
-    let ingIds = Object.values(gon.recipe.ingredients).sort((a,b) => a.item_nb - b.item_nb).map(ing => ing.id)
-    let noteIds = Object.values(gon.recipe.notes).sort((a,b) => a.item_nb - b.item_nb).map(ing => ing.id)
+    let ingIds = gon.recipe.ingredients ? Object.values(gon.recipe.ingredients).sort((a,b) => a.item_nb - b.item_nb).map(ing => ing.id) : []
+    let noteIds = gon.recipe.notes ? Object.values(gon.recipe.notes).sort((a,b) => a.item_nb - b.item_nb).map(ing => ing.id) : []
     this.state = {
       name: gon.recipe.name,
       ingIds: ingIds,
@@ -431,14 +432,17 @@ class RecipeEditor extends React.Component {
       </ul>
 
 
-    const NoteList = this.state.noteIds.map(id => (
-      <Row key={id} gap="5px" marginBottom="5px">
-        [{gon.recipe.notes[id].item_nb}]
-        <Block flexGrow="1">
-          <BubbleTiptap content={gon.recipe.notes[id].content}/>
-        </Block>
-      </Row>
-    ))
+    const NoteList = this.state.noteIds.map(id => {
+      const note = gon.recipe.notes[id]
+      return (
+        <Row key={id} gap="5px" marginBottom="5px">
+          [{note.item_nb}]
+          <Block flexGrow="1">
+            <BubbleTiptap content={note.content} model="recipe_note" field="content" url={note.url}/>
+          </Block>
+        </Row>
+      )
+    })
 
     const Tools = this.state.toolIds.map(id => (
       <li key={id}>
@@ -462,7 +466,7 @@ class RecipeEditor extends React.Component {
         {IngredientList}
       
         <h2>Instructions</h2>
-        <Tiptap/>
+        <Tiptap model="recipe" field="text" url={gon.recipe.url}/>
         <InstructionsShortcuts/>
         
         <h3>Notes</h3>
@@ -513,6 +517,12 @@ class Partial extends React.Component {
 document.addEventListener('DOMContentLoaded', () => {
   window.recipe_editor = React.createRef()
   const root = document.getElementById('root')
+
+  const modHandler = new ModificationsHandler()
+  window.registerEditor = (editor, model, field, url) => {
+    modHandler.registerEditor(editor, model, field, url)
+  }
+
   if (root) {ReactDOM.render(<RecipeEditor ref={window.recipe_editor}/>, root)}
 })
 

@@ -416,9 +416,8 @@ const Toolbar = ({ editor }) => {
         </button> 
         <span className="dropdown">
           <button type="button" className="dropdown-toggle" id="ingDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" className="bi bi-egg-fried" viewBox="0 0 16 16">
-              <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-              <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+            <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-egg" viewBox="0 0 16 16">
+              <path d="M8 15a5 5 0 0 1-5-5c0-1.956.69-4.286 1.742-6.12.524-.913 1.112-1.658 1.704-2.164C7.044 1.206 7.572 1 8 1c.428 0 .956.206 1.554.716.592.506 1.18 1.251 1.704 2.164C12.31 5.714 13 8.044 13 10a5 5 0 0 1-5 5zm0 1a6 6 0 0 0 6-6c0-4.314-3-10-6-10S2 5.686 2 10a6 6 0 0 0 6 6z"/>
             </svg>
           </button>
           <ul className="dropdown-menu" aria-labelledby="ingDropdown">
@@ -428,12 +427,6 @@ const Toolbar = ({ editor }) => {
             })}
           </ul>
         </span>
-        <button>
-          <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-journals" viewBox="0 0 16 16">
-            <path d="M5 0h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2 2 2 0 0 1-2 2H3a2 2 0 0 1-2-2h1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1H1a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v9a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1H3a2 2 0 0 1 2-2z"/>
-            <path d="M1 6v-.5a.5.5 0 0 1 1 0V6h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V9h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 2.5v.5H.5a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1H2v-.5a.5.5 0 0 0-1 0z"/>
-          </svg>
-        </button> 
         <LinkButton editor={editor} width={width} height={height} />
       </Inline>
       <Inline padding="0 1em">
@@ -470,6 +463,10 @@ const Toolbar = ({ editor }) => {
       </button> 
     </div>
   )
+//            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" className="bi bi-egg-fried" viewBox="0 0 16 16">
+//              <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+//              <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+//            </svg>
   //<button onClick={() => editor.chain().focus().toggleUnderline().run()} className={editor.isActive('underline') ? 'is-active' : ''}>
   //  <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-type-underline" viewBox="0 0 16 16">
   //    <path d="M5.313 3.136h-1.23V9.54c0 2.105 1.47 3.623 3.917 3.623s3.917-1.518 3.917-3.623V3.136h-1.23v6.323c0 1.49-.978 2.57-2.687 2.57-1.709 0-2.687-1.08-2.687-2.57V3.136zM12.5 15h-9v-1h9v1z"/>
@@ -493,47 +490,15 @@ const Toolbar = ({ editor }) => {
 //        </button> 
 }
 
-export const registerEditor = (editor, field) => {
-}
-
-export const Tiptap = () => {
+export const Tiptap = ({model, field, url}) => {
   const editor = useEditor({
     extensions: [Bold, Italic, Document, Paragraph, Strike, Text, CustomHeading,
       History, IngredientNode, IngredientListNode, StepNode, Subscript, Superscript
     ],
-    content: gon.recipe.text,
+    content: gon[model][field],
   })
-
-  // FIXME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-  // FIXME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-  // FIXME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-  // FIXME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-  // Use registerEditor
-  // FIXME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-  // FIXME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-  // FIXME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-  var savedHTML = gon.recipe.text
-  setInterval(function() {
-    if (!editor) {return}
-    let current = editor.getHTML()
-    if (current != savedHTML) {
-      console.log('Saving changes');
-
-      let data = new FormData()
-      data.append('recipe[text]', current)
-      Rails.ajax({url: gon.recipe.url, type: 'PATCH', data: data, success: () => {
-        savedHTML = current
-      }})
-    }
-  }, 5*1000);
- 
-  // FIXME: This does not work with multiple editors...
-  // Check for unsaved data
-  window.onbeforeunload = function() {
-    if (editor && editor.getHTML() != savedHTML) {
-      return 'There are unsaved changes. Are you sure you want to leave?';
-    }
-  }
+  // Ugly to call this at every render, but I don't know where else to put it.
+  window.registerEditor(editor, model, field, url)
 
   return (
     <div>
@@ -543,7 +508,7 @@ export const Tiptap = () => {
   )
 }
 
-export const BubbleTiptap = ({content}) => {
+export const BubbleTiptap = ({content, model, field, url}) => {
 
   const width = 24
   const height = 24
@@ -552,6 +517,8 @@ export const BubbleTiptap = ({content}) => {
     extensions: [Bold, Italic, Strike, Document, History, Text, Paragraph, Link],
     content: content,
   })
+  // Ugly to call this at every render, but I don't know where else to put it.
+  window.registerEditor(editor, model, field, url)
 
   return (
     <>
@@ -564,4 +531,55 @@ export const BubbleTiptap = ({content}) => {
       <EditorContent editor={editor} />
     </>
   )
+}
+
+export class ModificationsHandler {
+  constructor() {
+    this.editors = new Set()
+    window.onbeforeunload = this.preventLeavingWithoutModifications
+  }
+
+  registerEditor(editor, model, field, url) {
+    if (!editor || this.editors.has(editor)) {return}
+    this.editors.add(editor)
+    editor.savedHTML = editor.getHTML()
+    editor.updateModel = model
+    editor.updateField = field
+    editor.updateUrl = url
+    editor.on('update', ({ editor }) => {
+      editor.isDirty = true
+    })
+    this.updateChecking()
+  }
+
+  updateChecking() {
+    let editors = this.editors
+    if (this.checkingFunction) {
+      clearInterval(this.checkingFunction)
+    }
+    this.checkingFunction = setInterval(function() {
+      //for (let editor of editors) {
+      for (let it = editors.values(), editor=null; editor=it.next().value; ) {
+        if (!editor.isDirty) {continue}
+        let current = editor.getHTML()
+        if (current != editor.savedHTML) {
+          console.log('Saving changes');
+
+          let data = new FormData()
+          data.append(`${editor.updateModel}[${editor.updateField}]`, current)
+          Rails.ajax({url: editor.updateUrl, type: 'PATCH', data: data, success: () => {
+            editor.savedHTML = current
+          }})
+        }
+      }
+    }, 5*1000);
+  }
+
+  preventLeavingWithoutModifications() {
+    for (let editor in this.editors) {
+      if (editor && editor.getHTML() != editor.savedHTML) {
+        return 'There are unsaved changes. Are you sure you want to leave?';
+      }
+    }
+  }
 }

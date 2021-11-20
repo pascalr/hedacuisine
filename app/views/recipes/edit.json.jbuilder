@@ -19,6 +19,7 @@ json.recipe do
         json.id note.id
         json.item_nb note.item_nb
         json.content note.content
+        json.url recipe_recipe_note_path(@recipe, note)
       end
     end
   end
