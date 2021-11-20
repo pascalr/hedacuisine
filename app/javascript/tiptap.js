@@ -30,6 +30,12 @@ import { Node as ProseMirrorNode } from 'prosemirror-model'
 import Quantity from 'models/quantity'
 import { Ingredient, Utils } from "recipe_utils"
 
+export const InlineDocument = Node.create({
+  name: 'inlinedoc',
+  topNode: true,
+  content: 'inline*',
+})
+
 // FIXME: This does not work... because is is not a block?
 //const CustomItalic = Italic.extend({
 //  addInputRules() {
@@ -98,6 +104,23 @@ const SuperscriptButton = ({editor, width, height}) => (
     </svg>
   </button>
 )
+
+//const InlineBlockNode = Node.create({
+//  name: 'inlineblock',
+//  priority: 1000,
+//  group: 'block',
+//  content: 'inline*',
+//
+//  parseHTML() {
+//    return [
+//      { tag: 'div' },
+//    ]
+//  },
+//
+//  renderHTML({ HTMLAttributes }) {
+//    return ['div', mergeAttributes(class, HTMLAttributes), 0]
+//  },
+//})
 
 function parseItemNbOrRaw(raw) {
 }
@@ -520,7 +543,7 @@ export const BubbleTiptap = ({content, model, field, url}) => {
   const height = 24
 
   const editor = useEditor({
-    extensions: [Bold, Italic, Strike, Document, History, Text, Paragraph, Link],
+    extensions: [Bold, Italic, Strike, InlineDocument, History, Text, Link],
     content: content,
   })
   // Ugly to call this at every render, but I don't know where else to put it.
