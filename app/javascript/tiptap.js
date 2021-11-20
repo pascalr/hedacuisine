@@ -393,7 +393,7 @@ const Toolbar = ({ editor }) => {
 
   return (
     <div className="toolbar" style={{display: "flex"}}>
-      <Inline padding="0 1em">
+      <Inline padding="0 1.5em">
         <select value={selectedHeader} onChange={(e) => {
           let val = parseInt(e.target.value)
           if (!val) {
@@ -408,7 +408,7 @@ const Toolbar = ({ editor }) => {
           <option value="0">Normal</option>
         </select>
       </Inline>
-      <Inline padding="0 1em">
+      <Inline padding="0 1.5em">
         <button onClick={() => editor.chain().focus().toggleStep().run()} className={editor.isActive('step') ? 'is-active' : ''}>
           <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-hash" viewBox="0 0 16 16">
             <path d="M8.39 12.648a1.32 1.32 0 0 0-.015.18c0 .305.21.508.5.508.266 0 .492-.172.555-.477l.554-2.703h1.204c.421 0 .617-.234.617-.547 0-.312-.188-.53-.617-.53h-.985l.516-2.524h1.265c.43 0 .618-.227.618-.547 0-.313-.188-.524-.618-.524h-1.046l.476-2.304a1.06 1.06 0 0 0 .016-.164.51.51 0 0 0-.516-.516.54.54 0 0 0-.539.43l-.523 2.554H7.617l.477-2.304c.008-.04.015-.118.015-.164a.512.512 0 0 0-.523-.516.539.539 0 0 0-.531.43L6.53 5.484H5.414c-.43 0-.617.22-.617.532 0 .312.187.539.617.539h.906l-.515 2.523H4.609c-.421 0-.609.219-.609.531 0 .313.188.547.61.547h.976l-.516 2.492c-.008.04-.015.125-.015.18 0 .305.21.508.5.508.265 0 .492-.172.554-.477l.555-2.703h2.242l-.515 2.492zm-1-6.109h2.266l-.515 2.563H6.859l.532-2.563z"/>
@@ -416,7 +416,7 @@ const Toolbar = ({ editor }) => {
         </button> 
         <span className="dropdown">
           <button type="button" className="dropdown-toggle" id="ingDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-            <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-egg" viewBox="0 0 16 16">
+            <svg xmlns="http://www.w3.org/2000/svg" width={width-4} height={height-4} fill="currentColor" className="bi bi-egg" viewBox="0 0 16 16">
               <path d="M8 15a5 5 0 0 1-5-5c0-1.956.69-4.286 1.742-6.12.524-.913 1.112-1.658 1.704-2.164C7.044 1.206 7.572 1 8 1c.428 0 .956.206 1.554.716.592.506 1.18 1.251 1.704 2.164C12.31 5.714 13 8.044 13 10a5 5 0 0 1-5 5zm0 1a6 6 0 0 0 6-6c0-4.314-3-10-6-10S2 5.686 2 10a6 6 0 0 0 6 6z"/>
             </svg>
           </button>
@@ -429,7 +429,7 @@ const Toolbar = ({ editor }) => {
         </span>
         <LinkButton editor={editor} width={width} height={height} />
       </Inline>
-      <Inline padding="0 1em">
+      <Inline padding="0 1.5em">
         <BoldButton editor={editor} width={width} height={height} />
         <ItalicButton editor={editor} width={width} height={height} />
         <StrikeButton editor={editor} width={width} height={height} />
@@ -446,7 +446,7 @@ const Toolbar = ({ editor }) => {
           </svg>
         </button> 
       </Inline>
-      <Inline padding="0 1em">
+      <Inline padding="0 1.5em">
         <button onClick={() => {let html = editor.getHTML(); console.log(html); alert(html)}}>
           <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-eye" viewBox="0 0 16 16">
             <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
