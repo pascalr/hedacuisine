@@ -174,10 +174,32 @@ const EditableIngredientComment = (props) => {
   }
 }
 
-const EditableIngredient = (props) => {
+const DeleteConfirmButton = ({id, onDeleteConfirm}) => {
 
   // For popover. See https://mui.com/components/popover/
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  return (<>
+    <button type="button" aria-describedby={`delete-popover-${id}`} className="plain-btn" onClick={(evt) => setAnchorEl(evt.currentTarget)}>
+      <img src="/icons/x-lg.svg"/>
+    </button>
+    <Popover
+      id={`delete-popover-${id}`}
+      open={anchorEl != null}
+      anchorEl={anchorEl}
+      onClose={() => setAnchorEl(null)}
+      anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
+      transformOrigin={{vertical: 'bottom', horizontal: 'right'}}
+    >
+      <Typography sx={{ p: 2 }}>
+        Je veux enlever cet ingrédient?
+        <button type="button" className="btn btn-primary" style={{marginLeft: "10px"}} onClick={onDeleteConfirm}>Oui</button>
+      </Typography>
+    </Popover>
+  </>)
+}
+
+const EditableIngredient = (props) => {
 
   const ing = gon.recipe.ingredients[props.objId]
   if (ing == null) {return null;}
@@ -197,22 +219,7 @@ const EditableIngredient = (props) => {
       <a href={ing.food.url}>{ing.food.name}</a>
       <EditableIngredientComment ingUrl={ing.url} comment={ing.comment} />
       <Block flexGrow="1" />
-      <button type="button" aria-describedby={'delete-popover'} className="btn-image" onClick={(evt) => setAnchorEl(evt.currentTarget)}>
-        <img src="/icons/x-lg.svg"/>
-      </button>
-      <Popover
-        id='delete-popover'
-        open={anchorEl != null}
-        anchorEl={anchorEl}
-        onClose={() => setAnchorEl(null)}
-        anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
-        transformOrigin={{vertical: 'bottom', horizontal: 'right'}}
-      >
-        <Typography sx={{ p: 2 }}>
-          Je veux enlever cet ingrédient?
-          <button type="button" className="btn btn-primary" style={{marginLeft: "10px"}} onClick={removeIngredient}>Oui</button>
-        </Typography>
-      </Popover>
+      <DeleteConfirmButton id={`ing-${ing.id}`} onDeleteConfirm={removeIngredient} />
     </Row>
   )
   //<a href={ing.url} data-confirm="Are you sure?" data-method="delete"><img src="/icons/x-lg.svg" style={{float: "right"}}/></a>
@@ -405,15 +412,24 @@ class RecipeEditor extends React.Component {
         </Toggleable>
       </ul>
 
-
     const NoteList = this.state.noteIds.map(id => {
       const note = gon.recipe.notes[id]
+
+      const removeNote = (evt) => {
+        Rails.ajax({url: note.url, type: 'DELETE', success: (raw) => {
+          let ids = this.state.noteIds.filter(item => item != ing.id)
+          this.setState({ingIds: ids})
+          delete gon.recipe.notes[ing.id]
+        }})
+      }
+
       return (
         <Row key={id} gap="5px" marginBottom="5px">
           [{note.item_nb}]
           <Block flexGrow="1">
             <BubbleTiptap content={note.content} model="recipe_note" field="content" url={note.url}/>
           </Block>
+          <DeleteConfirmButton id={`note-${note.id}`} onDeleteConfirm={removeNote} />
         </Row>
       )
     })
