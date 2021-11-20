@@ -25,6 +25,7 @@ import Subscript from '@tiptap/extension-subscript'
 import Superscript from '@tiptap/extension-superscript'
 import { Node, mergeAttributes, nodeInputRule, textblockTypeInputRule } from '@tiptap/core'
 import { Node as ProseMirrorNode } from 'prosemirror-model'
+//import { Plugin, PluginKey } from 'prosemirror-state'
 
 // MINE
 import Quantity from 'models/quantity'
@@ -57,6 +58,171 @@ const CustomHeading = Heading.extend({
       })
     })
   },
+})
+
+export const CustomLink = Node.create({
+  name: 'link',
+  priority: 1000,
+  group: 'inline',
+  inline: true,
+  selectable: false,
+
+  addOptions() {
+    return {
+      HTMLAttributes: {
+        target: '_blank',
+        rel: 'noopener noreferrer nofollow',
+      },
+    }
+  },
+
+  addAttributes() {
+    return {
+      href: {
+        default: null,
+      },
+      linkRaw: {
+        default: null,
+        parseHTML: element => element.getAttribute('data-link-raw'),
+        renderHTML: attributes => {
+          if (attributes.linkRaw == null) {return {}}
+          return {'data-link-raw': attributes.linkRaw}
+        },
+      },
+      target: {
+        default: this.options.HTMLAttributes.target,
+      },
+    }
+  },
+
+  parseHTML() {
+    return [
+      { tag: 'a[data-link-raw]' },
+    ]
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    console.log('CustomLink.renderHTML', HTMLAttributes)
+    let r = ''
+    const raw = HTMLAttributes['data-link-raw']
+    if (raw.startsWith("note:")) {
+      const nb = parseInt(raw.slice(5).trim())
+      const note = Object.values(gon.recipe.notes).find(note => note.item_nb == nb)
+      if (note) {
+        r = ['sup', {}, `[${note.item_nb}]`]
+      } else {
+        alert('TMP: FIXME: Could not find note!')
+      }
+    }
+    return ['a', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), r]
+  },
+
+  addCommands() {
+    return {
+      insertLink: (raw) => ({ commands }) => {
+        console.log("insertLink")
+        return commands.insertContent(`<a data-link-raw="${raw}"></a>`)
+      },
+    }
+  },
+
+  //addCommands() {
+  //  return {
+  //    setLink: attributes => ({ commands }) => {
+  //      return commands.setMark('link', attributes)
+  //    },
+  //    toggleLink: attributes => ({ commands }) => {
+  //      return commands.toggleMark('link', attributes, { extendEmptyMarkRange: true })
+  //    },
+  //    unsetLink: () => ({ commands }) => {
+  //      return commands.unsetMark('link', { extendEmptyMarkRange: true })
+  //    },
+  //  }
+  //},
+
+  //addPasteRules() {
+  //  return [
+  //    markPasteRule({
+  //      find: text => find(text)
+  //        .filter(link => link.isLink)
+  //        .map(link => ({
+  //          text: link.value,
+  //          index: link.start,
+  //          data: link,
+  //        })),
+  //      type: this.type,
+  //      getAttributes: match => ({
+  //        href: match.data?.href,
+  //      }),
+  //    }),
+  //  ]
+  //},
+
+  //addProseMirrorPlugins() {
+  //  const plugins = []
+
+  //  if (this.options.openOnClick) {
+  //    plugins.push(
+  //      new Plugin({
+  //        key: new PluginKey('handleClickLink'),
+  //        props: {
+  //          handleClick: (view, pos, event) => {
+  //            const attrs = this.editor.getAttributes('link')
+  //            const link = (event.target as HTMLElement)?.closest('a')
+
+  //            if (link && attrs.href) {
+  //              window.open(attrs.href, attrs.target)
+
+  //              return true
+  //            }
+
+  //            return false
+  //          },
+  //        },
+  //      }),
+  //    )
+  //  }
+
+  //  if (this.options.linkOnPaste) {
+  //    plugins.push(
+  //      new Plugin({
+  //        key: new PluginKey('handlePasteLink'),
+  //        props: {
+  //          handlePaste: (view, event, slice) => {
+  //            const { state } = view
+  //            const { selection } = state
+  //            const { empty } = selection
+
+  //            if (empty) {
+  //              return false
+  //            }
+
+  //            let textContent = ''
+
+  //            slice.content.forEach(node => {
+  //              textContent += node.textContent
+  //            })
+
+  //            const link = find(textContent)
+  //              .find(item => item.isLink && item.value === textContent)
+
+  //            if (!textContent || !link) {
+  //              return false
+  //            }
+
+  //            this.editor.commands.setMark(this.type, {
+  //              href: link.href,
+  //            })
+
+  //            return true
+  //          },
+  //        },
+  //      }),
+  //    )
+  //  }
+
+  //  return plugins
+  //},
 })
         
 const BoldButton = ({editor, width, height}) => (
@@ -94,7 +260,8 @@ const LinkButton = ({editor, width, height}) => (
         <ul className="dropdown-menu dropdown-submenu">
           {Object.values(gon.recipe.notes).map(note => (
             <li key={note.id}>
-              <a className="dropdown-item" href="#">[{note.item_nb}] {Utils.stringSnippet(Utils.stripHtml(note.content))}</a>
+              <a className="dropdown-item" onClick={() => editor.chain().focus().insertLink(`note:${note.item_nb}`).run()}>[{note.item_nb}] {Utils.stringSnippet(Utils.stripHtml(note.content))}</a>
+
             </li>
           ))}
         </ul>
@@ -283,8 +450,8 @@ const IngredientNode = Node.create({
   addCommands() {
     //.insertContent('Example Text')
     return {
-      setIngredient: (ingId) => ({ commands }) => {
-        console.log("setIngredient")
+      insertIngredient: (ingId) => ({ commands }) => {
+        console.log("insertIngredient")
         return commands.insertContent(`<span data-ingredient="${ingId}"/>`)
         //return commands.setNode('ingredient')
       },
@@ -477,7 +644,7 @@ const Toolbar = ({ editor }) => {
           <ul className="dropdown-menu" aria-labelledby="ingDropdown">
             {Object.values(gon.recipe.ingredients).map(ing => {
               let text = Utils.prettyQuantityFor(ing.raw, ing.food.name)
-              return <li key={ing.id}><a className="dropdown-item" style={{cursor: 'pointer'}} onClick={(evt) => editor.chain().focus().setIngredient(ing.item_nb).run()}>{text}<Inline color="#0d6efd">{ing.food.name}</Inline></a></li>
+              return <li key={ing.id}><a className="dropdown-item" style={{cursor: 'pointer'}} onClick={() => editor.chain().focus().insertIngredient(ing.item_nb).run()}>{text}<Inline color="#0d6efd">{ing.food.name}</Inline></a></li>
             })}
           </ul>
         </span>
@@ -536,8 +703,8 @@ const Toolbar = ({ editor }) => {
 
 export const Tiptap = ({model, field, url}) => {
   const editor = useEditor({
-    extensions: [Bold, Italic, Document, Paragraph, Strike, Text, CustomHeading,
-      History, IngredientNode, IngredientListNode, StepNode, Subscript, Superscript
+    extensions: [Bold, Italic, Document, Paragraph, Strike, Text, CustomHeading, CustomLink,
+      History, IngredientNode, IngredientListNode, StepNode, Subscript, Superscript,
     ],
     content: gon[model][field],
   })
@@ -558,7 +725,7 @@ export const BubbleTiptap = ({content, model, field, url}) => {
   const height = 24
 
   const editor = useEditor({
-    extensions: [Bold, Italic, Strike, InlineDocument, History, Text, Link],
+    extensions: [Bold, Italic, Strike, InlineDocument, History, Text, CustomLink],
     content: content,
   })
   // Ugly to call this at every render, but I don't know where else to put it.
