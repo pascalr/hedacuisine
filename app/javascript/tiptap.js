@@ -104,7 +104,7 @@ export const CustomLink = Node.create({
     return {
       insertLink: (raw) => ({ commands }) => {
         console.log("insertLink")
-        return commands.insertContent(`<div data-link-raw="${raw}"></div>`)
+        return commands.insertContent(`<span data-link-raw="${raw}"></span>`)
       },
     }
   },

@@ -137,13 +137,22 @@
   <%= pretty_instruction_text(recipe) %>
 </div>
 
+<% unless recipe.notes.blank? %>
+  <h3>Notes</h3>
+  <% recipe.notes.order(:item_nb).each do |note| %>
+    <div id="note-<%= note.item_nb %>" style="margin-bottom: 0.5em;">
+      [<%= note.item_nb %>] <%= my_sanitize(note.content) %>
+    </div>
+  <% end %>
+<% end %>
+
 <% unless recipe.references.blank? %> 
   <h2>Références</h2>
 
   <div style="font-size: 1.1rem; margin-left: 1em;">
     <% recipe.references.each_with_index do |ref, i| %>
       <div>
-        <%= i+1 %>.
+        <%= i+1+recipe.notes.size %>.
         <% if ref.url? %>
           <%= link_to ref.url, ref.url %>
         <% else %>
