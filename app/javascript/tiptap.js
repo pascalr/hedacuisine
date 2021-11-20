@@ -396,9 +396,9 @@ const IngredientNode = Node.create({
   renderHTML({ node, HTMLAttributes }) {
 
     const ingredient = HTMLAttributes['data-ingredient']
-    let children = []
     let text = null
     let food = null
+    let comment = null
     if (ingredient.startsWith("(")) {
       const raw = ingredient.slice(1,-1)
       const [qty, foodName] = Quantity.parseQuantityAndFoodName(raw)
@@ -409,10 +409,13 @@ const IngredientNode = Node.create({
       if (ing) {
         text = Utils.prettyQuantityFor(ing.raw, ing.food.name)
         food = ing.food
+        comment = ing.comment
       }
     }
+    let children = []
     if (text && text != '') {children.push(text)}
     if (food) { children.push(['a', {href: food.url}, food.name]) }
+    if (comment) { children.push(comment) }
     return ['span', HTMLAttributes, ...children]
   },
 
