@@ -5,7 +5,7 @@ class RecipeNotesController < ApplicationController
   def create
     note = @recipe.recipe_notes.create(recipe_note_params)
     respond_to do |format|
-      format.js {render json: {id: note.id, item_nb: note.item_nb, content: note.content}}
+      format.js {render json: {id: note.id, item_nb: note.item_nb, content: note.content, url: recipe_recipe_note_path(@recipe, note)}}
       format.html {redirect_back fallback_location: recipe_path(@recipe)}
     end
   end

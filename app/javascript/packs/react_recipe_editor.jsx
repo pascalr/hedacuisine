@@ -56,38 +56,6 @@ const InstructionsShortcuts = props => (
   </>
 )
 
-const NewNoteInputField = props => {
-
-  const [value, setValue] = useState('')
-  //const [newlyAdded, setNewlyAdded] = useState(true);
-
-  //const contentInputField = useRef(null);
-
-  //useEffect(() => {
-  //  if (newlyAdded && contentInputField.current) {
-  //    contentInputField.current.focus()
-  //    setNewlyAdded(false)
-  //  }
-  //}, [newlyAdded]);
-
-  //const addNote = () => {
-  //  let data = new FormData()
-  //  data.append('recipe_ingredient[raw]', qty)
-  //  data.append('recipe_ingredient[food_id]', suggestion.id)
-  //  Rails.ajax({url: gon.recipe.new_ingredient_url, type: 'POST', data: data, success: (raw) => {
-  //    const response = JSON.parse(raw)
-  //    //gon.recipe.ingredients.push({url: response.url, food: {name: response.food_name, url: response.food_url}})
-  //    gon.recipe.ingredients[response.id] = response
-  //    window.recipe_editor.current.addIng(response.id)
-  //    setValue(''); setQty('');
-  //    quantityInputField.current.focus()
-  //  }})
-  //}
-
-        //<Tiptap/>
-  return <BubbleTiptap/>
-}
-
 const NewIngInputField = props => {
 
   const [value, setValue] = useState('')
@@ -119,6 +87,7 @@ const NewIngInputField = props => {
     Rails.ajax({url: gon.recipe.new_ingredient_url, type: 'POST', data: data, success: (raw) => {
       const response = JSON.parse(raw)
       //gon.recipe.ingredients.push({url: response.url, food: {name: response.food_name, url: response.food_url}})
+      if (!gon.recipe.ingredients) {gon.recipe.ingredients = {}}
       gon.recipe.ingredients[response.id] = response
       window.recipe_editor.current.addIng(response.id)
       setValue(''); setQty('');
@@ -376,7 +345,12 @@ class RecipeEditor extends React.Component {
   appendNote() {
     let data = new FormData()
     data.append('recipe_note[content]', '')
-    Rails.ajax({url: gon.recipe.new_note_url, type: 'POST', data: data})
+    Rails.ajax({url: gon.recipe.new_note_url, type: 'POST', data: data, success: (raw) => {
+      const response = JSON.parse(raw)
+      if (!gon.recipe.notes) {gon.recipe.notes = {}}
+      gon.recipe.notes[response.id] = response
+      this.setState({noteIds: [...this.state.noteIds, response.id]})
+    }})
   }
 
   handleDropIng(droppedItem) {
