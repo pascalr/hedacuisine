@@ -67,20 +67,8 @@ export const CustomLink = Node.create({
   inline: true,
   selectable: false,
 
-  addOptions() {
-    return {
-      HTMLAttributes: {
-        target: '_blank',
-        rel: 'noopener noreferrer nofollow',
-      },
-    }
-  },
-
   addAttributes() {
     return {
-      href: {
-        default: null,
-      },
       linkRaw: {
         default: null,
         parseHTML: element => element.getAttribute('data-link-raw'),
@@ -89,15 +77,12 @@ export const CustomLink = Node.create({
           return {'data-link-raw': attributes.linkRaw}
         },
       },
-      target: {
-        default: this.options.HTMLAttributes.target,
-      },
     }
   },
 
   parseHTML() {
     return [
-      { tag: 'a[data-link-raw]' },
+      { tag: 'span[data-link-raw]' },
     ]
   },
 
@@ -109,19 +94,17 @@ export const CustomLink = Node.create({
       const nb = parseInt(raw.slice(5).trim())
       const note = Object.values(gon.recipe.notes).find(note => note.item_nb == nb)
       if (note) {
-        r = ['sup', {}, `[${note.item_nb}]`]
-      } else {
-        alert('TMP: FIXME: Could not find note!')
+        r = ['sup', {}, '[', ['a', {href: `#note-${note.item_nb}`}, note.item_nb.toString()], ']']
       }
     }
-    return ['a', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), r]
+    return ['span', HTMLAttributes, r]
   },
 
   addCommands() {
     return {
       insertLink: (raw) => ({ commands }) => {
         console.log("insertLink")
-        return commands.insertContent(`<a data-link-raw="${raw}"></a>`)
+        return commands.insertContent(`<div data-link-raw="${raw}"></div>`)
       },
     }
   },
