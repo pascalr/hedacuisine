@@ -536,7 +536,7 @@ export const BubbleTiptap = ({content, model, field, url}) => {
         <SuperscriptButton editor={editor} width={width} height={height} />
         <LinkButton editor={editor} width={width} height={height} />
       </BubbleMenu>}
-      <EditorContent editor={editor} />
+      <EditorContent editor={editor} style={{width: "100%"}} />
     </>
   )
 }

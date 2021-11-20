@@ -134,27 +134,30 @@ const VisualState = {
 // props: {comment}
 const EditableIngredientComment = (props) => {
 
-  const [comment, setComment] = useState(props.comment);
-  const [visual, setVisual] = useState(comment && comment != '' ? VisualState.EXPANDED : VisualState.CLOSED);
+  //const [comment, setComment] = useState(props.comment);
+  const [visual, setVisual] = useState(props.comment && props.comment != '' ? VisualState.EXPANDED : VisualState.CLOSED);
 
-  const commentInput = useRef(null);
+  //const commentInput = useRef(null);
 
   useEffect(() => {
     if (visual == VisualState.EXPANDING) {
       setVisual(VisualState.EXPANDED)
-      commentInput.current.focus()
+      //commentInput.current.focus()
     }
   }, [visual]);
 
-  const updateComment = () => {
-    if (comment != props.comment) {
-      let data = new FormData()
-      data.append('recipe_ingredient[comment]', comment)
-      Rails.ajax({url: props.ingUrl, type: 'PATCH', data: data})
-    }
-    if (!comment || comment == '') {
-      setVisual(VisualState.CLOSED)
-    }
+  //const updateComment = () => {
+  //  if (comment != props.comment) {
+  //    let data = new FormData()
+  //    data.append('recipe_ingredient[comment]', comment)
+  //    Rails.ajax({url: props.ingUrl, type: 'PATCH', data: data})
+  //  }
+  //  if (!comment || comment == '') {
+  //    setVisual(VisualState.CLOSED)
+  //  }
+  //}
+
+  const closeIfEmpty = () => {
   }
 
   if (visual == VisualState.CLOSED) {
@@ -164,13 +167,14 @@ const EditableIngredientComment = (props) => {
       </button>
     )
   } else {
-    const style = {border: "none", borderBottom: "1px dashed gray", transition: "width 0.4s ease-in-out"}
+    const style = {transition: "width 0.4s ease-in-out"}
     style.width = visual == VisualState.EXPANDED ? "200px" : "0px"
     return (
-      <div style={{display: "inline-block", marginLeft: "10px"}}>
-        (<input type="text" value={comment || ''} style={style} ref={commentInput} onChange={(e) => setComment(e.target.value)} onBlur={updateComment} />)
-      </div>
+      <Row marginLeft="10px" style={style} onBlur={closeIfEmpty}>
+        <BubbleTiptap content={props.comment} model="recipe_ingredient" field="comment" url={props.ingUrl}/>
+      </Row>
     )
+    //(<input type="text" value={comment || ''} style={style} ref={commentInput} onChange={(e) => setComment(e.target.value)} onBlur={updateComment} />)
   }
 }
 
