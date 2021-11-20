@@ -81,12 +81,27 @@ const StrikeButton = ({editor, width, height}) => (
   </button>
 )
 const LinkButton = ({editor, width, height}) => (
-  <button>
-    <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-link-45deg" viewBox="0 0 16 16">
-      <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
-      <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/>
-    </svg>
-  </button> 
+  <span className="dropdown">
+    <button type="button" className="dropdown-toggle" id="linkDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-link-45deg" viewBox="0 0 16 16">
+        <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
+        <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/>
+      </svg>
+    </button> 
+    <ul className="dropdown-menu" aria-labelledby="linkDropdown">
+      <li key="1">
+        <a className="dropdown-item" style={{cursor: 'pointer'}}>Note &raquo;</a>
+        <ul className="dropdown-menu dropdown-submenu">
+          {Object.values(gon.recipe.notes).map(note => (
+            <li key={note.id}>
+              <a className="dropdown-item" href="#">[{note.item_nb}] {Utils.stringSnippet(Utils.stripHtml(note.content))}</a>
+            </li>
+          ))}
+        </ul>
+      </li>
+      <li key="2"><a className="dropdown-item" style={{cursor: 'pointer'}} onClick={(evt) => alert('todo')}>Référence</a></li>
+    </ul>
+  </span>
 )
 const SubscriptButton = ({editor, width, height}) => (
   <button onClick={() => editor.chain().focus().toggleSubscript().run()} className={editor.isActive('subscript') ? 'is-active' : ''}>

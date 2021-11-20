@@ -30,6 +30,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Raleway&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
 
+// https://bootstrap-menu.com/detail-multilevel.html
+.dropdown-menu li{ position: relative; }
+.dropdown-submenu {
+	display: none;
+	position: absolute;
+	left:100%; top:-7px;
+}
+.dropdown-menu > li:hover > .dropdown-submenu{ display: block; }
+
+
 //.recipe-body {
 //  counter-reset: stepnb;
 //}
@@ -163,18 +173,6 @@ a.disabled {
   .recipe-show-image {
     margin-bottom: 5px;
   }
-}
-
-.dropdown-submenu {
-  position: relative;
-}
-.dropdown-submenu .dropdown-menu {
-  top: 0;
-  left: 100%;
-  margin-top: -1px;
-}
-.dropdown-menu a, .dropdown-submenu a {
-  color: black;
 }
 
 // ----- Bootstrap modifications -----

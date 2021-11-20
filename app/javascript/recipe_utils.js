@@ -2,6 +2,18 @@ import Quantity from 'models/quantity'
 
 export const Utils = {
 
+  stringSnippet(str, maxLength=20) {
+    if (str == null || str == '') {return ''}
+    if (str.length <= maxLength) {return str}
+    return str.slice(0,17)+'...'
+  },
+
+  stripHtml(html) {
+    let tmp = document.createElement("div");
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || "";
+  },
+
   translated(str) {
     return str
   },
