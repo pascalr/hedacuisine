@@ -396,35 +396,36 @@ const IngredientNode = Node.create({
   renderHTML({ node, HTMLAttributes }) {
 
     const ingredient = HTMLAttributes['data-ingredient']
+    let children = []
+    let text = null
+    let food = null
     if (ingredient.startsWith("(")) {
       const raw = ingredient.slice(1,-1)
       const [qty, foodName] = Quantity.parseQuantityAndFoodName(raw)
-      let children = []
-      let text = Utils.prettyQuantityFor(qty.raw, foodName)
-      if (text && text != '') {children.push(text)}
-      const food = gon.foodList.find(food => food.name == foodName)
-      if (food) {
-        // TODO: Find food id
-        //children.push([
-        //  'a', {href: ing.food.url}, ing.food.name,
-        //])//`<a href="${ing.food.url}">${ing.food.name}</a>`)
-      }
-      return ['span', HTMLAttributes, ...children]
-      return ['span', HTMLAttributes, "INVALID INGREDIENT"]
+      text = Utils.prettyQuantityFor(qty.raw, foodName)
+      food = gon.foodList.find(food => food.name == foodName)
     } else {
       const ing = Object.values(gon.recipe.ingredients).find(ing => ing.item_nb == ingredient)
-      let children = []
       if (ing) {
-        let text = Utils.prettyQuantityFor(ing.raw, ing.food.name)
-        if (text && text != '') {children.push(text)}
-        children.push([
-          'a', {href: ing.food.url}, ing.food.name,
-        ])//`<a href="${ing.food.url}">${ing.food.name}</a>`)
+        text = Utils.prettyQuantityFor(ing.raw, ing.food.name)
+        food = ing.food
       }
-      // Return: ['tagName', {attributeName: 'attributeValue'}, child1, child2, ...children]
-      return ['span', HTMLAttributes, ...children]
     }
+    if (text && text != '') {children.push(text)}
+    if (food) { children.push(['a', {href: food.url}, food.name]) }
+    return ['span', HTMLAttributes, ...children]
   },
+
+  //addNodeView() {
+  //  return ({ editor, node, getPos }) => {
+
+  //    const dom = document.createElement('div')
+  //    dom.innerHTML = '<b>TESTING 1212</b>'
+  //    dom.classList.add('node-view')
+
+  //    return {dom,}
+  //  }
+  //},
 
   parseHTML() {
     return [{tag: 'span[data-ingredient]'}]
