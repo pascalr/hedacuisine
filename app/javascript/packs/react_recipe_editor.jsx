@@ -174,7 +174,7 @@ const EditableIngredientComment = (props) => {
   }
 }
 
-const DeleteConfirmButton = ({id, onDeleteConfirm}) => {
+const DeleteConfirmButton = ({id, onDeleteConfirm, message}) => {
 
   // For popover. See https://mui.com/components/popover/
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -192,7 +192,7 @@ const DeleteConfirmButton = ({id, onDeleteConfirm}) => {
       transformOrigin={{vertical: 'bottom', horizontal: 'right'}}
     >
       <Typography sx={{ p: 2 }}>
-        Je veux enlever cet ingrédient?
+        {message}
         <button type="button" className="btn btn-primary" style={{marginLeft: "10px"}} onClick={onDeleteConfirm}>Oui</button>
       </Typography>
     </Popover>
@@ -219,7 +219,7 @@ const EditableIngredient = (props) => {
       <a href={ing.food.url}>{ing.food.name}</a>
       <EditableIngredientComment ingUrl={ing.url} comment={ing.comment} />
       <Block flexGrow="1" />
-      <DeleteConfirmButton id={`ing-${ing.id}`} onDeleteConfirm={removeIngredient} />
+      <DeleteConfirmButton id={`ing-${ing.id}`} onDeleteConfirm={removeIngredient} message="Je veux enlever cet ingrédient?" />
     </Row>
   )
   //<a href={ing.url} data-confirm="Are you sure?" data-method="delete"><img src="/icons/x-lg.svg" style={{float: "right"}}/></a>
@@ -417,9 +417,9 @@ class RecipeEditor extends React.Component {
 
       const removeNote = (evt) => {
         Rails.ajax({url: note.url, type: 'DELETE', success: (raw) => {
-          let ids = this.state.noteIds.filter(item => item != ing.id)
-          this.setState({ingIds: ids})
-          delete gon.recipe.notes[ing.id]
+          let ids = this.state.noteIds.filter(item => item != note.id)
+          this.setState({noteIds: ids})
+          delete gon.recipe.notes[note.id]
         }})
       }
 
@@ -429,7 +429,7 @@ class RecipeEditor extends React.Component {
           <Block flexGrow="1">
             <BubbleTiptap content={note.content} model="recipe_note" field="content" url={note.url}/>
           </Block>
-          <DeleteConfirmButton id={`note-${note.id}`} onDeleteConfirm={removeNote} />
+          <DeleteConfirmButton id={`note-${note.id}`} onDeleteConfirm={removeNote} message="Je veux enlever cette note?" />
         </Row>
       )
     })
