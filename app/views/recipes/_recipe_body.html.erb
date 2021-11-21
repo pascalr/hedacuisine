@@ -139,11 +139,13 @@
 
 <% unless recipe.notes.blank? %>
   <h3>Notes</h3>
-  <% recipe.notes.order(:item_nb).each do |note| %>
-    <div id="note-<%= note.item_nb %>" style="margin-bottom: 0.5em;">
-      [<%= note.item_nb %>] <%= my_sanitize(note.content) %>
-    </div>
-  <% end %>
+  <div class='notes'>
+    <% recipe.notes.order(:item_nb).each do |note| %>
+      <div id="note-<%= note.item_nb %>" style="margin-bottom: 0.5em;">
+        [<%= note.item_nb %>] <%= my_sanitize(note.content) %>
+      </div>
+    <% end %>
+  </div>
 <% end %>
 
 <% unless recipe.references.blank? %> 
