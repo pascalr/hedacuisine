@@ -1,6 +1,6 @@
 class RecipeValidator < ActiveModel::Validator
   def validate(record)
-    if record.base_recipe_id == record.id
+    if record.base_recipe_id && record.base_recipe_id == record.id
       record.errors.add :base, "A recipe cannot be based on itself."
     end
   end
