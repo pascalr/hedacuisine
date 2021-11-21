@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import ReactDOMServer from 'react-dom/server'
 
 import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from 'jsxstyle'
 
@@ -24,8 +25,24 @@ import Link from '@tiptap/extension-link'
 import Subscript from '@tiptap/extension-subscript'
 import Superscript from '@tiptap/extension-superscript'
 import { Node, mergeAttributes, nodeInputRule, textblockTypeInputRule } from '@tiptap/core'
-import { Node as ProseMirrorNode } from 'prosemirror-model'
-//import { Plugin, PluginKey } from 'prosemirror-state'
+
+// https://stackoverflow.com/questions/59769774/prosemirror-using-holes-contentdom-when-returning-dom-nodes-from-todom
+// https://stackoverflow.com/questions/3066427/native-way-to-copy-all-child-nodes-to-an-other-element
+// '@tiptap/core/src/utilities/elementFromString'
+function elementFromString(value) {
+  // add a wrapper to preserve leading and trailing whitespace
+  const wrappedValue = `<body>${value}</body>`
+  const body = new window.DOMParser().parseFromString(wrappedValue, 'text/html').body
+  const container = document.createDocumentFragment();
+  while (body.hasChildNodes()) {
+    container.appendChild(body.removeChild(body.firstChild))
+  }
+  return container
+}
+function elementFromJSX(value) {
+  const str = ReactDOMServer.renderToStaticMarkup(value);
+  return elementFromString(str)
+}
 
 // MINE
 import Quantity from 'models/quantity'
@@ -92,7 +109,7 @@ export const CustomLink = Node.create({
     const raw = HTMLAttributes['data-link-raw']
     if (raw.startsWith("note:")) {
       const nb = parseInt(raw.slice(5).trim())
-      const note = Object.values(gon.recipe.notes).find(note => note.item_nb == nb)
+      const note = Object.values(gon.recipe.notes || {}).find(note => note.item_nb == nb)
       if (note) {
         r = ['sup', {}, '[', ['a', {href: `#note-${note.item_nb}`}, note.item_nb.toString()], ']']
       }
@@ -241,7 +258,7 @@ const LinkButton = ({editor, width, height}) => (
       <li key="1">
         <a className="dropdown-item" style={{cursor: 'pointer'}}>Note &raquo;</a>
         <ul className="dropdown-menu dropdown-submenu">
-          {Object.values(gon.recipe.notes).map(note => (
+          {Object.values(gon.recipe.notes || {}).map(note => (
             <li key={note.id}>
               <a className="dropdown-item" onClick={() => editor.chain().focus().insertLink(`note:${note.item_nb}`).run()}>[{note.item_nb}] {Utils.stringSnippet(Utils.stripHtml(note.content))}</a>
 
@@ -405,7 +422,7 @@ const IngredientNode = Node.create({
       text = Utils.prettyQuantityFor(qty.raw, foodName)
       food = gon.foodList.find(food => food.name == foodName)
     } else {
-      const ing = Object.values(gon.recipe.ingredients).find(ing => ing.item_nb == ingredient)
+      const ing = Object.values(gon.recipe.ingredients || {}).find(ing => ing.item_nb == ingredient)
       if (ing) {
         text = Utils.prettyQuantityFor(ing.raw, ing.food.name)
         food = ing.food
@@ -415,7 +432,7 @@ const IngredientNode = Node.create({
     let children = []
     if (text && text != '') {children.push(text)}
     if (food) { children.push(['a', {href: food.url}, food.name]) }
-    if (comment) { children.push(comment) }
+    if (comment) { children.push(elementFromString(' '+comment)) }
     return ['span', HTMLAttributes, ...children]
   },
 
@@ -536,12 +553,13 @@ const IngredientListNode = Node.create({
       if (ingredient.startsWith("(")) {
         return ['li', HTMLAttributes, "TODO"]
       } else {
-        const ing = Object.values(gon.recipe.ingredients).find(ing => ing.item_nb == ingredient)
+        const ing = Object.values(gon.recipe.ingredients || {}).find(ing => ing.item_nb == ingredient)
         if (ing) {
           let children = []
           let text = Utils.prettyQuantityFor(ing.raw, ing.food.name)
           if (text && text != '') {children.push(text)}
           children.push(['a', {href: ing.food.url}, ing.food.name])
+          if (ing.comment) {children.push(elementFromString(' '+ing.comment))}
           return ['li', {'data-ingredient': ing.id}, ...children]
         }
       }
@@ -629,7 +647,7 @@ const Toolbar = ({ editor }) => {
             </svg>
           </button>
           <ul className="dropdown-menu" aria-labelledby="ingDropdown">
-            {Object.values(gon.recipe.ingredients).map(ing => {
+            {Object.values(gon.recipe.ingredients || {}).map(ing => {
               let text = Utils.prettyQuantityFor(ing.raw, ing.food.name)
               return <li key={ing.id}><a className="dropdown-item" style={{cursor: 'pointer'}} onClick={() => editor.chain().focus().insertIngredient(ing.item_nb).run()}>{text}<Inline color="#0d6efd">{ing.food.name}</Inline></a></li>
             })}
