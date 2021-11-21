@@ -239,6 +239,13 @@ const ItalicButton = ({editor, width, height}) => (
     </svg>
   </button> 
 )
+const MoreButton = ({editor, width, height}) => (
+  <button>
+    <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+      <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+    </svg>
+  </button> 
+)
 const StrikeButton = ({editor, width, height}) => (
   <button onClick={() => editor.chain().focus().toggleStrike().run()} className={editor.isActive('strike') ? 'is-active' : ''}>
     <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-type-strikethrough" viewBox="0 0 16 16">
@@ -248,7 +255,7 @@ const StrikeButton = ({editor, width, height}) => (
 )
 const LinkButton = ({editor, width, height}) => (
   <span className="dropdown">
-    <button type="button" className="dropdown-toggle" id="linkDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+    <button type="button" title="Ajouter un lien" className="dropdown-toggle" id="linkDropdown" data-bs-toggle="dropdown" aria-expanded="false">
       <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-link-45deg" viewBox="0 0 16 16">
         <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
         <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/>
@@ -599,8 +606,8 @@ const IngredientListNode = Node.create({
 const Toolbar = ({ editor }) => {
   if (!editor) {return null}
 
-  const width = 28
-  const height = 28
+  const width = 24
+  const height = 24
 
   //onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
   //      className={editor.isActive('heading', { level: 4 }) ? 'is-active' : ''}
@@ -635,13 +642,13 @@ const Toolbar = ({ editor }) => {
         </select>
       </Inline>
       <Inline padding="0 1.5em">
-        <button onClick={() => editor.chain().focus().toggleStep().run()} className={editor.isActive('step') ? 'is-active' : ''}>
+        <button type="button" title="Ajouter une étape" onClick={() => editor.chain().focus().toggleStep().run()} className={editor.isActive('step') ? 'is-active' : ''}>
           <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-hash" viewBox="0 0 16 16">
             <path d="M8.39 12.648a1.32 1.32 0 0 0-.015.18c0 .305.21.508.5.508.266 0 .492-.172.555-.477l.554-2.703h1.204c.421 0 .617-.234.617-.547 0-.312-.188-.53-.617-.53h-.985l.516-2.524h1.265c.43 0 .618-.227.618-.547 0-.313-.188-.524-.618-.524h-1.046l.476-2.304a1.06 1.06 0 0 0 .016-.164.51.51 0 0 0-.516-.516.54.54 0 0 0-.539.43l-.523 2.554H7.617l.477-2.304c.008-.04.015-.118.015-.164a.512.512 0 0 0-.523-.516.539.539 0 0 0-.531.43L6.53 5.484H5.414c-.43 0-.617.22-.617.532 0 .312.187.539.617.539h.906l-.515 2.523H4.609c-.421 0-.609.219-.609.531 0 .313.188.547.61.547h.976l-.516 2.492c-.008.04-.015.125-.015.18 0 .305.21.508.5.508.265 0 .492-.172.554-.477l.555-2.703h2.242l-.515 2.492zm-1-6.109h2.266l-.515 2.563H6.859l.532-2.563z"/>
           </svg>
         </button> 
         <span className="dropdown">
-          <button type="button" className="dropdown-toggle" id="ingDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          <button type="button" title="Ajouter un ingrédient ou une liste d'ingrédient" className="dropdown-toggle" id="ingDropdown" data-bs-toggle="dropdown" aria-expanded="false">
             <svg className="bi bi-egg" width={width} height={height} fill="currentColor" version="1.1" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
              <g>
               <path d="m9.5254 1.4576-2.7019 0.02397c-0.25329 0.0042-0.47958 0.10552-0.6499 0.36509-0.088322 0.22538-0.28139 0.57098 0 0.76348 0.21838 0.10502 0.48117 0.22845 0.56517 0.39821 0.065074 0.33662 3.551e-4 1.0685 0 1.6059-0.076506 1.4087-1.1194 1.3293-1.0777 2.2671v7.3898h5.9322v-7.4576c-0.0034-1.2097-0.7028-0.99755-1.0501-2.4608-0.078413-0.51526-0.16055-0.96165-0.095883-1.3276 0.08517-0.18291 0.38493-0.16276 0.51055-0.51049v-0.64035c-0.14541-0.34332-0.61106-0.34145-0.88084-0.37387z" fill="none" stroke="#000" strokeWidth=".5"/>
@@ -671,6 +678,7 @@ const Toolbar = ({ editor }) => {
           </ul>
         </span>
         <LinkButton editor={editor} width={width} height={height} />
+        <MoreButton editor={editor} width={width} height={height} />
       </Inline>
       <Inline padding="0 1.5em">
         <BoldButton editor={editor} width={width} height={height} />
@@ -741,8 +749,8 @@ export const Tiptap = ({model, field, url}) => {
 
 export const BubbleTiptap = ({content, model, field, url}) => {
 
-  const width = 28
-  const height = 28
+  const width = 24
+  const height = 24
 
   const editor = useEditor({
     extensions: [Bold, Italic, Strike, InlineDocument, History, Text, CustomLink],
