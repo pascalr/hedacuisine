@@ -224,7 +224,31 @@ export const CustomLink = Node.create({
   //  return plugins
   //},
 })
-        
+       
+const IngListButton = ({editor, width, height}) => (
+  <button type="button">
+    <svg className="bi bi-egg" width={width} height={height} fill="currentColor" version="1.1" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+     <g>
+      <path d="m9.5254 1.4576-2.7019 0.02397c-0.25329 0.0042-0.47958 0.10552-0.6499 0.36509-0.088322 0.22538-0.28139 0.57098 0 0.76348 0.21838 0.10502 0.48117 0.22845 0.56517 0.39821 0.065074 0.33662 3.551e-4 1.0685 0 1.6059-0.076506 1.4087-1.1194 1.3293-1.0777 2.2671v7.3898h5.9322v-7.4576c-0.0034-1.2097-0.7028-0.99755-1.0501-2.4608-0.078413-0.51526-0.16055-0.96165-0.095883-1.3276 0.08517-0.18291 0.38493-0.16276 0.51055-0.51049v-0.64035c-0.14541-0.34332-0.61106-0.34145-0.88084-0.37387z" fill="none" stroke="#000" strokeWidth=".5"/>
+     </g>
+     <g>
+      <path d="m3.964 15.171a2.9026 2.9176 0 0 1-2.9026-2.9176c0-1.1414 0.40057-2.501 1.0113-3.5712 0.3042-0.53276 0.64555-0.96749 0.98922-1.2628 0.34716-0.2976 0.65368-0.4178 0.90214-0.4178 0.24847 0 0.55499 0.12021 0.90214 0.4178 0.34367 0.29526 0.68503 0.72999 0.98922 1.2628 0.61072 1.0702 1.0113 2.4298 1.0113 3.5712a2.9026 2.9176 0 0 1-2.9026 2.9176zm0 0.58353a3.4832 3.5012 0 0 0 3.4832-3.5012c0-2.5173-1.7416-5.8353-3.4832-5.8353-1.7416 0-3.4832 3.3179-3.4832 5.8353a3.4832 3.5012 0 0 0 3.4832 3.5012z" strokeWidth=".58203"/>
+      <g transform="translate(-.80521 1.0023)" fill="none" stroke="#000" strokeWidth=".5">
+       <path d="m8.7489 9.1926v4.8898h5.2973v-4.8659z"/>
+       <path d="m8.6557 9.1545 2.397-1.9415h4.8659l-1.9655 1.9655"/>
+       <path d="m16.262 6.9587 0.0085 5.0159-2.1752 2.1906"/>
+      </g>
+      <g fill="#fff" stroke="#000003" strokeWidth=".011985">
+       <path d="m3.6012 15.137c-0.60801-0.083665-1.1744-0.35599-1.6158-0.77681-0.43851-0.41814-0.71637-0.91284-0.85735-1.5264-0.056877-0.24753-0.056502-0.98582 6.908e-4 -1.3624 0.22535-1.4837 0.88842-2.961 1.7129-3.8163 0.34324-0.35606 0.65583-0.55847 0.95925-0.62114 1.1307-0.23355 2.715 2.1638 3.0111 4.5566 0.04807 0.38839 0.047374 0.86645-0.00168 1.153-0.20201 1.1802-1.1047 2.1107-2.2895 2.3599-0.22034 0.04635-0.6996 0.06382-0.91975 0.03353z"/>
+       <path d="m8.2095 12.638v-2.1812h0.76308c0.41969 0 1.4929 0.0072 2.385 0.01592l1.6219 0.01592v4.3306h-4.77z"/>
+       <path d="m9.1466 9.9305-0.58497-0.012628 1.7919-1.4502h4.1477l-1.4855 1.4861-1.6421-0.0053488c-0.90314-0.00294-1.9053-0.011032-2.227-0.017977z"/>
+       <path d="m13.507 12.375v-2.1932l1.6707-1.6702 0.01538 0.1281c0.0085 0.070455 0.01548 1.0504 0.01559 2.1776l2.09e-4 2.0495-1.7018 1.7013z"/>
+      </g>
+     </g>
+    </svg>
+  </button>
+)
+
 const BoldButton = ({editor, width, height}) => (
   <button onClick={() => editor.chain().focus().toggleBold().run()} className={editor.isActive('bold') ? 'is-active' : ''}>
     <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-type-bold" viewBox="0 0 16 16">
@@ -640,6 +664,7 @@ const Toolbar = ({ editor }) => {
             <path d="M8.39 12.648a1.32 1.32 0 0 0-.015.18c0 .305.21.508.5.508.266 0 .492-.172.555-.477l.554-2.703h1.204c.421 0 .617-.234.617-.547 0-.312-.188-.53-.617-.53h-.985l.516-2.524h1.265c.43 0 .618-.227.618-.547 0-.313-.188-.524-.618-.524h-1.046l.476-2.304a1.06 1.06 0 0 0 .016-.164.51.51 0 0 0-.516-.516.54.54 0 0 0-.539.43l-.523 2.554H7.617l.477-2.304c.008-.04.015-.118.015-.164a.512.512 0 0 0-.523-.516.539.539 0 0 0-.531.43L6.53 5.484H5.414c-.43 0-.617.22-.617.532 0 .312.187.539.617.539h.906l-.515 2.523H4.609c-.421 0-.609.219-.609.531 0 .313.188.547.61.547h.976l-.516 2.492c-.008.04-.015.125-.015.18 0 .305.21.508.5.508.265 0 .492-.172.554-.477l.555-2.703h2.242l-.515 2.492zm-1-6.109h2.266l-.515 2.563H6.859l.532-2.563z"/>
           </svg>
         </button> 
+        <IngListButton editor={editor} width={width} height={height} />
         <span className="dropdown">
           <button type="button" className="dropdown-toggle" id="ingDropdown" data-bs-toggle="dropdown" aria-expanded="false">
             <svg xmlns="http://www.w3.org/2000/svg" width={width-4} height={height-4} fill="currentColor" className="bi bi-egg" viewBox="0 0 16 16">
@@ -659,8 +684,6 @@ const Toolbar = ({ editor }) => {
         <BoldButton editor={editor} width={width} height={height} />
         <ItalicButton editor={editor} width={width} height={height} />
         <StrikeButton editor={editor} width={width} height={height} />
-        <SubscriptButton editor={editor} width={width} height={height} />
-        <SuperscriptButton editor={editor} width={width} height={height} />
       </Inline>
       <Inline padding="0 1.5em">
         <button onClick={() => {let html = editor.getHTML(); console.log(html); alert(html)}}>
@@ -709,7 +732,7 @@ const Toolbar = ({ editor }) => {
 export const Tiptap = ({model, field, url}) => {
   const editor = useEditor({
     extensions: [Bold, Italic, Document, Paragraph, Strike, Text, CustomHeading, CustomLink,
-      History, IngredientNode, IngredientListNode, StepNode, Subscript, Superscript,
+      History, IngredientNode, IngredientListNode, StepNode,// Subscript, Superscript,
     ],
     content: gon[model][field],
   })
@@ -742,8 +765,6 @@ export const BubbleTiptap = ({content, model, field, url}) => {
         <BoldButton editor={editor} width={width} height={height} />
         <ItalicButton editor={editor} width={width} height={height} />
         <StrikeButton editor={editor} width={width} height={height} />
-        <SubscriptButton editor={editor} width={width} height={height} />
-        <SuperscriptButton editor={editor} width={width} height={height} />
         <LinkButton editor={editor} width={width} height={height} />
       </BubbleMenu>}
       <EditorContent editor={editor} style={{width: "100%"}} />
