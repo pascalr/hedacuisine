@@ -1,0 +1,16 @@
+<svg class="bi bi-egg" width="16" height="16" fill="currentColor" version="1.1" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+ <path d="m7.5911 5.3724h7.3284" fill="none" stroke="#000" stroke-width="1px"/>
+ <path d="m7.8247 12.292h6.9488" fill="none" stroke="#000" stroke-width="1px"/>
+ <g>
+  <circle cx="4.0437" cy="12.161" r="2.2657" fill="#fff" stroke="#000003" stroke-width=".611"/>
+  <circle cx="4.0437" cy="5.7082" r="2.339" fill="#fff" stroke="#000003" stroke-width=".73949"/>
+  <path d="m3.9127 3.129c-0.02641-0.52696 0.01904-1.0549 0.02816-1.5602" fill="none" stroke="#000" stroke-width=".45071"/>
+  <ellipse transform="matrix(.82209 -.56936 .53986 .84175 0 0)" cx="3.1878" cy="4.3937" rx=".98037" ry=".46004" fill="#fff" stroke="#000003" stroke-width=".29244"/>
+ </g>
+ <g fill="none" stroke="#000" stroke-width=".4">
+  <path d="m4.0875 14.336v-4.3503"/>
+  <path d="m1.781 12.234h4.5255"/>
+  <path d="m2.6277 13.869 3.1386-3.1386"/>
+  <path d="m5.6642 13.664-3.3284-3.0656"/>
+ </g>
+</svg>
