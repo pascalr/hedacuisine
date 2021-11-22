@@ -225,6 +225,32 @@ export const CustomLink = Node.create({
   //},
 })
 
+const AddNoteButton = ({editor, width, height}) => (
+  <button title="Rechercher et ajouter une note existante au texte sélectionné">
+    <svg xmlns="http://www.w3.org/2000/svg" width={width-2} height={height-2} fill="currentColor" className="bi bi-journals" viewBox="0 0 16 16">
+      <path d="M5 0h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2 2 2 0 0 1-2 2H3a2 2 0 0 1-2-2h1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1H1a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v9a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1H3a2 2 0 0 1 2-2z"/>
+      <path d="M1 6v-.5a.5.5 0 0 1 1 0V6h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V9h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 2.5v.5H.5a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1H2v-.5a.5.5 0 0 0-1 0z"/>
+    </svg>
+  </button>
+)
+const MeasuringButton = ({editor, width, height}) => (
+  <button title="Ajouter un quantité">
+    <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-cup" viewBox="0 0 16 16">
+      <g>
+       <ellipse cx="5.1163" cy="11.808" rx="3.7516" ry="1.7076" fill="#fff" stroke="#000003" strokeWidth=".81488"/>
+      </g>
+      <g>
+       <rect x=".91891" y="7.2065" width="8.563" height="4.2563" fill="#fff" stroke="#fff" strokeWidth=".81616"/>
+       <path d="m7.7711 6.993 1.0968 1.2182 6.3798-3.6834-1.1496-1.1496z" fill="none" stroke="#000" strokeWidth=".81488px"/>
+      </g>
+      <g strokeWidth=".81488">
+       <ellipse cx="5.1191" cy="8.3462" rx="3.7516" ry="1.7076" fill="#fff" stroke="#000003"/>
+       <path d="m1.3731 8.1993v3.7346" fill="none" stroke="#000"/>
+       <path d="m8.8679 8.2112v3.7227" fill="none" stroke="#000"/>
+      </g>
+   </svg>
+  </button>
+)
 const CharButton = ({editor, width, height}) => (
   <span className="dropdown">
     <button type="button" title="Ajouter un charactère" className="dropdown-toggle" id="charDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -646,7 +672,7 @@ const Toolbar = ({ editor }) => {
   return (
     <div className="toolbar" style={{display: "flex"}}>
       <Inline padding="0 1.5em">
-        <select value={selectedHeader} onChange={(e) => {
+        <select value={selectedHeader} style={{display: "flex", alignItems: "center"}} onChange={(e) => {
           let val = parseInt(e.target.value)
           if (!val) {
             editor.chain().focus().setParagraph().run()
@@ -696,6 +722,8 @@ const Toolbar = ({ editor }) => {
             })}
           </ul>
         </span>
+        <MeasuringButton editor={editor} width={width} height={height} />
+        <AddNoteButton editor={editor} width={width} height={height} />
         <LinkButton editor={editor} width={width} height={height} />
         <CharButton editor={editor} width={width} height={height} />
         <MoreButton editor={editor} width={width} height={height} />

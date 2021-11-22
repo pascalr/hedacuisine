@@ -1,0 +1,14 @@
+<svg class="bi bi-at" width="16" height="16" fill="currentColor" version="1.1" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+ <g>
+  <ellipse cx="5.1163" cy="11.808" rx="3.7516" ry="1.7076" fill="#fff" stroke="#000003" stroke-width=".81488"/>
+ </g>
+ <g>
+  <rect x=".91891" y="7.2065" width="8.563" height="4.2563" fill="#fff" stroke="#fff" stroke-width=".81616"/>
+  <path d="m7.7711 6.993 1.0968 1.2182 6.3798-3.6834-1.1496-1.1496z" fill="none" stroke="#000" stroke-width=".81488px"/>
+ </g>
+ <g stroke-width=".81488">
+  <ellipse cx="5.1191" cy="8.3462" rx="3.7516" ry="1.7076" fill="#fff" stroke="#000003"/>
+  <path d="m1.3731 8.1993v3.7346" fill="none" stroke="#000"/>
+  <path d="m8.8679 8.2112v3.7227" fill="none" stroke="#000"/>
+ </g>
+</svg>
