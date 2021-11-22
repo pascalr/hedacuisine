@@ -254,11 +254,16 @@ const ItalicButton = ({editor, width, height}) => (
   </button> 
 )
 const MoreButton = ({editor, width, height}) => (
-  <button>
-    <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-three-dots-vertical" viewBox="0 0 16 16">
-      <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
-    </svg>
-  </button> 
+  <span className="dropdown">
+    <button type="button" title="Ajouter un lien" id="moreDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+        <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+      </svg>
+    </button> 
+    <ul className="dropdown-menu" aria-labelledby="moreDropdown">
+      <li key="2"><a className="dropdown-item" style={{cursor: 'pointer'}} onClick={() => editor.chain().focus().toggleStep().run()}>Ajouter une première étape</a></li>
+    </ul>
+  </span>
 )
 const StrikeButton = ({editor, width, height}) => (
   <button onClick={() => editor.chain().focus().toggleStrike().run()} className={editor.isActive('strike') ? 'is-active' : ''}>
@@ -692,13 +697,13 @@ const Toolbar = ({ editor }) => {
           </ul>
         </span>
         <LinkButton editor={editor} width={width} height={height} />
+        <CharButton editor={editor} width={width} height={height} />
         <MoreButton editor={editor} width={width} height={height} />
       </Inline>
       <Inline padding="0 1.5em">
         <BoldButton editor={editor} width={width} height={height} />
         <ItalicButton editor={editor} width={width} height={height} />
         <StrikeButton editor={editor} width={width} height={height} />
-        <CharButton editor={editor} width={width} height={height} />
       </Inline>
       <Inline padding="0 1.5em">
         <button onClick={() => {let html = editor.getHTML(); console.log(html); alert(html)}}>
