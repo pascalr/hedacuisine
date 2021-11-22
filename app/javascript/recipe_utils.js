@@ -51,6 +51,7 @@ export const Utils = {
   },
 
   prettyFraction(value) {
+    if (value == null) {return null}
     var fractions = [0, 1/8, 1/4, 1/3, 1/2, 2/3, 3/4, 7/8, 1]
     var pp_fractions = ["0", "1/8", "1/4", "1/3", "1/2", "2/3", "3/4", "7/8", "1"]
     var i_part = parseInt(value, 10)
@@ -102,10 +103,11 @@ export const Utils = {
   },
 
   prettyQuantityFor(quantity, foodName, scale=1.0) {
+    if (!quantity) {return ''}
     if (typeof quantity === 'string' || quantity instanceof String) {
       quantity = new Quantity({raw: quantity})
     }
-    if (!quantity) {return ''}
+    if (quantity.nb == null) {return ''}
     var unit = quantity.unit
     var qty = quantity.nb * scale
     if (unit) {qty *= unit.value}
