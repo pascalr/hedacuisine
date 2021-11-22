@@ -256,6 +256,16 @@ class Model {
 }
 //const RECIPE_MODEL = new Model("recipe")
 
+const TextInputField2 = ({model, field}) => {
+  const [value, setValue] = useState(model.currentValue(field))
+
+  return (
+    <input type="text" value={value||''} name={model.fieldName(field)} style={{border: "none"}}
+      id={field} onChange={(e) => setValue(e.target.value)}
+      onBlur={() => model.updateValue(field, value)} />
+  )
+}
+
 const TextInputField = ({model, field}) => {
   const [value, setValue] = useState(model.currentValue(field))
 
@@ -281,6 +291,23 @@ const TextAreaField = ({model, field, cols, rows, changeCallback=null}) => {
   )
 }
 
+const CollectionSelect2 = ({model, field, options, showOption, includeBlank}) => {
+  const [value, setValue] = useState(model.currentValue(field))
+
+  const updateField = (e) => {
+    let val = e.target.value
+    model.updateValue(field, val, () => setValue(val))
+  }
+
+  return (
+    <select name={model.fieldName(field)} id={field} value={value||''} onChange={updateField}>
+      {includeBlank ? <option value="" key="1" label=" "></option> : null}
+      {options.map((opt, i) => {
+        return <option value={opt} key={i+2}>{showOption(opt)}</option>
+      })}
+    </select>
+  )
+}
 const CollectionSelect = ({model, field, options, showOption, includeBlank}) => {
   const [value, setValue] = useState(model.currentValue(field))
 
@@ -475,6 +502,30 @@ class RecipeEditor extends React.Component {
         </ul>
         
         <h2>Informations</h2>
+        <table className="table table-light">
+          <tbody>
+            <tr>
+              <th>Temps de préparation</th>
+              <td><TextInputField2 model={model} field="preparation_time"></TextInputField2></td>
+            </tr>
+            <tr>
+              <th>Temps de cuisson</th>
+              <td><TextInputField2 model={model} field="cooking_time"></TextInputField2></td>
+            </tr>
+            <tr>
+              <th>Temps total</th>
+              <td><TextInputField2 model={model} field="total_time"></TextInputField2></td>
+            </tr>
+            <tr>
+              <th>Portions</th>
+              <td><TextInputField2 model={model} field="raw_servings"></TextInputField2></td>
+            </tr>
+            <tr>
+              <th>Ingrédient principal</th>
+              <td><CollectionSelect2 model={model} field="main_ingredient_id" options={this.state.ingIds} showOption={(ingId) => gon.recipe.ingredients[ingId].food.name} includeBlank="true"></CollectionSelect2></td>
+            </tr>
+          </tbody>
+        </table>
         <TextInputField model={model} field="base_recipe_id"></TextInputField>
         <TextInputField model={model} field="preparation_time"></TextInputField>
         <TextInputField model={model} field="cooking_time"></TextInputField>
