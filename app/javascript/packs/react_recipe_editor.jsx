@@ -526,12 +526,6 @@ class RecipeEditor extends React.Component {
             </tr>
           </tbody>
         </table>
-        <TextInputField model={model} field="base_recipe_id"></TextInputField>
-        <TextInputField model={model} field="preparation_time"></TextInputField>
-        <TextInputField model={model} field="cooking_time"></TextInputField>
-        <TextInputField model={model} field="total_time"></TextInputField>
-        <TextInputField model={model} field="raw_servings"></TextInputField>
-        <CollectionSelect model={model} field="main_ingredient_id" options={this.state.ingIds} showOption={(ingId) => gon.recipe.ingredients[ingId].food.name} includeBlank="true"></CollectionSelect>
 
         <h2>Références</h2>
 
