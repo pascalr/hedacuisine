@@ -92,8 +92,11 @@ export const Utils = {
 
   prettyPreposition(foodName) {
     if (foodName == null || foodName.length <= 0) {return ''}
-    return ['a','e','i','o','u','y','é'].includes(foodName[0]) ? "d'" : "de "// if exp.contract_preposition.nil?
-    //exp.contract_preposition ? "d'" : "de "
+    if (foodName[0] == 'h' || foodName[0] == 'H') {
+      return gon.contractionList.includes(foodName) ? "d'" : "de "
+    } else {
+      return ['a','e','i','o','u','y','é'].includes(foodName[0]) ? "d'" : "de "// if exp.contract_preposition.nil?
+    }
   },
 
   prettyQuantity(raw, food) {
