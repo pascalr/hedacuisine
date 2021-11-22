@@ -3,8 +3,9 @@
 
 <br>
 
-<% @kinds.each do |kind| %>
-  <%= render partial: "recipes/recipe_carrousel", locals: {title: link_to(kind.name, kind, style: "color: black;"), recipes: kind.recipes.all_main.all_public.with_images.limit(10), carrousel_id: kind.id} %>
+<% @recipes_by_kind.each do |(kind, recipes)| %>
+  <%= render partial: "recipes/recipe_carrousel", locals: {title: link_to(kind.name, kind, style: "color: black;"), recipes: recipes, carrousel_id: kind.id} %>
+  <br>
 <% end %>
 
 <%= javascript_pack_tag "recipe_slider_pack_v2" %>
