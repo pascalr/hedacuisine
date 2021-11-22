@@ -225,6 +225,20 @@ export const CustomLink = Node.create({
   //},
 })
 
+const CharButton = ({editor, width, height}) => (
+  <span className="dropdown">
+    <button type="button" title="Ajouter un charactère" className="dropdown-toggle" id="charDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+      <svg className="bi bi-deg-c" width={width} height={height} fill="currentColor" version="1.1" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="4" cy="5" r="1.5592" fill="#fff" stroke="#000003" strokeWidth=".7515"/>
+        <text x="5" y="13" fill="#000000" fontFamily="sans-serif" fontSize="17px" letterSpacing="0px" wordSpacing="0px" style={{lineHeight:1.25}} xmlSpace="preserve"><tspan x="4.932128" y="13.764425">c</tspan></text>
+      </svg>
+    </button>
+    <div className="dropdown-menu dropdown-grid" aria-labelledby="charDropdown">
+      <a onClick={() => editor.chain().focus().insertContent("°C").run()}>°C</a>
+      <a onClick={() => editor.chain().focus().insertContent("°F").run()}>°F</a>
+    </div>
+  </span>
+)
 const BoldButton = ({editor, width, height}) => (
   <button onClick={() => editor.chain().focus().toggleBold().run()} className={editor.isActive('bold') ? 'is-active' : ''}>
     <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-type-bold" viewBox="0 0 16 16">
@@ -684,6 +698,7 @@ const Toolbar = ({ editor }) => {
         <BoldButton editor={editor} width={width} height={height} />
         <ItalicButton editor={editor} width={width} height={height} />
         <StrikeButton editor={editor} width={width} height={height} />
+        <CharButton editor={editor} width={width} height={height} />
       </Inline>
       <Inline padding="0 1.5em">
         <button onClick={() => {let html = editor.getHTML(); console.log(html); alert(html)}}>

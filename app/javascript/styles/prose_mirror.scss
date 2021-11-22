@@ -117,3 +117,8 @@ span[data-ingredient] {
 	  outline: inherit;
   }
 }
+
+.dropdown-grid > * {
+  padding: 0.25em;
+  cursor: pointer;
+}
