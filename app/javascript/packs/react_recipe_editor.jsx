@@ -505,6 +505,10 @@ class RecipeEditor extends React.Component {
         <table className="table table-light">
           <tbody>
             <tr>
+              <th>Sorte de recette</th>
+              <td><CollectionSelect2 model={model} field="recipe_kind_id" options={gon.recipe_kinds.map(k => k.id)} showOption={(id) => gon.recipe_kinds.find(k => k.id == id).name} includeBlank="true"></CollectionSelect2></td>
+            </tr>
+            <tr>
               <th>Temps de préparation</th>
               <td><TextInputField2 model={model} field="preparation_time"></TextInputField2></td>
             </tr>
