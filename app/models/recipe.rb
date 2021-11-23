@@ -12,11 +12,11 @@ class Recipe < ApplicationRecord
 
   scope :all_main, -> { where(base_recipe_id: nil) }
   scope :with_images, -> { where.not(image_id: nil) }
+  scope :with_recipe_kind, -> { where.not(recipe_kind_id: nil) }
 
   scope :all_public, -> { where(is_public: true) }
-  scope :all_for, lambda { |user|
-    return where(is_public: true) unless user
-    where(is_public: true).or(Recipe.where(user_id: user.id))
+  scope :all_for, -> (user) {
+    user ? where(user_id: user.id) : all
   }
 
   def similar_recipes

@@ -9,6 +9,17 @@ module ApplicationHelper
     end
   end
 
+  # If the recipe kind has a recipe, link directly to it first.
+  def recipe_kind_direct_path(recipe_kind)
+    # TODO: Link to most popular...
+    first = recipe_kind.recipes.all_public.all_for(current_user).first
+    if first
+      recipe_path(first)
+    else
+      recipe_kind_path(recipe_kind)
+    end
+  end
+
   def regional_url_for(args)
     url_for({locale: current_region.locale}.merge(args))
   end

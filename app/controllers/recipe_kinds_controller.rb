@@ -6,6 +6,9 @@ class RecipeKindsController < ApplicationController
     @recipe_kinds = RecipeKind.all
   end
 
+  def show
+  end
+
   def edit
     gon.jbuilder
   end

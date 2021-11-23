@@ -13,9 +13,9 @@
   <div id="recipe-carrousel-<%= carrousel_id %>" class="recipe-carrousel" style="display: flex;">
     <% recipes.select(&:image).each do |recipe| %>
       <div class="recipe" style="width: 280px;">
-        <%= link_to recipe_path(recipe) do %>
+        <%= link_to recipe_kind_direct_path(recipe) do %>
           <%= image_tag small_image_path(recipe.image), width: 255, height: 171 %>
-          <div style="width: 255px; text-align: center; font-family: 'Satisfy', cursive; font-size: 1.8rem; color: black;">
+          <div style="width: 255px; text-align: center; font-family: 'Satisfy', cursive; font-size: 1.8rem; color: black; line-height: 1; margin-top: 0.25em;">
             <%= recipe.name %>
           </div>
         <% end %>

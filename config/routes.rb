@@ -40,7 +40,7 @@ Rails.application.routes.draw do
 
   resources :expressions, only: [:index, :create, :update, :destroy, :show]
   
-  resources :recipe_kinds, only: [:index, :create, :update, :destroy, :edit]
+  resources :recipe_kinds, only: [:index, :create, :update, :destroy, :edit, :show]
 
   resources :user_recipe_categories, only: [:create, :update, :destroy]
   

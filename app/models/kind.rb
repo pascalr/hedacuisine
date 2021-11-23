@@ -1,5 +1,6 @@
 class Kind < ApplicationRecord
-  has_many :recipes
+  #has_many :recipes
+  has_many :recipe_kinds
 
   belongs_to :kind, optional: true
   has_many :kinds
