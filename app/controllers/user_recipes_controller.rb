@@ -12,9 +12,9 @@ class UserRecipesController < ApplicationController
 
   def show_recipe_page
     # OPTIMIZE: Using paginage for this is too much for nothing I believe
-    @recipes = current_user.recipes.paginate(page: params[:page], per_page: 1)
-    @recipe = @recipes.first
-    render partial: "user_recipes/current_page", locals: {recipe: @recipe}, layout: nil
+    #@recipes = current_user.recipes.paginate(page: params[:page], per_page: 1)
+    #@recipe = @recipes.first
+    render partial: "user_recipes/current_page", locals: {recipes: current_user.recipes}, layout: nil
   end
 
   def index_with_pictures
