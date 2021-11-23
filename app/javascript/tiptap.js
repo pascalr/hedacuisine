@@ -80,7 +80,7 @@ const ArticleHeading = Heading.extend({
   addInputRules() {
     return [2,3,4,5].map(level => {
       return textblockTypeInputRule({
-        find: new RegExp("^(\\\${"+(level-2)+"})\\s$"),
+        find: new RegExp("^(\\\${"+(level-1)+"})\\s$"),
         type: this.type,
         getAttributes: {level},
       })
@@ -236,6 +236,14 @@ export const CustomLink = Node.create({
   //},
 })
 
+const ImageButton = ({editor, width, height}) => (
+  <button style={{padding: "0 1em"}}>
+    <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-image" viewBox="0 0 16 16">
+      <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+      <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/>
+    </svg>
+  </button> 
+)
 const HelpButton = ({editor, width, height}) => (
   <button style={{padding: "0 1em"}}>
     <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="#0d6efd" className="bi bi-question-circle" viewBox="0 0 16 16">
@@ -764,6 +772,7 @@ const ArticleToolbar = ({ editor }) => {
 
   // REALLY UGLY
   let selectedHeader = "0";
+  if (editor.isActive('heading', { level: 2 })) {selectedHeader = "2"}
   if (editor.isActive('heading', { level: 3 })) {selectedHeader = "3"}
   if (editor.isActive('heading', { level: 4 })) {selectedHeader = "4"}
   if (editor.isActive('heading', { level: 5 })) {selectedHeader = "5"}
@@ -780,13 +789,15 @@ const ArticleToolbar = ({ editor }) => {
             editor.chain().focus().toggleHeading({ level: val }).run()
           }
         }}>
-          <option value="3">Titre 1</option>
-          <option value="4">Titre 2</option>
-          <option value="5">Titre 3</option>
+          <option value="2">Titre 1</option>
+          <option value="3">Titre 2</option>
+          <option value="4">Titre 3</option>
+          <option value="5">Titre 4</option>
           <option value="0">Normal</option>
         </select>
       </Inline>
       <Inline padding="0 1.5em">
+        <ImageButton editor={editor} width={width} height={height} />
         <AddNoteButton editor={editor} width={width} height={height} />
         <LinkButton editor={editor} width={width} height={height} />
         <CharButton editor={editor} width={width} height={height} />

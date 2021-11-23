@@ -14,16 +14,7 @@
 <div class="article">
   <h1><%= @article.name %></h1>
   
-  <div>
-    <%= pretty_article_text(@article.intro) %>
-  </div>
-  
-  <% @article.sections.each do |section| %>
-    <h2><%= sanitize section.title %></h2>
-    <div>
-      <%= pretty_article_text(section.content) %>
-    </div>
-  <% end %>
+  <%= my_sanitize(@article.content) %>
 
   <h2>Commentaires</h2>
 
