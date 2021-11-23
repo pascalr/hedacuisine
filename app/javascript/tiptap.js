@@ -875,6 +875,31 @@ export const BubbleTiptap = ({content, model, field, url}) => {
   )
 }
 
+export const DescriptionTiptap = ({content, model, field, url}) => {
+
+  const width = 24
+  const height = 24
+
+  const editor = useEditor({
+    extensions: [Bold, Italic, Strike, Document, Paragraph, History, Text, CustomLink],
+    content: content,
+  })
+  // Ugly to call this at every render, but I don't know where else to put it.
+  window.registerEditor(editor, model, field, url)
+
+  return (
+    <div className="recipe-kind-editor">
+      {editor && <BubbleMenu editor={editor}>
+        <BoldButton editor={editor} width={width} height={height} />
+        <ItalicButton editor={editor} width={width} height={height} />
+        <StrikeButton editor={editor} width={width} height={height} />
+        <LinkButton editor={editor} width={width} height={height} />
+      </BubbleMenu>}
+      <EditorContent editor={editor} />
+    </div>
+  )
+}
+
 export class ModificationsHandler {
   constructor() {
     this.editors = new Set()

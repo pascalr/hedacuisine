@@ -1,4 +1,16 @@
 namespace :once do
+  
+  task recipe_kinds: :environment do
+    Recipe.with_images.each do |recipe|
+      k = RecipeKind.new
+      k.name = recipe.name
+      k.description = recipe.description
+      k.image_id = recipe.image_id
+      k.save!
+      recipe.recipe_kind = k
+      recipe.save!
+    end
+  end
 
   task sections_position: :environment do
     Section.all.each_with_index do |section, i|

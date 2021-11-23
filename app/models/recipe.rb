@@ -28,6 +28,8 @@ class Recipe < ApplicationRecord
 
   belongs_to :image, optional: true
 
+  belongs_to :recipe_kind, optional: true
+
   has_many :references
 
   belongs_to :kind, optional: true

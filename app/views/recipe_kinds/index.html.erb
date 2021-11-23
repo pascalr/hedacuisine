@@ -1,0 +1,7 @@
+<h1>Recipe kinds</h1>
+
+<% @recipe_kinds.each do |recipe_kind| %>
+  <div>
+    <%= link_to recipe_kind.name, edit_recipe_kind_path(recipe_kind) %>
+  </div>
+<% end %>
