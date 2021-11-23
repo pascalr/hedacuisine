@@ -129,12 +129,13 @@
   </div>
 <% end %>
 
-<div style="height: 1rem;"></div>
+<div style="height: 0.5em;"></div>
 
-<div style="font-size: 1.2rem;">
-  (<%= params[:page] || 1 %> de <%= versions.size %>) recettes
-</div>
-<%= render partial: "recipes/recipe_body", locals: {recipe: @recipe, alternatives: alternatives} %>
+<%= content_tag(:div, id: "current-page", data: {page: params[:page] || 1, "replace-url": user_recipes_show_recipe_page_path(page: '{{}}')}) do %>
+  <%= render partial: "user_recipes/current_page", locals: {recipes: versions} %>
+<% end %>
+
+<div style="height: 1rem;"></div>
 
 <%# javascript_pack_tag "recipe" %>
 <%= javascript_pack_tag "toggle_link" %>

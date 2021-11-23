@@ -66,7 +66,7 @@
 <hr style="margin-top: 0;">
 
 <%= content_tag(:div, id: "current-page", data: {page: params[:page] || 1, "replace-url": user_recipes_show_recipe_page_path(page: '{{}}')}) do %>
-  <%= render partial: "user_recipes/current_page" %>
+  <%= render partial: "user_recipes/current_page", locals: {recipes: current_user.recipes} %>
 <% end %>
 
 <%= javascript_pack_tag "user_recipes_index" %>

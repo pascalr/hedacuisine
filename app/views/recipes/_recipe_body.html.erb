@@ -6,22 +6,22 @@
   <div style="margin-right: 1rem;"><b><%= recipe.name %></b></div>
 
   <div class="d-flex" style="flex-grow: 1;">
-    <% if alternatives.blank? %>
+    <%# if alternatives.blank? %>
         <div class="btn btn-outline-secondary" style="padding: 0.1rem 0.4rem; background-color: #333; color: white; cursor: unset;">
           <%= "☆☆☆☆☆ (0)" %>
         </div>
-    <% else %>
-      <div class="dropdown">
+    <%# else %>
+      <!--<div class="dropdown">
         <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="versionsMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding: 0.1rem 0.4rem; background-color: #333; color: white">
-          <%= recipe.pretty_version %>
+          <%# recipe.pretty_version %>
         </button>
         <div class="dropdown-menu" aria-labelledby="versionsMenuButton">
-          <% alternatives.each do |alternative| %>
-            <%= link_to alternative.pretty_version, alternative, class: "dropdown-item" %>
-          <% end %>
+          <%# alternatives.each do |alternative| %>
+            <%# link_to alternative.pretty_version, alternative, class: "dropdown-item" %>
+          <%# end %>
         </div>
-      </div>
-    <% end %>
+      </div>-->
+    <%# end %>
     <div style="flex-grow: 1;"></div>
     <% if user_signed_in? %>
       <div class="dropdown" style="padding: 0 1rem;">

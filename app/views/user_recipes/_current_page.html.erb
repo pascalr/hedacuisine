@@ -1,16 +1,22 @@
+<% show_nav_if_one_page = true unless local_assigns[:show_nav_if_one_page] %>
+<% page = params[:page] ? params[:page].to_i : 1 %>
+<% recipe = recipes[page-1] %>
+
 <div style="min-height: 100vh;">
-  <div style="font-size: 1.2rem;">
-    (<%= params[:page] || 1 %> de <%= current_user.recipes.count %>) recettes
-    <% if params[:page].blank? or params[:page].to_i == 1 %>
-      <%= image_tag icon_path("chevron-left.svg"), style: "opacity: 0.5;" %>
-    <% else %>
-      <%= link_to image_tag(icon_path("chevron-left.svg")), regional_url_for(page: params[:page].to_i - 1), id: "previous-recipe-link", "data-replace-tag": ".recipe-body" %>
-    <% end %>
-    <% if params[:page].to_i == current_user.recipes.count %>
-      <%= image_tag icon_path("chevron-right.svg"), style: "opacity: 0.5;" %>
-    <% else %>
-      <%= link_to image_tag(icon_path("chevron-right.svg")), regional_url_for(page: (params[:page] || 1).to_i + 1), id: "next-recipe-link" %>
-    <% end %>
-  </div>
-  <%= render partial: "recipes/recipe_body", locals: {recipe: @recipe} %>
+  <% unless recipes.count == 1 && !show_nav_if_one_page %>
+    <div style="font-size: 1.2rem;">
+      (<%= page %> de <%= recipes.count %>) recettes
+      <% if page == 1 %>
+        <%= image_tag icon_path("chevron-left.svg"), style: "opacity: 0.5;" %>
+      <% else %>
+        <%= link_to image_tag(icon_path("chevron-left.svg")), regional_url_for(page: page-1), id: "previous-recipe-link", "data-replace-tag": ".recipe-body" %>
+      <% end %>
+      <% if page == recipes.count %>
+        <%= image_tag icon_path("chevron-right.svg"), style: "opacity: 0.5;" %>
+      <% else %>
+        <%= link_to image_tag(icon_path("chevron-right.svg")), regional_url_for(page: page+1), id: "next-recipe-link" %>
+      <% end %>
+    </div>
+  <% end %>
+  <%= render partial: "recipes/recipe_body", locals: {recipe: recipe} %>
 </div>
