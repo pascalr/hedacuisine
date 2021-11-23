@@ -6,6 +6,7 @@ namespace :once do
       k.name = recipe.name
       k.description = recipe.description
       k.image_id = recipe.image_id
+      k.kind_id = recipe.kind_id
       k.save!
       recipe.recipe_kind = k
       recipe.save!

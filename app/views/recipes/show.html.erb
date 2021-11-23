@@ -1,6 +1,8 @@
 <%= render partial: "recipes/tabs" %>
 
-<%= render partial: "kinds/breadcrumbs", locals: {leaf: @recipe} %>
+<% if @recipe.recipe_kind %>
+  <%= render partial: "kinds/breadcrumbs", locals: {leaf: @recipe.recipe_kind} %>
+<% end %>
 
 <%= content_for :title, @recipe.fullname + " - HedaCuisine" %>
 <% description = description_recipe_ingredients(@recipe) %>
