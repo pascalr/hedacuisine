@@ -76,6 +76,17 @@ const CustomHeading = Heading.extend({
     })
   },
 })
+const ArticleHeading = Heading.extend({
+  addInputRules() {
+    return [2,3,4,5].map(level => {
+      return textblockTypeInputRule({
+        find: new RegExp("^(\\\${"+(level-2)+"})\\s$"),
+        type: this.type,
+        getAttributes: {level},
+      })
+    })
+  },
+})
 
 export const CustomLink = Node.create({
   name: 'link',
@@ -225,6 +236,53 @@ export const CustomLink = Node.create({
   //},
 })
 
+const HelpButton = ({editor, width, height}) => (
+  <button style={{padding: "0 1em"}}>
+    <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="#0d6efd" className="bi bi-question-circle" viewBox="0 0 16 16">
+      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+      <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+    </svg>
+  </button> 
+)
+const StepButton = ({editor, width, height}) => (
+  <button type="button" title="Ajouter une étape" onClick={() => editor.chain().focus().toggleStep().run()} className={editor.isActive('step') ? 'is-active' : ''}>
+    <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-hash" viewBox="0 0 16 16">
+      <path d="M8.39 12.648a1.32 1.32 0 0 0-.015.18c0 .305.21.508.5.508.266 0 .492-.172.555-.477l.554-2.703h1.204c.421 0 .617-.234.617-.547 0-.312-.188-.53-.617-.53h-.985l.516-2.524h1.265c.43 0 .618-.227.618-.547 0-.313-.188-.524-.618-.524h-1.046l.476-2.304a1.06 1.06 0 0 0 .016-.164.51.51 0 0 0-.516-.516.54.54 0 0 0-.539.43l-.523 2.554H7.617l.477-2.304c.008-.04.015-.118.015-.164a.512.512 0 0 0-.523-.516.539.539 0 0 0-.531.43L6.53 5.484H5.414c-.43 0-.617.22-.617.532 0 .312.187.539.617.539h.906l-.515 2.523H4.609c-.421 0-.609.219-.609.531 0 .313.188.547.61.547h.976l-.516 2.492c-.008.04-.015.125-.015.18 0 .305.21.508.5.508.265 0 .492-.172.554-.477l.555-2.703h2.242l-.515 2.492zm-1-6.109h2.266l-.515 2.563H6.859l.532-2.563z"/>
+    </svg>
+  </button> 
+)
+const IngredientButton = ({editor, width, height}) => (
+  <span className="dropdown">
+    <button type="button" title="Ajouter un ingrédient ou une liste d'ingrédient" className="dropdown-toggle" id="ingDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+      <svg className="bi bi-egg" width={width} height={height} fill="currentColor" version="1.1" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+       <g>
+        <path d="m9.5254 1.4576-2.7019 0.02397c-0.25329 0.0042-0.47958 0.10552-0.6499 0.36509-0.088322 0.22538-0.28139 0.57098 0 0.76348 0.21838 0.10502 0.48117 0.22845 0.56517 0.39821 0.065074 0.33662 3.551e-4 1.0685 0 1.6059-0.076506 1.4087-1.1194 1.3293-1.0777 2.2671v7.3898h5.9322v-7.4576c-0.0034-1.2097-0.7028-0.99755-1.0501-2.4608-0.078413-0.51526-0.16055-0.96165-0.095883-1.3276 0.08517-0.18291 0.38493-0.16276 0.51055-0.51049v-0.64035c-0.14541-0.34332-0.61106-0.34145-0.88084-0.37387z" fill="none" stroke="#000" strokeWidth=".5"/>
+       </g>
+       <g>
+        <path d="m3.964 15.171a2.9026 2.9176 0 0 1-2.9026-2.9176c0-1.1414 0.40057-2.501 1.0113-3.5712 0.3042-0.53276 0.64555-0.96749 0.98922-1.2628 0.34716-0.2976 0.65368-0.4178 0.90214-0.4178 0.24847 0 0.55499 0.12021 0.90214 0.4178 0.34367 0.29526 0.68503 0.72999 0.98922 1.2628 0.61072 1.0702 1.0113 2.4298 1.0113 3.5712a2.9026 2.9176 0 0 1-2.9026 2.9176zm0 0.58353a3.4832 3.5012 0 0 0 3.4832-3.5012c0-2.5173-1.7416-5.8353-3.4832-5.8353-1.7416 0-3.4832 3.3179-3.4832 5.8353a3.4832 3.5012 0 0 0 3.4832 3.5012z" strokeWidth=".58203"/>
+        <g transform="translate(-.80521 1.0023)" fill="none" stroke="#000" strokeWidth=".5">
+         <path d="m8.7489 9.1926v4.8898h5.2973v-4.8659z"/>
+         <path d="m8.6557 9.1545 2.397-1.9415h4.8659l-1.9655 1.9655"/>
+         <path d="m16.262 6.9587 0.0085 5.0159-2.1752 2.1906"/>
+        </g>
+        <g fill="#fff" stroke="#000003" strokeWidth=".011985">
+         <path d="m3.6012 15.137c-0.60801-0.083665-1.1744-0.35599-1.6158-0.77681-0.43851-0.41814-0.71637-0.91284-0.85735-1.5264-0.056877-0.24753-0.056502-0.98582 6.908e-4 -1.3624 0.22535-1.4837 0.88842-2.961 1.7129-3.8163 0.34324-0.35606 0.65583-0.55847 0.95925-0.62114 1.1307-0.23355 2.715 2.1638 3.0111 4.5566 0.04807 0.38839 0.047374 0.86645-0.00168 1.153-0.20201 1.1802-1.1047 2.1107-2.2895 2.3599-0.22034 0.04635-0.6996 0.06382-0.91975 0.03353z"/>
+         <path d="m8.2095 12.638v-2.1812h0.76308c0.41969 0 1.4929 0.0072 2.385 0.01592l1.6219 0.01592v4.3306h-4.77z"/>
+         <path d="m9.1466 9.9305-0.58497-0.012628 1.7919-1.4502h4.1477l-1.4855 1.4861-1.6421-0.0053488c-0.90314-0.00294-1.9053-0.011032-2.227-0.017977z"/>
+         <path d="m13.507 12.375v-2.1932l1.6707-1.6702 0.01538 0.1281c0.0085 0.070455 0.01548 1.0504 0.01559 2.1776l2.09e-4 2.0495-1.7018 1.7013z"/>
+        </g>
+       </g>
+      </svg>
+    </button>
+    <ul className="dropdown-menu" aria-labelledby="ingDropdown">
+      <li key="99999999999999"><a className="dropdown-item" style={{cursor: 'pointer'}}>Ajouter une liste...</a></li>
+      {Object.values(gon.recipe.ingredients || {}).map(ing => {
+        let text = Utils.prettyQuantityFor(ing.raw, ing.food.name)
+        return <li key={ing.id}><a className="dropdown-item" style={{cursor: 'pointer'}} onClick={() => editor.chain().focus().insertIngredient(ing.item_nb).run()}>{text}<Inline color="#0d6efd">{ing.food.name}</Inline></a></li>
+      })}
+    </ul>
+  </span>
+)
 const AddNoteButton = ({editor, width, height}) => (
   <button title="Rechercher et ajouter une note existante au texte sélectionné">
     <svg xmlns="http://www.w3.org/2000/svg" width={width-2} height={height-2} fill="currentColor" className="bi bi-journals" viewBox="0 0 16 16">
@@ -307,7 +365,7 @@ const LinkButton = ({editor, width, height}) => (
       </svg>
     </button> 
     <ul className="dropdown-menu" aria-labelledby="linkDropdown">
-      <li key="1">
+      {!gon.recipe ? null : <li key="1">
         <a className="dropdown-item" style={{cursor: 'pointer'}}>Note &raquo;</a>
         <ul className="dropdown-menu dropdown-submenu">
           {Object.values(gon.recipe.notes || {}).map(note => (
@@ -317,7 +375,7 @@ const LinkButton = ({editor, width, height}) => (
             </li>
           ))}
         </ul>
-      </li>
+      </li>}
       <li key="2"><a className="dropdown-item" style={{cursor: 'pointer'}} onClick={(evt) => alert('todo')}>Référence</a></li>
     </ul>
   </span>
@@ -654,13 +712,55 @@ const Toolbar = ({ editor }) => {
   const width = 24
   const height = 24
 
-  //onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-  //      className={editor.isActive('heading', { level: 4 }) ? 'is-active' : ''}
-  //    >
-  // { 'is-active': editor.isActive('heading', { level: 1 }) }
-  //
-  //  onClick={() => editor.chain().focus().setParagraph().run()}
-  //      className={editor.isActive('paragraph') ? 'is-active' : ''}
+  // REALLY UGLY
+  let selectedHeader = "0";
+  if (editor.isActive('heading', { level: 3 })) {selectedHeader = "3"}
+  if (editor.isActive('heading', { level: 4 })) {selectedHeader = "4"}
+  if (editor.isActive('heading', { level: 5 })) {selectedHeader = "5"}
+  // selectedHeader = editor.getAttributes('heading').level // Does not work
+
+  return (
+    <div className="toolbar" style={{display: "flex"}}>
+      <Inline padding="0 1.5em">
+        <select value={selectedHeader} style={{display: "flex", alignItems: "center"}} onChange={(e) => {
+          let val = parseInt(e.target.value)
+          if (!val) {
+            editor.chain().focus().setParagraph().run()
+          } else {
+            editor.chain().focus().toggleHeading({ level: val }).run()
+          }
+        }}>
+          <option value="3">Titre 1</option>
+          <option value="4">Titre 2</option>
+          <option value="5">Titre 3</option>
+          <option value="0">Normal</option>
+        </select>
+      </Inline>
+      <Inline padding="0 1.5em">
+        <StepButton editor={editor} width={width} height={height} />
+        <IngredientButton editor={editor} width={width} height={height} />
+        <MeasuringButton editor={editor} width={width} height={height} />
+        <AddNoteButton editor={editor} width={width} height={height} />
+        <LinkButton editor={editor} width={width} height={height} />
+        <CharButton editor={editor} width={width} height={height} />
+        <MoreButton editor={editor} width={width} height={height} />
+      </Inline>
+      <Inline padding="0 1.5em">
+        <BoldButton editor={editor} width={width} height={height} />
+        <ItalicButton editor={editor} width={width} height={height} />
+        <StrikeButton editor={editor} width={width} height={height} />
+      </Inline>
+      <Inline flexGrow="1"></Inline>
+      <HelpButton editor={editor} width={width} height={height} />
+    </div>
+  )
+}
+
+const ArticleToolbar = ({ editor }) => {
+  if (!editor) {return null}
+
+  const width = 24
+  const height = 24
 
   // REALLY UGLY
   let selectedHeader = "0";
@@ -687,42 +787,6 @@ const Toolbar = ({ editor }) => {
         </select>
       </Inline>
       <Inline padding="0 1.5em">
-        <button type="button" title="Ajouter une étape" onClick={() => editor.chain().focus().toggleStep().run()} className={editor.isActive('step') ? 'is-active' : ''}>
-          <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-hash" viewBox="0 0 16 16">
-            <path d="M8.39 12.648a1.32 1.32 0 0 0-.015.18c0 .305.21.508.5.508.266 0 .492-.172.555-.477l.554-2.703h1.204c.421 0 .617-.234.617-.547 0-.312-.188-.53-.617-.53h-.985l.516-2.524h1.265c.43 0 .618-.227.618-.547 0-.313-.188-.524-.618-.524h-1.046l.476-2.304a1.06 1.06 0 0 0 .016-.164.51.51 0 0 0-.516-.516.54.54 0 0 0-.539.43l-.523 2.554H7.617l.477-2.304c.008-.04.015-.118.015-.164a.512.512 0 0 0-.523-.516.539.539 0 0 0-.531.43L6.53 5.484H5.414c-.43 0-.617.22-.617.532 0 .312.187.539.617.539h.906l-.515 2.523H4.609c-.421 0-.609.219-.609.531 0 .313.188.547.61.547h.976l-.516 2.492c-.008.04-.015.125-.015.18 0 .305.21.508.5.508.265 0 .492-.172.554-.477l.555-2.703h2.242l-.515 2.492zm-1-6.109h2.266l-.515 2.563H6.859l.532-2.563z"/>
-          </svg>
-        </button> 
-        <span className="dropdown">
-          <button type="button" title="Ajouter un ingrédient ou une liste d'ingrédient" className="dropdown-toggle" id="ingDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-            <svg className="bi bi-egg" width={width} height={height} fill="currentColor" version="1.1" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-             <g>
-              <path d="m9.5254 1.4576-2.7019 0.02397c-0.25329 0.0042-0.47958 0.10552-0.6499 0.36509-0.088322 0.22538-0.28139 0.57098 0 0.76348 0.21838 0.10502 0.48117 0.22845 0.56517 0.39821 0.065074 0.33662 3.551e-4 1.0685 0 1.6059-0.076506 1.4087-1.1194 1.3293-1.0777 2.2671v7.3898h5.9322v-7.4576c-0.0034-1.2097-0.7028-0.99755-1.0501-2.4608-0.078413-0.51526-0.16055-0.96165-0.095883-1.3276 0.08517-0.18291 0.38493-0.16276 0.51055-0.51049v-0.64035c-0.14541-0.34332-0.61106-0.34145-0.88084-0.37387z" fill="none" stroke="#000" strokeWidth=".5"/>
-             </g>
-             <g>
-              <path d="m3.964 15.171a2.9026 2.9176 0 0 1-2.9026-2.9176c0-1.1414 0.40057-2.501 1.0113-3.5712 0.3042-0.53276 0.64555-0.96749 0.98922-1.2628 0.34716-0.2976 0.65368-0.4178 0.90214-0.4178 0.24847 0 0.55499 0.12021 0.90214 0.4178 0.34367 0.29526 0.68503 0.72999 0.98922 1.2628 0.61072 1.0702 1.0113 2.4298 1.0113 3.5712a2.9026 2.9176 0 0 1-2.9026 2.9176zm0 0.58353a3.4832 3.5012 0 0 0 3.4832-3.5012c0-2.5173-1.7416-5.8353-3.4832-5.8353-1.7416 0-3.4832 3.3179-3.4832 5.8353a3.4832 3.5012 0 0 0 3.4832 3.5012z" strokeWidth=".58203"/>
-              <g transform="translate(-.80521 1.0023)" fill="none" stroke="#000" strokeWidth=".5">
-               <path d="m8.7489 9.1926v4.8898h5.2973v-4.8659z"/>
-               <path d="m8.6557 9.1545 2.397-1.9415h4.8659l-1.9655 1.9655"/>
-               <path d="m16.262 6.9587 0.0085 5.0159-2.1752 2.1906"/>
-              </g>
-              <g fill="#fff" stroke="#000003" strokeWidth=".011985">
-               <path d="m3.6012 15.137c-0.60801-0.083665-1.1744-0.35599-1.6158-0.77681-0.43851-0.41814-0.71637-0.91284-0.85735-1.5264-0.056877-0.24753-0.056502-0.98582 6.908e-4 -1.3624 0.22535-1.4837 0.88842-2.961 1.7129-3.8163 0.34324-0.35606 0.65583-0.55847 0.95925-0.62114 1.1307-0.23355 2.715 2.1638 3.0111 4.5566 0.04807 0.38839 0.047374 0.86645-0.00168 1.153-0.20201 1.1802-1.1047 2.1107-2.2895 2.3599-0.22034 0.04635-0.6996 0.06382-0.91975 0.03353z"/>
-               <path d="m8.2095 12.638v-2.1812h0.76308c0.41969 0 1.4929 0.0072 2.385 0.01592l1.6219 0.01592v4.3306h-4.77z"/>
-               <path d="m9.1466 9.9305-0.58497-0.012628 1.7919-1.4502h4.1477l-1.4855 1.4861-1.6421-0.0053488c-0.90314-0.00294-1.9053-0.011032-2.227-0.017977z"/>
-               <path d="m13.507 12.375v-2.1932l1.6707-1.6702 0.01538 0.1281c0.0085 0.070455 0.01548 1.0504 0.01559 2.1776l2.09e-4 2.0495-1.7018 1.7013z"/>
-              </g>
-             </g>
-            </svg>
-          </button>
-          <ul className="dropdown-menu" aria-labelledby="ingDropdown">
-            <li key="99999999999999"><a className="dropdown-item" style={{cursor: 'pointer'}}>Ajouter une liste...</a></li>
-            {Object.values(gon.recipe.ingredients || {}).map(ing => {
-              let text = Utils.prettyQuantityFor(ing.raw, ing.food.name)
-              return <li key={ing.id}><a className="dropdown-item" style={{cursor: 'pointer'}} onClick={() => editor.chain().focus().insertIngredient(ing.item_nb).run()}>{text}<Inline color="#0d6efd">{ing.food.name}</Inline></a></li>
-            })}
-          </ul>
-        </span>
-        <MeasuringButton editor={editor} width={width} height={height} />
         <AddNoteButton editor={editor} width={width} height={height} />
         <LinkButton editor={editor} width={width} height={height} />
         <CharButton editor={editor} width={width} height={height} />
@@ -734,39 +798,27 @@ const Toolbar = ({ editor }) => {
         <StrikeButton editor={editor} width={width} height={height} />
       </Inline>
       <Inline flexGrow="1"></Inline>
-      <button style={{padding: "0 1em"}}>
-        <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="#0d6efd" className="bi bi-question-circle" viewBox="0 0 16 16">
-          <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-          <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
-        </svg>
-      </button> 
+      <HelpButton editor={editor} width={width} height={height} />
     </div>
   )
-//            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" className="bi bi-egg-fried" viewBox="0 0 16 16">
-//              <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-//              <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
-//            </svg>
-  //<button onClick={() => editor.chain().focus().toggleUnderline().run()} className={editor.isActive('underline') ? 'is-active' : ''}>
-  //  <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-type-underline" viewBox="0 0 16 16">
-  //    <path d="M5.313 3.136h-1.23V9.54c0 2.105 1.47 3.623 3.917 3.623s3.917-1.518 3.917-3.623V3.136h-1.23v6.323c0 1.49-.978 2.57-2.687 2.57-1.709 0-2.687-1.08-2.687-2.57V3.136zM12.5 15h-9v-1h9v1z"/>
-  //  </svg>
-  //</button> 
-  //<button onClick={() => editor.chain().focus().toggleBulletList().run()} className={editor.isActive('bulletList') ? 'is-active' : ''}>
-  //  <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-list-ul" viewBox="0 0 16 16">
-  //    <path fillRule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-  //  </svg>
-  //</button> 
-//        <button onClick={() => editor.chain().focus().toggleOrderedList().run()} className={editor.isActive('orderedList') ? 'is-active' : ''}>
-//          <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-list-ol" viewBox="0 0 16 16">
-//            <path fillRule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5z"/>
-//            <path d="M1.713 11.865v-.474H2c.217 0 .363-.137.363-.317 0-.185-.158-.31-.361-.31-.223 0-.367.152-.373.31h-.59c.016-.467.373-.787.986-.787.588-.002.954.291.957.703a.595.595 0 0 1-.492.594v.033a.615.615 0 0 1 .569.631c.003.533-.502.8-1.051.8-.656 0-1-.37-1.008-.794h.582c.008.178.186.306.422.309.254 0 .424-.145.422-.35-.002-.195-.155-.348-.414-.348h-.3zm-.004-4.699h-.604v-.035c0-.408.295-.844.958-.844.583 0 .96.326.96.756 0 .389-.257.617-.476.848l-.537.572v.03h1.054V9H1.143v-.395l.957-.99c.138-.142.293-.304.293-.508 0-.18-.147-.32-.342-.32a.33.33 0 0 0-.342.338v.041zM2.564 5h-.635V2.924h-.031l-.598.42v-.567l.629-.443h.635V5z"/>
-//          </svg>
-//        </button> 
-//        <button onClick={(evt) => editor.chain().focus().setIngredientList([]).run()}>
-//          <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="currentColor" className="bi bi-list-check" viewBox="0 0 16 16">
-//            <path fillRule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3.854 2.146a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 3.293l1.146-1.147a.5.5 0 0 1 .708 0zm0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 7.293l1.146-1.147a.5.5 0 0 1 .708 0zm0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z"/>
-//          </svg>
-//        </button> 
+}
+
+export const ArticleTiptap = ({model, field, url}) => {
+  const editor = useEditor({
+    extensions: [Bold, Italic, Document, Paragraph, Strike, Text, ArticleHeading, CustomLink,
+      History, IngredientNode, IngredientListNode, StepNode,// Subscript, Superscript,
+    ],
+    content: gon[model][field],
+  })
+  // Ugly to call this at every render, but I don't know where else to put it.
+  window.registerEditor(editor, model, field, url)
+
+  return (
+    <div className="article-editor">
+      <ArticleToolbar editor={editor} />
+      <EditorContent className="article-editor" editor={editor} />
+    </div>
+  )
 }
 
 export const Tiptap = ({model, field, url}) => {

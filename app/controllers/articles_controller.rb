@@ -11,6 +11,7 @@ class ArticlesController < ApplicationController
   end
 
   def edit
+    gon.jbuilder
   end
 
   def new
@@ -39,6 +40,6 @@ private
   end
     
   def article_params
-    params.require(:article).permit(:name, :intro, :is_public)
+    params.require(:article).permit(:name, :intro, :is_public, :content)
   end
 end

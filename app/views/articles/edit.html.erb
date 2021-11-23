@@ -9,6 +9,8 @@
 <textarea data-model="<%= @article.model_name.to_s.underscore %>" data-url="<%= article_path(@article) %>" data-update-column="intro" style="width: 100%;" rows=10><%= @article.intro %></textarea>
 <br><br>
 
+<div id="root"></div>
+
 <h2>Table of contents</h2>
 
 <ul class="list-group" data-controller="drag" data-drag-base-url="<%= article_path(@article) %>">
@@ -40,3 +42,5 @@
 <% end %>
 
 <%= javascript_pack_tag "edit" %>
+<%= javascript_pack_tag "article_editor" %>
+<%= stylesheet_pack_tag "react_recipe_editor" %>
