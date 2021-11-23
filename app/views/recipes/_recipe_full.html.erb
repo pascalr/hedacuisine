@@ -2,7 +2,7 @@
 <% unless current_user_admin? %>
   <% alternatives = alternatives.reject {|r| !r.is_public} %>
 <% end %>
-<% versions = [@recipe] + alternatives %>
+<% versions = ([@recipe] + alternatives).sort_by {|r| r.id} %>
 
 <span id="servings-quantity-value" hidden><%= @recipe.servings_quantity %></span>
 <span id="ingredient-list" data-values="<%= @recipe.ingredients.inject({}) {|ings, i|
@@ -131,9 +131,31 @@
 
 <div style="height: 0.5em;"></div>
 
-<%= content_tag(:div, id: "current-page", data: {page: params[:page] || 1, "replace-url": user_recipes_show_recipe_page_path(page: '{{}}')}) do %>
-  <%= render partial: "user_recipes/current_page", locals: {recipes: versions} %>
-<% end %>
+<% page = params[:page] ? params[:page].to_i : 1 %>
+
+<div style="min-height: 100vh;">
+  <div style="font-size: 1.2rem;">
+    (<%= page %> de <%= versions.count %>) recettes
+    <span id="previous">
+      <% if page == 1 %>
+        <%= image_tag icon_path("chevron-left.svg"), style: "opacity: 0.5;" %>
+      <% else %>
+        <%= link_to image_tag(icon_path("chevron-left.svg")), recipe_path(versions[page-2]), id: "previous-recipe-link", "data-replace-tag": ".recipe-body" %>
+      <% end %>
+    </span>
+    <span id="next">
+      <% if page == versions.count %>
+        <%= image_tag icon_path("chevron-right.svg"), style: "opacity: 0.5;" %>
+      <% else %>
+        <%= link_to image_tag(icon_path("chevron-right.svg")), recipe_path(versions[page-2]), id: "next-recipe-link" %>
+      <% end %>
+    </span>
+  </div>
+  <div id="current-page">
+    <%= render partial: "recipes/recipe_body", locals: {recipe: @recipe} %>
+  </div>
+</div>
+<%# end %>
 
 <div style="height: 1rem;"></div>
 
@@ -142,4 +164,4 @@
 <%= javascript_pack_tag "dropdown_submenu" %>
 <%= javascript_pack_tag current_user ? "recipe_rating" : "recipe_rating_read_only" %>
 <%= javascript_pack_tag "recipes_show" %>
-<%= javascript_pack_tag "user_recipes_index" %>
+<%# javascript_pack_tag "paginator" %>

@@ -1,5 +1,5 @@
 class RecipesController < ApplicationController
-  before_action :set_recipe, only: [:do_process, :edit, :update, :destroy, :rate, :cheat, :validate, :view_body, :move_ing, :old_edit]
+  before_action :set_recipe, only: [:do_process, :edit, :update, :destroy, :rate, :cheat, :validate, :view_body, :move_ing, :old_edit, :page]
   skip_before_action :authenticate_user!, only: [:show, :index]
   skip_before_action :only_admin!, only: [:show, :index]
 
@@ -62,6 +62,10 @@ class RecipesController < ApplicationController
     @recipe = Recipe.new
     #@recipe = params[:clone_id] ? Recipe.find(params[:clone_id]).dup : Recipe.new
     #@recipe.version_name = nil
+  end
+
+  def page
+    render partial: "recipes/recipe_body", locals: {recipe: @recipe}
   end
 
   def edit
