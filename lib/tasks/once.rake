@@ -1,4 +1,13 @@
 namespace :once do
+
+  task base_recipe_to_kind: :environment do
+    Recipe.all.each do |recipe|
+      if !recipe.recipe_kind && recipe.base_recipe
+        recipe.recipe_kind = recipe.base_recipe.recipe_kind
+        recipe.save!
+      end
+    end
+  end
   
   task recipe_kinds: :environment do
     Recipe.with_images.each do |recipe|

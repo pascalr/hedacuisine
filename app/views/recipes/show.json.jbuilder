@@ -3,11 +3,7 @@ json.ingredients @recipe.ingredients.inject({}) {|ings, i|
   qty = i.quantity_model; ings[i.id] = {ml: qty.ml, grams: qty.grams, total: qty.total, unit_weight: i.food.unit_weight, density: i.food.density, food_id: i.food.id, food_name: i.food.name, food_plural: i.food.plural, raw: i.raw, comment: i.comment}; ings
 }
 
-alternatives = @recipe.alternatives
-unless current_user && current_user.admin?
-  alternatives = alternatives.reject {|r| !r.is_public}
-end
-versions = [@recipe] + alternatives
+versions = @recipe.recipe_kind ? @recipe.recipe_kind.recipes : []
 json.pages versions do |version|
   json.id version.id
   json.url recipe_path(version)

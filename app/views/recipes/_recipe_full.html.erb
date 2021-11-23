@@ -1,8 +1,9 @@
-<% alternatives = @recipe.alternatives.sort_by {|r| r.version_nb || -1} %>
-<% unless current_user_admin? %>
-  <% alternatives = alternatives.reject {|r| !r.is_public} %>
-<% end %>
-<% versions = ([@recipe] + alternatives).sort_by {|r| r.id} %>
+<%# alternatives = @recipe.alternatives.sort_by {|r| r.version_nb || -1} %>
+<%# unless current_user_admin? %>
+  <%# alternatives = alternatives.reject {|r| !r.is_public} %>
+<%# end %>
+<%# versions = ([@recipe] + alternatives).sort_by {|r| r.id} %>
+<% versions = @recipe.recipe_kind ? @recipe.recipe_kind.recipes : [] %>
 
 <span id="servings-quantity-value" hidden><%= @recipe.servings_quantity %></span>
 <span id="ingredient-list" data-values="<%= @recipe.ingredients.inject({}) {|ings, i|
@@ -22,7 +23,7 @@
   </div>
 <% end %>
 
-<% if !alternatives.blank? && current_user_admin? %>
+<% if current_user_admin? %>
   <div style="font-size: 1.2rem; border-bottom: 1px solid black; padding-bottom: -0.1rem; margin-bottom: 0.5rem; width: 30rem;">Versions correspondantes: (<%= versions.size %> sur <%= versions.size %>) recettes</div>
   <div style="display: flex; gap: 10px; flex-wrap: wrap;">
     <div style="padding-top: 0.1rem; font-weight: bold;">
@@ -109,7 +110,7 @@
 <% if @recipe.recipe_kind.blank? %>
   <%= render partial: "recipes/recipe_body", locals: {recipe: @recipe} %>
 <% else %>
-  <% page = params[:page] ? params[:page].to_i : 1 %>
+  <% page = versions.index(@recipe) + 1 %>
   <div style="min-height: 100vh;">
     <div style="font-size: 1.2rem;">
       (<%= page %> de <%= versions.count %>) recettes
@@ -124,7 +125,7 @@
         <% if page == versions.count %>
           <%= image_tag icon_path("chevron-right.svg"), style: "opacity: 0.5;" %>
         <% else %>
-          <%= link_to image_tag(icon_path("chevron-right.svg")), recipe_path(versions[page-2]), id: "next-recipe-link" %>
+          <%= link_to image_tag(icon_path("chevron-right.svg")), recipe_path(versions[page]), id: "next-recipe-link" %>
         <% end %>
       </span>
     </div>
