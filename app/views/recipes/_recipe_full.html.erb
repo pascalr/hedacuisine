@@ -34,14 +34,14 @@
     <div style="display: flex; gap: 2em;">
       <div style="font-size: 1.2rem;">
         (<span id="page-number"><%= page %></span> de <%= versions.count %>) recettes
-        <span id="previous">
+        <span id="previous-container">
           <% if page == 1 %>
             <%= image_tag icon_path("chevron-left.svg"), style: "opacity: 0.5;" %>
           <% else %>
-            <%= link_to image_tag(icon_path("chevron-left.svg")), recipe_path(versions[page-2]), id: "previous-recipe-link", "data-replace-tag": ".recipe-body" %>
+            <%= link_to image_tag(icon_path("chevron-left.svg")), recipe_path(versions[page-2]), id: "previous-recipe-link" %>
           <% end %>
         </span>
-        <span id="next">
+        <span id="next-container">
           <% if page == versions.count %>
             <%= image_tag icon_path("chevron-right.svg"), style: "opacity: 0.5;" %>
           <% else %>
