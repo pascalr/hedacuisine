@@ -23,87 +23,6 @@
   </div>
 <% end %>
 
-<% if current_user_admin? %>
-  <div style="font-size: 1.2rem; border-bottom: 1px solid black; padding-bottom: -0.1rem; margin-bottom: 0.5rem; width: 30rem;">Versions correspondantes: (<%= versions.size %> sur <%= versions.size %>) recettes</div>
-  <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-    <div style="padding-top: 0.1rem; font-weight: bold;">
-      Filtrer:
-    </div>
-    <div class="dropdown">
-      <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dietMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Diète
-      </button>
-      <div class="dropdown-menu" aria-labelledby="dietMenuButton">
-        <span class="dropdown-item cursor-pointer filter-add-green-diet-link">Végétarien</span>
-        <span class="dropdown-item cursor-pointer filter-add-green-diet-link">Végane</span>
-        <span class="dropdown-item cursor-pointer filter-add-green-diet-link">Kéto</span>
-      </div>
-    </div>
-    <div class="dropdown">
-      <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="withoutIngMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Sans ingrédient
-      </button>
-      <div class="dropdown-menu" aria-labelledby="withoutIngMenuButton">
-        <% @recipe.ingredients.each do |ing| %>
-          <span class="dropdown-item cursor-pointer filter-add-red-ing-link"><%= ing.name %></span>
-        <% end %>
-      </div>
-    </div>
-    <div class="dropdown">
-      <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="withIngMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Avec ingrédient
-      </button>
-      <div class="dropdown-menu" aria-labelledby="withIngMenuButton">
-        <% @recipe.alternative_ingredients.each do |ing| %>
-          <span class="dropdown-item cursor-pointer filter-add-green-ing-link"><%= ing.name %></span>
-        <% end %>
-      </div>
-    </div>
-    <div class="dropdown">
-      <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="withoutToolMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Sans outil
-      </button>
-      <div class="dropdown-menu" aria-labelledby="withoutToolMenuButton">
-        <a class="dropdown-item" href="#">TODO</a>
-      </div>
-    </div>
-    <div class="dropdown">
-      <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="withToolMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Avec outil
-      </button>
-      <div class="dropdown-menu" aria-labelledby="withToolMenuButton">
-        <a class="dropdown-item" href="#">TODO</a>
-      </div>
-    </div>
-  </div>
-  <style>
-  .filter-green {
-    background-color: #4eff33;
-    border: 2px solid #38b325;
-    padding: 0.2rem;
-    border-radius: 5px;
-    margin: 0px 2px;
-    cursor: pointer;
-  }
-  .filter-red {
-    background-color: #ff000055;
-    border: 2px solid #ff0000;
-    padding: 0.2rem;
-    border-radius: 5px;
-    margin: 0px 2px;
-    cursor: pointer;
-  }
-  .cursor-pointer {
-    cursor: pointer;
-  }
-  </style>
-  <div style="margin-top: 0.5rem; margin-bottom: 0.2rem;">
-    <span>Filtres actifs: </span>
-    <span id="active-filters">
-      Aucun
-    </span>
-  </div>
-<% end %>
 
 <div style="height: 0.5em;"></div>
 
@@ -112,28 +31,91 @@
 <% else %>
   <% page = versions.index(@recipe) + 1 %>
   <div style="min-height: 100vh;">
-    <div style="font-size: 1.2rem;">
-      (<%= page %> de <%= versions.count %>) recettes
-      <span id="previous">
-        <% if page == 1 %>
-          <%= image_tag icon_path("chevron-left.svg"), style: "opacity: 0.5;" %>
-        <% else %>
-          <%= link_to image_tag(icon_path("chevron-left.svg")), recipe_path(versions[page-2]), id: "previous-recipe-link", "data-replace-tag": ".recipe-body" %>
-        <% end %>
-      </span>
-      <span id="next">
-        <% if page == versions.count %>
-          <%= image_tag icon_path("chevron-right.svg"), style: "opacity: 0.5;" %>
-        <% else %>
-          <%= link_to image_tag(icon_path("chevron-right.svg")), recipe_path(versions[page]), id: "next-recipe-link" %>
-        <% end %>
-      </span>
+    <div style="display: flex; gap: 2em;">
+      <div style="font-size: 1.2rem;">
+        (<span id="page-number"><%= page %></span> de <%= versions.count %>) recettes
+        <span id="previous">
+          <% if page == 1 %>
+            <%= image_tag icon_path("chevron-left.svg"), style: "opacity: 0.5;" %>
+          <% else %>
+            <%= link_to image_tag(icon_path("chevron-left.svg")), recipe_path(versions[page-2]), id: "previous-recipe-link", "data-replace-tag": ".recipe-body" %>
+          <% end %>
+        </span>
+        <span id="next">
+          <% if page == versions.count %>
+            <%= image_tag icon_path("chevron-right.svg"), style: "opacity: 0.5;" %>
+          <% else %>
+            <%= link_to image_tag(icon_path("chevron-right.svg")), recipe_path(versions[page]), id: "next-recipe-link" %>
+          <% end %>
+        </span>
+      </div>
+      <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#filter-collapse" aria-expanded="false" aria-controls="filterCollapse">Filter</button>
     </div>
+    <div class="collapse" id="filter-collapse">
+      <% if current_user_admin? %>
+        <div style="height: 0.5em;"></div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dietMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Diète
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dietMenuButton">
+              <span class="dropdown-item cursor-pointer filter-add-green-diet-link">Végétarien</span>
+              <span class="dropdown-item cursor-pointer filter-add-green-diet-link">Végane</span>
+              <span class="dropdown-item cursor-pointer filter-add-green-diet-link">Kéto</span>
+            </div>
+          </div>
+          <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="withoutIngMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Sans ingrédient
+            </button>
+            <div class="dropdown-menu" aria-labelledby="withoutIngMenuButton">
+              <% @recipe.ingredients.each do |ing| %>
+                <span class="dropdown-item cursor-pointer filter-add-red-ing-link"><%= ing.name %></span>
+              <% end %>
+            </div>
+          </div>
+          <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="withIngMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Avec ingrédient
+            </button>
+            <div class="dropdown-menu" aria-labelledby="withIngMenuButton">
+              <% @recipe.alternative_ingredients.each do |ing| %>
+                <span class="dropdown-item cursor-pointer filter-add-green-ing-link"><%= ing.name %></span>
+              <% end %>
+            </div>
+          </div>
+          <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="withoutToolMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Sans outil
+            </button>
+            <div class="dropdown-menu" aria-labelledby="withoutToolMenuButton">
+              <a class="dropdown-item" href="#">TODO</a>
+            </div>
+          </div>
+          <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="withToolMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Avec outil
+            </button>
+            <div class="dropdown-menu" aria-labelledby="withToolMenuButton">
+              <a class="dropdown-item" href="#">TODO</a>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 0.5rem; margin-bottom: 0.2rem;">
+          <span>Filtres actifs: </span>
+          <span id="active-filters">
+            Aucun
+          </span>
+        </div>
+      <% end %>
+    </div>
+    <div style="height: 0.2em;"></div>
     <div id="current-page">
       <%= render partial: "recipes/recipe_body", locals: {recipe: @recipe} %>
     </div>
   </div>
-  <%# javascript_pack_tag "paginator" %>
+  <%= javascript_pack_tag "paginator" %>
 <% end %>
 
 <div style="height: 1rem;"></div>

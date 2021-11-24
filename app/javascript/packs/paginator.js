@@ -1,36 +1,35 @@
 document.addEventListener("DOMContentLoaded", function(event) {
 
   const currentPage = document.getElementById("current-page");
-  window.currentPageNb = parseInt(currentPage.dataset.page)
 
   function changePage(pageNb) {
-    let url = currentPage.dataset.replaceUrl.replace('%7B%7B%7D%7D', currentPageNb)
+    console.log('CHANGE PAGE', pageNb)
+    let url = gon.pages[pageNb-1].url
     $.get(url, function(data) {
       currentPage.innerHTML = data;
-      attachNextAndPrevious();
+      document.getElementById("page-number").innerHTML = pageNb
     });
   }
 
-  function attachNextAndPrevious() {
+  // TODO: Update URL
+  // TODO: Update links. Disable if at the end.
 
-    const previous = document.getElementById("previous-recipe-link");
-    if (previous != null) {
-      previous.addEventListener("click", function(evt) {
-        evt.preventDefault();
-        window.currentPageNb = Math.max(1, currentPageNb - 1)
-        changePage(currentPageNb)
-      })
-    }
-
-    const next = document.getElementById("next-recipe-link");
-    if (next != null) {
-      next.addEventListener("click", function(evt) {
-        evt.preventDefault();
-        window.currentPageNb = currentPageNb + 1
-        changePage(currentPageNb)
-      })
-    }
+  const previous = document.getElementById("previous-recipe-link");
+  if (previous != null) {
+    previous.addEventListener("click", function(evt) {
+      evt.preventDefault();
+      gon.current_page = Math.max(1, gon.current_page - 1)
+      changePage(gon.current_page)
+    })
   }
-  attachNextAndPrevious()
+
+  const next = document.getElementById("next-recipe-link");
+  if (next != null) {
+    next.addEventListener("click", function(evt) {
+      evt.preventDefault();
+      gon.current_page = gon.current_page + 1
+      changePage(gon.current_page)
+    })
+  }
 
 })

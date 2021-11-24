@@ -6,5 +6,6 @@ json.ingredients @recipe.ingredients.inject({}) {|ings, i|
 versions = @recipe.recipe_kind ? @recipe.recipe_kind.recipes : []
 json.pages versions do |version|
   json.id version.id
-  json.url recipe_path(version)
+  json.url page_recipe_path(version)
 end
+json.current_page versions.index(@recipe) + 1
