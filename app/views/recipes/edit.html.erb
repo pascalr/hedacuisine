@@ -17,11 +17,15 @@
   <%= link_to 'Back', recipes_path %>
 </nav>
 
+<% if @recipe.recipe_kind %>
+  <%= render partial: @recipe.recipe_kind %>
+  <div style="height: 1em;"></div>
+<% else %>
+<% end %>
+
 <div id="recipe-editor">
-
-<div id="root"></div>
-
-<div style="height: 5em;"></div>
+  <div id="root"></div>
+  <div style="height: 5em;"></div>
 </div>
 
 <%= javascript_pack_tag 'react_recipe_editor' %>
