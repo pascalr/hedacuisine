@@ -15,12 +15,11 @@
     <% end %>
   </div>
   <div style="width: 100%;">
-    <h1>
-      <span class="recipe-title"><%= translated(@recipe_kind.name) %></span>
-    </h1>
+    <h1 class="recipe-title" data-model="<%= @recipe_kind.model_name.to_s.underscore %>" data-url="<%= recipe_kind_path(@recipe_kind) %>" data-update-column="name" contenteditable="true"><%= @recipe_kind.name %></h1>
     <div id="root" style="max-width: 600px; width: 100%; height: 400px;"></div>
   </div>
 </div>
 
 <%= javascript_pack_tag "recipe_kind_editor" %>
 <%= stylesheet_pack_tag "react_recipe_editor" %>
+<%= javascript_pack_tag "edit" %>

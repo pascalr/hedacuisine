@@ -384,7 +384,10 @@ const LinkButton = ({editor, width, height}) => (
           ))}
         </ul>
       </li>}
-      <li key="2"><a className="dropdown-item" style={{cursor: 'pointer'}} onClick={(evt) => alert('todo')}>Référence</a></li>
+      <li key="2">
+        <a className="dropdown-item" style={{cursor: 'pointer'}}>Aliment...</a>
+      </li>
+      <li key="3"><a className="dropdown-item" style={{cursor: 'pointer'}} onClick={(evt) => alert('todo')}>Référence</a></li>
     </ul>
   </span>
 )

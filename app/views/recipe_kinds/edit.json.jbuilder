@@ -4,3 +4,5 @@ json.recipe_kind do
   json.description @recipe_kind.description
   json.url recipe_kind_path(@recipe_kind)
 end
+
+json.foodList Food.all.map {|food| {id: food.id, name: food.name.downcase}}
