@@ -3,9 +3,11 @@ import ReactDOMServer from 'react-dom/server'
 
 import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from 'jsxstyle'
 
+import Autosuggest from 'react-autosuggest'
+
 // TIPTAP
 //import BubbleMenu from '@tiptap/extension-bubble-menu'
-import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react'
+import { useEditor, EditorContent, BubbleMenu, ReactNodeViewRenderer, NodeViewWrapper } from '@tiptap/react'
 import Bold from '@tiptap/extension-bold'
 //import BulletList from '@tiptap/extension-bullet-list'
 import Document from '@tiptap/extension-document'
@@ -65,6 +67,147 @@ export const InlineDocument = Node.create({
 //    ]
 //  },
 //})
+
+const FoodLinkComponent = ({node, updateAttributes}) => {
+  const [value, setValue] = useState('')
+  const [suggestions, setSuggestions] = useState([])
+
+  const inputFieldProps = {
+    placeholder: 'Aliment...',
+    value,
+    onChange: (e, {newValue}) => setValue(newValue),
+    //ref: foodInputField,
+  };
+  
+  const setFood = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
+    console.log("Setting food!")
+    updateAttributes({foodId: suggestion.id, linkName: suggestionValue})
+  }
+
+  console.log(node)
+
+  if (node.attrs.foodId) {
+    const food = gon.foodList.find(f => f.id == node.attrs.foodId)
+    if (food) {
+      return (
+        <NodeViewWrapper className="inline-block">
+          <a href={food.url}>{food.name}</a>
+        </NodeViewWrapper>
+      )
+    }
+  }
+
+  // node.attrs....
+  // FIXME: Autosuggest code here is a duplicate...
+  //<input type="text" size="12" value={value} placeholder="Food name..." onChange={(e) => setValue(e.target.value)} />
+  return (
+    <NodeViewWrapper className="inline-block">
+      <Autosuggest
+        suggestions={suggestions}
+        onSuggestionsFetchRequested={({value}) => {
+          const inputValue = value.trim().toLowerCase();
+          const inputLength = inputValue.length;
+         
+          const matched = inputLength === 0 ? [] : gon.foodList.filter(food =>
+            food.name.includes(inputValue)
+          )
+          // Order the matches by relevance?
+          setSuggestions(matched)
+        }}
+        onSuggestionsClearRequested={() => setSuggestions([])}
+        getSuggestionValue={suggestion => suggestion.name}
+        renderSuggestion={(suggestion, { isHighlighted }) => (
+          <div style={{ background: isHighlighted ? '#4095bf' : 'white', color: isHighlighted ? 'white' : 'black' }}>
+            {suggestion.name}
+          </div>
+        )}
+        onSuggestionSelected={setFood}
+        inputProps={inputFieldProps}
+      />
+    </NodeViewWrapper>
+  )
+}
+
+const FoodLink = Node.create({
+  name: 'food-link',
+  priority: 1000,
+  group: 'inline',
+  inline: true,
+  selectable: true,
+
+  addAttributes() {
+    return {
+      foodId: {
+        default: null,
+        parseHTML: element => element.getAttribute('data-link-food-id'),
+        renderHTML: attributes => {
+          if (attributes.foodId == null) {return {}}
+          return {'data-link-food-id': attributes.foodId}
+        },
+      },
+      //linkName: {
+      //  default: null,
+      //  parseHTML: element => element.getAttribute('data-food-link'),
+      //  renderHTML: attributes => {
+      //    if (attributes.linkName == null) {return {}}
+      //    return {'data-food-link': attributes.linkName}
+      //  },
+      //},
+      //linkUrl: {
+      //  default: null,
+      //  parseHTML: element => element.getAttribute('data-food-link'),
+      //  renderHTML: attributes => {
+      //    if (attributes.linkUrl== null) {return {}}
+      //    return {'data-food-link': attributes.linkId}
+      //  },
+      //},
+    }
+  },
+
+  parseHTML() {
+    return [{ tag: 'span[data-link-food-id]' },]
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    const foodId = HTMLAttributes['data-link-food-id']
+
+    if (foodId) {
+      const food = gon.foodList.find(f => f.id == foodId)
+      if (food) {
+        let a = ['a', {href: food.url}, food.name]
+        return ['span', HTMLAttributes, 'MISSING']
+      }
+    }
+    return ['span', HTMLAttributes, '[BROKEN LINK]']
+  },
+
+
+  addNodeView() {
+    return ReactNodeViewRenderer(FoodLinkComponent)
+  },
+  //addNodeView() {
+  //  return (args) => {
+  //    const {editor, node, getPos, HTMLAttributes, decorations, extension} = args
+  //    console.log(args)
+
+  //    const dom = document.createElement('div')
+  //    dom.innerHTML = '<b>TESTING 1212</b>'
+  //    dom.classList.add('node-view')
+
+  //    return {dom,}
+  //  }
+  //},
+
+  addCommands() {
+    return {
+      insertFoodLink: (raw) => ({ commands }) => {
+        console.log("insertFoodLink")
+        return commands.insertContent(`<span data-link-food-id=""></span>`)
+      },
+    }
+  },
+})
+
 const CustomHeading = Heading.extend({
   addInputRules() {
     return [3,4,5].map(level => {
@@ -385,7 +528,7 @@ const LinkButton = ({editor, width, height}) => (
         </ul>
       </li>}
       <li key="2">
-        <a className="dropdown-item" style={{cursor: 'pointer'}}>Aliment...</a>
+        <a className="dropdown-item" style={{cursor: 'pointer'}} onClick={() => editor.chain().focus().insertFoodLink().run()}>Aliment...</a>
       </li>
       <li key="3"><a className="dropdown-item" style={{cursor: 'pointer'}} onClick={(evt) => alert('todo')}>Référence</a></li>
     </ul>
@@ -838,7 +981,7 @@ export const ArticleTiptap = ({model, field, url}) => {
 export const Tiptap = ({model, field, url}) => {
   const editor = useEditor({
     extensions: [Bold, Italic, Document, Paragraph, Strike, Text, CustomHeading, CustomLink,
-      History, IngredientNode, IngredientListNode, StepNode,// Subscript, Superscript,
+      History, IngredientNode, IngredientListNode, StepNode, FoodLink// Subscript, Superscript,
     ],
     content: gon[model][field],
   })
@@ -884,7 +1027,7 @@ export const DescriptionTiptap = ({content, model, field, url}) => {
   const height = 24
 
   const editor = useEditor({
-    extensions: [Bold, Italic, Strike, Document, Paragraph, History, Text, CustomLink],
+    extensions: [Bold, Italic, Strike, Document, Paragraph, History, Text, CustomLink, FoodLink],
     content: content,
   })
   // Ugly to call this at every render, but I don't know where else to put it.
