@@ -49,6 +49,13 @@
             <%= link_to "Mon profil", current_user, class: "dropdown-item" %>
             <%= link_to t("heda.modify"), users_modify_path, class: "dropdown-item" %>
             <%= link_to t("heda.menu.logout"), destroy_user_session_path, method: :delete, class: "dropdown-item"  %>
+            <% unless current_user.siblings.blank? %>
+              <li><hr class="dropdown-divider"></li>
+              <li><h6 class="dropdown-header">Changer de compte</h6></li>
+              <% current_user.siblings.each do |sibling| %>
+                <%= link_to sibling.email, change_to_sibling_user_path(sibling), method: 'patch', class: "dropdown-item"  %>
+              <% end %>
+            <% end %>
           </div>
         </div>
       <% else %>

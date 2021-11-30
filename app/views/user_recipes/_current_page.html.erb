@@ -18,5 +18,7 @@
       <% end %>
     </div>
   <% end %>
-  <%= render partial: "recipes/recipe_body", locals: {recipe: recipe} %>
+  <% if recipe %>
+    <%= render partial: "recipes/recipe_body", locals: {recipe: recipe} %>
+  <% end %>
 </div>
