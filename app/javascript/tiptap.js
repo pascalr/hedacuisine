@@ -68,30 +68,33 @@ export const InlineDocument = Node.create({
 //  },
 //})
 
-const FoodLinkComponent = ({node, updateAttributes}) => {
+const ModelLinkComponent = ({node, updateAttributes}) => {
   const [value, setValue] = useState('')
   const [suggestions, setSuggestions] = useState([])
 
+  const placeholder = node.attrs.placeholder
+  const modelNamePlural = node.attrs.modelNamePlural
+
   const inputFieldProps = {
-    placeholder: 'Aliment...',
+    placeholder: placeholder,
     value,
     onChange: (e, {newValue}) => setValue(newValue),
     //ref: foodInputField,
   };
   
-  const setFood = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
-    console.log("Setting food!")
-    updateAttributes({foodId: suggestion.id, linkName: suggestionValue})
+  const setModel = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
+    console.log("Setting model!")
+    updateAttributes({modelId: suggestion.id, linkName: suggestionValue})
   }
 
   console.log(node)
 
-  if (node.attrs.foodId) {
-    const food = gon.foodList.find(f => f.id == node.attrs.foodId)
-    if (food) {
+  if (node.attrs.modelId) {
+    const model = gon[modelNamePlural].find(f => f.id == node.attrs.modelId)
+    if (model) {
       return (
         <NodeViewWrapper className="inline-block">
-          <a href={food.url}>{food.name}</a>
+          <a href={model.url}>{model.name}</a>
         </NodeViewWrapper>
       )
     }
@@ -108,8 +111,8 @@ const FoodLinkComponent = ({node, updateAttributes}) => {
           const inputValue = value.trim().toLowerCase();
           const inputLength = inputValue.length;
          
-          const matched = inputLength === 0 ? [] : gon.foodList.filter(food =>
-            food.name.includes(inputValue)
+          const matched = inputLength === 0 ? [] : gon[modelNamePlural].filter(model =>
+            model.name.includes(inputValue)
           )
           // Order the matches by relevance?
           setSuggestions(matched)
@@ -121,7 +124,7 @@ const FoodLinkComponent = ({node, updateAttributes}) => {
             {suggestion.name}
           </div>
         )}
-        onSuggestionSelected={setFood}
+        onSuggestionSelected={setModel}
         inputProps={inputFieldProps}
       />
     </NodeViewWrapper>
@@ -137,14 +140,16 @@ const FoodLink = Node.create({
 
   addAttributes() {
     return {
-      foodId: {
+      modelId: {
         default: null,
-        parseHTML: element => element.getAttribute('data-link-food-id'),
+        parseHTML: element => element.getAttribute('data-link-model-id'),
         renderHTML: attributes => {
-          if (attributes.foodId == null) {return {}}
-          return {'data-link-food-id': attributes.foodId}
+          if (attributes.modelId == null) {return {}}
+          return {'data-link-model-id': attributes.modelId}
         },
       },
+      placeholder: {default: 'Aliment...'},
+      modelNamePlural: {default: 'foodList'},
       //linkName: {
       //  default: null,
       //  parseHTML: element => element.getAttribute('data-food-link'),
@@ -165,16 +170,17 @@ const FoodLink = Node.create({
   },
 
   parseHTML() {
-    return [{ tag: 'span[data-link-food-id]' },]
+    return [{ tag: 'span[data-link-model-id]' },]
   },
 
   renderHTML({ HTMLAttributes }) {
-    const foodId = HTMLAttributes['data-link-food-id']
+    const modelNamePlural = 'foodList' // FIXME
+    const modelId = HTMLAttributes['data-link-model-id']
 
-    if (foodId) {
-      const food = gon.foodList.find(f => f.id == foodId)
-      if (food) {
-        let a = ['a', {href: food.url}, food.name]
+    if (modelId) {
+      const model = gon[modelNamePlural].find(f => f.id == modelId)
+      if (model) {
+        let a = ['a', {href: model.url}, model.name]
         return ['span', HTMLAttributes, 'MISSING']
       }
     }
@@ -183,7 +189,7 @@ const FoodLink = Node.create({
 
 
   addNodeView() {
-    return ReactNodeViewRenderer(FoodLinkComponent)
+    return ReactNodeViewRenderer(ModelLinkComponent)
   },
   //addNodeView() {
   //  return (args) => {
@@ -202,7 +208,7 @@ const FoodLink = Node.create({
     return {
       insertFoodLink: (raw) => ({ commands }) => {
         console.log("insertFoodLink")
-        return commands.insertContent(`<span data-link-food-id=""></span>`)
+        return commands.insertContent(`<span data-link-model-id=""></span>`)
       },
     }
   },
