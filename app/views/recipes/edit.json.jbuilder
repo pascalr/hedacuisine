@@ -55,4 +55,5 @@ json.contractionList FrenchExpression.where(contract_preposition: true).map(&:si
 json.recipe_kinds RecipeKind.order(:name).all do |recipe_kind|
   json.id recipe_kind.id
   json.name recipe_kind.name
+  json.url recipe_kind_path(recipe_kind)
 end 

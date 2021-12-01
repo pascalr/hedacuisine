@@ -72,8 +72,10 @@ const ModelLinkComponent = ({node, updateAttributes}) => {
   const [value, setValue] = useState('')
   const [suggestions, setSuggestions] = useState([])
 
-  const placeholder = node.attrs.placeholder
-  const modelNamePlural = node.attrs.modelNamePlural
+  const model = MODELS[node.attrs.model]
+  if (!model) {return null;}
+  const placeholder = model.placeholder
+  const modelNamePlural = model.listName
 
   const inputFieldProps = {
     placeholder: placeholder,
@@ -131,8 +133,13 @@ const ModelLinkComponent = ({node, updateAttributes}) => {
   )
 }
 
-const FoodLink = Node.create({
-  name: 'food-link',
+const MODELS = {
+  food: {listName: 'foodList', placeholder: 'Aliment...'},
+  recipeKind: {listName: 'recipe_kinds', placeholder: 'Sorte de recette...'},
+}
+
+const LinkModel = Node.create({
+  name: 'link-model',
   priority: 1000,
   group: 'inline',
   inline: true,
@@ -142,48 +149,41 @@ const FoodLink = Node.create({
     return {
       modelId: {
         default: null,
-        parseHTML: element => element.getAttribute('data-link-model-id'),
+        parseHTML: element => element.getAttribute('data-model-id'),
         renderHTML: attributes => {
           if (attributes.modelId == null) {return {}}
-          return {'data-link-model-id': attributes.modelId}
+          return {'data-model-id': attributes.modelId}
         },
       },
-      placeholder: {default: 'Aliment...'},
-      modelNamePlural: {default: 'foodList'},
-      //linkName: {
-      //  default: null,
-      //  parseHTML: element => element.getAttribute('data-food-link'),
-      //  renderHTML: attributes => {
-      //    if (attributes.linkName == null) {return {}}
-      //    return {'data-food-link': attributes.linkName}
-      //  },
-      //},
-      //linkUrl: {
-      //  default: null,
-      //  parseHTML: element => element.getAttribute('data-food-link'),
-      //  renderHTML: attributes => {
-      //    if (attributes.linkUrl== null) {return {}}
-      //    return {'data-food-link': attributes.linkId}
-      //  },
-      //},
+      model: {
+        default: null,
+        parseHTML: element => element.getAttribute('data-link-model'),
+        renderHTML: attributes => {
+          if (attributes.model == null) {return {}}
+          return {'data-link-model': attributes.model}
+        },
+      },
     }
   },
 
   parseHTML() {
-    return [{ tag: 'span[data-link-model-id]' },]
+    return [{ tag: 'span[data-link-model]' },]
   },
 
-  renderHTML({ HTMLAttributes }) {
-    const modelNamePlural = 'foodList' // FIXME
-    const modelId = HTMLAttributes['data-link-model-id']
-
-    if (modelId) {
-      const model = gon[modelNamePlural].find(f => f.id == modelId)
-      if (model) {
-        let a = ['a', {href: model.url}, model.name]
-        return ['span', HTMLAttributes, 'MISSING']
+  renderHTML({node, HTMLAttributes}) {
+    const model = MODELS[node.attrs.model]
+    if (model && node.attrs.modelId) {
+      const record = gon[model.listName].find(f => f.id == node.attrs.modelId)
+      console.log("record", record)
+      console.log("model.listName", model.listName)
+      console.log("modelId", node.attrs.modelId)
+      if (record) {
+        let a = ['a', {href: record.url}, record.name]
+        console.log(['span', HTMLAttributes, a])
+        return ['span', HTMLAttributes, a]
       }
     }
+    console.log(['span', HTMLAttributes, '[BROKEN LINK]'])
     return ['span', HTMLAttributes, '[BROKEN LINK]']
   },
 
@@ -191,24 +191,12 @@ const FoodLink = Node.create({
   addNodeView() {
     return ReactNodeViewRenderer(ModelLinkComponent)
   },
-  //addNodeView() {
-  //  return (args) => {
-  //    const {editor, node, getPos, HTMLAttributes, decorations, extension} = args
-  //    console.log(args)
-
-  //    const dom = document.createElement('div')
-  //    dom.innerHTML = '<b>TESTING 1212</b>'
-  //    dom.classList.add('node-view')
-
-  //    return {dom,}
-  //  }
-  //},
 
   addCommands() {
     return {
-      insertFoodLink: (raw) => ({ commands }) => {
-        console.log("insertFoodLink")
-        return commands.insertContent(`<span data-link-model-id=""></span>`)
+      insertLinkModel: (model) => ({ commands }) => {
+        console.log("insertLinkModel")
+        return commands.insertContent(`<span data-link-model="${model}"></span>`)
       },
     }
   },
@@ -522,7 +510,7 @@ const LinkButton = ({editor, width, height}) => (
       </svg>
     </button> 
     <ul className="dropdown-menu" aria-labelledby="linkDropdown">
-      {!gon.recipe ? null : <li key="1">
+      {!gon.recipe ? null : <li>
         <a className="dropdown-item" style={{cursor: 'pointer'}}>Note &raquo;</a>
         <ul className="dropdown-menu dropdown-submenu">
           {Object.values(gon.recipe.notes || {}).map(note => (
@@ -533,10 +521,9 @@ const LinkButton = ({editor, width, height}) => (
           ))}
         </ul>
       </li>}
-      <li key="2">
-        <a className="dropdown-item" style={{cursor: 'pointer'}} onClick={() => editor.chain().focus().insertFoodLink().run()}>Aliment...</a>
-      </li>
-      <li key="3"><a className="dropdown-item" style={{cursor: 'pointer'}} onClick={(evt) => alert('todo')}>Référence</a></li>
+      <li><a className="dropdown-item" style={{cursor: 'pointer'}} onClick={() => editor.chain().focus().insertLinkModel('food').run()}>Aliment...</a></li>
+      <li><a className="dropdown-item" style={{cursor: 'pointer'}} onClick={() => editor.chain().focus().insertLinkModel('recipeKind').run()}>Sorte de recette...</a></li>
+      <li><a className="dropdown-item" style={{cursor: 'pointer'}} onClick={(evt) => alert('todo')}>Référence</a></li>
     </ul>
   </span>
 )
@@ -987,7 +974,7 @@ export const ArticleTiptap = ({model, field, url}) => {
 export const Tiptap = ({model, field, url}) => {
   const editor = useEditor({
     extensions: [Bold, Italic, Document, Paragraph, Strike, Text, CustomHeading, CustomLink,
-      History, IngredientNode, IngredientListNode, StepNode, FoodLink// Subscript, Superscript,
+      History, IngredientNode, IngredientListNode, StepNode, LinkModel// Subscript, Superscript,
     ],
     content: gon[model][field],
   })
@@ -1033,7 +1020,7 @@ export const DescriptionTiptap = ({content, model, field, url}) => {
   const height = 24
 
   const editor = useEditor({
-    extensions: [Bold, Italic, Strike, Document, Paragraph, History, Text, CustomLink, FoodLink],
+    extensions: [Bold, Italic, Strike, Document, Paragraph, History, Text, CustomLink, LinkModel],
     content: content,
   })
   // Ugly to call this at every render, but I don't know where else to put it.
@@ -1102,3 +1089,16 @@ export class ModificationsHandler {
     }
   }
 }
+
+  //addNodeView() {
+  //  return (args) => {
+  //    const {editor, node, getPos, HTMLAttributes, decorations, extension} = args
+  //    console.log(args)
+
+  //    const dom = document.createElement('div')
+  //    dom.innerHTML = '<b>TESTING 1212</b>'
+  //    dom.classList.add('node-view')
+
+  //    return {dom,}
+  //  }
+  //},
