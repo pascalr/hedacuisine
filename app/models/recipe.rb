@@ -10,8 +10,8 @@ class Recipe < ApplicationRecord
 
   validates_with RecipeValidator
 
-  before_update :update_mods_published, :if => :text_changed?
-  #before_update :update_mods_published, :if => proc { !logo_ori_was && logo_ori_changed? }
+  before_update :update_mods_unpublished, :if => :text_changed?
+  #before_update :update_mods_unpublished, :if => proc { !logo_ori_was && logo_ori_changed? }
 
   scope :all_main, -> { where(base_recipe_id: nil) }
   scope :with_images, -> { where.not(image_id: nil) }
@@ -268,8 +268,8 @@ class Recipe < ApplicationRecord
 
 private
 
-  def update_mods_published
-    self.mods_published = true
+  def update_mods_unpublished
+    self.mods_unpublished = true
   end
 
 end

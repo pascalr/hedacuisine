@@ -38,6 +38,11 @@ def move_files_without_extensions
 end
 
 namespace :website do
+
+  task publish_modifications: :environment do
+    Recipe.all_public.where(mods_published: true).each do |recipe|
+    end
+  end
   
   desc "TODO"
   task check: :environment do

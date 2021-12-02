@@ -441,7 +441,7 @@ ActiveRecord::Schema.define(version: 2021_12_02_231411) do
     t.text "content"
     t.text "text"
     t.integer "recipe_kind_id"
-    t.boolean "mods_published"
+    t.boolean "mods_unpublished"
   end
 
   create_table "references", force: :cascade do |t|
