@@ -40,7 +40,7 @@ end
 namespace :website do
 
   task publish_modifications: :environment do
-    Recipe.all_public.where(mods_published: true).each do |recipe|
+    Recipe.all_public.where(mods_unpublished: true).each do |recipe|
     end
   end
   
