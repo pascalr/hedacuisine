@@ -1,0 +1,5 @@
+<% if @book.user_id == current_user.id %>
+  <%= link_to 'Edit', edit_book_path(@book) %>
+<% end %>
+
+<h1><%= @book.name_with_author %></h1>

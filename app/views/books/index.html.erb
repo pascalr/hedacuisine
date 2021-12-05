@@ -1,0 +1,9 @@
+<%= link_to "Nouveau livre", new_book_path %> |
+<%= link_to "Trouver un livre", new_book_path %>
+
+<h1>Livres</h1>
+
+<% Book.all.each do |book| %>
+  <%= link_to book.name_with_author, book %><br>
+<% end %>
+

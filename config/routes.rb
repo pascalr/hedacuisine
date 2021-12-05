@@ -24,6 +24,9 @@ Rails.application.routes.draw do
   resources :units
   devise_for :users
   resources :tools
+  resources :books do
+    resources :book_recipes, only: [:create, :update, :destroy]
+  end
 
   get 'home/beta'
 
@@ -39,13 +42,9 @@ Rails.application.routes.draw do
   get 'sitemap', to: "sitemap#index"
 
   resources :expressions, only: [:index, :create, :update, :destroy, :show]
-  
   resources :recipe_kinds, only: [:index, :create, :update, :destroy, :edit, :show]
-
   resources :user_recipe_categories, only: [:create, :update, :destroy]
-  
   resources :machine_users, only: [:create, :update, :destroy, :new]
-  
   resources :food_substitutions, only: [:create, :update, :destroy, :index]
 
   post 'change_food_tag', to: 'foods#change_tag'
