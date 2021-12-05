@@ -11,3 +11,5 @@ if @recipe.recipe_kind
   end
   json.current_page versions.index(@recipe) + 1
 end
+
+json.recipe_servings_quantity @recipe.servings_quantity

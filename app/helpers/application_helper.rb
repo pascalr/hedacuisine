@@ -77,10 +77,12 @@ module ApplicationHelper
     #else
     #  @current_region ||= Region.find_by(code: params[:region] || DEFAULT_REGION)
     #end
-    if params[:region].blank?
+    if !params[:locale].blank?
       @current_region ||= Region.find_by(locale: params[:locale])
-    else
+    elsif !params[:region].blank?
       @current_region ||= Region.find_by(code: params[:region])
+    else
+      @current_region ||= Region.find_by(locale: I18n.default_locale)
     end
   end
 

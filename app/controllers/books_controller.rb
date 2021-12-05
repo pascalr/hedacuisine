@@ -8,6 +8,7 @@ class BooksController < ApplicationController
   end
   
   def edit
+    gon.jbuilder
   end
 
   def new

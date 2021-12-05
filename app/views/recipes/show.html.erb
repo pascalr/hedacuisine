@@ -15,4 +15,12 @@
   <meta property="og:description" content="<%= description %>">
 <% end %>
 
+<% if user_signed_in? %>
+  <% machine = current_user.machines.first_or_create %>
+  <div class="collapse" id="calendar">
+    <%= render partial: "meals/calendar", locals: {recipe: @recipe, machine: machine, meals: machine.meals.includes(:recipe) } %>
+    <div style="height: 10px;"></div>
+  </div>
+<% end %>
+
 <%= render partial: "recipes/recipe_full" %>

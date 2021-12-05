@@ -84,7 +84,7 @@ function prettyDetailedIngredient(ing) {
 }
 
 function calcScale(inc) {
-  const servings = document.getElementById("servings-quantity-value");
+  const servings = gon.recipe_servings_quantity
   window.currentServings = window.currentServings + inc
   window.scale = window.currentServings / window.originalServings
 }
@@ -190,7 +190,7 @@ function getIncValue(nb, nb0, positive) {
 
 document.addEventListener("DOMContentLoaded", function(event) {
   
-  const servings = document.getElementById("servings-quantity-value");
+  const servings = gon.recipe_servings_quantity
   window.originalServings = parseInt(servings.innerHTML)
   window.currentServings = window.originalServings
 

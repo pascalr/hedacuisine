@@ -16,6 +16,8 @@ import { Ingredient, Utils } from "recipe_utils"
 import { Tiptap, BubbleTiptap, ModificationsHandler } from 'tiptap'
 import '../styles/prose_mirror.scss'
 
+import {Model, TextInputField, TextAreaField, CollectionSelect, MODEL_RECIPE} from '../form'
+
 
 function updateIngQuantityCallback() {
 }
@@ -229,105 +231,7 @@ const EditableIngredient = (props) => {
   //<a href={ing.url} data-confirm="Are you sure?" data-method="delete"><img src="/icons/x-lg.svg" style={{float: "right"}}/></a>
 }
 
-class Model {
-  constructor(name, data) {
-    this.name = name
-    this.data = data
-  }
-  currentValue(field) {
-    return this.data[field]
-  }
-  fieldName(field) {
-    return this.name+"["+field+"]"
-  }
-  updateValue = (field, value, successCallback=null) => {
-    if (value != this.currentValue(field)) {
-  
-      let data = new FormData()
-      data.append(this.fieldName(field), value)
-      Rails.ajax({url: this.data.url+".js", type: 'PATCH', data: data, success: () => {
-        this.data[field] = value
-        if (successCallback) {successCallback()}
-      }, error: (errors) => {
-        toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
-      }})
-    }
-  }
-}
 //const RECIPE_MODEL = new Model("recipe")
-
-const TextInputField2 = ({model, field}) => {
-  const [value, setValue] = useState(model.currentValue(field))
-
-  return (
-    <input type="text" value={value||''} name={model.fieldName(field)} style={{border: "none"}}
-      id={field} onChange={(e) => setValue(e.target.value)}
-      onBlur={() => model.updateValue(field, value)} />
-  )
-}
-
-const TextInputField = ({model, field}) => {
-  const [value, setValue] = useState(model.currentValue(field))
-
-  return (
-    <div className="field">
-      <b><label htmlFor={field}>{field}</label></b>{': '}
-      <input type="text" value={value||''} name={model.fieldName(field)} style={{border: "none", borderBottom: "1px dashed #444"}} id={field}
-        onChange={(e) => setValue(e.target.value)} onBlur={() => model.updateValue(field, value)} />
-    </div>
-  )
-}
-
-const TextAreaField = ({model, field, cols, rows, changeCallback=null}) => {
-  const [value, setValue] = useState(model.currentValue(field))
-
-  return (
-    <div className="field">
-      <textarea value={value||''} name={model.fieldName(field)} id={field} cols={cols} rows={rows} onChange={(e) => {
-        setValue(e.target.value);
-        if(changeCallback) {changeCallback(e.target.value)}
-      }} onBlur={() => model.updateValue(field, value)} />
-    </div>
-  )
-}
-
-const CollectionSelect2 = ({model, field, options, showOption, includeBlank}) => {
-  const [value, setValue] = useState(model.currentValue(field))
-
-  const updateField = (e) => {
-    let val = e.target.value
-    model.updateValue(field, val, () => setValue(val))
-  }
-
-  return (
-    <select name={model.fieldName(field)} id={field} value={value||''} onChange={updateField}>
-      {includeBlank ? <option value="" key="1" label=" "></option> : null}
-      {options.map((opt, i) => {
-        return <option value={opt} key={i+2}>{showOption(opt)}</option>
-      })}
-    </select>
-  )
-}
-const CollectionSelect = ({model, field, options, showOption, includeBlank}) => {
-  const [value, setValue] = useState(model.currentValue(field))
-
-  const updateField = (e) => {
-    let val = e.target.value
-    model.updateValue(field, val, () => setValue(val))
-  }
-
-  return (
-    <div className="field">
-      <b><label htmlFor={field}>{field}</label></b>{': '}
-      <select name={model.fieldName(field)} id={field} value={value||''} onChange={updateField}>
-        {includeBlank ? <option value="" key="1" label=" "></option> : null}
-        {options.map((opt, i) => {
-          return <option value={opt} key={i+2}>{showOption(opt)}</option>
-        })}
-      </select>
-    </div>
-  )
-}
 
 const Toggleable = ({children, ...props}) => {
   const [showToggled, setShowToggled] = useState(false)
@@ -471,8 +375,8 @@ class RecipeEditor extends React.Component {
       </li>
     ))
 
-    const model = new Model("recipe", gon.recipe)
-    console.log(model)
+    const model = MODEL_RECIPE//new Model("recipe", gon.recipe)
+    //console.log(model)
     
     return (<>
       <div className="recipe-body">
@@ -506,27 +410,27 @@ class RecipeEditor extends React.Component {
           <tbody>
             <tr>
               <th>Sorte de recette</th>
-              <td><CollectionSelect2 model={model} field="recipe_kind_id" options={gon.recipe_kinds.map(k => k.id)} showOption={(id) => gon.recipe_kinds.find(k => k.id == id).name} includeBlank="true"></CollectionSelect2></td>
+              <td><CollectionSelect model={model} field="recipe_kind_id" options={gon.recipe_kinds.map(k => k.id)} showOption={(id) => gon.recipe_kinds.find(k => k.id == id).name} includeBlank="true"></CollectionSelect></td>
             </tr>
             <tr>
               <th>Temps de préparation</th>
-              <td><TextInputField2 model={model} field="preparation_time"></TextInputField2></td>
+              <td><TextInputField model={model} field="preparation_time"></TextInputField></td>
             </tr>
             <tr>
               <th>Temps de cuisson</th>
-              <td><TextInputField2 model={model} field="cooking_time"></TextInputField2></td>
+              <td><TextInputField model={model} field="cooking_time"></TextInputField></td>
             </tr>
             <tr>
               <th>Temps total</th>
-              <td><TextInputField2 model={model} field="total_time"></TextInputField2></td>
+              <td><TextInputField model={model} field="total_time"></TextInputField></td>
             </tr>
             <tr>
               <th>Portions</th>
-              <td><TextInputField2 model={model} field="raw_servings"></TextInputField2></td>
+              <td><TextInputField model={model} field="raw_servings"></TextInputField></td>
             </tr>
             <tr>
               <th>Ingrédient principal</th>
-              <td><CollectionSelect2 model={model} field="main_ingredient_id" options={this.state.ingIds} showOption={(ingId) => gon.recipe.ingredients[ingId].food.name} includeBlank="true"></CollectionSelect2></td>
+              <td><CollectionSelect model={model} field="main_ingredient_id" options={this.state.ingIds} showOption={(ingId) => gon.recipe.ingredients[ingId].food.name} includeBlank="true"></CollectionSelect></td>
             </tr>
           </tbody>
         </table>

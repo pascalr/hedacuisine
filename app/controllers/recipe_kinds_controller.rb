@@ -1,5 +1,5 @@
 class RecipeKindsController < ApplicationController
-  before_action :set_recipe_kind, only: %i[ show edit update destroy ]
+  before_action :set_recipe_kind, only: %i[ show edit update destroy search_recipe ]
   #skip_before_action :authenticate_user!, only: [:show]
 
   def index
@@ -7,6 +7,10 @@ class RecipeKindsController < ApplicationController
   end
 
   def show
+  end
+
+  def search_recipe
+    render partial: "recipe_kinds/search_recipe", locals: {recipe_kind: @recipe_kind}
   end
 
   def edit
