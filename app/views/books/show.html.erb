@@ -2,4 +2,39 @@
   <%= link_to 'Edit', edit_book_path(@book) %>
 <% end %>
 
-<h1><%= @book.name_with_author %></h1>
+<style>
+.page {
+  width: 100%;
+  max-width: 800px;
+  height: 100vh;
+  background-color: #2596be;
+}
+.page * {
+  color: white;
+}
+.page + .page {
+  border-top: 4px solid white;
+}
+.title-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.title-page h1 {
+  font-size: 4em;
+}
+.title-page .author {
+  font-size: 3em;
+}
+</style>
+
+<div class="page title-page">
+  <h1><%= @book.name %></h1>
+  <div class="author">de <%= @book.author %></div>
+</div>
+<div class="page"></div>
+<div class="page"></div>
+<div class="page"></div>

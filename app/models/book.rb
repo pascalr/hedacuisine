@@ -6,5 +6,9 @@ class Book < ApplicationRecord
   def name_with_author
     "#{self.name} — #{user.name}"
   end
+  
+  def author
+    "#{user.name}"
+  end
 
 end
