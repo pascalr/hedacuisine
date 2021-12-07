@@ -2,12 +2,21 @@
 
 <h1><%= @book.name %></h1>
 
-<h2>0 Recettes</h2>
+<h2><%= @book.recipes.count %> Recettes</h2>
 
 <p>Proposer de créer une nouvelle recette.</p>
 
 <p>Proposer de rechercher une recette. L'utilisateur choisis une sorte de recette. Ensuite il peut choisir cette recette ou bien changer puis choisir.</p>
 
+<h2>Ajouter une recette</h2>
+<div>
+  <b>Numéro: </b>
+  <%= form_with(model: [@book, BookRecipe.new], class: "inline", local: true) do |form| %>
+    <%= form.text_field :recipe_id %>
+    <%= form.hidden_field :book_id %>
+    <%= form.submit "Ajouter" %>
+  <% end %>
+</div>
 <div id="root"></div>
 
 <%= javascript_pack_tag "book_editor" %>

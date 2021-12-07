@@ -13,7 +13,7 @@ import Autosuggest from 'react-autosuggest'
 //import Quantity from 'models/quantity'
 //import { Ingredient, Utils } from "recipe_utils"
 
-import {Model, TextInputField, TextAreaField, CollectionSelect, MODEL_BOOK_RECIPE} from '../form'
+import {Model, TextFieldTag, HiddenFieldTag, SubmitTag, TextInputField, TextAreaField, CollectionSelect, MODEL_BOOK_RECIPE} from '../form'
 
 const RecipeKindFinder = ({onRecipeKindFound}) => {
   const [value, setValue] = useState('')
@@ -79,13 +79,10 @@ class BookEditor extends React.Component {
       })
     }
     
+    //<TextFieldTag field="book_recipe[recipe_id}"/>
+    //<HiddenFieldTag field="book_id" value={gon.book.id}/>
+    //<SubmitTag value="Ajouter"/>
     return (<>
-      <h2>Ajouter une recette</h2>
-      <div>
-        <b>Numéro:</b>
-        <TextInputField model={MODEL_BOOK_RECIPE} field="recipe_id"></TextInputField>
-        <button>Ajouter</button>
-      </div>
       <div>
         <b>Rechercher: </b>
         <RecipeKindFinder onRecipeKindFound={onRecipeKindFound}/>
