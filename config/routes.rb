@@ -24,9 +24,6 @@ Rails.application.routes.draw do
   resources :units
   devise_for :users
   resources :tools
-  resources :books do
-    resources :book_recipes, only: [:create, :update, :destroy]
-  end
 
   get 'home/beta'
 
@@ -136,6 +133,10 @@ Rails.application.routes.draw do
       collection do
         get 'new_variant'
       end
+    end
+
+    resources :books, param: 'slug' do
+      resources :book_recipes, only: [:create, :update, :destroy]
     end
 
     get '/', to: 'home#index', as: 'home'

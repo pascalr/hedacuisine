@@ -4,7 +4,7 @@ class BooksController < ApplicationController
   skip_before_action :only_admin!, only: [:show]
 
   def show
-    @book = Book.find(params[:id])
+    @book = Book.find(params[:slug].split('-')[0])
   end
   
   def edit
@@ -36,7 +36,7 @@ class BooksController < ApplicationController
 
   private
     def set_book
-      @book = current_user.books.find(params[:id])
+      @book = current_user.books.find(params[:slug].split('-')[0])
     end
 
     def book_params

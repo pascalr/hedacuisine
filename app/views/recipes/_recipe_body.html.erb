@@ -1,4 +1,5 @@
 <% alternatives = [] unless local_assigns[:alternatives] %>
+<% display_comments = false unless local_assigns[:display_comments] %>
 <div id="recipe-body-<%= recipe.id %>" class="recipe-body">
 
 <div class="bg-fill" style="width: 100%; height: 0.5rem;"></div>
@@ -172,10 +173,12 @@
   <%= pretty_print_recipe(recipe.similar_recipes.first) %>
 <% end %>
 
-<h2>Commentaires</h2>
-
-<%# translated("Aucun commentaire pour l'instant.") %>
-<p>La section des commentaires n'est pas encore fonctionnelle. Pour toutes questions ou commentaires, vous pouvez me contacter à <%= mail_to "hedacuisine@gmail.com" %></p>
+<% if display_comments %>
+  <h2>Commentaires</h2>
+  
+  <%# translated("Aucun commentaire pour l'instant.") %>
+  <p>La section des commentaires n'est pas encore fonctionnelle. Pour toutes questions ou commentaires, vous pouvez me contacter à <%= mail_to "hedacuisine@gmail.com" %></p>
+<% end %>
 
 <div style="height: 3rem;"></div>
 </div>

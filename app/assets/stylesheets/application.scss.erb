@@ -502,3 +502,77 @@ ul.dash > li:before {
 //  }
 
 }
+
+.page {
+  width: 100%;
+  max-width: 828px;
+  min-height: 100vh;
+  padding: 1em;
+}
+.page + .page {
+  border-top: 4px solid white;
+}
+.title-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+}
+.title-page h1 {
+  font-size: 4em;
+}
+.title-page .author {
+  font-size: 3em;
+}
+
+.index-page {
+  font-size: 1.5em;
+}
+
+.theme-sky {
+}
+.theme-sky * {
+  color: white;
+}
+.theme-sky .page {
+  background-color: #2596be;
+}
+.theme-sky .page + .page {
+  border-top: 4px solid white;
+}
+.theme-sky .bg-fill {
+  background-color: #5dc2ea;
+}
+.theme-sky .bg-fill-brighter {
+  background-color: #88d2ef;
+}
+.theme-sky a:hover {
+  color: #ccc;
+}
+.theme-light {
+}
+.theme-light .page {
+  background-color: #f5f5f5;
+}
+.theme-light .page + .page {
+  border-top: 4px solid black;
+}
+.theme-light .index-page a, .theme-light .title-page a {
+  color: black;
+}
+.theme-light .index-page a:hover {
+  color: #444;
+}
+.theme-dark {
+}
+.book-thumbnail {
+  width: 170px;
+  font-size: 0.25em;
+  /*transform: scale(0.25);*/
+  /*scale: 0.25;*/
+}
+.book-thumbnail .page {
+  height: 220px;
+  min-height: initial;
+}

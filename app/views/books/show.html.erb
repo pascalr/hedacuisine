@@ -2,71 +2,8 @@
   <%= link_to 'Edit', edit_book_path(@book) %>
 <% end %>
 
-<style>
-.page {
-  width: 100%;
-  max-width: 828px;
-  min-height: 100vh;
-  padding: 1em;
-}
-.page + .page {
-  border-top: 4px solid white;
-}
-.title-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 20px;
-}
-.title-page h1 {
-  font-size: 4em;
-}
-.title-page .author {
-  font-size: 3em;
-}
-
-.index-page {
-  font-size: 1.5em;
-}
-
-.theme-sky {
-}
-.theme-sky * {
-  color: white;
-}
-.theme-sky .page {
-  background-color: #2596be;
-}
-.theme-sky .page + .page {
-  border-top: 4px solid white;
-}
-.theme-sky .bg-fill {
-  background-color: #5dc2ea;
-}
-.theme-sky .bg-fill-brighter {
-  background-color: #88d2ef;
-}
-.theme-sky a:hover {
-  color: #ccc;
-}
-.theme-light {
-}
-.theme-light .page {
-  background-color: #f5f5f5;
-}
-.theme-light .page + .page {
-  border-top: 4px solid black;
-}
-.theme-dark {
-}
-</style>
-
-<div class="book theme-light">
-  <div class="page title-page">
-    <h1><%= @book.name %></h1>
-    <div class="author">de <%= @book.author %></div>
-  </div>
+<div class="book theme-sky">
+  <%= render partial: "books/title_page", locals: {book: @book} %>
   <div class="page index-page">
     <h2>Liste des recettes</h2>
     <ul>
