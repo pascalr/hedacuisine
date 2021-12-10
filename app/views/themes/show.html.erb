@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @theme.name %>
+</p>
+
+<p>
+  <strong>Background color:</strong>
+  <%= @theme.background_color %>
+</p>
+
+<p>
+  <strong>Text color:</strong>
+  <%= @theme.text_color %>
+</p>
+
+<p>
+  <strong>Font name:</strong>
+  <%= @theme.font_name %>
+</p>
+
+<p>
+  <strong>Page separator color:</strong>
+  <%= @theme.page_separator_color %>
+</p>
+
+<%= link_to 'Edit', edit_theme_path(@theme) %> |
+<%= link_to 'Back', themes_path %>

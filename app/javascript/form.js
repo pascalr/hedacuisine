@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 
 import { PATHS } from 'paths'
 
+import { colorToHexString, hexStringToColor, Utils } from 'utils'
+
 export class Model {
   constructor(name, data) {
     this.name = name
@@ -41,6 +43,7 @@ export class Model {
     }
   }
 }
+export const MODEL_THEME = new Model("theme", gon.theme)
 export const MODEL_RECIPE = new Model("recipe", gon.recipe)
 export const MODEL_BOOK_RECIPE = new Model("book_recipe", gon.book_recipe)
 
@@ -64,6 +67,28 @@ export const TextInputField = ({model, field}) => {
     <input type="text" value={value||''} name={model.fieldName(field)}
       id={field} onChange={(e) => setValue(e.target.value)}
       onBlur={() => model.updateValue(field, value)} />
+  )
+}
+
+const updateModelField = (model, field, value, successCallback=null) => {
+  if (value != model[field]) {
+
+    let data = new FormData()
+    data.append(model.class_name+"["+field+"]", value)
+    Rails.ajax({url: Utils.addExtensionToPath('.js', model.url), type: 'PATCH', data: data, success: () => {
+      model[field] = value
+      if (successCallback) {successCallback()}
+    }, error: (errors) => {
+      toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
+    }})
+  }
+}
+export const ColorField = ({model, field}) => {
+  const [value, setValue] = useState(Utils.colorToHexString(model[field]))
+
+  return (
+    <input type="color" value={value||''} name={model.class_name+"["+field+"]"} id={field}
+        onChange={(e) => updateModelField(model, field, Utils.hexStringToColor(e.target.value), () => setValue(e.target.value))} />
   )
 }
 
@@ -97,3 +122,32 @@ export const CollectionSelect = ({model, field, options, showOption, includeBlan
     </select>
   )
 }
+
+//export const remoteUpdate = (field, value, initialValue, url, successCallback=null) => {
+//  if (value != initialValue) {
+//
+//    let data = new FormData()
+//    data.append(field, value)
+//    Rails.ajax({url: this.data.url+".js", type: 'PATCH', data: data, success: () => {
+//      this.data[field] = value
+//      if (successCallback) {successCallback()}
+//    }, error: (errors) => {
+//      toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
+//    }})
+//  }
+//}
+//
+//export const ColorFieldTag = ({value, ...props}) => {
+//
+//  if (!props.name) {console.error("ColorFieldTag name props must be provided."); return null}
+//
+//  // FIXME: Convert value int to hex.
+//  const [val, setVal] = useState(value ? value : '#000000')
+//
+//  const updateColor = () => {
+//    let i = hexStringToColor(value)
+//    remoteUpdate(props.name, i, value)
+//  }
+//
+//  return <input type="color" value={val} name={name} onChange={(e) => setValue(e.target.value)} {...props} onBlur={updateColor} />
+//}
