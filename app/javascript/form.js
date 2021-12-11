@@ -76,6 +76,7 @@ const updateModelField = (model, field, value, successCallback=null) => {
     let data = new FormData()
     data.append(model.class_name+"["+field+"]", value)
     Rails.ajax({url: Utils.addExtensionToPath('.js', model.url), type: 'PATCH', data: data, success: () => {
+      console.log("updateModelField success", field, value)
       model[field] = value
       if (successCallback) {successCallback()}
     }, error: (errors) => {
@@ -86,9 +87,10 @@ const updateModelField = (model, field, value, successCallback=null) => {
 export const ColorField = ({model, field}) => {
   const [value, setValue] = useState(Utils.colorToHexString(model[field]))
 
+        //onChange={(e) => setValue(e.target.value)} />
   return (
     <input type="color" value={value||''} name={model.class_name+"["+field+"]"} id={field}
-        onChange={(e) => updateModelField(model, field, Utils.hexStringToColor(e.target.value), () => setValue(e.target.value))} />
+        onChange={(e) => {let v = e.target.value; updateModelField(model, field, Utils.hexStringToColor(v), () => setValue(v))}} />
   )
 }
 

@@ -49,8 +49,11 @@ class ThemeEditor extends React.Component {
           </tr>
           <tr>
             <th><label htmlFor="theme_text_color">Text color</label></th>
-            <td></td>
-
+            <td><ColorField model={gon.theme} field="text_color"/></td>
+          </tr>
+          <tr>
+            <th><label htmlFor="theme_page_separator_color">Page separator color</label></th>
+            <td><ColorField model={gon.theme} field="page_separator_color"/></td>
           </tr>
         </tbody>
       </table>
