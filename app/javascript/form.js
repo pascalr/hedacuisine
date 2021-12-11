@@ -79,15 +79,21 @@ const updateModelField = (model, field, value, successCallback=null) => {
       console.log("updateModelField success", field, value)
       model[field] = value
       if (successCallback) {successCallback()}
+      if (model.onUpdate) {model.onUpdate(model)}
     }, error: (errors) => {
       toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
     }})
   }
 }
+export const TextField = ({model, field}) => {
+  const [value, setValue] = useState(model[field])
+  return (
+    <input type="text" value={value||''} name={model.class_name+"["+field+"]"} id={field}
+        onChange={(e) => {let v = e.target.value; updateModelField(model, field, v, () => setValue(v))}} />
+  )
+}
 export const ColorField = ({model, field}) => {
   const [value, setValue] = useState(Utils.colorToHexString(model[field]))
-
-        //onChange={(e) => setValue(e.target.value)} />
   return (
     <input type="color" value={value||''} name={model.class_name+"["+field+"]"} id={field}
         onChange={(e) => {let v = e.target.value; updateModelField(model, field, Utils.hexStringToColor(v), () => setValue(v))}} />

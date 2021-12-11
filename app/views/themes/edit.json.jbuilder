@@ -7,3 +7,6 @@ json.theme do
   json.text_color @theme.text_color
   json.page_separator_color @theme.page_separator_color
 end
+json.user do
+  json.name current_user.name
+end
