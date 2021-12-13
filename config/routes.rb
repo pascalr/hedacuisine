@@ -8,7 +8,11 @@ Rails.application.routes.draw do
   # FIXME: Put this constant somewhere. Don't hard code it.
   root to: redirect("/qc"), as: :redirected_root
 
-  resources :themes, except: [:show]
+  resources :themes, except: [:show] do
+    member do
+      get 'stylesheet'
+    end
+  end
   resources :food_tags
   get 'search/index'
   resources :listings

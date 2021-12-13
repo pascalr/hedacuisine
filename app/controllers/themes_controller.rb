@@ -1,5 +1,5 @@
 class ThemesController < ApplicationController
-  before_action :set_theme, only: %i[ show edit update destroy ]
+  before_action :set_theme, only: %i[ show edit update destroy stylesheet ]
 
   def index
     @themes = Theme.all
@@ -10,6 +10,10 @@ class ThemesController < ApplicationController
 
   def new
     @theme = Theme.new
+  end
+
+  def stylesheet
+    render 'stylesheet', layout: false
   end
 
   def edit

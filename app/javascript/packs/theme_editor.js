@@ -53,9 +53,9 @@ class ThemeEditor extends React.Component {
         }
       `}</style>
       <Row>
-        <div>
+        <Block flexGrow="1">
           <h2>Informations</h2>
-          <table className="table table-light" style={{width: "600px"}}>
+          <table className="table table-light">
             <tbody>
               <tr>
                 <th><label htmlFor="theme_name">Name</label></th>
@@ -79,8 +79,8 @@ class ThemeEditor extends React.Component {
               </tr>
             </tbody>
           </table>
-        </div>
-        <div>
+        </Block>
+        <Block flexGrow="1">
           <h2>Live preview</h2>
           <div className={themeClass}>
             <div className="page title-page">
@@ -88,7 +88,7 @@ class ThemeEditor extends React.Component {
               <div className="author">de {gon.user.name}</div>
             </div>
           </div>
-        </div>
+        </Block>
       </Row>
     </>)
   }

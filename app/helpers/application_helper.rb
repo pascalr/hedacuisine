@@ -1,4 +1,13 @@
 module ApplicationHelper
+  
+  def color_to_hex_string(color)
+    return nil if color.nil?
+    "##{color.to_s(16)}"
+  end
+
+  def hex_string_to_color(str)
+    str[1..-1].to_i(16)
+  end
 
   def dev_url_or(path)
     if Rails.env.production? or Rails.env.local?
