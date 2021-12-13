@@ -4,8 +4,10 @@
 
 <div style="display: flex; gap: 20px;">
   <% @themes.each do |theme| %>
+    <%= render partial: 'stylesheet', locals: {theme: theme} %>
     <%= link_to edit_theme_path(theme) do %>
       <% book = Book.new %>
+      <% book.theme = theme %>
       <% book.name = "#{theme.name} theme" %>
       <% book.user = current_user %>
       <% book.theme = theme %>

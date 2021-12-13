@@ -13,7 +13,7 @@ class ThemesController < ApplicationController
   end
 
   def stylesheet
-    render 'stylesheet', layout: false
+    render partial: 'stylesheet', locals: {theme: @theme}, layout: false
   end
 
   def edit

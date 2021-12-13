@@ -1,0 +1,17 @@
+<style>
+  .<%= theme.css_class %> * {
+    color: <%= color_to_hex_string(theme.text_color) %>;
+  }
+  .<%= theme.css_class %> .page {
+    background-color: <%= color_to_hex_string(theme.background_color) %>;
+  }
+  .<%= theme.css_class %> .page + .page {
+    border-top: 4px solid <%= color_to_hex_string(theme.page_separator_color) %>;
+  }
+  .<%= theme.css_class %> .index-page a, .theme-light .title-page a {
+    color: <%= color_to_hex_string(theme.text_color) %>
+  }
+  .<%= theme.css_class %> .index-page a:hover {
+    color: #444;
+  }
+</style>
