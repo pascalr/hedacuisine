@@ -8,6 +8,7 @@ class BooksController < ApplicationController
   end
   
   def edit
+    @theme = @book.theme
     gon.jbuilder
   end
 

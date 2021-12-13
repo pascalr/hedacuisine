@@ -2,7 +2,9 @@
   <%= link_to 'Edit', edit_book_path(@book) %>
 <% end %>
 
-<div class="book theme-sky">
+<%= render partial: 'themes/stylesheet', locals: {theme: @book.theme} %>
+
+<div class="book <%= @book.theme.css_class %>">
   <%= render partial: "books/title_page", locals: {book: @book} %>
   <div class="page index-page">
     <h2>Liste des recettes</h2>

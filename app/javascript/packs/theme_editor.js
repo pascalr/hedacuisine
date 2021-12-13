@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 
-import { colorToHexString, hexStringToColor, Utils } from 'utils'
-
 //import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Autosuggest from 'react-autosuggest'
 //
@@ -16,6 +14,7 @@ import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from '
 //import { Ingredient, Utils } from "recipe_utils"
 
 import {ColorField, TextField} from '../form'
+import {themeCssClass, Theme} from '../models/theme'
 
 class ThemeEditor extends React.Component {
   
@@ -32,26 +31,9 @@ class ThemeEditor extends React.Component {
   render() {
 
     const theme = this.state.theme
-    const themeClass = "theme-"+theme.name.toLowerCase().replace(/ /, '-')
     const book = {name: theme.name + " theme"}
     return (<>
-      <style>{`
-        .${themeClass} * {
-          color: ${colorToHexString(theme.text_color)};
-        }
-        .${themeClass} .page {
-          background-color: ${colorToHexString(theme.background_color)};
-        }
-        .${themeClass} .page + .page {
-          border-top: 4px solid ${colorToHexString(theme.page_separator_color)};
-        }
-        .${themeClass} .index-page a, .theme-light .title-page a {
-          color: ${colorToHexString(theme.text_color)}
-        }
-        .${themeClass} .index-page a:hover {
-          color: #444;
-        }
-      `}</style>
+      <Theme theme={this.state.theme}/>
       <Row>
         <Block flexGrow="1">
           <h2>Informations</h2>
@@ -82,7 +64,7 @@ class ThemeEditor extends React.Component {
         </Block>
         <Block flexGrow="1">
           <h2>Live preview</h2>
-          <div className={themeClass}>
+          <div className={themeCssClass(theme)}>
             <div className="page title-page">
               <h1>{book.name}</h1>
               <div className="author">de {gon.user.name}</div>

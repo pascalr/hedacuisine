@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 
+import {themeCssClass, Theme} from '../models/theme'
+
 //import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Autosuggest from 'react-autosuggest'
 //
@@ -63,9 +65,10 @@ class BookEditor extends React.Component {
   constructor(props) {
     super(props);
     this.recipeFindRef = React.createRef();
-    //this.state = {
-    //  name: gon.recipe.name,
-    //};
+    this.state = {
+      book: gon.book,
+    };
+    this.theme = gon.theme
     //this.handleDropIng = this.handleDropIng.bind(this);
   }
 
@@ -78,17 +81,39 @@ class BookEditor extends React.Component {
         node.innerHTML = raw
       })
     }
+
+    const book = this.state.book
     
     //<TextFieldTag field="book_recipe[recipe_id}"/>
     //<HiddenFieldTag field="book_id" value={gon.book.id}/>
     //<SubmitTag value="Ajouter"/>
+    //<% @book.recipes.each do |recipe| %>
+    //  <li><%= link_to recipe.name, "#recipe-body-#{recipe.id}" %></li>
+    //<% end %>
+    //<% @book.recipes.each do |recipe| %>
+    //  <div class="page">
+    //    <%= render partial: "recipes/recipe_body", locals: {recipe: recipe} %>
+    //  </div>
+    //<% end %>
     return (<>
+      <Theme theme={this.theme}/>
       <div>
         <b>Rechercher: </b>
         <RecipeKindFinder onRecipeKindFound={onRecipeKindFound}/>
         <button>Rechercher</button>
       </div>
       <div ref={this.recipeFindRef} />
+      <div className={`book ${themeCssClass(this.theme)}`}>
+        <div className="page title-page">
+          <h1>{book.name}</h1>
+          <div className="author">de {book.author}</div>
+        </div>
+        <div className="page index-page">
+          <h2>Liste des recettes</h2>
+          <ul>
+          </ul>
+        </div>
+      </div>
     </>)
   }
 }

@@ -25,7 +25,7 @@ class ThemesController < ApplicationController
 
     respond_to do |format|
       if @theme.save
-        format.html { redirect_to @theme, notice: "Theme was successfully created." }
+        format.html { redirect_to edit_theme_path(@theme), notice: "Theme was successfully created." }
         format.json { render :show, status: :created, location: @theme }
       else
         format.html { render :new, status: :unprocessable_entity }

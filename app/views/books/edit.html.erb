@@ -8,12 +8,6 @@
   <b>Thème: </b> <%= form.collection_select :theme_id, Theme.order(:name).all, :id, :name, include_blank: true %><%= form.submit %>
 <% end %>
 
-<h2><%= @book.recipes.count %> Recettes</h2>
-
-<p>Proposer de créer une nouvelle recette.</p>
-
-<p>Proposer de rechercher une recette. L'utilisateur choisis une sorte de recette. Ensuite il peut choisir cette recette ou bien changer puis choisir.</p>
-
 <h2>Ajouter une recette</h2>
 <div>
   <b>Numéro: </b>
