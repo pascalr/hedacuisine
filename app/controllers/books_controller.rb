@@ -12,6 +12,7 @@ class BooksController < ApplicationController
   end
 
   def new
+    @themes = Theme.all
     @book = Book.new
   end
 
@@ -40,6 +41,6 @@ class BooksController < ApplicationController
     end
 
     def book_params
-      params.require(:book).permit(:name)
+      params.require(:book).permit(:name, :theme_id)
     end
 end

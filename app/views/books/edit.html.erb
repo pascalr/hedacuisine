@@ -2,6 +2,12 @@
 
 <h1><%= @book.name %></h1>
 
+<h2>Paramètres</h2>
+
+<%= form_with(model: @book, local: true) do |form| %>
+  <b>Thème: </b> <%= form.collection_select :theme_id, Theme.order(:name).all, :id, :name, include_blank: true %><%= form.submit %>
+<% end %>
+
 <h2><%= @book.recipes.count %> Recettes</h2>
 
 <p>Proposer de créer une nouvelle recette.</p>

@@ -24,15 +24,16 @@
 <% end %>
 
 <h2>Choisir un thème</h2>
-<% book = Book.new %>
-<% book.user = current_user %>
 <div style="display: flex; gap: 20px;">
-  <% book.name = "Theme light" %>
-  <%= render partial: "books/title_page_thumbnail", locals: {book: book} %>
-  <% book.name = "Theme dark" %>
-  <%= render partial: "books/title_page_thumbnail", locals: {book: book} %>
-  <% book.name = "Theme sky" %>
-  <%= render partial: "books/title_page_thumbnail", locals: {book: book} %>
+  <% @themes.each do |theme| %>
+    <%= render partial: 'themes/stylesheet', locals: {theme: theme} %>
+    <%= link_to edit_theme_path(theme) do %>
+      <% book = Book.new %>
+      <% book.theme = theme %>
+      <% book.name = "#{theme.name} theme" %>
+      <% book.user = current_user %>
+      <% book.theme = theme %>
+      <%= render partial: "books/title_page_thumbnail", locals: {book: book} %>
+    <% end %>
+  <% end %>
 </div>
-
-<p>TODO: Choisir le thème</p>
