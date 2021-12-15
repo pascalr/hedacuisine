@@ -65,8 +65,10 @@ class BookEditor extends React.Component {
   constructor(props) {
     super(props);
     this.recipeFindRef = React.createRef();
+    this.newBookRecipeRecipeIdRef = React.createRef();
     this.state = {
       book: gon.book,
+      recipes: gon.recipes,
     };
     this.theme = gon.theme
     //this.handleDropIng = this.handleDropIng.bind(this);
@@ -83,18 +85,26 @@ class BookEditor extends React.Component {
     }
 
     const book = this.state.book
+    const new_book_recipe = {class_name: "book_recipe"}
     
     //<TextFieldTag field="book_recipe[recipe_id}"/>
     //<HiddenFieldTag field="book_id" value={gon.book.id}/>
     //<SubmitTag value="Ajouter"/>
-    //<% @book.recipes.each do |recipe| %>
-    //  <li><%= link_to recipe.name, "#recipe-body-#{recipe.id}" %></li>
-    //<% end %>
-    //<% @book.recipes.each do |recipe| %>
-    //  <div class="page">
-    //    <%= render partial: "recipes/recipe_body", locals: {recipe: recipe} %>
-    //  </div>
-    //<% end %>
+    const addBookRecipe = () => {
+      const recipeId = this.newBookRecipeRecipeIdRef.current.value
+      let data = new FormData()
+      data.append("book_recipe[recipe_id]", recipeId)
+      Rails.ajax({url: gon.book_book_recipes_path, type: 'POST', data: data, success: (raw) => {
+        const response = JSON.parse(raw)
+        const book_recipe = response.book_recipe
+        console.log(response)
+        const recipes = [...this.state.recipes, book_recipe.recipe]
+        this.setState({recipes})
+      }, error: (errors) => {
+        console.error(errors)
+        //toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
+      }})
+    }
     return (<>
       <Theme theme={this.theme}/>
       <div>
@@ -111,8 +121,18 @@ class BookEditor extends React.Component {
         <div className="page index-page">
           <h2>Liste des recettes</h2>
           <ul>
+            {this.state.recipes.map((recipe) => (
+              <li key={recipe.id}><a href={`#recipe-body-${recipe.id}`}>{recipe.name}</a></li>
+            ))}
+            <li key="0">
+              <input type="text" id="new-book-recipe-recipe-id" placeholder="Numéro de recette..." ref={this.newBookRecipeRecipeIdRef}/>
+              <button type="button" onClick={addBookRecipe} >Ajouter</button>
+            </li>
           </ul>
         </div>
+        {this.state.recipes.map((recipe) => (
+          <div className="page" key={`page-recipe-${recipe.id}`} dangerouslySetInnerHTML={{__html: recipe.html}}/>
+        ))}
       </div>
     </>)
   }

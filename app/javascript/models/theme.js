@@ -6,11 +6,12 @@ export const themeCssClass = (theme) => {
   return "theme-"+theme.name.toLowerCase().replace(/ /, '-')
 }
 
+// NOTE: Also modify /app/views/themes/_stylesheet.html.erb
 export const Theme = ({theme}) => {
   const themeClass = themeCssClass(theme)
   return (
     <style>{`
-      .${themeClass} * {
+      .${themeClass} h1, .${themeClass} h2, .${themeClass} h3, .${themeClass} h4, .${themeClass} h5, .${themeClass} h6, .${themeClass} p, .${themeClass} .author {
         color: ${colorToHexString(theme.text_color)};
       }
       .${themeClass} .page {

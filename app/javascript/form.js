@@ -99,6 +99,23 @@ export const ColorField = ({model, field}) => {
         onChange={(e) => {let v = e.target.value; updateModelField(model, field, Utils.hexStringToColor(v), () => setValue(v))}} />
   )
 }
+export const CollectionSelect2 = ({model, field, options, showOption, includeBlank}) => {
+  const [value, setValue] = useState(model[field])
+
+  const updateField = (e) => {
+    let val = e.target.value
+    updateModelField(model, field, val, () => setValue(val))
+  }
+
+  return (
+    <select name={model.class_name+"["+field+"]"} id={field} value={value||''} onChange={updateField}>
+      {includeBlank ? <option value="" key="1" label=" "></option> : null}
+      {options.map((opt, i) => {
+        return <option value={opt} key={i+2}>{showOption(opt)}</option>
+      })}
+    </select>
+  )
+}
 
 export const TextAreaField = ({model, field, cols, rows, changeCallback=null}) => {
   const [value, setValue] = useState(model.currentValue(field))

@@ -1,4 +1,5 @@
 json.book do
+  json.class_name "book"
   json.id @book.id
   json.name @book.name
   json.author @book.author
@@ -14,6 +15,12 @@ json.theme do
   json.page_separator_color @theme.page_separator_color
 end
 
-json.recipes @book.recipes, :id, :name
+json.book_book_recipes_path book_book_recipes_path(@book, format: :js)
+
+json.recipes @book.recipes do |recipe|
+  json.id recipe.id
+  json.name recipe.name
+  json.html @recipes_html[recipe.id]
+end
 
 json.recipe_kinds RecipeKind.order(:name).includes(:recipes).where(recipes: {is_public: true}).map {|recipe_kind| {id: recipe_kind.id, name: recipe_kind.name.downcase}}
