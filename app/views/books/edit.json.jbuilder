@@ -17,10 +17,14 @@ end
 
 json.book_book_recipes_path book_book_recipes_path(@book, format: :js)
 
-json.recipes @book.recipes do |recipe|
-  json.id recipe.id
-  json.name recipe.name
-  json.html @recipes_html[recipe.id]
+json.book_recipes @book.book_recipes do |book_recipe|
+  json.id book_recipe.id
+  json.url book_book_recipe_path(@book, book_recipe)
+  json.recipe do
+    json.id book_recipe.recipe.id
+    json.name book_recipe.recipe.name
+    json.html @recipes_html[book_recipe.recipe.id]
+  end
 end
 
 json.recipe_kinds RecipeKind.order(:name).includes(:recipes).where(recipes: {is_public: true}).map {|recipe_kind| {id: recipe_kind.id, name: recipe_kind.name.downcase}}

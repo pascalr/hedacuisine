@@ -11,7 +11,7 @@ export const Theme = ({theme}) => {
   const themeClass = themeCssClass(theme)
   return (
     <style>{`
-      .${themeClass} h1, .${themeClass} h2, .${themeClass} h3, .${themeClass} h4, .${themeClass} h5, .${themeClass} h6, .${themeClass} p, .${themeClass} .author {
+      .${themeClass} h1, .${themeClass} h2, .${themeClass} h3, .${themeClass} h4, .${themeClass} h5, .${themeClass} h6, .${themeClass} p, .${themeClass} .author, .${themeClass} li {
         color: ${colorToHexString(theme.text_color)};
       }
       .${themeClass} .page {

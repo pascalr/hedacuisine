@@ -3,14 +3,13 @@ import ReactDOM from 'react-dom'
 
 import {themeCssClass, Theme} from '../models/theme'
 
+import { DeleteConfirmButton } from 'components/delete_confirm_button'
+
 //import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Autosuggest from 'react-autosuggest'
 //
 //import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from 'jsxstyle'
 //
-//import Popover from '@mui/material/Popover';
-//import Typography from '@mui/material/Typography';
-//import Button from '@mui/material/Button';
 //
 //import Quantity from 'models/quantity'
 //import { Ingredient, Utils } from "recipe_utils"
@@ -68,10 +67,34 @@ class BookEditor extends React.Component {
     this.newBookRecipeRecipeIdRef = React.createRef();
     this.state = {
       book: gon.book,
-      recipes: gon.recipes,
+      bookRecipes: gon.book_recipes,
     };
     this.theme = gon.theme
-    //this.handleDropIng = this.handleDropIng.bind(this);
+    this.addRecipe = this.addRecipe.bind(this)
+    this.removeRecipe = this.removeRecipe.bind(this)
+  }
+    
+  addRecipe() {
+    const recipeId = this.newBookRecipeRecipeIdRef.current.value
+    let data = new FormData()
+    data.append("book_recipe[recipe_id]", recipeId)
+    Rails.ajax({url: gon.book_book_recipes_path, type: 'POST', data: data, success: (raw) => {
+      const response = JSON.parse(raw)
+      const book_recipe = response.book_recipe
+      console.log(response)
+      const bookRecipes = [...this.state.bookRecipes, book_recipe]
+      this.setState({bookRecipes})
+    }, error: (errors) => {
+      console.error(errors)
+      //toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
+    }})
+  }
+
+  removeRecipe(bookRecipe) {
+    Rails.ajax({url: bookRecipe.url, type: 'DELETE', success: (raw) => {
+      const bookRecipes = [...this.state.bookRecipes].filter(r => r.id != bookRecipe.id)
+      this.setState({bookRecipes})
+    }})
   }
 
   render() {
@@ -90,21 +113,6 @@ class BookEditor extends React.Component {
     //<TextFieldTag field="book_recipe[recipe_id}"/>
     //<HiddenFieldTag field="book_id" value={gon.book.id}/>
     //<SubmitTag value="Ajouter"/>
-    const addBookRecipe = () => {
-      const recipeId = this.newBookRecipeRecipeIdRef.current.value
-      let data = new FormData()
-      data.append("book_recipe[recipe_id]", recipeId)
-      Rails.ajax({url: gon.book_book_recipes_path, type: 'POST', data: data, success: (raw) => {
-        const response = JSON.parse(raw)
-        const book_recipe = response.book_recipe
-        console.log(response)
-        const recipes = [...this.state.recipes, book_recipe.recipe]
-        this.setState({recipes})
-      }, error: (errors) => {
-        console.error(errors)
-        //toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
-      }})
-    }
     return (<>
       <Theme theme={this.theme}/>
       <div>
@@ -121,17 +129,20 @@ class BookEditor extends React.Component {
         <div className="page index-page">
           <h2>Liste des recettes</h2>
           <ul>
-            {this.state.recipes.map((recipe) => (
-              <li key={recipe.id}><a href={`#recipe-body-${recipe.id}`}>{recipe.name}</a></li>
+            {this.state.bookRecipes.map((bookRecipe) => (
+              <li key={bookRecipe.id}>
+                <a href={`#recipe-body-${bookRecipe.recipe.id}`}>{bookRecipe.recipe.name}</a>
+                <DeleteConfirmButton id={`remove-book-recipe-${bookRecipe.id}`} onDeleteConfirm={() => this.removeRecipe(bookRecipe)} message="Je veux enlever cette recette?" />
+              </li>
             ))}
             <li key="0">
               <input type="text" id="new-book-recipe-recipe-id" placeholder="Numéro de recette..." ref={this.newBookRecipeRecipeIdRef}/>
-              <button type="button" onClick={addBookRecipe} >Ajouter</button>
+              <button type="button" onClick={this.addRecipe} >Ajouter</button>
             </li>
           </ul>
         </div>
-        {this.state.recipes.map((recipe) => (
-          <div className="page" key={`page-recipe-${recipe.id}`} dangerouslySetInnerHTML={{__html: recipe.html}}/>
+        {this.state.bookRecipes.map((bookRecipe) => (
+          <div className="page" key={`page-recipe-${bookRecipe.id}`} dangerouslySetInnerHTML={{__html: bookRecipe.recipe.html}}/>
         ))}
       </div>
     </>)
