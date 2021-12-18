@@ -65,13 +65,33 @@ class BookEditor extends React.Component {
     super(props);
     this.recipeFindRef = React.createRef();
     this.newBookRecipeRecipeIdRef = React.createRef();
+    this.newBookSectionNameRef = React.createRef();
     this.state = {
       book: gon.book,
       bookRecipes: gon.book_recipes,
+      bookSections: gon.book_sections,
     };
     this.theme = gon.theme
     this.addRecipe = this.addRecipe.bind(this)
+    this.addSection = this.addSection.bind(this)
     this.removeRecipe = this.removeRecipe.bind(this)
+    this.removeSection = this.removeSection.bind(this)
+  }
+    
+  addSection() {
+    const sectionName = this.newBookSectionNameRef.current.value
+    let data = new FormData()
+    data.append("book_section[name]", sectionName)
+    Rails.ajax({url: gon.book_book_sections_path, type: 'POST', data: data, success: (raw) => {
+      const response = JSON.parse(raw)
+      const book_section = response.book_section
+      console.log(response)
+      const bookSections = [...this.state.bookSections, book_section]
+      this.setState({bookSections})
+    }, error: (errors) => {
+      console.error(errors)
+      //toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
+    }})
   }
     
   addRecipe() {
@@ -87,6 +107,13 @@ class BookEditor extends React.Component {
     }, error: (errors) => {
       console.error(errors)
       //toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
+    }})
+  }
+
+  removeSection(bookSection) {
+    Rails.ajax({url: bookSection.url, type: 'DELETE', success: (raw) => {
+      const bookSections = [...this.state.bookSections].filter(r => r.id != bookSection.id)
+      this.setState({bookSections})
     }})
   }
 
@@ -129,15 +156,25 @@ class BookEditor extends React.Component {
         <div className="page index-page">
           <h2>Liste des recettes</h2>
           <ul>
+            {this.state.bookSections.map((bookSection) => (
+              <li className="section" key={'section-'+bookSection.id}>
+                <a href={`#section-${bookSection.id}`}>{bookSection.name}</a>
+                <DeleteConfirmButton id={`remove-book-section-${bookSection.id}`} onDeleteConfirm={() => this.removeSection(bookSection)} message="Je veux enlever cette section?" />
+              </li>
+            ))}
             {this.state.bookRecipes.map((bookRecipe) => (
-              <li key={bookRecipe.id}>
+              <li key={'recipe-'+bookRecipe.id}>
                 <a href={`#recipe-body-${bookRecipe.recipe.id}`}>{bookRecipe.recipe.name}</a>
                 <DeleteConfirmButton id={`remove-book-recipe-${bookRecipe.id}`} onDeleteConfirm={() => this.removeRecipe(bookRecipe)} message="Je veux enlever cette recette?" />
               </li>
             ))}
             <li key="0">
               <input type="text" id="new-book-recipe-recipe-id" placeholder="Numéro de recette..." ref={this.newBookRecipeRecipeIdRef}/>
-              <button type="button" onClick={this.addRecipe} >Ajouter</button>
+              <button type="button" onClick={this.addRecipe} >Ajouter recette</button>
+            </li>
+            <li key="-1">
+              <input type="text" id="new-book-section-name" placeholder="Nouvelle section..." ref={this.newBookSectionNameRef }/>
+              <button type="button" onClick={this.addSection} >Ajouter section</button>
             </li>
           </ul>
         </div>

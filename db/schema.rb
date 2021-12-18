@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_09_223611) do
+ActiveRecord::Schema.define(version: 2021_12_18_193731) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,14 @@ ActiveRecord::Schema.define(version: 2021_12_09_223611) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["book_id"], name: "index_book_recipes_on_book_id"
     t.index ["recipe_id"], name: "index_book_recipes_on_recipe_id"
+  end
+
+  create_table "book_sections", force: :cascade do |t|
+    t.string "name"
+    t.bigint "book_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["book_id"], name: "index_book_sections_on_book_id"
   end
 
   create_table "books", force: :cascade do |t|
@@ -623,6 +631,7 @@ ActiveRecord::Schema.define(version: 2021_12_09_223611) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "book_recipes", "books"
   add_foreign_key "book_recipes", "recipes"
+  add_foreign_key "book_sections", "books"
   add_foreign_key "books", "users"
   add_foreign_key "categories", "menus"
   add_foreign_key "container_ingredients", "containers"

@@ -16,6 +16,13 @@ json.theme do
 end
 
 json.book_book_recipes_path book_book_recipes_path(@book, format: :js)
+json.book_book_sections_path book_book_sections_path(@book, format: :js)
+
+json.book_sections @book.book_sections do |book_section|
+  json.id book_section.id
+  json.name book_section.name
+  json.url book_book_section_path(@book, book_section)
+end
 
 json.book_recipes @book.book_recipes do |book_recipe|
   json.id book_recipe.id

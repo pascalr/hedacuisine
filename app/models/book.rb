@@ -3,6 +3,7 @@ class Book < ApplicationRecord
   has_many :book_recipes
   has_many :recipes, through: :book_recipes
   belongs_to :theme
+  has_many :book_sections
 
   def name_with_author
     "#{self.name} — #{user.name}"
