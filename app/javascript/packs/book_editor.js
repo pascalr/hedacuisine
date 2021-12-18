@@ -5,7 +5,7 @@ import {themeCssClass, Theme} from '../models/theme'
 
 import { DeleteConfirmButton } from 'components/delete_confirm_button'
 
-//import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Autosuggest from 'react-autosuggest'
 //
 //import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from 'jsxstyle'
@@ -76,6 +76,7 @@ class BookEditor extends React.Component {
     this.addSection = this.addSection.bind(this)
     this.removeRecipe = this.removeRecipe.bind(this)
     this.removeSection = this.removeSection.bind(this)
+    this.handleIndexDrop = this.handleIndexDrop.bind(this)
   }
     
   addSection() {
@@ -124,6 +125,25 @@ class BookEditor extends React.Component {
     }})
   }
 
+  handleIndexDrop(droppedItem) {
+    console.log('Handle index drop')
+    // Ignore drop outside droppable container
+    //if (!droppedItem.destination) return;
+    //var updatedList = [...this.state.ingIds];
+    //// Remove dragged item
+    //const [reorderedItem] = updatedList.splice(droppedItem.source.index, 1);
+    //// Add dropped item
+    //updatedList.splice(droppedItem.destination.index, 0, reorderedItem);
+
+    //console.log(droppedItem)
+
+    //let data = new FormData()
+    //data.append('ing_id', droppedItem.draggableId)
+    //data.append('position', droppedItem.destination.index+1)
+    //Rails.ajax({url: gon.recipe.move_ing_url, type: 'PATCH', data: data})
+    //this.setState({ingIds: updatedList})
+  }
+
   render() {
 
     const onRecipeKindFound = (recipeKindId) => {
@@ -136,6 +156,10 @@ class BookEditor extends React.Component {
 
     const book = this.state.book
     const new_book_recipe = {class_name: "book_recipe"}
+
+    const sectionItems = this.state.bookSections.map(b => ({props: {className: "section"}, onDelete: () => {this.removeSection(b)}, link: `#section-${b.id}`, label: b.name}))
+    const recipeItems = this.state.bookRecipes.map(r => ({props: {}, onDelete: () => {this.removeRecipe(r)}, link: `#recipe-body-${r.recipe.id}`, label: r.recipe.name}))
+    const indexItems = [...sectionItems, ...recipeItems]
     
     //<TextFieldTag field="book_recipe[recipe_id}"/>
     //<HiddenFieldTag field="book_id" value={gon.book.id}/>
@@ -154,20 +178,29 @@ class BookEditor extends React.Component {
           <div className="author">de {book.author}</div>
         </div>
         <div className="page index-page">
-          <h2>Liste des recettes</h2>
+          <h2>Index</h2>
           <ul>
-            {this.state.bookSections.map((bookSection) => (
-              <li className="section" key={'section-'+bookSection.id}>
-                <a href={`#section-${bookSection.id}`}>{bookSection.name}</a>
-                <DeleteConfirmButton id={`remove-book-section-${bookSection.id}`} onDeleteConfirm={() => this.removeSection(bookSection)} message="Je veux enlever cette section?" />
-              </li>
-            ))}
-            {this.state.bookRecipes.map((bookRecipe) => (
-              <li key={'recipe-'+bookRecipe.id}>
-                <a href={`#recipe-body-${bookRecipe.recipe.id}`}>{bookRecipe.recipe.name}</a>
-                <DeleteConfirmButton id={`remove-book-recipe-${bookRecipe.id}`} onDeleteConfirm={() => this.removeRecipe(bookRecipe)} message="Je veux enlever cette recette?" />
-              </li>
-            ))}
+            <DragDropContext onDragEnd={this.handleIndexDrop}>
+              <Droppable droppableId="list-container">
+                {(provided) => (
+                  <div className="list-container" {...provided.droppableProps} ref={provided.innerRef}>
+                    {indexItems.map((item, index) => (
+                      <Draggable key={item.link} draggableId={item.link.toString()} index={index}>
+                        {(provided) => (
+                          <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
+                            <li {...item.props}>
+                              <a href={item.link}>{item.label}</a>
+                              <DeleteConfirmButton id={item.link} onDeleteConfirm={item.onDelete} message="Je veux vraiment enlever?" />
+                            </li>
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
             <li key="0">
               <input type="text" id="new-book-recipe-recipe-id" placeholder="Numéro de recette..." ref={this.newBookRecipeRecipeIdRef}/>
               <button type="button" onClick={this.addRecipe} >Ajouter recette</button>
