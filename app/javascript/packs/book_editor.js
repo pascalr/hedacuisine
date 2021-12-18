@@ -153,6 +153,8 @@ class BookEditor extends React.Component {
         node.innerHTML = raw
       })
     }
+      
+    //indexItems: [...gon.book_recipes, ...gon.book_sections].sort((a, b) => (a.position-b.position)),
 
     const book = this.state.book
     const new_book_recipe = {class_name: "book_recipe"}
