@@ -216,7 +216,7 @@ class BookEditor extends React.Component {
         </div>
         {this.state.indexItems.map(({position, item}) => {
           if (item.class_name == "book_section") {
-            return <div className="page section-page" key={`page-section-${item.id}`}>
+            return <div id={`section-${item.id}`} className="page section-page" key={`page-section-${item.id}`}>
                 <h3>{item.name}</h3>
               </div>
           } else {
