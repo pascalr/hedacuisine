@@ -7,7 +7,7 @@ class BookSectionsController < ApplicationController
     book_section = @book.book_sections.create!(book_section_params)
     respond_to do |format|
       format.html {redirect_back fallback_location: books_path}
-      format.js {render json: {book_section: {id: book_section.id, name: book_section.name, url: book_book_section_path(@book, book_section)}}}
+      format.js {render json: {book_section: {class_name: "book_section", id: book_section.id, name: book_section.name, url: book_book_section_path(@book, book_section)}}}
     end
   end
 

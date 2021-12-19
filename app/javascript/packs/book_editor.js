@@ -68,15 +68,12 @@ class BookEditor extends React.Component {
     this.newBookSectionNameRef = React.createRef();
     this.state = {
       book: gon.book,
-      bookRecipes: gon.book_recipes,
-      bookSections: gon.book_sections,
-      indexItems: [...gon.book_recipes, ...gon.book_sections].sort((a, b) => (a.position-b.position)).map(i => ({position: i.position, item: i})),
+      indexItems: [...gon.book_recipes, ...gon.book_sections].sort((a, b) => (a.position-b.position)),
     };
     this.theme = gon.theme
     this.addRecipe = this.addRecipe.bind(this)
     this.addSection = this.addSection.bind(this)
-    this.removeRecipe = this.removeRecipe.bind(this)
-    this.removeSection = this.removeSection.bind(this)
+    this.removeIndexItem = this.removeIndexItem.bind(this)
     this.handleIndexDrop = this.handleIndexDrop.bind(this)
   }
     
@@ -88,8 +85,8 @@ class BookEditor extends React.Component {
       const response = JSON.parse(raw)
       const book_section = response.book_section
       console.log(response)
-      const bookSections = [...this.state.bookSections, book_section]
-      this.setState({bookSections})
+      const indexItems = [...this.state.indexItems, book_section]
+      this.setState({indexItems})
     }, error: (errors) => {
       console.error(errors)
       //toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
@@ -104,25 +101,18 @@ class BookEditor extends React.Component {
       const response = JSON.parse(raw)
       const book_recipe = response.book_recipe
       console.log(response)
-      const bookRecipes = [...this.state.bookRecipes, book_recipe]
-      this.setState({bookRecipes})
+      const indexItems = [...this.state.indexItems, book_recipe]
+      this.setState({indexItems})
     }, error: (errors) => {
       console.error(errors)
       //toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
     }})
   }
 
-  removeSection(bookSection) {
-    Rails.ajax({url: bookSection.url, type: 'DELETE', success: (raw) => {
-      const bookSections = [...this.state.bookSections].filter(r => r.id != bookSection.id)
-      this.setState({bookSections})
-    }})
-  }
-
-  removeRecipe(bookRecipe) {
-    Rails.ajax({url: bookRecipe.url, type: 'DELETE', success: (raw) => {
-      const bookRecipes = [...this.state.bookRecipes].filter(r => r.id != bookRecipe.id)
-      this.setState({bookRecipes})
+  removeIndexItem(item) {
+    Rails.ajax({url: item.url, type: 'DELETE', success: (raw) => {
+      const indexItems = [...this.state.indexItems].filter(r => r.id != item.id || r.class_name != item.class_name)
+      this.setState({indexItems})
     }})
   }
 
@@ -182,18 +172,17 @@ class BookEditor extends React.Component {
               <Droppable droppableId="list-container">
                 {(provided) => (
                   <div className="list-container" {...provided.droppableProps} ref={provided.innerRef}>
-                    {this.state.indexItems.map(({position, item}, index) => {
+                    {this.state.indexItems.map((item, index) => {
                       let is_section = item.class_name == "book_section"
                       let link = is_section ? `#section-${item.id}` : `#recipe-body-${item.recipe.id}`
                       let label = is_section ? item.name : item.recipe.name
-                      let onDelete = is_section ? () => {this.removeSection(b)} : () => {this.removeRecipe(r)}
                       let listItemClassName = is_section ? "section" : ''
                       return <Draggable key={link} draggableId={link.toString()} index={index}>
                         {(provided) => (
                           <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
                             <li className={listItemClassName}>
                               <a href={link}>{label}</a>
-                              <DeleteConfirmButton id={link} onDeleteConfirm={onDelete} message="Je veux vraiment enlever?" />
+                              <DeleteConfirmButton id={link} onDeleteConfirm={() => this.removeIndexItem(item)} message="Je veux vraiment enlever?" />
                             </li>
                           </div>
                         )}
@@ -214,7 +203,7 @@ class BookEditor extends React.Component {
             </li>
           </ul>
         </div>
-        {this.state.indexItems.map(({position, item}) => {
+        {this.state.indexItems.map((item) => {
           if (item.class_name == "book_section") {
             return <div id={`section-${item.id}`} className="page section-page" key={`page-section-${item.id}`}>
                 <h3>{item.name}</h3>

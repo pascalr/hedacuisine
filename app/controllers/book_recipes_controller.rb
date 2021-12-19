@@ -7,7 +7,7 @@ class BookRecipesController < ApplicationController
     book_recipe = @book.book_recipes.create!(book_recipe_params)
     respond_to do |format|
       format.html {redirect_back fallback_location: books_path}
-      format.js {render json: {book_recipe: {id: book_recipe.id, recipe: {id: book_recipe.recipe.id, name: book_recipe.recipe.name}}}}
+      format.js {render json: {book_recipe: {class_name: "book_recipe", id: book_recipe.id, recipe: {id: book_recipe.recipe.id, name: book_recipe.recipe.name}}}}
     end
   end
 
