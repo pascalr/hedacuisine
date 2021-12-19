@@ -21,7 +21,7 @@ class Book < ApplicationRecord
 
   def next_index_position
     items = book_sections+book_recipes
-    position = items.map(&:position).compact.max
+    position = items.map {|i| i[:position]}.compact.max
     position.nil? ? 1 : position+1
   end
 
