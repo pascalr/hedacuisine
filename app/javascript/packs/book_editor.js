@@ -214,9 +214,15 @@ class BookEditor extends React.Component {
             </li>
           </ul>
         </div>
-        {this.state.bookRecipes.map((bookRecipe) => (
-          <div className="page" key={`page-recipe-${bookRecipe.id}`} dangerouslySetInnerHTML={{__html: bookRecipe.recipe.html}}/>
-        ))}
+        {this.state.indexItems.map(({position, item}) => {
+          if (item.class_name == "book_section") {
+            return <div className="page section-page" key={`page-section-${item.id}`}>
+                <h3>{item.name}</h3>
+              </div>
+          } else {
+            return <div className="page" key={`page-recipe-${item.id}`} dangerouslySetInnerHTML={{__html: item.recipe.html}}/>
+          }
+        })}
       </div>
     </>)
   }
