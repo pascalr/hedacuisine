@@ -1,5 +1,14 @@
 <h1>Nouveau livre de recette</h1>
 
+<style>
+  input[type="radio"] {
+    display: none;
+  }
+  input[type="radio"]:checked+label {
+    border: 4px double blue;
+  }
+</style>
+
 <%= form_with(model: @book, local: true) do |form| %>
   <% if @book.errors.any? %>
     <div id="error_explanation">
@@ -18,22 +27,27 @@
     <%= form.text_field :name, size: 50 %>
   </div>
 
+  <br>
+
+  <%= form.label :theme_id %>
+  <div style="display: flex; gap: 20px;">
+    <% @themes.each do |theme| %>
+      <%= form.radio_button :theme_id, theme.id %>
+      <%= form.label :theme_id, value: theme.id do %>
+        <%= render partial: 'themes/stylesheet', locals: {theme: theme} %>
+        <% book = Book.new %>
+        <% book.theme = theme %>
+        <% book.name = "#{theme.name.capitalize} theme" %>
+        <% book.user = current_user %>
+        <% book.theme = theme %>
+        <%= render partial: "books/title_page_thumbnail", locals: {book: book} %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <br>
+
   <div class="actions">
     <%= form.submit %>
   </div>
 <% end %>
-
-<h2>Choisir un thème</h2>
-<div style="display: flex; gap: 20px;">
-  <% @themes.each do |theme| %>
-    <%= render partial: 'themes/stylesheet', locals: {theme: theme} %>
-    <%= link_to edit_theme_path(theme) do %>
-      <% book = Book.new %>
-      <% book.theme = theme %>
-      <% book.name = "#{theme.name} theme" %>
-      <% book.user = current_user %>
-      <% book.theme = theme %>
-      <%= render partial: "books/title_page_thumbnail", locals: {book: book} %>
-    <% end %>
-  <% end %>
-</div>
