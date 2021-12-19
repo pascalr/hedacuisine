@@ -17,6 +17,9 @@ end
 
 json.book_book_recipes_path book_book_recipes_path(@book, format: :js)
 json.book_book_sections_path book_book_sections_path(@book, format: :js)
+json.on_index_change_book_path on_index_change_book_path(@book)
+
+json.index_items @book.book_sections.map(&:order)+@book.book_recipes.map(&:order)
 
 json.book_sections @book.book_sections do |book_section|
   json.id book_section.id

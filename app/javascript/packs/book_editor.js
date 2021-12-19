@@ -70,6 +70,7 @@ class BookEditor extends React.Component {
       book: gon.book,
       bookRecipes: gon.book_recipes,
       bookSections: gon.book_sections,
+      indexItems: [...gon.book_recipes, ...gon.book_sections].sort((a, b) => (a.position-b.position)).map(i => ({position: i.position, item: i})),
     };
     this.theme = gon.theme
     this.addRecipe = this.addRecipe.bind(this)
@@ -128,20 +129,21 @@ class BookEditor extends React.Component {
   handleIndexDrop(droppedItem) {
     console.log('Handle index drop')
     // Ignore drop outside droppable container
-    //if (!droppedItem.destination) return;
-    //var updatedList = [...this.state.ingIds];
+    if (!droppedItem.destination) return;
+    var updatedList = [...this.state.indexItems];
     //// Remove dragged item
-    //const [reorderedItem] = updatedList.splice(droppedItem.source.index, 1);
+    const [reorderedItem] = updatedList.splice(droppedItem.source.index, 1);
     //// Add dropped item
-    //updatedList.splice(droppedItem.destination.index, 0, reorderedItem);
+    updatedList.splice(droppedItem.destination.index, 0, reorderedItem);
+    this.setState({indexItems: updatedList})
 
-    //console.log(droppedItem)
-
-    //let data = new FormData()
-    //data.append('ing_id', droppedItem.draggableId)
+    let data = new FormData()
+    data.append('source_index', droppedItem.source.index)
+    data.append('destination_index', droppedItem.destination.index)
+    //data.append('draggable_id', droppedItem.draggableId)
+    //data.append('draggable_type', droppedItem.draggableType)
     //data.append('position', droppedItem.destination.index+1)
-    //Rails.ajax({url: gon.recipe.move_ing_url, type: 'PATCH', data: data})
-    //this.setState({ingIds: updatedList})
+    Rails.ajax({url: gon.on_index_change_book_path , type: 'PATCH', data: data})
   }
 
   render() {
@@ -154,14 +156,8 @@ class BookEditor extends React.Component {
       })
     }
       
-    //indexItems: [...gon.book_recipes, ...gon.book_sections].sort((a, b) => (a.position-b.position)),
-
     const book = this.state.book
     const new_book_recipe = {class_name: "book_recipe"}
-
-    const sectionItems = this.state.bookSections.map(b => ({props: {className: "section"}, onDelete: () => {this.removeSection(b)}, link: `#section-${b.id}`, label: b.name}))
-    const recipeItems = this.state.bookRecipes.map(r => ({props: {}, onDelete: () => {this.removeRecipe(r)}, link: `#recipe-body-${r.recipe.id}`, label: r.recipe.name}))
-    const indexItems = [...sectionItems, ...recipeItems]
     
     //<TextFieldTag field="book_recipe[recipe_id}"/>
     //<HiddenFieldTag field="book_id" value={gon.book.id}/>
@@ -186,18 +182,23 @@ class BookEditor extends React.Component {
               <Droppable droppableId="list-container">
                 {(provided) => (
                   <div className="list-container" {...provided.droppableProps} ref={provided.innerRef}>
-                    {indexItems.map((item, index) => (
-                      <Draggable key={item.link} draggableId={item.link.toString()} index={index}>
+                    {this.state.indexItems.map(({position, item}, index) => {
+                      let is_section = item.class_name == "book_section"
+                      let link = is_section ? `#section-${item.id}` : `#recipe-body-${item.recipe.id}`
+                      let label = is_section ? item.name : item.recipe.name
+                      let onDelete = is_section ? () => {this.removeSection(b)} : () => {this.removeRecipe(r)}
+                      let listItemClassName = is_section ? "section" : ''
+                      return <Draggable key={link} draggableId={link.toString()} index={index}>
                         {(provided) => (
                           <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
-                            <li {...item.props}>
-                              <a href={item.link}>{item.label}</a>
-                              <DeleteConfirmButton id={item.link} onDeleteConfirm={item.onDelete} message="Je veux vraiment enlever?" />
+                            <li className={listItemClassName}>
+                              <a href={link}>{label}</a>
+                              <DeleteConfirmButton id={link} onDeleteConfirm={onDelete} message="Je veux vraiment enlever?" />
                             </li>
                           </div>
                         )}
                       </Draggable>
-                    ))}
+                    })}
                     {provided.placeholder}
                   </div>
                 )}

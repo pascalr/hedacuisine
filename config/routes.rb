@@ -141,6 +141,9 @@ Rails.application.routes.draw do
     end
 
     resources :books, param: 'slug' do
+      member do
+        patch 'on_index_change'
+      end
       resources :book_recipes, only: [:create, :update, :destroy]
       resources :book_sections, only: [:create, :update, :destroy]
     end

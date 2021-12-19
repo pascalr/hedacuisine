@@ -19,4 +19,10 @@ class Book < ApplicationRecord
     "#{user.name}"
   end
 
+  def next_index_position
+    items = book_sections+book_recipes
+    position = items.map(&:position).compact.max
+    position.nil? ? 1 : position+1
+  end
+
 end
