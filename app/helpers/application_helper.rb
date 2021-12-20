@@ -2,7 +2,7 @@ module ApplicationHelper
   
   def color_to_hex_string(color)
     return nil if color.nil?
-    "##{color.to_s(16)}"
+    "##{color.to_s(16).rjust(6,'0')}"
   end
 
   def hex_string_to_color(str)

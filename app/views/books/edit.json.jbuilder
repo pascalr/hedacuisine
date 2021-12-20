@@ -1,5 +1,6 @@
 json.book do
   json.class_name "book"
+  json.url book_path(@book, format: :js)
   json.id @book.id
   json.name @book.name
   json.author @book.author

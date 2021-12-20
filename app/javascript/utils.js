@@ -7,6 +7,7 @@ export function hexStringToColor(hex) {
 }
 
 export function addExtensionToPath(ext, path) {
+  if (path == null) {return null}
   // TODO: Add dot if ext does not start with a dot
   let i = path.indexOf('?')
   if (i == -1) {

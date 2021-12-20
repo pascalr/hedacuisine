@@ -75,7 +75,7 @@ const updateModelField = (model, field, value, successCallback=null) => {
 
     let data = new FormData()
     data.append(model.class_name+"["+field+"]", value)
-    Rails.ajax({url: Utils.addExtensionToPath('.js', model.url), type: 'PATCH', data: data, success: () => {
+    Rails.ajax({url: model.url, type: 'PATCH', data: data, success: () => {
       console.log("updateModelField success", field, value)
       model[field] = value
       if (successCallback) {successCallback()}
@@ -90,6 +90,14 @@ export const TextField = ({model, field}) => {
   return (
     <input type="text" value={value||''} name={model.class_name+"["+field+"]"} id={field}
         onChange={(e) => {let v = e.target.value; updateModelField(model, field, v, () => setValue(v))}} />
+  )
+}
+export const EditableField = ({model, field}) => {
+  return (
+    <div contentEditable suppressContentEditableWarning={true} name={model.class_name+"["+field+"]"}
+         id={field} onBlur={(e) => {updateModelField(model, field, e.target.innerText)}} >
+      {model[field]||''} 
+    </div>
   )
 }
 export const ColorField = ({model, field}) => {

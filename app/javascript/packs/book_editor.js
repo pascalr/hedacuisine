@@ -14,7 +14,7 @@ import Autosuggest from 'react-autosuggest'
 //import Quantity from 'models/quantity'
 //import { Ingredient, Utils } from "recipe_utils"
 
-import {Model, TextFieldTag, HiddenFieldTag, SubmitTag, TextInputField, TextAreaField, CollectionSelect, MODEL_BOOK_RECIPE} from '../form'
+import {EditableField} from '../form'
 
 const RecipeKindFinder = ({onRecipeKindFound}) => {
   const [value, setValue] = useState('')
@@ -162,7 +162,7 @@ class BookEditor extends React.Component {
       <div ref={this.recipeFindRef} />
       <div className={`book ${themeCssClass(this.theme)}`}>
         <div className="page title-page">
-          <h1>{book.name}</h1>
+          <h1><EditableField model={book} field="name"/></h1>
           <div className="author">de {book.author}</div>
         </div>
         <div className="page index-page">
