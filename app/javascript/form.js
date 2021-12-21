@@ -76,7 +76,7 @@ const updateModelField = (model, field, value, successCallback=null) => {
     let data = new FormData()
     data.append(model.class_name+"["+field+"]", value)
     Rails.ajax({url: model.url, type: 'PATCH', data: data, success: () => {
-      console.log("updateModelField success", field, value)
+      console.log(`Updating model ${field} from ${model[field]} to ${value}.`)
       model[field] = value
       if (successCallback) {successCallback()}
       if (model.onUpdate) {model.onUpdate(model)}
@@ -101,10 +101,14 @@ export const EditableField = ({model, field}) => {
   )
 }
 export const ColorField = ({model, field}) => {
+  //let value = Utils.colorToHexString(model[field])
   const [value, setValue] = useState(Utils.colorToHexString(model[field]))
+        //onChange={(e) => {let v = e.target.value; console.log(v); updateModelField(model, field, Utils.hexStringToColor(v), () => setValue(v))}} />
+        //onChange={(e) => {updateModelField(model, field, Utils.hexStringToColor(e.target.value))}} />
   return (
     <input type="color" value={value||''} name={model.class_name+"["+field+"]"} id={field}
-        onChange={(e) => {let v = e.target.value; updateModelField(model, field, Utils.hexStringToColor(v), () => setValue(v))}} />
+        onChange={(e) => setValue(e.target.value)}
+        onBlur={(e) => {updateModelField(model, field, Utils.hexStringToColor(value))}} />
   )
 }
 export const CollectionSelect2 = ({model, field, options, showOption, includeBlank}) => {

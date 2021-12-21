@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_18_211111) do
+ActiveRecord::Schema.define(version: 2021_12_20_231225) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -541,6 +541,9 @@ ActiveRecord::Schema.define(version: 2021_12_18_211111) do
     t.integer "page_separator_color"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "inverted_background_color"
+    t.integer "inverted_text_color"
+    t.integer "link_color"
   end
 
   create_table "tools", force: :cascade do |t|

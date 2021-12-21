@@ -56,6 +56,18 @@ class ThemeEditor extends React.Component {
                 <td><ColorField model={theme} field="text_color"/></td>
               </tr>
               <tr>
+                <th><label htmlFor="theme_link_color">Link color</label></th>
+                <td><ColorField model={theme} field="link_color"/></td>
+              </tr>
+              <tr>
+                <th><label htmlFor="theme_inverted_background_color">Inverted background color</label></th>
+                <td><ColorField model={theme} field="inverted_background_color"/></td>
+              </tr>
+              <tr>
+                <th><label htmlFor="theme_inverted_text_color">Inverted text color</label></th>
+                <td><ColorField model={theme} field="inverted_text_color"/></td>
+              </tr>
+              <tr>
                 <th><label htmlFor="theme_page_separator_color">Page separator color</label></th>
                 <td><ColorField model={theme} field="page_separator_color"/></td>
               </tr>
