@@ -422,8 +422,8 @@ const IngredientButton = ({editor, width, height}) => (
     <ul className="dropdown-menu" aria-labelledby="ingDropdown">
       <li key="99999999999999"><a className="dropdown-item" style={{cursor: 'pointer'}}>Ajouter une liste...</a></li>
       {Object.values(gon.recipe.ingredients || {}).map(ing => {
-        let text = Utils.prettyQuantityFor(ing.raw, ing.food.name)
-        return <li key={ing.id}><a className="dropdown-item" style={{cursor: 'pointer'}} onClick={() => editor.chain().focus().insertIngredient(ing.item_nb).run()}>{text}<Inline color="#0d6efd">{ing.food.name}</Inline></a></li>
+        let text = Utils.prettyQuantityFor(ing.raw, ing.name)
+        return <li key={ing.id}><a className="dropdown-item" style={{cursor: 'pointer'}} onClick={() => editor.chain().focus().insertIngredient(ing.item_nb).run()}>{text}<Inline color="#0d6efd">{ing.name}</Inline></a></li>
       })}
     </ul>
   </span>

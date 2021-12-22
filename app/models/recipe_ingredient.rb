@@ -8,10 +8,13 @@ class RecipeIngredient < ApplicationRecord
   acts_as_list column: "item_nb", scope: :recipe
 
   belongs_to :recipe
-  belongs_to :food
+  belongs_to :food, optional: true
   
-  delegate :name, to: :food
   delegate :plural, to: :food
+
+  def name
+    self.food ? self.food.name : self.raw_food
+  end
 
   def volume
     quantity_model.ml

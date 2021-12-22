@@ -3,12 +3,17 @@ class RecipeIngredientsController < ApplicationController
   before_action :set_recipe_ingredient, only: [:update, :destroy, :move]
 
   def create
-    ing = @recipe.recipe_ingredients.build
-    ing.food = Food.find_by!(name: params[:food_name])
-    ing.assign_attributes(recipe_ingredient_params)
-    ing.save!
+    ing = @recipe.recipe_ingredients.create!(recipe_ingredient_params)
+    #ing = @recipe.recipe_ingredients.build
+    #ing.food = Food.find_by!(name: params[:food_name])
+    #ing.assign_attributes(recipe_ingredient_params)
+    #ing.save!
     respond_to do |format|
-      format.js {render json: {id: ing.id, raw: ing.raw, food: {url: food_path(ing.food), name: ing.food.name}, url: recipe_recipe_ingredient_path(@recipe, ing)}}
+      if ing.food
+        format.js {render json: {id: ing.id, raw: ing.raw, name: ing.name, food: {url: food_path(ing.food)}, url: recipe_recipe_ingredient_path(@recipe, ing)}}
+      else
+        format.js {render json: {id: ing.id, raw: ing.raw, name: ing.name, url: recipe_recipe_ingredient_path(@recipe, ing)}}
+      end
       format.html {redirect_back fallback_location: recipe_path(@recipe)}
     end
   end
@@ -39,6 +44,6 @@ class RecipeIngredientsController < ApplicationController
     end
 
     def recipe_ingredient_params
-      params.require(:recipe_ingredient).permit(:food_id, :raw, :comment)
+      params.require(:recipe_ingredient).permit(:food_id, :raw, :comment, :raw_food)
     end
 end

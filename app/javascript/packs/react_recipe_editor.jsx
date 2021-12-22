@@ -73,14 +73,12 @@ const NewIngInputField = props => {
   const inputFieldProps = {
     placeholder: 'Sélectionner un aliment',
     value,
+    id: 'newRecipeIngredientRawFood',
     onChange: (e, {newValue}) => setValue(newValue),
     //ref: foodInputField,
   };
 
-  const addIngredient = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
-    let data = new FormData()
-    data.append('recipe_ingredient[raw]', qty)
-    data.append('recipe_ingredient[food_id]', suggestion.id)
+  const postNewIngredient = (data) => {
     Rails.ajax({url: gon.recipe.new_ingredient_url, type: 'POST', data: data, success: (raw) => {
       const response = JSON.parse(raw)
       //gon.recipe.ingredients.push({url: response.url, food: {name: response.food_name, url: response.food_url}})
@@ -92,32 +90,51 @@ const NewIngInputField = props => {
     }})
   }
 
+  const addIngredient = (event, {suggestion, suggestionValue, suggestionIndex, sectionIndex, method}) => {
+    let data = new FormData()
+    data.append('recipe_ingredient[raw]', qty)
+    data.append('recipe_ingredient[food_id]', suggestion.id)
+    postNewIngredient(data)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    let rawFood = e.currentTarget.elements.newRecipeIngredientRawFood.value
+    let data = new FormData()
+    data.append('recipe_ingredient[raw]', qty)
+    data.append('recipe_ingredient[raw_food]', rawFood)
+    postNewIngredient(data)
+  }
+
   return (
     <Row gap="7px" align-items="flex-start">
-      <input type="text" size="8" style={{border: "none", borderBottom: "1px dashed #444"}} value={qty} onChange={(e) => setQty(e.target.value)} ref={quantityInputField} />
-      de
-      <Autosuggest
-        suggestions={suggestions}
-        onSuggestionsFetchRequested={({value}) => {
-          const inputValue = value.trim().toLowerCase();
-          const inputLength = inputValue.length;
-         
-          const matched = inputLength === 0 ? [] : gon.foodList.filter(food =>
-            food.name.includes(inputValue)
-          )
-          // Order the matches by relevance?
-          setSuggestions(matched)
-        }}
-        onSuggestionsClearRequested={() => setSuggestions([])}
-        getSuggestionValue={suggestion => suggestion.name}
-        renderSuggestion={(suggestion, { isHighlighted }) => (
-          <div style={{ background: isHighlighted ? '#4095bf' : 'white', color: isHighlighted ? 'white' : 'black' }}>
-            {suggestion.name}
-          </div>
-        )}
-        onSuggestionSelected={addIngredient}
-        inputProps={inputFieldProps}
-      />
+      <form onSubmit={handleSubmit}>
+        <input type="text" size="8" style={{border: "none", borderBottom: "1px dashed #444"}} value={qty} onChange={(e) => setQty(e.target.value)} ref={quantityInputField} />
+        de
+        <Autosuggest
+          suggestions={suggestions}
+          onSuggestionsFetchRequested={({value}) => {
+            const inputValue = value.trim().toLowerCase();
+            const inputLength = inputValue.length;
+           
+            const matched = inputLength === 0 ? [] : gon.foodList.filter(food =>
+              food.name.includes(inputValue)
+            )
+            // Order the matches by relevance?
+            setSuggestions(matched)
+          }}
+          onSuggestionsClearRequested={() => setSuggestions([])}
+          getSuggestionValue={suggestion => suggestion.name}
+          renderSuggestion={(suggestion, { isHighlighted }) => (
+            <div style={{ background: isHighlighted ? '#4095bf' : 'white', color: isHighlighted ? 'white' : 'black' }}>
+              {suggestion.name}
+            </div>
+          )}
+          onSuggestionSelected={addIngredient}
+          inputProps={inputFieldProps}
+        />
+        <input type="submit" value="Ajouter" />
+      </form>
     </Row>
   )
 }
@@ -192,7 +209,7 @@ const EditableIngredient = (props) => {
       <span style={{padding: "0 10px 0 0"}}><b>{props.position}.</b></span>
       <input onBlur={updateIngQuantityCallback} type="text" size="8" defaultValue={ing.raw} style={{border: "none", borderBottom: "1px dashed #444"}} />
       de{/*" de " ou bien " - " si la quantité n'a pas d'unité => _1_____ - oeuf*/}
-      <a href={ing.food.url}>{ing.food.name}</a>
+      {ing.food ? <a href={ing.food.url}>{ing.food.name}</a> : <div>{ing.name}</div>}
       <EditableIngredientComment ingUrl={ing.url} comment={ing.comment} />
       <Block flexGrow="1" />
       <DeleteConfirmButton id={`ing-${ing.id}`} onDeleteConfirm={removeIngredient} message="Je veux enlever cet ingrédient?" />
@@ -394,7 +411,7 @@ class RecipeEditor extends React.Component {
             </tr>
             <tr>
               <th>Ingrédient principal</th>
-              <td><CollectionSelect model={recipe} field="main_ingredient_id" options={this.state.ingIds} showOption={(ingId) => gon.recipe.ingredients[ingId].food.name} includeBlank="true"></CollectionSelect></td>
+              <td><CollectionSelect model={recipe} field="main_ingredient_id" options={this.state.ingIds} showOption={(ingId) => gon.recipe.ingredients[ingId].name} includeBlank="true"></CollectionSelect></td>
             </tr>
           </tbody>
         </table>
