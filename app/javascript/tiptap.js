@@ -672,23 +672,30 @@ const IngredientNode = Node.create({
     const ingredient = HTMLAttributes['data-ingredient']
     let text = null
     let food = null
+    let name = null
     let comment = null
     if (ingredient.startsWith("(")) {
       const raw = ingredient.slice(1,-1)
       const [qty, foodName] = Quantity.parseQuantityAndFoodName(raw)
       text = Utils.prettyQuantityFor(qty.raw, foodName)
       food = gon.foodList.find(food => food.name == foodName)
+      name = foodName
     } else {
       const ing = Object.values(gon.recipe.ingredients || {}).find(ing => ing.item_nb == ingredient)
       if (ing) {
-        text = Utils.prettyQuantityFor(ing.raw, ing.food.name)
+        text = Utils.prettyQuantityFor(ing.raw, ing.name)
         food = ing.food
         comment = ing.comment
+        name = ing.name
       }
     }
     let children = []
     if (text && text != '') {children.push(text)}
-    if (food) { children.push(['a', {href: food.url}, food.name]) }
+    if (food) {
+      children.push(['a', {href: food.url}, name])
+    } else {
+      children.push(['span', {}, name])
+    }
     if (comment) { children.push(elementFromString(' '+comment)) }
     return ['span', HTMLAttributes, ...children]
   },
@@ -813,9 +820,13 @@ const IngredientListNode = Node.create({
         const ing = Object.values(gon.recipe.ingredients || {}).find(ing => ing.item_nb == ingredient)
         if (ing) {
           let children = []
-          let text = Utils.prettyQuantityFor(ing.raw, ing.food.name)
+          let text = Utils.prettyQuantityFor(ing.raw, ing.name)
           if (text && text != '') {children.push(text)}
-          children.push(['a', {href: ing.food.url}, ing.food.name])
+          if (ing.food) {
+            children.push(['a', {href: ing.food.url}, ing.name])
+          } else {
+            children.push(['span', {}, ing.name])
+          }
           if (ing.comment) {children.push(elementFromString(' '+ing.comment))}
           return ['li', {'data-ingredient': ing.id}, ...children]
         }

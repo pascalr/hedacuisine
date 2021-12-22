@@ -223,7 +223,7 @@ module IngredientsHelper
       end
 
       without_unit = (!qty.unit || qty.unit.is_unitary)
-      name = (without_unit && qty.total && qty.total >= 2) ? ing.food.plural_in(current_language) : ing.name
+      name = (without_unit && qty.total && qty.total >= 2 && ing.food) ? ing.food.plural_in(current_language) : ing.name
       unless result.blank?
         result += " #{without_unit ? "" : pretty_preposition(ing.food)}"
       end
