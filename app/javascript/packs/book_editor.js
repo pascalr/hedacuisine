@@ -149,9 +149,6 @@ class BookEditor extends React.Component {
     const book = this.state.book
     const new_book_recipe = {class_name: "book_recipe"}
     
-    //<TextFieldTag field="book_recipe[recipe_id}"/>
-    //<HiddenFieldTag field="book_id" value={gon.book.id}/>
-    //<SubmitTag value="Ajouter"/>
     return (<>
       <Theme theme={this.theme}/>
       <div>
