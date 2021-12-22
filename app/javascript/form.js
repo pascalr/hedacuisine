@@ -84,32 +84,3 @@ export const TextAreaField = ({model, field, cols, rows, changeCallback=null}) =
     </div>
   )
 }
-
-//export const remoteUpdate = (field, value, initialValue, url, successCallback=null) => {
-//  if (value != initialValue) {
-//
-//    let data = new FormData()
-//    data.append(field, value)
-//    Rails.ajax({url: this.data.url+".js", type: 'PATCH', data: data, success: () => {
-//      this.data[field] = value
-//      if (successCallback) {successCallback()}
-//    }, error: (errors) => {
-//      toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
-//    }})
-//  }
-//}
-//
-//export const ColorFieldTag = ({value, ...props}) => {
-//
-//  if (!props.name) {console.error("ColorFieldTag name props must be provided."); return null}
-//
-//  // FIXME: Convert value int to hex.
-//  const [val, setVal] = useState(value ? value : '#000000')
-//
-//  const updateColor = () => {
-//    let i = hexStringToColor(value)
-//    remoteUpdate(props.name, i, value)
-//  }
-//
-//  return <input type="color" value={val} name={name} onChange={(e) => setValue(e.target.value)} {...props} onBlur={updateColor} />
-//}
