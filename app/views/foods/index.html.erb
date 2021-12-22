@@ -29,6 +29,7 @@
       <th>Densité<br/>(g/mL)</th>
       <th>Liq</th>
       <th>Pantry</th>
+      <th>Pub</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -47,6 +48,7 @@
           <td><%= form.number_field :density, step: 0.01, size: 3 %></td>
           <td><%= form.check_box :is_liquid %></td>
           <td><%= form.check_box :in_pantry %></td>
+          <td><%= form.check_box :is_public %></td>
           <td><%= form.submit "Mettre à jour" %></td>
           <td><%= link_to 'Show', food %></td>
           <td><%= link_to 'Destroy', food, method: :delete, data: { confirm: 'Are you sure?' } %></td>

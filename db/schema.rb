@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_22_021256) do
+ActiveRecord::Schema.define(version: 2021_12_22_232834) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -239,6 +239,7 @@ ActiveRecord::Schema.define(version: 2021_12_22_021256) do
     t.boolean "in_pantry"
     t.integer "food_tag_id"
     t.integer "expression_id"
+    t.boolean "is_public"
   end
 
   create_table "french_expressions", force: :cascade do |t|
