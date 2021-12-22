@@ -1,5 +1,6 @@
 json.recipe do
   json.id @recipe.id
+  json.class_name "recipe"
   json.url recipe_path(@recipe)
   json.new_ingredient_url recipe_recipe_ingredients_path(@recipe)
   json.new_note_url recipe_recipe_notes_path(@recipe)

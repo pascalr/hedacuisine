@@ -14,13 +14,10 @@ import { DeleteConfirmButton } from 'components/delete_confirm_button'
 import { Tiptap, BubbleTiptap, ModificationsHandler } from 'tiptap'
 import '../styles/prose_mirror.scss'
 
-import {Model, TextInputField, TextAreaField, CollectionSelect, MODEL_RECIPE} from '../form'
+import {TextField, CollectionSelect} from '../form'
 
 
 function updateIngQuantityCallback() {
-}
-
-function updateListOrder() {
 }
 
 const InstructionsShortcuts = props => (
@@ -227,14 +224,15 @@ class RecipeEditor extends React.Component {
     let ingIds = gon.recipe.ingredients ? Object.values(gon.recipe.ingredients).sort((a,b) => a.item_nb - b.item_nb).map(ing => ing.id) : []
     let noteIds = gon.recipe.notes ? Object.values(gon.recipe.notes).sort((a,b) => a.item_nb - b.item_nb).map(ing => ing.id) : []
     this.state = {
+      recipe: gon.recipe,
       name: gon.recipe.name,
       ingIds: ingIds,
       noteIds: noteIds,
       toolIds: Object.keys(gon.recipe.tools),
       instructionsSlave: gon.recipe.complete_instructions,
     };
+    this.state.recipe.onUpdate = (recipe) => {this.setState({recipe})}
     this.handleDropIng = this.handleDropIng.bind(this);
-    this.updateName = this.updateName.bind(this);
   }
 
   //swapIng(dragIndex, dropIndex) {
@@ -250,13 +248,6 @@ class RecipeEditor extends React.Component {
     this.setState({ingIds: ids})
   }
 
-  updateName() {
-    if (this.name == gon.recipe.name) {return;}
-    let data = new FormData()
-    data.append('recipe[name]', this.state.name)
-    Rails.ajax({url: gon.recipe.url, type: 'PATCH', data: data})
-  }
-  
   appendNote() {
     let data = new FormData()
     data.append('recipe_note[content]', '')
@@ -348,7 +339,7 @@ class RecipeEditor extends React.Component {
       </li>
     ))
 
-    const model = MODEL_RECIPE//new Model("recipe", gon.recipe)
+    const recipe = this.state.recipe
     //console.log(model)
     
     return (<>
@@ -356,7 +347,7 @@ class RecipeEditor extends React.Component {
 
         <div className="bg-fill" style={{width: "100%", height: "0.5rem"}}></div>
         <div className="d-flex bg-fill ps-3 w-100" style={{fontSize: "1.2rem", alignItems: "center", flexWrap: "wrap", fontWeight: "bold"}}>
-          <input className="bg-fill plain-input" type="text" value={this.state.name} onChange={(e) => this.setState({name: e.target.value})} onBlur={this.updateName} />
+          <TextField model={recipe} field="name" className="bg-fill plain-input" />
         </div>
         <div className="bg-fill" style={{width: "100%", height: "0.5rem"}}></div>
 
@@ -383,27 +374,27 @@ class RecipeEditor extends React.Component {
           <tbody>
             <tr>
               <th>Sorte de recette</th>
-              <td><CollectionSelect model={model} field="recipe_kind_id" options={gon.recipe_kinds.map(k => k.id)} showOption={(id) => gon.recipe_kinds.find(k => k.id == id).name} includeBlank="true"></CollectionSelect></td>
+              <td><CollectionSelect model={recipe} field="recipe_kind_id" options={gon.recipe_kinds.map(k => k.id)} showOption={(id) => gon.recipe_kinds.find(k => k.id == id).name} includeBlank="true"></CollectionSelect></td>
             </tr>
             <tr>
               <th>Temps de préparation</th>
-              <td><TextInputField model={model} field="preparation_time"></TextInputField></td>
+              <td><TextField model={recipe} field="preparation_time"></TextField></td>
             </tr>
             <tr>
               <th>Temps de cuisson</th>
-              <td><TextInputField model={model} field="cooking_time"></TextInputField></td>
+              <td><TextField model={recipe} field="cooking_time"></TextField></td>
             </tr>
             <tr>
               <th>Temps total</th>
-              <td><TextInputField model={model} field="total_time"></TextInputField></td>
+              <td><TextField model={recipe} field="total_time"></TextField></td>
             </tr>
             <tr>
               <th>Portions</th>
-              <td><TextInputField model={model} field="raw_servings"></TextInputField></td>
+              <td><TextField model={recipe} field="raw_servings"></TextField></td>
             </tr>
             <tr>
               <th>Ingrédient principal</th>
-              <td><CollectionSelect model={model} field="main_ingredient_id" options={this.state.ingIds} showOption={(ingId) => gon.recipe.ingredients[ingId].food.name} includeBlank="true"></CollectionSelect></td>
+              <td><CollectionSelect model={recipe} field="main_ingredient_id" options={this.state.ingIds} showOption={(ingId) => gon.recipe.ingredients[ingId].food.name} includeBlank="true"></CollectionSelect></td>
             </tr>
           </tbody>
         </table>

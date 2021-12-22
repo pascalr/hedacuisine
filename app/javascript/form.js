@@ -85,11 +85,12 @@ const updateModelField = (model, field, value, successCallback=null) => {
     }})
   }
 }
-export const TextField = ({model, field}) => {
+export const TextField = ({model, field, ...props}) => {
   const [value, setValue] = useState(model[field])
   return (
-    <input type="text" value={value||''} name={model.class_name+"["+field+"]"} id={field}
-        onChange={(e) => {let v = e.target.value; updateModelField(model, field, v, () => setValue(v))}} />
+    <input type="text" value={value||''} name={model.class_name+"["+field+"]"} id={field} {...props}
+      onChange={(e) => setValue(e.target.value)}
+      onBlur={(e) => {updateModelField(model, field, value)}} />
   )
 }
 export const EditableField = ({model, field}) => {
@@ -111,7 +112,7 @@ export const ColorField = ({model, field}) => {
         onBlur={(e) => {updateModelField(model, field, Utils.hexStringToColor(value))}} />
   )
 }
-export const CollectionSelect2 = ({model, field, options, showOption, includeBlank}) => {
+export const CollectionSelect = ({model, field, options, showOption, includeBlank}) => {
   const [value, setValue] = useState(model[field])
 
   const updateField = (e) => {
@@ -139,24 +140,6 @@ export const TextAreaField = ({model, field, cols, rows, changeCallback=null}) =
         if(changeCallback) {changeCallback(e.target.value)}
       }} onBlur={() => model.updateValue(field, value)} />
     </div>
-  )
-}
-
-export const CollectionSelect = ({model, field, options, showOption, includeBlank}) => {
-  const [value, setValue] = useState(model.currentValue(field))
-
-  const updateField = (e) => {
-    let val = e.target.value
-    model.updateValue(field, val, () => setValue(val))
-  }
-
-  return (
-    <select name={model.fieldName(field)} id={field} value={value||''} onChange={updateField}>
-      {includeBlank ? <option value="" key="1" label=" "></option> : null}
-      {options.map((opt, i) => {
-        return <option value={opt} key={i+2}>{showOption(opt)}</option>
-      })}
-    </select>
   )
 }
 
