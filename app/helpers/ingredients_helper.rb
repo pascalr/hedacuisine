@@ -40,8 +40,14 @@ module IngredientsHelper
   # 1 oignon (1/2 t | 110 mL | 110 g) => 2 oignons (7/8 t | 220 mL | 220 g)
   def scalable_detailed_ingredient(ing)
     qty = ing.quantity_model
-    content_tag :span, id: "ingredient-#{ing.id}", class: "ingredient-list-item", data: {"scalable-ingredient-detailed": true, grams: qty.grams, ml: qty.ml, total: qty.total, raw: ing.raw, "food-name-singular": ing.food.name, "food-name-plural": ing.food.plural_in(current_language), preposition: pretty_preposition(ing.food), "food-id": ing.food.id, "comment": my_sanitize(ing.comment)} do
-      pretty_ingredient_with_conversions(ing)
+    if ing.food
+      content_tag :span, id: "ingredient-#{ing.id}", class: "ingredient-list-item", data: {"scalable-ingredient-detailed": true, grams: qty.grams, ml: qty.ml, total: qty.total, raw: ing.raw, "food-name-singular": ing.food.name, "food-name-plural": ing.food.plural_in(current_language), preposition: pretty_preposition(ing.food), "food-id": ing.food.id, "comment": my_sanitize(ing.comment)} do
+        pretty_ingredient_with_conversions(ing)
+      end
+    else
+      content_tag :span, id: "ingredient-#{ing.id}", class: "ingredient-list-item", data: {"scalable-ingredient-detailed": true, grams: qty.grams, ml: qty.ml, total: qty.total, raw: ing.raw, preposition: pretty_preposition(ing.food), "comment": my_sanitize(ing.comment)} do
+        pretty_ingredient_with_conversions(ing)
+      end
     end
   end
 
@@ -150,6 +156,7 @@ module IngredientsHelper
 
   # FIXME: H aspiré...
   def pretty_preposition(food)
+    return nil if food.nil?
     exp = food.expression.in(current_language)
     return food.name.start_with?('a','e','i','o','u','y','é') ? "d'" : "de " if exp.contract_preposition.nil?
     exp.contract_preposition ? "d'" : "de "
@@ -220,9 +227,9 @@ module IngredientsHelper
       unless result.blank?
         result += " #{without_unit ? "" : pretty_preposition(ing.food)}"
       end
-      result += "#{link_to translated(name.downcase), ing.food}"
+      result += ing.food ? "#{link_to translated(name.downcase), ing.food}" : translated(name.downcase)
     else
-      result += "#{link_to translated(ing.name.downcase), ing.food}"
+      result += ing.food ? "#{link_to translated(ing.name.downcase), ing.food}" : translated(ing.name.downcase)
     end
     result += " #{my_sanitize my_sanitize(ing.comment)}" if ing.comment
     result.html_safe
