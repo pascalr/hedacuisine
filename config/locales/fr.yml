@@ -8,6 +8,7 @@ fr-CA:
     new: nouveau
     kinds: catégories
     books: livres
+    recipe_kinds: sortes_de_recette
   heda:
     menu:
       menus: "Menus"
@@ -37,6 +38,8 @@ fr-FR:
     recipes: recettes
     new: nouveau
     kinds: catégories
+    books: livres
+    recipe_kinds: sortes_de_recette
   heda:
     menu:
       menus: "Menus"

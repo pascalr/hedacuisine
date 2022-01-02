@@ -90,6 +90,7 @@ namespace :website do
 
     locales.each do |locale|
       add_download(recipes_path(locale: locale))
+      add_download(recipe_kinds_path(locale: locale))
       add_download(recipes_path(locale: locale, format: :json))
       #add_download(articles_path(locale: locale))
     end
@@ -108,6 +109,10 @@ namespace :website do
       
       Kind.all.each do |kind|
         add_download(kind_path(kind, locale: locale))
+      end
+      
+      RecipeKind.all.each do |recipe_kind|
+        add_download(recipe_kind_path(recipe_kind, locale: locale))
       end
 
       #Article.all.each do |article|

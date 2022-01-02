@@ -44,11 +44,6 @@ Rails.application.routes.draw do
   get 'sitemap', to: "sitemap#index"
 
   resources :expressions, only: [:index, :create, :update, :destroy, :show]
-  resources :recipe_kinds, only: [:index, :create, :update, :destroy, :edit, :show] do
-    member do
-      get 'search_recipe'
-    end
-  end
   resources :user_recipe_categories, only: [:create, :update, :destroy]
   resources :machine_users, only: [:create, :update, :destroy, :new]
   resources :food_substitutions, only: [:create, :update, :destroy, :index]
@@ -115,6 +110,13 @@ Rails.application.routes.draw do
   localized do
     resources :kinds, param: 'slug'
     resources :foods, param: 'slug'
+
+    resources :recipe_kinds, only: [:index, :create, :update, :destroy, :edit, :show] do
+      member do
+        get 'search_recipe'
+      end
+    end
+
     resources :recipes, param: 'slug' do
       
       resources :recipe_notes, only: [:create, :update, :destroy] do

@@ -1,6 +1,7 @@
 class RecipeKindsController < ApplicationController
   before_action :set_recipe_kind, only: %i[ show edit update destroy search_recipe ]
-  #skip_before_action :authenticate_user!, only: [:show]
+  skip_before_action :authenticate_user!, only: [:show]
+  skip_before_action :only_admin!, only: [:show]
 
   def index
     @recipe_kinds = RecipeKind.all
