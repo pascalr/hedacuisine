@@ -2,6 +2,7 @@ class Food < ApplicationRecord
   
   belongs_to :expression
   default_scope {includes(:expression)}
+  scope :all_public, -> { where(is_public: true) }
 
   has_many :recipe_ingredients
   has_many :recipes, through: :recipe_ingredients
