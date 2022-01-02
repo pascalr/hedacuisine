@@ -17,7 +17,6 @@
       <% if current_user_admin? %>
         <%# link_to_active 'Appareils', machines_path, class: "nav-item nav-link" %>
         <%= link_to_active 'Articles', articles_path, class: "nav-item nav-link" %>
-        <%= link_to_active 'Admin', meta_index_path, class: "nav-item nav-link" %>
       <% end %>
       <div style="flex-grow: 3;"></div>
       <% if user_signed_in? %>

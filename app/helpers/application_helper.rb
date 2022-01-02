@@ -56,6 +56,9 @@ module ApplicationHelper
   def _base_image_path(image)
     "/images/#{image.id}"
   end
+  def _base_image_url(image)
+    "https://www.hedacuisine.com#{_base_image_path(image)}"
+  end
   def medium_image_path(image)
     return nil if image.nil?
     "#{_base_image_path(image)}/medium#{_file_ext(image.original)}"
@@ -67,6 +70,18 @@ module ApplicationHelper
   def thumb_image_path(image)
     return nil if image.nil?
     "#{_base_image_path(image)}/thumb#{_file_ext(image.original)}"
+  end
+  def medium_image_url(image)
+    return nil if image.nil?
+    "#{_base_image_url(image)}/medium#{_file_ext(image.original)}"
+  end
+  def small_image_url(image)
+    return nil if image.nil?
+    "#{_base_image_url(image)}/small#{_file_ext(image.original)}"
+  end
+  def thumb_image_url(image)
+    return nil if image.nil?
+    "#{_base_image_url(image)}/thumb#{_file_ext(image.original)}"
   end
 
   def icon_path(name)
