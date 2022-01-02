@@ -60,6 +60,10 @@ class ThemeEditor extends React.Component {
                 <td><ColorField model={theme} field="link_color"/></td>
               </tr>
               <tr>
+                <th><label htmlFor="theme_link_missing_color">Link missing color</label></th>
+                <td><ColorField model={theme} field="link_missing_color"/></td>
+              </tr>
+              <tr>
                 <th><label htmlFor="theme_inverted_background_color">Inverted background color</label></th>
                 <td><ColorField model={theme} field="inverted_background_color"/></td>
               </tr>

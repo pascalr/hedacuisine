@@ -62,6 +62,6 @@ class ThemesController < ApplicationController
     end
 
     def theme_params
-      params.require(:theme).permit(:name, :background_color, :text_color, :font_name, :page_separator_color, :inverted_background_color, :inverted_text_color, :link_color)
+      params.require(:theme).permit(:name, :background_color, :text_color, :font_name, :page_separator_color, :inverted_background_color, :inverted_text_color, :link_color, :link_missing_color)
     end
 end

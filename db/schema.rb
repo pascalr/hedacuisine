@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_22_232834) do
+ActiveRecord::Schema.define(version: 2022_01_02_231006) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -546,6 +546,7 @@ ActiveRecord::Schema.define(version: 2021_12_22_232834) do
     t.integer "inverted_background_color"
     t.integer "inverted_text_color"
     t.integer "link_color"
+    t.integer "link_missing"
   end
 
   create_table "tools", force: :cascade do |t|
