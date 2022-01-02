@@ -63,6 +63,10 @@ class BooksController < ApplicationController
     @books = Book.all.order(:name)
   end
 
+  def my_books
+    @books = current_user.books.order(:name)
+  end
+
   def create
     @book = current_user.books.create!(book_params)
     redirect_to edit_book_path(@book)

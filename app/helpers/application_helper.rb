@@ -13,15 +13,6 @@ module ApplicationHelper
     str[1..-1].to_i(16)
   end
 
-  def dev_url_or(path)
-    if Rails.env.production? or Rails.env.local?
-      home_beta_path(path: URI.encode_www_form_component(path))
-      #home_beta_path(path: URI.encode(path))
-    else
-      path
-    end
-  end
-
   # If the recipe kind has a recipe, link directly to it first.
   def recipe_kind_direct_path(recipe_kind)
     # TODO: Link to most popular...

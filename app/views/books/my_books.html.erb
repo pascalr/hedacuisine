@@ -1,0 +1,16 @@
+<%= link_to "Nouveau livre", new_book_path %> |
+<%= link_to "Trouver un livre", new_book_path %>
+
+<h1>Mes livres</h1>
+
+<% @books.map(&:theme).uniq.compact.each do |theme| %>
+  <%= render partial: 'themes/stylesheet', locals: {theme: theme} %>
+<% end %>
+
+<div style="display: flex; gap: 20px;">
+  <% @books.each do |book| %>
+    <%= link_to book do %>
+      <%= render partial: "books/title_page_thumbnail", locals: {book: book} %>
+    <% end %>
+  <% end %>
+</div>

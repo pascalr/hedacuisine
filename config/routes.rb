@@ -30,8 +30,6 @@ Rails.application.routes.draw do
   devise_for :users
   resources :tools
 
-  get 'home/beta'
-
   resources :images do
     member do
       patch 'process_image'
@@ -146,6 +144,9 @@ Rails.application.routes.draw do
     resources :books, param: 'slug' do
       member do
         patch 'on_index_change'
+      end
+      collection do
+        get 'my_books'
       end
       resources :book_recipes, only: [:create, :update, :destroy]
       resources :book_sections, only: [:create, :update, :destroy]
