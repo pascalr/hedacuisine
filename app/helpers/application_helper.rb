@@ -1,4 +1,8 @@
 module ApplicationHelper
+
+  def current_user_id
+    current_user ? current_user.id : nil
+  end
   
   def color_to_hex_string(color)
     return nil if color.nil?

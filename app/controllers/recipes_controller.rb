@@ -16,6 +16,12 @@ class RecipesController < ApplicationController
     #@items = Item.order(:name).all
   end
 
+  def my_recipes
+    # OPTIMIZE: Using paginage for this is too much for nothing I believe
+    @recipes = current_user.recipes.paginate(page: params[:page], per_page: 1)
+    @recipe = @recipes.first
+  end
+
   def move_ing
     ing = @recipe.ingredients.find(params[:ing_id])
     ing.insert_at(params[:position].to_i)

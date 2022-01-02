@@ -7,7 +7,7 @@
     <div class="navbar-nav" style="width: 100%;">
       <%= link_to_active_controller "Heda", home_path, "home", class: "navbar-brand" %>
       <% if user_signed_in? %>
-        <%= link_to_active_if ["recipes", "menus", "user_recipes"].include?(controller_name), t("heda.menu.recipes"), user_recipes_path, class: "nav-item nav-link" %>
+        <%= link_to_active_if ["recipes", "menus", "user_recipes"].include?(controller_name), t("heda.menu.recipes"), my_recipes_recipes_path, class: "nav-item nav-link" %>
         <%# link_to_active_if ["recipes", "menus", "user_recipes"].include?(controller_name), t("heda.menu.recipes"), user_recipes_path, class: "nav-item nav-link" %>
       <% else %>
         <%= link_to_active_if ["recipes", "menus", "user_recipes"].include?(controller_name), t("heda.menu.recipes"), recipes_path, class: "nav-item nav-link" %>

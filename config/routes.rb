@@ -137,6 +137,7 @@ Rails.application.routes.draw do
 
       collection do
         get 'new_variant'
+        get 'my_recipes'
       end
     end
 

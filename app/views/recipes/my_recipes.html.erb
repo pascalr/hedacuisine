@@ -1,0 +1,32 @@
+<%= render partial: "recipes/tabs" %>
+
+<%= render partial: "recipes/recipe_carrousel", locals: {title: "Dernières recettes favorites", recipes: current_user.user_recipes.includes(:recipe).where.not(recipe: {image_id: nil}).limit(10).map(&:recipe)} %>
+
+<style>
+.recipe-body {
+  border: 1px solid black;
+  padding: 0.5em 0.5em 0 0.5em;
+}
+</style>
+
+<style>
+.category {
+  margin-bottom: 1.5rem;
+}
+#user-recipe-list > * + * {
+  margin-bottom: 1.5rem;
+}
+</style>
+
+<div style="display: flex; align-items: center; gap: 1.5rem;">
+  <h2>Mon livre de recettes</h2>
+  <%= link_to translated("Nouvelle recette"), new_recipe_path, class: "btn btn-outline-primary btn-sm" %>
+</div>
+<hr style="margin-top: 0;">
+
+<%= content_tag(:div, id: "current-page", data: {page: params[:page] || 1, "replace-url": user_recipes_show_recipe_page_path(page: '{{}}')}) do %>
+  <%= render partial: "user_recipes/current_page", locals: {recipes: current_user.recipes} %>
+<% end %>
+
+<%= javascript_pack_tag "user_recipes_index" %>
+<%= javascript_pack_tag "recipe_slider_pack_v2" %>

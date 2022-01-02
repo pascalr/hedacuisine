@@ -2,7 +2,8 @@
   <nav>
     <ul class="nav nav-tabs" style="margin-bottom: 10px;">
       <span class="nav-item navbar-brand"><b>Recettes</b></span>
-      <%= link_to_active_if controller_name == "user_recipes" && ["index", "index_with_pictures", "index_edit", "index_with_details"].include?(action_name), translated("Mes recettes"), user_recipes_path, class: "nav-item nav-link" %>
+      <%= link_to_active_if controller_name == "recipes" && action_name == "my_recipes", translated("Mes recettes"), user_recipes_path, class: "nav-item nav-link" %>
+      <%= link_to_active_if controller_name == "maaaenus" && action_name == "inaaadex", "Ma liste", "TODO", class: "nav-item nav-link" %>
       <%= link_to_active_if controller_name == "recipes" && action_name == "index", translated("Nouveautés"), recipes_path, class: "nav-item nav-link" %>
       <%= link_to_active_if controller_name == "menus" && action_name == "index", translated("Menus"), menus_path, class: "nav-item nav-link" %>
       <%= link_to_active_if controller_name == "recipes" && action_name == "new", translated("Nouvelle recette"), new_recipe_path, class: "nav-item nav-link" %>
