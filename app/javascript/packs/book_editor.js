@@ -148,14 +148,15 @@ class BookEditor extends React.Component {
       
     const book = this.state.book
     const new_book_recipe = {class_name: "book_recipe"}
+
+    //  <div>
+    //    <b>Rechercher: </b>
+    //    <RecipeKindFinder onRecipeKindFound={onRecipeKindFound}/>
+    //    <button>Rechercher</button>
+    //  </div>
     
     return (<>
       <Theme theme={this.theme}/>
-      <div>
-        <b>Rechercher: </b>
-        <RecipeKindFinder onRecipeKindFound={onRecipeKindFound}/>
-        <button>Rechercher</button>
-      </div>
       <div ref={this.recipeFindRef} />
       <div className={`book ${themeCssClass(this.theme)}`}>
         <div className="page title-page">

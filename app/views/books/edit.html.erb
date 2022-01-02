@@ -1,22 +1,24 @@
 <%= link_to "Show", @book %>
 
-<h1><%= @book.name %></h1>
-
-<h2>Paramètres</h2>
-
-<%= form_with(model: @book, local: true) do |form| %>
-  <b>Thème: </b> <%= form.collection_select :theme_id, Theme.order(:name).all, :id, :name, include_blank: true %><%= form.submit %>
-<% end %>
-
-<h2>Ajouter une recette</h2>
-<div>
-  <b>Numéro: </b>
-  <%= form_with(model: [@book, BookRecipe.new], class: "inline", local: true) do |form| %>
-    <%= form.text_field :recipe_id %>
-    <%= form.hidden_field :book_id %>
-    <%= form.submit "Ajouter" %>
-  <% end %>
+<div style="display: flex">
+  <div id="root"></div>
+  <div>
+    
+    <h2>Paramètres</h2>
+    
+    <%= form_with(model: @book, local: true) do |form| %>
+      <b>Thème: </b> <%= form.collection_select :theme_id, Theme.order(:name).all, :id, :name, include_blank: true %><%= form.submit %>
+    <% end %>
+    
+    <h2>Ajouter une recette</h2>
+    <div>
+      <b>Numéro: </b>
+      <%= form_with(model: [@book, BookRecipe.new], class: "inline", local: true) do |form| %>
+        <%= form.text_field :recipe_id %>
+        <%= form.hidden_field :book_id %>
+        <%= form.submit "Ajouter" %>
+      <% end %>
+    </div>
+  </div>
 </div>
-<div id="root"></div>
-
 <%= javascript_pack_tag "book_editor" %>

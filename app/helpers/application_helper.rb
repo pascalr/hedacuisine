@@ -53,6 +53,9 @@ module ApplicationHelper
     #  raise "Invalid content type #{type}"
     #end
   end
+  def public_url(path)
+    "https://www.hedacuisine.com#{path}"
+  end
   def _base_image_path(image)
     "/images/#{image.id}"
   end
