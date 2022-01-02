@@ -53,8 +53,12 @@ module ApplicationHelper
     #  raise "Invalid content type #{type}"
     #end
   end
+
+  def public_editor_url(path)
+    Rails.env == "local" ? "https://aqueous-fortress-30634.herokuapp.com#{path}" : path
+  end
   def public_url(path)
-    "https://www.hedacuisine.com#{path}"
+    (Rails.env == "local" || Rails.env == "production") ? "https://www.hedacuisine.com#{path}" : path
   end
   def _base_image_path(image)
     "/images/#{image.id}"
