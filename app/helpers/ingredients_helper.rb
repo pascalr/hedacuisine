@@ -203,6 +203,10 @@ module IngredientsHelper
     result
   end
 
+  def pretty_food(name, food)
+    "<span class='food-name'>#{food && food.is_public ? "#{link_to translated(name), food}" : translated(name)}</span>"
+  end
+
   def pretty_ingredient(ing)
     return nil if ing.nil?
 
@@ -222,9 +226,9 @@ module IngredientsHelper
       unless result.blank?
         result += " #{without_unit ? "" : pretty_preposition(ing.food)}"
       end
-      result += ing.food && ing.food.is_public ? "#{link_to translated(name.downcase), ing.food}" : translated(name.downcase)
+      result += pretty_food(name.downcase, ing.food)
     else
-      result += ing.food && ing.food.is_public ? "#{link_to translated(ing.name.downcase), ing.food}" : translated(ing.name.downcase)
+      result += pretty_food(ing.name.downcase, ing.food)
     end
     result += " #{my_sanitize my_sanitize(ing.comment)}" if ing.comment
     result.html_safe
