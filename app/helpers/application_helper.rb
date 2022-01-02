@@ -58,7 +58,7 @@ module ApplicationHelper
     Rails.env == "local" ? "https://aqueous-fortress-30634.herokuapp.com#{path}" : path
   end
   def public_url(path)
-    (Rails.env == "local" || Rails.env == "production") ? "https://www.hedacuisine.com#{path}" : path
+    Rails.env == "production" ? "https://www.hedacuisine.com#{path}" : path
   end
   def _base_image_path(image)
     "/images/#{image.id}"
