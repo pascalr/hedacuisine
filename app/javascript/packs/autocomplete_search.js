@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         renderItem: function (item, search){
           search = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
           var re = new RegExp("(" + search.split(' ').join('|') + ")", "gi");
-          return '<div class="autocomplete-suggestion" data-val="' + item + '"><img src="'+choices[item].image+'"></img>' + item.replace(re, "<b>$1</b>") + '</div>';
+          return '<a class="autocomplete-suggestion" data-val="' + item + '" href="'+choices[item].url+'"><img src="'+choices[item].image+'"></img>' + item.replace(re, "<b>$1</b>") + '</a>';
         },
         onSelect: function(e, term, item){
           window.location.href = choices[term].url

@@ -11,7 +11,7 @@ module IngredientsHelper
   def scalable_ingredient(ing)
     return nil unless ing
     qty = ing.quantity_model
-    content_tag :span, id: "ingredient-#{ing.id}", data: {"scalable-ingredient": true, grams: qty.grams, ml: qty.ml, total: qty.total, raw: ing.raw, "food-name-singular": ing.food.name, "food-name-plural": ing.food.plural_in(current_language), preposition: pretty_preposition(ing.food), "food-id": ing.food.id, "comment": my_sanitize(ing.comment)} do
+    content_tag :span, id: "ingredient-#{ing.id}", data: {"scalable-ingredient": true, grams: qty.grams, ml: qty.ml, total: qty.total, raw: ing.raw, "food-name-singular": ing.name, "food-name-plural": ing.food ? ing.food.plural_in(current_language) : '', preposition: pretty_preposition(ing.food), "food-id": ing.food_id, "comment": my_sanitize(ing.comment)} do
       pretty_ingredient(ing)
     end
   end

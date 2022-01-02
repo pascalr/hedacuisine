@@ -523,10 +523,10 @@ const IngredientNode = Node.create({
     }
     let children = []
     if (text && text != '') {children.push(text)}
-    if (food) {
-      children.push(['a', {href: food.url}, name])
+    if (food && food.is_public) {
+      children.push(['span', {class: 'food-name'}, ['a', {href: food.url}, name]])
     } else {
-      children.push(['span', {}, name])
+      children.push(['span', {class: 'food-name'}, name])
     }
     if (comment) { children.push(elementFromString(' '+comment)) }
     return ['span', HTMLAttributes, ...children]
@@ -654,10 +654,10 @@ const IngredientListNode = Node.create({
           let children = []
           let text = Utils.prettyQuantityFor(ing.raw, ing.name)
           if (text && text != '') {children.push(text)}
-          if (ing.food) {
-            children.push(['a', {href: ing.food.url}, ing.name])
+          if (ing.food && ing.food.is_public) {
+            children.push(['span', {class: 'food-name'}, ['a', {href: ing.food.url}, ing.name]])
           } else {
-            children.push(['span', {}, ing.name])
+            children.push(['span', {class: 'food-name'}, ing.name])
           }
           if (ing.comment) {children.push(elementFromString(' '+ing.comment))}
           return ['li', {'data-ingredient': ing.id}, ...children]
