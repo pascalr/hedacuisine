@@ -8,13 +8,13 @@ import { DeleteConfirmButton } from 'components/delete_confirm_button'
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Autosuggest from 'react-autosuggest'
 //
-//import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from 'jsxstyle'
+import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from 'jsxstyle'
 //
 //
 //import Quantity from 'models/quantity'
 //import { Ingredient, Utils } from "recipe_utils"
 
-import {EditableField} from '../form'
+import {EditableField, TextField, ToggleField} from '../form'
 
 const RecipeKindFinder = ({onRecipeKindFound}) => {
   const [value, setValue] = useState('')
@@ -70,6 +70,8 @@ class BookEditor extends React.Component {
       book: gon.book,
       indexItems: [...gon.book_recipes, ...gon.book_sections].sort((a, b) => (a.position-b.position)),
     };
+    this.state.book.onUpdate = (book) => this.setState({book})
+
     this.theme = gon.theme
     this.addRecipe = this.addRecipe.bind(this)
     this.addSection = this.addSection.bind(this)
@@ -156,61 +158,81 @@ class BookEditor extends React.Component {
     //  </div>
     
     return (<>
-      <Theme theme={this.theme}/>
-      <div ref={this.recipeFindRef} />
-      <div className={`book ${themeCssClass(this.theme)}`}>
-        <div className="page title-page">
-          <h1><EditableField model={book} field="name"/></h1>
-          <div className="author">de {book.author}</div>
-        </div>
-        <div className="page index-page">
-          <h2>Index</h2>
-          <ul>
-            <DragDropContext onDragEnd={this.handleIndexDrop}>
-              <Droppable droppableId="list-container">
-                {(provided) => (
-                  <div className="list-container" {...provided.droppableProps} ref={provided.innerRef}>
-                    {this.state.indexItems.map((item, index) => {
-                      let is_section = item.class_name == "book_section"
-                      let link = is_section ? `#section-${item.id}` : `#recipe-body-${item.recipe.id}`
-                      let label = is_section ? item.name : item.recipe.name
-                      let listItemClassName = is_section ? "section" : ''
-                      return <Draggable key={link} draggableId={link.toString()} index={index}>
-                        {(provided) => (
-                          <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
-                            <li className={listItemClassName}>
-                              <a href={link}>{label}</a>
-                              <DeleteConfirmButton id={link} onDeleteConfirm={() => this.removeIndexItem(item)} message="Je veux vraiment enlever?" />
-                            </li>
-                          </div>
-                        )}
-                      </Draggable>
-                    })}
-                    {provided.placeholder}
+      <Row>
+        <div>
+          <Theme theme={this.theme}/>
+          <div ref={this.recipeFindRef} />
+          <div className={`book ${themeCssClass(this.theme)}`}>
+            <div className="page title-page">
+              <h1><EditableField model={book} field="name"/></h1>
+              <div className="author">de {book.author}</div>
+            </div>
+            <div className="page index-page">
+              <h2>Index</h2>
+              <ul>
+                <DragDropContext onDragEnd={this.handleIndexDrop}>
+                  <Droppable droppableId="list-container">
+                    {(provided) => (
+                      <div className="list-container" {...provided.droppableProps} ref={provided.innerRef}>
+                        {this.state.indexItems.map((item, index) => {
+                          let is_section = item.class_name == "book_section"
+                          let link = is_section ? `#section-${item.id}` : `#recipe-body-${item.recipe.id}`
+                          let label = is_section ? item.name : item.recipe.name
+                          let listItemClassName = is_section ? "section" : ''
+                          return <Draggable key={link} draggableId={link.toString()} index={index}>
+                            {(provided) => (
+                              <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
+                                <li className={listItemClassName}>
+                                  <a href={link}>{label}</a>
+                                  <DeleteConfirmButton id={link} onDeleteConfirm={() => this.removeIndexItem(item)} message="Je veux vraiment enlever?" />
+                                </li>
+                              </div>
+                            )}
+                          </Draggable>
+                        })}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                </DragDropContext>
+                <li key="0">
+                  <input type="text" id="new-book-recipe-recipe-id" placeholder="Numéro de recette..." ref={this.newBookRecipeRecipeIdRef}/>
+                  <button type="button" onClick={this.addRecipe} >Ajouter recette</button>
+                </li>
+                <li key="-1">
+                  <input type="text" id="new-book-section-name" placeholder="Nouvelle section..." ref={this.newBookSectionNameRef }/>
+                  <button type="button" onClick={this.addSection} >Ajouter section</button>
+                </li>
+              </ul>
+            </div>
+            {this.state.indexItems.map((item) => {
+              if (item.class_name == "book_section") {
+                return <div id={`section-${item.id}`} className="page section-page" key={`page-section-${item.id}`}>
+                    <h3>{item.name}</h3>
                   </div>
-                )}
-              </Droppable>
-            </DragDropContext>
-            <li key="0">
-              <input type="text" id="new-book-recipe-recipe-id" placeholder="Numéro de recette..." ref={this.newBookRecipeRecipeIdRef}/>
-              <button type="button" onClick={this.addRecipe} >Ajouter recette</button>
-            </li>
-            <li key="-1">
-              <input type="text" id="new-book-section-name" placeholder="Nouvelle section..." ref={this.newBookSectionNameRef }/>
-              <button type="button" onClick={this.addSection} >Ajouter section</button>
-            </li>
-          </ul>
+              } else {
+                return <div className="page" key={`page-recipe-${item.id}`} dangerouslySetInnerHTML={{__html: item.recipe.html}}/>
+              }
+            })}
+          </div>
         </div>
-        {this.state.indexItems.map((item) => {
-          if (item.class_name == "book_section") {
-            return <div id={`section-${item.id}`} className="page section-page" key={`page-section-${item.id}`}>
-                <h3>{item.name}</h3>
-              </div>
-          } else {
-            return <div className="page" key={`page-recipe-${item.id}`} dangerouslySetInnerHTML={{__html: item.recipe.html}}/>
-          }
-        })}
-      </div>
+        <div>
+          <h2>Paramètres</h2>
+
+          <table className="table table-light">
+            <tbody>
+              <tr>
+                <th><label htmlFor="book_is_public">Is public?</label></th>
+                <td><ToggleField model={book} field="is_public"/></td>
+              </tr>
+              <tr>
+                <th><label htmlFor="book_theme_id">Theme</label></th>
+                <td><TextField model={book} field="theme_id"/></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </Row>
     </>)
   }
 }

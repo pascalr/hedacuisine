@@ -27,6 +27,18 @@ const updateModelField = (model, field, value, successCallback=null) => {
     }})
   }
 }
+export const ToggleField = ({model, field, labelOn, labelOff, ...props}) => {
+  console.log('rendering')
+  const id = model.class_name+"_"+field
+  const name = model.class_name+"["+field+"]"
+  const on = labelOn || "True"
+  const off = labelOff || "False"
+  return (<>
+    <label htmlFor={id}>{model[field] ? on : off}</label> 
+    <input type="checkbox" value={model[field]||''} name={name} id={id} {...props}
+      onChange={(e) => {updateModelField(model, field, e.target.checked)}} hidden />
+  </>)
+}
 export const TextField = ({model, field, ...props}) => {
   const [value, setValue] = useState(model[field])
   return (

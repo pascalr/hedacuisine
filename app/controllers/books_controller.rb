@@ -60,7 +60,7 @@ class BooksController < ApplicationController
   end
 
   def index
-    @books = Book.all.order(:name)
+    @books = Book.all_public.order(:name)
   end
 
   def my_books
@@ -88,6 +88,6 @@ class BooksController < ApplicationController
     end
 
     def book_params
-      params.require(:book).permit(:name, :theme_id)
+      params.require(:book).permit(:name, :theme_id, :is_public)
     end
 end

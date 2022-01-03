@@ -185,7 +185,8 @@ module ApplicationHelper
 
   def asset_exist?(path)
     if Rails.configuration.assets.compile
-      Rails.application.precompiled_assets.include? path
+      return true # FIXME: I disabled the next line because it was not working in dev for flags.
+      #Rails.application.precompiled_assets.include? path
     else
       Rails.application.assets_manifest.assets[path].present?
     end
