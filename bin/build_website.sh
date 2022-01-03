@@ -9,8 +9,9 @@
 # TODO: production environment
 RAILS_ENV=local rails assets:precompile
 RAILS_ENV=local rails db:migrate
-rails s -p 3001 -e local -P tmp/pids/prod-pid.txt -d
-sleep 6
+# rails s -p 3001 -e local -P tmp/pids/prod-pid.txt -d FIXME: This does not seem to work with gon. Gon is unable to find the jbuilder file when ran as a deamon...
+( rails s -p 3001 -e local -P tmp/pids/prod-pid.txt & )
+sleep 10 
 
 RAILS_ENV=local rake website:build
 rm -R "../static-heda/docs"
