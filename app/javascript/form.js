@@ -66,6 +66,15 @@ export const ColorField = ({model, field}) => {
         onBlur={(e) => {updateModelField(model, field, Utils.hexStringToColor(value))}} />
   )
 }
+/**
+ * Generates a select tag with the given options.
+ * @param {Object} model - The model to modify
+ * @param {String} field - The name of the field containing the id to be selected
+ * @param {Array} options - An array of values for setting the field
+ * @param {Array} showOption - A function to show the option. (option) => howToPrint(option)
+ * @param {Boolean} includeBlank - Whether to include blank or not
+ */
+// Example: <CollectionSelect model={recipe} field="recipe_kind_id" options={gon.recipe_kinds.map(k => k.id)} showOption={(id) => gon.recipe_kinds.find(k => k.id == id).name} includeBlank="true">
 export const CollectionSelect = ({model, field, options, showOption, includeBlank}) => {
   const [value, setValue] = useState(model[field])
 

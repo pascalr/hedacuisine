@@ -12,7 +12,6 @@
         <%# link_to_active 'Appareils', machines_path, class: "nav-item nav-link" %>
         <%= link_to_active 'Livres', books_path, class: "nav-item nav-link" %>
         <%= link_to_active 'Articles', articles_path, class: "nav-item nav-link" %>
-        <%= link_to_active 'Admin', meta_index_path, class: "nav-item nav-link" %>
       <% end %>
       <div style="flex-grow: 3;"></div>
       <% if user_signed_in? %>
@@ -22,6 +21,9 @@
         <%# else %>
           <%# link_to 'FR', url_for(locale: 'fr'), class: 'nav-item nav-link' %>
         <%# end %>
+        <% if current_user_admin? %>
+          <%= link_to_active 'Admin', meta_index_path, class: "nav-item nav-link" %>
+        <% end %>
         <div class="dropdown nav-item">
           <a class="nav-link dropdown-toggle" href="#" id="regionMenuButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <%= image_tag "/flags/#{current_region.code}.svg", style: "width: 2em; border: 1px solid #bbb;" if asset_exist?("#{current_region.code}.svg") %>

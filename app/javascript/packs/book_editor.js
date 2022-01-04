@@ -14,7 +14,7 @@ import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from '
 //import Quantity from 'models/quantity'
 //import { Ingredient, Utils } from "recipe_utils"
 
-import {EditableField, TextField, ToggleField} from '../form'
+import {EditableField, TextField, ToggleField, CollectionSelect} from '../form'
 
 const RecipeKindFinder = ({onRecipeKindFound}) => {
   const [value, setValue] = useState('')
@@ -227,7 +227,7 @@ class BookEditor extends React.Component {
               </tr>
               <tr>
                 <th><label htmlFor="book_theme_id">Theme</label></th>
-                <td><TextField model={book} field="theme_id"/></td>
+                <td><CollectionSelect model={book} field="theme_id" options={gon.themes.map(k => k.id)} showOption={(id) => gon.themes.find(k => k.id == id).name} /></td>
               </tr>
             </tbody>
           </table>

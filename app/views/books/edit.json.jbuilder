@@ -4,6 +4,7 @@ json.book do
   json.id @book.id
   json.name @book.name
   json.author @book.author
+  json.theme_id @book.theme_id
 end
 
 json.theme do
@@ -15,6 +16,11 @@ json.theme do
   json.text_color @theme.text_color
   json.page_separator_color @theme.page_separator_color
 end
+
+json.themes Theme.order(:name).all do |theme|
+  json.id theme.id
+  json.name theme.name
+end 
 
 json.book_book_recipes_path book_book_recipes_path(@book, format: :js)
 json.book_book_sections_path book_book_sections_path(@book, format: :js)
