@@ -254,7 +254,6 @@ export const CustomLink = Node.create({
   },
 
   renderHTML({ HTMLAttributes }) {
-    console.log('CustomLink.renderHTML', HTMLAttributes)
     let r = ''
     const raw = HTMLAttributes['data-link-raw']
     if (raw.startsWith("note:")) {
@@ -910,9 +909,10 @@ export class ModificationsHandler {
       //for (let editor of editors) {
       for (let it = editors.values(), editor=null; editor=it.next().value; ) {
         if (!editor.isDirty) {continue}
+        editor.isDirty = false
         let current = editor.getHTML()
         if (current != editor.savedHTML) {
-          console.log('Saving changes');
+          console.log('Saving changes for '+editor.updateModel+' '+editor.updateField);
 
           let data = new FormData()
           data.append(`${editor.updateModel}[${editor.updateField}]`, current)
@@ -921,7 +921,7 @@ export class ModificationsHandler {
           }})
         }
       }
-    }, 5*1000);
+    }, 1*1000);
   }
 
   preventLeavingWithoutModifications() {
