@@ -4,6 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.0.2'
 
 # -------- MINE --------------
+gem 'activestorage-backblaze'
 gem 'react-rails'
 gem 'gon'
 gem 'will_paginate', '~> 3.1.0'
