@@ -29,6 +29,13 @@ backblaze:
   key_id: <%= Rails.application.credentials.dig(:backblaze, :key_id) %>
   key_token: <%= Rails.application.credentials.dig(:backblaze, :key_token) %>
 
+backblaze_prod:
+  service: Backblaze
+  bucket_name: heda-bucket-production
+  bucket_id: ENV['BACKBLAZE_BUCKET_ID']
+  key_id: ENV['BACKBLAZE_KEY_ID']
+  key_token: ENV['BACKBLAZE_KEY_TOKEN']
+
 # Remember not to checkin your GCS keyfile to a repository
 # google:
 #   service: GCS
