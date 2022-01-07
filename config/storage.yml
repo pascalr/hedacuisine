@@ -34,15 +34,13 @@ backblaze:
   key_id: <%= Rails.application.credentials.dig(:backblaze, :key_id) %>
   key_token: <%= Rails.application.credentials.dig(:backblaze, :key_token) %>
 
-# heroku config:set BUCKET_ID=...
-# heroku config:set KEY_ID=...
-# heroku config:set KEY_TOKEN=...
+# heroku config:set BACKBLAZE_BUCKET_ID=... BACKBLAZE_KEY_ID=... BACKBLAZE_KEY_TOKEN=...
 backblaze_prod:
   service: Backblaze
   bucket_name: heda-bucket-production
-  bucket_id: ENV['BACKBLAZE_BUCKET_ID']
-  key_id: ENV['BACKBLAZE_KEY_ID']
-  key_token: ENV['BACKBLAZE_KEY_TOKEN']
+  bucket_id: <%= ENV['BACKBLAZE_BUCKET_ID'] %>
+  key_id: <%= ENV['BACKBLAZE_KEY_ID'] %>
+  key_token: <%= ENV['BACKBLAZE_KEY_TOKEN'] %>
 
 # Remember not to checkin your GCS keyfile to a repository
 # google:
