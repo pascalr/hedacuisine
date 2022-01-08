@@ -408,11 +408,11 @@ const StepNode = Node.create({
     return {
       first: {
         default: false,
-        parseHTML: element => element.getAttribute('data-step'),
+        parseHTML: element => element.getAttribute('data-step') || element.getAttribute('first'),
         renderHTML: attributes => {
           //return !attributes.first ? {} : {'data-step': attributes.first}
           if (attributes.first == null) {return {}}
-          return {'data-step': attributes.first}
+          return {'first': attributes.first}
         },
       },
     }
@@ -436,7 +436,7 @@ const StepNode = Node.create({
     //  : this.options.levels[0]
 
     //return [`h${level}`, mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0]
-    return [`div`, HTMLAttributes, 0]
+    return [`div`, {'data-step': HTMLAttributes['first']}, 0]
   },
 
   addCommands() {
