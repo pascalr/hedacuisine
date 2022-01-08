@@ -1,6 +1,7 @@
 json.article do
   json.id @article.id
   json.name @article.name
-  json.content @article.content
+  json.json @article.json
   json.url article_path(@article)
 end
+#json.content @article.content

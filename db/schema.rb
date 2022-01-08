@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_08_174128) do
+ActiveRecord::Schema.define(version: 2022_01_08_213441) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,6 +60,8 @@ ActiveRecord::Schema.define(version: 2022_01_08_174128) do
     t.text "intro"
     t.boolean "is_public"
     t.text "content"
+    t.text "json"
+    t.text "html"
   end
 
   create_table "book_recipes", force: :cascade do |t|
@@ -402,6 +404,8 @@ ActiveRecord::Schema.define(version: 2022_01_08_174128) do
     t.string "comment"
     t.string "raw"
     t.string "raw_food"
+    t.text "comment_json"
+    t.text "comment_html"
     t.index ["food_id"], name: "index_recipe_ingredients_on_food_id"
     t.index ["recipe_id"], name: "index_recipe_ingredients_on_recipe_id"
     t.index ["unit_id"], name: "index_recipe_ingredients_on_unit_id"
@@ -414,6 +418,8 @@ ActiveRecord::Schema.define(version: 2022_01_08_174128) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "kind_id"
+    t.text "description_json"
+    t.text "description_html"
   end
 
   create_table "recipe_notes", force: :cascade do |t|
@@ -422,6 +428,8 @@ ActiveRecord::Schema.define(version: 2022_01_08_174128) do
     t.bigint "recipe_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "json"
+    t.text "html"
     t.index ["recipe_id"], name: "index_recipe_notes_on_recipe_id"
   end
 

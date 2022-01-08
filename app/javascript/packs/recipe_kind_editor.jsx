@@ -18,7 +18,7 @@ class RecipeKindEditor extends React.Component {
 
   render() {
     return (<>
-      <DescriptionTiptap content={gon.recipe_kind.description} model="recipe_kind" field="description" url={gon.recipe_kind.url}/>
+      <DescriptionTiptap content={gon.recipe_kind.description} model="recipe_kind" json_field="description_json" html_field="description_html" url={gon.recipe_kind.url}/>
     </>)
   }
 }
@@ -26,8 +26,8 @@ class RecipeKindEditor extends React.Component {
 document.addEventListener('DOMContentLoaded', () => {
 
   const modHandler = new ModificationsHandler()
-  window.registerEditor = (editor, model, field, url) => {
-    modHandler.registerEditor(editor, model, field, url)
+  window.registerEditor = (editor, model, json_field, html_field, url) => {
+    modHandler.registerEditor(editor, model, json_field, html_field, url)
   }
 
   const root = document.getElementById('root')

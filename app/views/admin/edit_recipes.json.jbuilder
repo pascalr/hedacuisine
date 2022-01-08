@@ -1,3 +1,10 @@
+json.articles Article.all.order(:name) do |article|
+  json.id article.id
+  json.name article.name
+  json.content article.content
+  json.url article_path(article)
+end
+
 json.recipes @recipes do |recipe|
   json.id recipe.id
   json.class_name "recipe"
@@ -15,7 +22,13 @@ json.recipes @recipes do |recipe|
   json.total_time recipe.total_time
   json.raw_servings recipe.raw_servings
   json.move_ing_url move_ing_recipe_path(recipe)
-  json.notes do
+  json.notes_array recipe.notes do |note|
+    json.id note.id
+    json.item_nb note.item_nb
+    json.content note.content
+    json.url recipe_recipe_note_path(recipe, note)
+  end
+  json.notes do # should be deprecated...
     recipe.notes.order(:item_nb).each do |note|
       json.set! note.id do
         json.id note.id

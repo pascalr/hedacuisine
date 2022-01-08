@@ -22,6 +22,7 @@ json.recipe do
         json.id note.id
         json.item_nb note.item_nb
         json.content note.content
+        json.json note.json
         json.url recipe_recipe_note_path(@recipe, note)
       end
     end
@@ -33,6 +34,7 @@ json.recipe do
         json.item_nb ing.item_nb
         json.raw ing.raw
         json.comment ing.comment
+        json.comment_json ing.comment_json
         json.url recipe_recipe_ingredient_path(@recipe, ing)
         json.name ing.name
         if ing.food

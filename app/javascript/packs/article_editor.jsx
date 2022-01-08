@@ -18,7 +18,7 @@ class ArticleEditor extends React.Component {
 
   render() {
     return (<>
-      <ArticleTiptap model="article" field="content" url={gon.article.url}/>
+      <ArticleTiptap model="article" json_field="json" html_field="html" url={gon.article.url}/>
     </>)
   }
 }
@@ -26,8 +26,8 @@ class ArticleEditor extends React.Component {
 document.addEventListener('DOMContentLoaded', () => {
 
   const modHandler = new ModificationsHandler()
-  window.registerEditor = (editor, model, field, url) => {
-    modHandler.registerEditor(editor, model, field, url)
+  window.registerEditor = (editor, model, json_field, html_field, url) => {
+    modHandler.registerEditor(editor, model, json_field, html_field, url)
   }
 
   const root = document.getElementById('root')

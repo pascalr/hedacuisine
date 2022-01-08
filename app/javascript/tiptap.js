@@ -796,15 +796,17 @@ const ArticleToolbar = ({ editor }) => {
   )
 }
 
-export const ArticleTiptap = ({model, field, url}) => {
+export const ArticleExtensions = [
+  Bold, Italic, Document, Paragraph, Strike, Text, ArticleHeading, CustomLink,
+  History, // Subscript, Superscript,
+]
+export const ArticleTiptap = ({model, json_field, html_field, url}) => {
   const editor = useEditor({
-    extensions: [Bold, Italic, Document, Paragraph, Strike, Text, ArticleHeading, CustomLink,
-      History, IngredientNode, IngredientListNode, StepNode,// Subscript, Superscript,
-    ],
-    content: gon[model][field],
+    extensions: ArticleExtensions,
+    content: JSON.parse(gon[model][json_field]),
   })
   // Ugly to call this at every render, but I don't know where else to put it.
-  window.registerEditor(editor, model, field, url)
+  window.registerEditor(editor, model, json_field, html_field, url)
 
   return (
     <div className="article-editor">
@@ -824,10 +826,10 @@ export const recipeEditor = (content) => {
     content: content,
   }
 }
-export const Tiptap = ({content, model, field, url}) => {
+export const Tiptap = ({content, model, json_field, html_field, url}) => {
   const editor = useEditor(recipeEditor(content))
   // Ugly to call this at every render, but I don't know where else to put it.
-  window.registerEditor(editor, model, field, url)
+  window.registerEditor(editor, model, json_field, html_field, url)
 
   return (
     <div>
@@ -837,17 +839,18 @@ export const Tiptap = ({content, model, field, url}) => {
   )
 }
 
-export const BubbleTiptap = ({content, model, field, url}) => {
+export const BubbleExtensions = [Bold, Italic, Strike, InlineDocument, History, Text, CustomLink]
+export const BubbleTiptap = ({content, model, json_field, html_field, url}) => {
 
   const width = 24
   const height = 24
 
   const editor = useEditor({
-    extensions: [Bold, Italic, Strike, InlineDocument, History, Text, CustomLink],
+    extensions: BubbleExtensions,
     content: content,
   })
   // Ugly to call this at every render, but I don't know where else to put it.
-  window.registerEditor(editor, model, field, url)
+  window.registerEditor(editor, model, json_field, html_field, url)
 
   return (
     <>
@@ -862,7 +865,7 @@ export const BubbleTiptap = ({content, model, field, url}) => {
   )
 }
 
-export const DescriptionTiptap = ({content, model, field, url}) => {
+export const DescriptionTiptap = ({content, model, json_field, html_field, url}) => {
 
   const width = 24
   const height = 24
@@ -872,7 +875,7 @@ export const DescriptionTiptap = ({content, model, field, url}) => {
     content: content,
   })
   // Ugly to call this at every render, but I don't know where else to put it.
-  window.registerEditor(editor, model, field, url)
+  window.registerEditor(editor, model, json_field, html_field, url)
 
   return (
     <div className="recipe-kind-editor">
@@ -893,13 +896,16 @@ export class ModificationsHandler {
     window.onbeforeunload = this.preventLeavingWithoutModifications
   }
 
-  registerEditor(editor, model, field, url) {
+  registerEditor(editor, model, json_field, html_field, url) {
     if (!editor || this.editors.has(editor)) {return}
     this.editors.add(editor)
-    editor.savedHTML = editor.getHTML()
+    editor.savedJSON = JSON.stringify(editor.getJSON())
+    //editor.savedJSON = model[json_field]
     editor.updateModel = model
-    editor.updateField = field
+    editor.jsonField = json_field
+    editor.htmlField = html_field
     editor.updateUrl = url
+    console.log("updateURL", editor.updateUrl)
     editor.on('update', ({ editor }) => {
       editor.isDirty = true
     })
@@ -916,14 +922,15 @@ export class ModificationsHandler {
       for (let it = editors.values(), editor=null; editor=it.next().value; ) {
         if (!editor.isDirty) {continue}
         editor.isDirty = false
-        let current = editor.getHTML()
-        if (current != editor.savedHTML) {
-          console.log('Saving changes for '+editor.updateModel+' '+editor.updateField);
+        let json = JSON.stringify(editor.getJSON())
+        if (json != editor.savedJSON) {
+          console.log('Saving changes for '+editor.updateModel+' '+editor.jsonField);
 
           let data = new FormData()
-          data.append(`${editor.updateModel}[${editor.updateField}]`, current)
+          data.append(`${editor.updateModel}[${editor.jsonField}]`, json)
+          data.append(`${editor.updateModel}[${editor.htmlField}]`, editor.getHTML())
           Rails.ajax({url: editor.updateUrl, type: 'PATCH', data: data, success: () => {
-            editor.savedHTML = current
+            editor.savedJSON = json
           }})
         }
       }
@@ -932,7 +939,7 @@ export class ModificationsHandler {
 
   preventLeavingWithoutModifications() {
     for (let editor in this.editors) {
-      if (editor && editor.getHTML() != editor.savedHTML) {
+      if (editor && JSON.stringify(editor.getJSON()) != editor.savedJSON) {
         return 'There are unsaved changes. Are you sure you want to leave?';
       }
     }

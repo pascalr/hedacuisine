@@ -40,6 +40,6 @@ private
   end
     
   def article_params
-    params.require(:article).permit(:name, :intro, :is_public, :content)
+    params.require(:article).permit(:name, :intro, :is_public, :content, :json, :html)
   end
 end

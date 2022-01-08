@@ -36,6 +36,6 @@ class RecipeNotesController < ApplicationController
     end
 
     def recipe_note_params
-      params.require(:recipe_note).permit(:item_nb, :content)
+      params.require(:recipe_note).permit(:item_nb, :content, :json, :html)
     end
 end

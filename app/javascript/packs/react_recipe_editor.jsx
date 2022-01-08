@@ -185,7 +185,7 @@ const EditableIngredientComment = (props) => {
     style.width = visual == VisualState.EXPANDED ? "200px" : "0px"
     return (
       <Row marginLeft="10px" style={style} onBlur={closeIfEmpty}>
-        <BubbleTiptap content={props.comment} model="recipe_ingredient" field="comment" url={props.ingUrl}/>
+        <BubbleTiptap content={JSON.parse(props.commentJson)} model="recipe_ingredient" json_field="comment_json" html_field="comment_html" url={props.ingUrl}/>
       </Row>
     )
     //(<input type="text" value={comment || ''} style={style} ref={commentInput} onChange={(e) => setComment(e.target.value)} onBlur={updateComment} />)
@@ -210,7 +210,7 @@ const EditableIngredient = (props) => {
       <input onBlur={updateIngQuantityCallback} type="text" size="8" defaultValue={ing.raw} style={{border: "none", borderBottom: "1px dashed #444"}} />
       de{/*" de " ou bien " - " si la quantité n'a pas d'unité => _1_____ - oeuf*/}
       {ing.food ? <a href={ing.food.url}>{ing.food.name}</a> : <div>{ing.name}</div>}
-      <EditableIngredientComment ingUrl={ing.url} comment={ing.comment} />
+      <EditableIngredientComment ingUrl={ing.url} commentJson={ing.commentJson} />
       <Block flexGrow="1" />
       <DeleteConfirmButton id={`ing-${ing.id}`} onDeleteConfirm={removeIngredient} message="Je veux enlever cet ingrédient?" />
     </Row>
@@ -267,7 +267,7 @@ class RecipeEditor extends React.Component {
 
   appendNote() {
     let data = new FormData()
-    data.append('recipe_note[content]', '')
+    //data.append('recipe_note[content]', '')
     Rails.ajax({url: gon.recipe.new_note_url, type: 'POST', data: data, success: (raw) => {
       const response = JSON.parse(raw)
       if (!gon.recipe.notes) {gon.recipe.notes = {}}
@@ -343,7 +343,7 @@ class RecipeEditor extends React.Component {
         <Row key={id} gap="5px" marginBottom="5px">
           [{note.item_nb}]
           <Block flexGrow="1">
-            <BubbleTiptap content={note.content} model="recipe_note" field="content" url={note.url}/>
+            <BubbleTiptap content={JSON.parse(note.json)} model="recipe_note" json_field="json" html_field="html" url={note.url}/>
           </Block>
           <DeleteConfirmButton id={`note-${note.id}`} onDeleteConfirm={removeNote} message="Je veux enlever cette note?" />
         </Row>
@@ -372,7 +372,7 @@ class RecipeEditor extends React.Component {
         {IngredientList}
       
         <h2>Instructions</h2>
-        <Tiptap model="recipe" field="text" url={gon.recipe.url} content={JSON.parse(gon.recipe.json)} />
+        <Tiptap model="recipe" json_field="json" html_field="html" url={gon.recipe.url} content={JSON.parse(gon.recipe.json)} />
         <InstructionsShortcuts/>
         
         <h3>Notes</h3>
@@ -447,8 +447,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const root = document.getElementById('root')
 
   const modHandler = new ModificationsHandler()
-  window.registerEditor = (editor, model, field, url) => {
-    modHandler.registerEditor(editor, model, field, url)
+  window.registerEditor = (editor, model, json_field, html_field, url) => {
+    modHandler.registerEditor(editor, model, json_field, html_field, url)
   }
 
   if (root) {ReactDOM.render(<RecipeEditor ref={window.recipe_editor}/>, root)}
