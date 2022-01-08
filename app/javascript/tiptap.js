@@ -151,18 +151,18 @@ const LinkModel = Node.create({
     return {
       modelId: {
         default: null,
-        parseHTML: element => element.getAttribute('data-model-id'),
+        parseHTML: element => element.getAttribute('model-id'),
         renderHTML: attributes => {
           if (attributes.modelId == null) {return {}}
-          return {'data-model-id': attributes.modelId}
+          return {'model-id': attributes.modelId}
         },
       },
       model: {
         default: null,
-        parseHTML: element => element.getAttribute('data-link-model'),
+        parseHTML: element => element.getAttribute('model'),
         renderHTML: attributes => {
           if (attributes.model == null) {return {}}
-          return {'data-link-model': attributes.model}
+          return {'model': attributes.model}
         },
       },
     }
@@ -173,6 +173,7 @@ const LinkModel = Node.create({
   },
 
   renderHTML({node, HTMLAttributes}) {
+    const HTMLAttrs = {'data-link-model': HTMLAttributes['model'], 'data-model-id': HTMLAttributes['model-id']}
     const model = MODELS[node.attrs.model]
     if (model && node.attrs.modelId) {
       const record = gon[model.listName].find(f => f.id == node.attrs.modelId)
@@ -181,12 +182,12 @@ const LinkModel = Node.create({
       console.log("modelId", node.attrs.modelId)
       if (record) {
         let a = ['a', {href: record.url}, record.name]
-        console.log(['span', HTMLAttributes, a])
-        return ['span', HTMLAttributes, a]
+        console.log(['span', HTMLAttrs, a])
+        return ['span', HTMLAttrs, a]
       }
     }
-    console.log(['span', HTMLAttributes, '[BROKEN LINK]'])
-    return ['span', HTMLAttributes, '[BROKEN LINK]']
+    console.log(['span', HTMLAttrs, '[BROKEN LINK]'])
+    return ['span', HTMLAttrs, '[BROKEN LINK]']
   },
 
 
@@ -198,7 +199,8 @@ const LinkModel = Node.create({
     return {
       insertLinkModel: (model) => ({ commands }) => {
         console.log("insertLinkModel")
-        return commands.insertContent(`<span data-link-model="${model}"></span>`)
+        return commands.insertContent({type: 'link-model', attrs: {model: model}})
+        //return commands.insertContent(`<span data-link-model="${model}"></span>`)
       },
     }
   },
