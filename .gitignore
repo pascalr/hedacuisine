@@ -49,3 +49,6 @@ yarn-debug.log*
 **.dump.*
 
 /sync
+
+# Ignore application configuration
+/config/application.yml

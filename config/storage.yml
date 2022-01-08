@@ -22,22 +22,23 @@ amazon:
   bucket: heda-bucket-production
 #<%= Rails.env %>
 
-# Use rails credentials:edit to set the Backblaze secrets
-# backblaze:
-#   bucket_id: ...
-#   key_id: ...
-#   key_token: ...
-backblaze:
-  service: Backblaze
-  bucket_name: heda-bucket-production
-  bucket_id: <%= Rails.application.credentials.dig(:backblaze, :bucket_id) %>
-  key_id: <%= Rails.application.credentials.dig(:backblaze, :key_id) %>
-  key_token: <%= Rails.application.credentials.dig(:backblaze, :key_token) %>
+## I use figaro to set up environment variables instead of credentiails.dig now.
+## Use rails credentials:edit to set the Backblaze secrets
+## backblaze:
+##   bucket_id: ...
+##   key_id: ...
+##   key_token: ...
+#backblaze:
+#  service: Backblaze
+#  bucket_name: heda-bucket-production
+#  bucket_id: <%= Rails.application.credentials.dig(:backblaze, :bucket_id) %>
+#  key_id: <%= Rails.application.credentials.dig(:backblaze, :key_id) %>
+#  key_token: <%= Rails.application.credentials.dig(:backblaze, :key_token) %>
 
 # heroku config:set BACKBLAZE_BUCKET_ID=... BACKBLAZE_KEY_ID=... BACKBLAZE_KEY_TOKEN=...
-backblaze_prod:
+backblaze:
   service: Backblaze
-  bucket_name: heda-bucket-production
+  bucket_name: <%= ENV['BACKBLAZE_BUCKET_NAME'] %> 
   bucket_id: <%= ENV['BACKBLAZE_BUCKET_ID'] %>
   key_id: <%= ENV['BACKBLAZE_KEY_ID'] %>
   key_token: <%= ENV['BACKBLAZE_KEY_TOKEN'] %>
