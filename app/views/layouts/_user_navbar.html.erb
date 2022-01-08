@@ -28,7 +28,7 @@
         </div>
       <% else %>
         <%# link_to t("devise.shared.links.sign_up"), new_user_registration_path, class: "nav-item nav-link" %>
-        <%= link_to t("devise.sessions.new.sign_in"), new_user_session_path, class: "nav-item nav-link" %>
+        <%= link_to t("devise.sessions.new.sign_in"), public_editor_url(new_user_session_path), class: "nav-item nav-link" %>
       <% end %>
     </div>
   </div>

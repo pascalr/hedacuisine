@@ -29,6 +29,8 @@ Rails.application.routes.draw do
   resources :units
   devise_for :users
   resources :tools
+  
+  get 'admin/edit_recipes', to: 'admin#edit_recipes', as: 'admin_edit_recipes'
 
   resources :images do
     member do

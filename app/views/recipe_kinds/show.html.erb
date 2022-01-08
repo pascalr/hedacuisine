@@ -5,12 +5,17 @@
 <div style="max-width: 800px;">
   <h2>0 recettes</h2>
   
-  <p>On dirait qu'il n'y a pas encore de recettes danss cette catégorie.</p>
+  <p>On dirait qu'il n'y a pas encore de recettes dans cette catégorie.</p>
   
-  <button class="btn btn-outline-primary">Ajouter une recette</button>
+  <%= link_to_active_if "recipes" == controller_name && action_name == "my_recipes", "Ajouter une recette", public_editor_url(my_recipes_recipes_path), class: "btn btn-outline-primary" %>
 
   <div style="height: 2em;"></div>
   <h2>Un partage de recettes</h2>
   
-  <p>Toutes les recettes publiées sur ce site sont libre de droit, disponible pour tous. Si vous apprécié voir les recettes des autres, considérer partager vos propres recettes. C'est aussi une manière de pouvoir accéder à vos recettes et de s'assurer de ne pas les perdres et de toujours y avoir accès.</p>
+  <p>Si vous apprécié voir les recettes des autres, considérer partager vos propres recettes. En plus, cela permet de converser vos recettes pour ne jamais les oublier et toujours y avoir accès.</p>
+  
+  <div style="height: 2em;"></div>
+  <h2>Un livre de recettes</h2>
+  
+  <p>Sur ce site, il va être possible de faire votre propre livre de recette. C'est une manière simple de contenir et de partager vos recettes avec vos proches. La version électronique est gratuite. Il faut payer seulement si vous voulez le faire imprimer professionnellement.</p>
 </div>

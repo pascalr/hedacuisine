@@ -1,5 +1,6 @@
 <ul class="nav nav-tabs">
   <span class="nav-item navbar-brand"><b>Admin</b></span>
+  <%= link_to_active "Edit recipes", admin_edit_recipes_path, class: "nav-item nav-link" %>
   <%= link_to_active "Machines", machines_path, class: "nav-item nav-link" %>
   <%= link_to_active "Food tags", food_tags_path, class: "nav-item nav-link" %>
   <%= link_to_active "Expressions", expressions_path, class: "nav-item nav-link" %>

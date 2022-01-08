@@ -15,6 +15,7 @@ json.recipe do
   json.total_time @recipe.total_time
   json.raw_servings @recipe.raw_servings
   json.move_ing_url move_ing_recipe_path(@recipe)
+  json.json @recipe.json
   json.notes do
     @recipe.notes.order(:item_nb).each do |note|
       json.set! note.id do

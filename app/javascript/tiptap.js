@@ -410,6 +410,7 @@ const StepNode = Node.create({
         default: false,
         parseHTML: element => element.getAttribute('data-step'),
         renderHTML: attributes => {
+          //return !attributes.first ? {} : {'data-step': attributes.first}
           if (attributes.first == null) {return {}}
           return {'data-step': attributes.first}
         },
@@ -813,13 +814,18 @@ export const ArticleTiptap = ({model, field, url}) => {
   )
 }
 
-export const Tiptap = ({model, field, url}) => {
-  const editor = useEditor({
-    extensions: [Bold, Italic, Document, Paragraph, Strike, Text, CustomHeading, CustomLink,
-      History, IngredientNode, IngredientListNode, StepNode, LinkModel// Subscript, Superscript,
-    ],
-    content: gon[model][field],
-  })
+export const RecipeExtensions = [
+  Bold, Italic, Document, Paragraph, Strike, Text, CustomHeading, CustomLink,
+  History, IngredientNode, IngredientListNode, StepNode, LinkModel
+]
+export const recipeEditor = (content) => {
+  return {
+    extensions: RecipeExtensions,
+    content: content,
+  }
+}
+export const Tiptap = ({content, model, field, url}) => {
+  const editor = useEditor(recipeEditor(content))
   // Ugly to call this at every render, but I don't know where else to put it.
   window.registerEditor(editor, model, field, url)
 

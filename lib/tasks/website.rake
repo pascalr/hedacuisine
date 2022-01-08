@@ -125,10 +125,21 @@ namespace :website do
   end
 
   task sync_from_local_to_b2: :environment do
-    key_id = Rails.application.credentials.dig(:backblaze, :key_id)
-    key_token = Rails.application.credentials.dig(:backblaze, :key_token)
+    bucket_name = ENV['BACKBLAZE_BUCKET_NAME']
+    #bucket_id = ENV['BACKBLAZE_BUCKET_ID']
+    key_id = ENV['BACKBLAZE_KEY_ID']
+    key_token = ENV['BACKBLAZE_KEY_TOKEN']
 
-    system("B2_APPLICATION_KEY_ID=#{key_id} B2_APPLICATION_KEY=#{key_token} ~/Downloads/b2-linux sync #{get_sync_folder} b2://heda-bucket-production/")
+    system("B2_APPLICATION_KEY_ID=#{key_id} B2_APPLICATION_KEY=#{key_token} ~/Downloads/b2-linux sync #{get_sync_folder} b2://#{bucket_name}/")
+  end
+  
+  task sync_from_b2_to_local: :environment do
+    bucket_name = ENV['BACKBLAZE_BUCKET_NAME']
+    #bucket_id = ENV['BACKBLAZE_BUCKET_ID']
+    key_id = ENV['BACKBLAZE_KEY_ID']
+    key_token = ENV['BACKBLAZE_KEY_TOKEN']
+
+    system("B2_APPLICATION_KEY_ID=#{key_id} B2_APPLICATION_KEY=#{key_token} ~/Downloads/b2-linux sync b2://#{bucket_name}/ #{get_sync_folder}")
   end
 
   task fix_s3: :environment do
@@ -151,7 +162,7 @@ namespace :website do
   end
   
   desc "Move the files from the sync directory into the storage directory in the proper format"
-  task s3_to_local: :environment do
+  task convert_sync_to_local: :environment do
 
     # OPTIMIZE: Be smart and not erase everything everytime...
 

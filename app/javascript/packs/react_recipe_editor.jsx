@@ -372,7 +372,7 @@ class RecipeEditor extends React.Component {
         {IngredientList}
       
         <h2>Instructions</h2>
-        <Tiptap model="recipe" field="text" url={gon.recipe.url}/>
+        <Tiptap model="recipe" field="text" url={gon.recipe.url} content={JSON.parse(gon.recipe.json)} />
         <InstructionsShortcuts/>
         
         <h3>Notes</h3>
