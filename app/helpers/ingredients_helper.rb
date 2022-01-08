@@ -396,7 +396,7 @@ module IngredientsHelper
     #translated = my_sanitize(translate_complete_instructions(recipe))
     #replaced = replace_ingredients(recipe, recipe.text.body.to_trix_html)
     #replaced = replace_ingredients(recipe, recipe.text)
-    my_sanitize(recipe.text)
+    my_sanitize(recipe.html)
   end
 
   def pretty_article_text(text)
