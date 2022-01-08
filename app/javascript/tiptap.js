@@ -865,13 +865,14 @@ export const BubbleTiptap = ({content, model, json_field, html_field, url}) => {
   )
 }
 
+export const DescriptionExtensions = [Bold, Italic, Strike, Document, Paragraph, History, Text, CustomLink, LinkModel]
 export const DescriptionTiptap = ({content, model, json_field, html_field, url}) => {
 
   const width = 24
   const height = 24
 
   const editor = useEditor({
-    extensions: [Bold, Italic, Strike, Document, Paragraph, History, Text, CustomLink, LinkModel],
+    extensions: DescriptionExtensions,
     content: content,
   })
   // Ugly to call this at every render, but I don't know where else to put it.

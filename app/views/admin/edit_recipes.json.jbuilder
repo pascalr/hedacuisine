@@ -38,6 +38,21 @@ json.recipes @recipes do |recipe|
       end
     end
   end
+  json.ingredients_array recipe.ingredients do |ing|
+    json.id ing.id
+    json.item_nb ing.item_nb
+    json.raw ing.raw
+    json.comment ing.comment
+    json.url recipe_recipe_ingredient_path(recipe, ing)
+    json.name ing.name
+    if ing.food
+      json.food do
+        json.id ing.food.id
+        json.name ing.food.name
+        json.url food_path(ing.food)
+      end
+    end
+  end 
   json.ingredients do
     recipe.ingredients.order(:item_nb).each do |ing|
       json.set! ing.id do
@@ -66,5 +81,7 @@ json.foodList Food.all.map {|food| {id: food.id, name: food.name.downcase, url: 
 json.recipe_kinds RecipeKind.order(:name).all do |recipe_kind|
   json.id recipe_kind.id
   json.name recipe_kind.name
+  json.description recipe_kind.description
+  json.description_json recipe_kind.description_json
   json.url recipe_kind_path(recipe_kind)
 end 

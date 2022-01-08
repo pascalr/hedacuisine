@@ -42,6 +42,6 @@ class RecipeKindsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def recipe_kind_params
-      params.require(:recipe_kind).permit(:name, :description, :image_id)
+      params.require(:recipe_kind).permit(:name, :description, :image_id, :description_json, :description_html)
     end
 end

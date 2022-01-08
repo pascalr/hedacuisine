@@ -12,7 +12,7 @@ import ReactDOM from 'react-dom'
 //import { DeleteConfirmButton } from 'components/delete_confirm_button'
 //
 import { useEditor, EditorContent, BubbleMenu, ReactNodeViewRenderer, NodeViewWrapper, generateJSON, generateHTML } from '@tiptap/react'
-import { Tiptap, BubbleTiptap, ModificationsHandler, recipeEditor, RecipeExtensions, ArticleExtensions, BubbleExtensions } from 'tiptap'
+import { Tiptap, BubbleTiptap, ModificationsHandler, recipeEditor, RecipeExtensions, ArticleExtensions, BubbleExtensions, DescriptionExtensions } from 'tiptap'
 import '../styles/prose_mirror.scss'
 //
 //import {TextField, CollectionSelect} from '../form'
@@ -62,23 +62,27 @@ const EditRecipes = () => {
   }
   const setJSONForRecipeIngredients = () => {
     for (let i = 0; i < gon.recipes.length; i++) {
-      let r = gon.recipes[i]
-      gon.recipe = r
-      if (r.text == null || r.text == '') {
-        console.log('skipping empty recipe')
-        continue 
+      let r0 = gon.recipes[i]
+      gon.recipe = r0
+      if (!r0.ingredients_array) {continue}
+      for (let j = 0; j < r0.ingredients_array.length; j++) {
+        let r = r0.ingredients_array[j]
+        if (r.comment == null || r.comment == '') {
+          console.log('skipping empty recipe note')
+          continue 
+        }
+        let data = new FormData()
+        let json = generateJSON(r.comment, BubbleExtensions)
+        data.append("recipe_ingredient[comment_json]", JSON.stringify(json))
+        console.log("json", json)
+        console.log("RecipeExtensions", BubbleExtensions)
+        data.append("recipe_ingredient[comment_html]", generateHTML(json, BubbleExtensions))
+        Rails.ajax({url: r.url, type: 'PATCH', data: data, success: () => {
+          console.log('Update recipe comment (id='+r.id+') JSON success.')
+        }, error: (errors) => {
+          toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
+        }})
       }
-      let data = new FormData()
-      let json = generateJSON(r.text, RecipeExtensions)
-      data.append("recipe[json]", JSON.stringify(json))
-      console.log("json", json)
-      console.log("RecipeExtensions", RecipeExtensions)
-      data.append("recipe[html]", generateHTML(json, RecipeExtensions))
-      Rails.ajax({url: r.url, type: 'PATCH', data: data, success: () => {
-        console.log('Update recipe (id='+r.id+') JSON success.')
-      }, error: (errors) => {
-        toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
-      }})
     }
   }
   const setJSONForArticles = () => {
@@ -101,20 +105,19 @@ const EditRecipes = () => {
   }
   const setJSONForRecipeKinds = () => {
     for (let i = 0; i < gon.recipes.length; i++) {
-      let r = gon.recipes[i]
-      gon.recipe = r
-      if (r.text == null || r.text == '') {
-        console.log('skipping empty recipe')
+      let r = gon.recipe_kinds[i]
+      if (r.description == null || r.description == '') {
+        console.log('skipping empty recipe kind description')
         continue 
       }
       let data = new FormData()
-      let json = generateJSON(r.text, RecipeExtensions)
-      data.append("recipe[json]", JSON.stringify(json))
+      let json = generateJSON(r.description, DescriptionExtensions)
+      data.append("recipe_kind[description_json]", JSON.stringify(json))
       console.log("json", json)
-      console.log("RecipeExtensions", RecipeExtensions)
-      data.append("recipe[html]", generateHTML(json, RecipeExtensions))
+      console.log("RecipeExtensions", DescriptionExtensions)
+      data.append("recipe_kind[description_html]", generateHTML(json, DescriptionExtensions))
       Rails.ajax({url: r.url, type: 'PATCH', data: data, success: () => {
-        console.log('Update recipe (id='+r.id+') JSON success.')
+        console.log('Update recipe kind (id='+r.id+') JSON success.')
       }, error: (errors) => {
         toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
       }})

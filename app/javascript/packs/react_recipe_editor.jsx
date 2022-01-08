@@ -149,7 +149,7 @@ const VisualState = {
 const EditableIngredientComment = (props) => {
 
   //const [comment, setComment] = useState(props.comment);
-  const [visual, setVisual] = useState(props.comment && props.comment != '' ? VisualState.EXPANDED : VisualState.CLOSED);
+  const [visual, setVisual] = useState(props.commentJson && props.commentJson != '' ? VisualState.EXPANDED : VisualState.CLOSED);
 
   //const commentInput = useRef(null);
 
@@ -210,7 +210,7 @@ const EditableIngredient = (props) => {
       <input onBlur={updateIngQuantityCallback} type="text" size="8" defaultValue={ing.raw} style={{border: "none", borderBottom: "1px dashed #444"}} />
       de{/*" de " ou bien " - " si la quantité n'a pas d'unité => _1_____ - oeuf*/}
       {ing.food ? <a href={ing.food.url}>{ing.food.name}</a> : <div>{ing.name}</div>}
-      <EditableIngredientComment ingUrl={ing.url} commentJson={ing.commentJson} />
+      <EditableIngredientComment ingUrl={ing.url} commentJson={ing.comment_json} />
       <Block flexGrow="1" />
       <DeleteConfirmButton id={`ing-${ing.id}`} onDeleteConfirm={removeIngredient} message="Je veux enlever cet ingrédient?" />
     </Row>

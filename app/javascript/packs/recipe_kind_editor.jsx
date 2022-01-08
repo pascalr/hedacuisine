@@ -18,7 +18,7 @@ class RecipeKindEditor extends React.Component {
 
   render() {
     return (<>
-      <DescriptionTiptap content={gon.recipe_kind.description} model="recipe_kind" json_field="description_json" html_field="description_html" url={gon.recipe_kind.url}/>
+      <DescriptionTiptap content={JSON.parse(gon.recipe_kind.description_json)} model="recipe_kind" json_field="description_json" html_field="description_html" url={gon.recipe_kind.url}/>
     </>)
   }
 }
