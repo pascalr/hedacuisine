@@ -53,7 +53,7 @@ import Quantity from 'models/quantity'
 import { Ingredient, Utils } from "recipe_utils"
 
 export const InlineDocument = Node.create({
-  name: 'inlinedoc',
+  name: 'idoc',
   topNode: true,
   content: 'inline*',
 })
@@ -321,7 +321,7 @@ const StepNode = Node.create({
 })
 
 const IngredientNode = Node.create({
-  name: 'ingredient',
+  name: 'ing',
   group: 'inline',
   inline: true,
   selectable: false,
@@ -404,7 +404,7 @@ const IngredientNode = Node.create({
       insertIngredient: (ingId) => ({ commands }) => {
         console.log("insertIngredient")
         console.log("raw", ingId)
-        return commands.insertContent({type: 'ingredient', attrs: {raw: ingId.toString()}})
+        return commands.insertContent({type: 'ing', attrs: {raw: ingId.toString()}})
         //return commands.insertContent(`<span data-ingredient="${ingId}"/>`)
         //return commands.setNode('ingredient')
       },
@@ -447,7 +447,7 @@ const IngredientNode = Node.create({
 })
 
 const IngredientListNode = Node.create({
-  name: 'ingredient-list',
+  name: 'ings',
   group: 'block',
   //inline: true,
   //selectable: false,
