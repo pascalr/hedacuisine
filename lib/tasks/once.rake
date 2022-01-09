@@ -1,5 +1,12 @@
 namespace :once do
 
+  task update_images_file_info: :environment do
+    Image.all.each do |image|
+      image.update_file_info
+      image.save!
+    end
+  end
+
   task base_recipe_to_kind: :environment do
     Recipe.all.each do |recipe|
       if !recipe.recipe_kind && recipe.base_recipe

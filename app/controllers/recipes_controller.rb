@@ -6,7 +6,7 @@ class RecipesController < ApplicationController
   def index
     respond_to do |format|
       format.html {@recipes = Recipe.all_main.all_public.with_images.order(:created_at)}
-      format.json {@recipes = Recipe.all_main.all_for(current_user).order(:name)}
+      format.json {@recipes = Recipe.all_main.all_for(current_user).includes(:image).order(:name)}
     end
     #@recipes = Recipe.where(is_public: true).order(:created_at)
     #@recipes = Recipe.where(is_public: true, base_recipe_id: nil).where.not(image_id: nil)

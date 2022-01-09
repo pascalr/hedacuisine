@@ -28,23 +28,6 @@ module ApplicationHelper
     url_for({locale: current_region.locale}.merge(args))
   end
 
-  def _file_ext(file)
-    File.extname(file.filename.to_s)
-    #type = file.content_type
-    #case type.to_s
-    #when "image/bmp" then ".bmp"
-    #when "image/gif" then ".gif"
-    #when "image/x-icon" then ".ico"
-    #when "image/jpeg" then ".jpg"
-    #when "image/png" then ".png"
-    #when "image/svg+xml" then ".svg"
-    #when "image/tiff" then ".tiff"
-    #when "image/webp" then ".webp"
-    #else
-    #  raise "Invalid content type #{type}"
-    #end
-  end
-
   def public_editor_url(path)
     Rails.env == "local" ? "https://aqueous-fortress-30634.herokuapp.com#{path}" : path
   end
@@ -54,32 +37,17 @@ module ApplicationHelper
   def _base_image_path(image)
     "/images/#{image.id}"
   end
-  def _base_image_url(image)
-    "https://www.hedacuisine.com#{_base_image_path(image)}"
-  end
   def medium_image_path(image)
     return nil if image.nil?
-    "#{_base_image_path(image)}/medium#{_file_ext(image.original)}"
+    "#{_base_image_path(image)}/medium#{image.extension}"
   end
   def small_image_path(image)
     return nil if image.nil?
-    "#{_base_image_path(image)}/small#{_file_ext(image.original)}"
+    "#{_base_image_path(image)}/small#{image.extension}"
   end
   def thumb_image_path(image)
     return nil if image.nil?
-    "#{_base_image_path(image)}/thumb#{_file_ext(image.original)}"
-  end
-  def medium_image_url(image)
-    return nil if image.nil?
-    "#{_base_image_url(image)}/medium#{_file_ext(image.original)}"
-  end
-  def small_image_url(image)
-    return nil if image.nil?
-    "#{_base_image_url(image)}/small#{_file_ext(image.original)}"
-  end
-  def thumb_image_url(image)
-    return nil if image.nil?
-    "#{_base_image_url(image)}/thumb#{_file_ext(image.original)}"
+    "#{_base_image_path(image)}/thumb#{image.extension}"
   end
 
   def icon_path(name)
