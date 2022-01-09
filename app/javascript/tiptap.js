@@ -331,7 +331,7 @@ const IngredientNode = Node.create({
     return {
       raw: {
         default: null,
-        parseHTML: element => element.getAttribute('raw'),
+        parseHTML: element => element.getAttribute('data-ingredient') || element.getAttribute('raw'),
         renderHTML: attributes => {
           if (!attributes.raw) {return {}}
           return {'raw': attributes.raw}
@@ -461,44 +461,49 @@ const IngredientListNode = Node.create({
 
   addAttributes() {
     return {
-      ingredientIds: {
+      raw: {
         default: null,
-        parseHTML: element => element.getAttribute('data-ingredients'),
+        parseHTML: element => element.getAttribute('data-ingredients') || element.getAttribute('raw'),
         renderHTML: attributes => {
-          if (!attributes.ingredientIds) {return {}}
-
-          return {'data-ingredients': attributes.ingredientIds}
-        },
-      },
-      ingredients: {
-        default: null,
-        renderHTML: attributes => {
-          if (!attributes.ingredients) {return {}}
-          let ings = []
-          let s = attributes.ingredients.split(',')
-          s.forEach(c => {
-            if (c.includes('-')) {
-              let [start, end] = c.split('-').map(i => parseInt(i))
-              for (let i = start; i <= end; i++) {
-                ings.push(i)
-              }
-            } else {
-              ings.push(c)
-            }
-          })
-          //let ingIds = nbs.map(itemNb => (
-          //  Object.values(gon.recipe.ingredients).find(ing => ing.item_nb == itemNb)
-          //)).map(ing => ing.id)
-          return {'data-ingredients': ings.join(',')}
+          if (!attributes.raw) {return {}}
+          return {'raw': attributes.raw}
+          //let ings = []
+          //let s = attributes.ingredients.split(',')
+          //s.forEach(c => {
+          //  if (c.includes('-')) {
+          //    let [start, end] = c.split('-').map(i => parseInt(i))
+          //    for (let i = start; i <= end; i++) {
+          //      ings.push(i)
+          //    }
+          //  } else {
+          //    ings.push(c)
+          //  }
+          //})
+          ////let ingIds = nbs.map(itemNb => (
+          ////  Object.values(gon.recipe.ingredients).find(ing => ing.item_nb == itemNb)
+          ////)).map(ing => ing.id)
+          //return {'raw': ings.join(',')}
         },
       },
     }
   },
 
   renderHTML({ node, HTMLAttributes }) {
-    const ingredients = HTMLAttributes['data-ingredients']
-    const ids = HTMLAttributes['data-ingredients'] || []
-    let list = ids.split(',').map(ingredient => {
+    const raw = HTMLAttributes['raw']
+    if (!raw) {return ['span', {}, 'FIXME']}
+    let ings = []
+    let s = raw.split(',')
+    s.forEach(c => {
+      if (c.includes('-')) {
+        let [start, end] = c.split('-').map(i => parseInt(i))
+        for (let i = start; i <= end; i++) {
+          ings.push(i.toString())
+        }
+      } else {
+        ings.push(c)
+      }
+    })
+    let list = ings.map(ingredient => {
       if (ingredient.startsWith("(")) {
         return ['li', HTMLAttributes, "TODO"]
       } else {
@@ -521,7 +526,7 @@ const IngredientListNode = Node.create({
     // Return: ['tagName', {attributeName: 'attributeValue'}, child1, child2, ...children]
     return [
       'span',
-      mergeAttributes({ 'data-ingredients': '' }, this.options.HTMLAttributes, HTMLAttributes),
+      { 'data-ingredients': HTMLAttributes['raw']},
       ['ul', {}, ...list]
     ]
   },
@@ -541,7 +546,7 @@ const IngredientListNode = Node.create({
           console.log("REGEX", `({(${singleIngredientRegex}(,${singleIngredientRegex}|-${singleIngredientRegex})+)})$`)
           console.log("MATCH", match)
           console.log("INNER", inner)
-          return { ingredients: inner }
+          return { raw: inner }
         },
       }),
     ]
