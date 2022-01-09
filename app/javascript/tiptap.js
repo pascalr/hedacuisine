@@ -329,12 +329,12 @@ const IngredientNode = Node.create({
 
   addAttributes() {
     return {
-      ingredient: {
+      raw: {
         default: null,
-        parseHTML: element => element.getAttribute('data-ingredient'),
+        parseHTML: element => element.getAttribute('raw'),
         renderHTML: attributes => {
-          if (!attributes.ingredient) {return {}}
-          return {'data-ingredient': attributes.ingredient}
+          if (!attributes.raw) {return {}}
+          return {'raw': attributes.raw}
         },
       },
       //rawIngredient: {
@@ -352,7 +352,7 @@ const IngredientNode = Node.create({
   // HTMLAttributes here comes from attributes.renderHTML as defined in addAttributes().
   renderHTML({ node, HTMLAttributes }) {
 
-    const ingredient = HTMLAttributes['data-ingredient']
+    const ingredient = HTMLAttributes['raw']
     let text = null
     let food = null
     let name = null
@@ -380,7 +380,7 @@ const IngredientNode = Node.create({
       children.push(['span', {class: 'food-name'}, name])
     }
     if (comment) { children.push(elementFromString(' '+comment)) }
-    return ['span', HTMLAttributes, ...children]
+    return ['span', {'data-ingredient': HTMLAttributes['raw']}, ...children]
   },
 
   //addNodeView() {
@@ -403,7 +403,9 @@ const IngredientNode = Node.create({
     return {
       insertIngredient: (ingId) => ({ commands }) => {
         console.log("insertIngredient")
-        return commands.insertContent(`<span data-ingredient="${ingId}"/>`)
+        console.log("raw", ingId)
+        return commands.insertContent({type: 'ingredient', attrs: {raw: ingId.toString()}})
+        //return commands.insertContent(`<span data-ingredient="${ingId}"/>`)
         //return commands.setNode('ingredient')
       },
     }
@@ -415,10 +417,10 @@ const IngredientNode = Node.create({
         find: new RegExp(`({(${singleIngredientRegex})})$`),
         type: this.type,
         getAttributes: match => {
+          const [,,inner] = match
           console.log("MATCH", match)
           console.log("INNER", inner)
-          const [,,inner] = match
-          return {ingredient: inner}
+          return {raw: inner}
 
           //const ing = Object.values(gon.recipe.ingredients).find(ing => ing.item_nb == itemNb)
           //if (!ing) {return {}}
