@@ -77,7 +77,7 @@ class ThemeEditor extends React.Component {
               </tr>
               <tr>
                 <th><label htmlFor="book_front_page_image_id">Front page image</label></th>
-                <td><ImageField model={theme} field="front_page_image_id" /></td>
+                <td><ImageField model={theme} imageAttr="front_page_image" field="front_page_image_id" /></td>
               </tr>
             </tbody>
           </table>

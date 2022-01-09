@@ -27,13 +27,29 @@ const updateModelField = (model, field, value, successCallback=null) => {
     }})
   }
 }
-export const ImageField = ({model, field, ...props}) => {
+export const ImageField = ({model, imageAttr, field, ...props}) => {
+
   const [value, setValue] = useState(model[field])
-  return (
-    <input type="text" value={value||''} name={model.class_name+"["+field+"]"} id={field} {...props}
-      onChange={(e) => setValue(e.target.value)}
-      onBlur={(e) => {updateModelField(model, field, value)}} />
-  )
+  const handleOpen = () => {
+  
+    const form = document.querySelector("#new-image-modal-form");
+    form.onImageCreate = (image) => {
+      console.log('form.onImageCreate!!', image)
+      model[image_attr] = image
+      updateModelField(model, field, image.id)
+    }
+  }
+
+  if (!model[field]) {
+    return (<>
+      <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-image-modal" onClick={handleOpen}>
+        Ajouter une image
+      </button>
+    </>)
+  } else if (model[imageAttr]) {
+    return <span>{model[imageAttr].filename} <a onClick={() => {}}>x</a></span>
+  }
+  throw "ImageField missing imageAttr"
 }
 export const ToggleField = ({model, field, labelOn, labelOff, ...props}) => {
   console.log('rendering')

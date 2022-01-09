@@ -40,7 +40,10 @@ class ImagesController < ApplicationController
     image = Image.new(image_params)
     #process_variants(image)
     image.save!
-    redirect_back fallback_location: image_path(image)
+    respond_to do |format|
+      format.js { render :json => {id: image.id, filename: image.filename} }
+      format.html {redirect_back fallback_location: image_path(image)}
+    end
   end
 
   def update

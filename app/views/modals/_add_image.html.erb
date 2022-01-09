@@ -1,0 +1,61 @@
+<div class="modal fade" id="add-image-modal" tabindex="-1" aria-labelledby="add_image_modal_label" aria-hidden="true">
+  <div class="modal-dialog  modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="add_image_modal_label">Ajouter une image</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= form_with(model: Image.new, local: false, id: 'new-image-modal-form') do |form| %>
+          <div class="field">
+            <%= form.label :original %>
+            <%= form.file_field :original %>
+          </div>
+          
+          <p>TODO: Un checkbox qui te demande si c'est toi l'auteur ou non. Si non, ne pas demander les field inutiles.</p>
+          
+          <div class="field">
+            <%= form.label :author %>
+            <%= form.text_field :author %>
+          </div>
+          
+          <div class="field">
+            <%= form.label :source %>
+            <%= form.text_field :source %>
+          </div>
+          
+          <div class="field">
+            <%= form.label :description %>
+            <%= form.text_field :description %>
+          </div>
+
+          <p>TODO: Add checkbox for rights. Si la personne est l'auteur, affirmé que l'auteur cède ses droits selon telle license. Si la personne n'est pas l'auteur, affirmé que l'image est libre de droit ou que l'auteur a le droit d'utilisé l'image.</p>
+        
+          <div class="actions">
+            <%= form.submit %>
+          </div>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+window.addEventListener("load", () => {
+  const form = document.querySelector("#new-image-modal-form");
+  form.addEventListener("ajax:success", (event) => {
+    const [data, status, xhr] = event.detail;
+    console.log('AJAX success')
+    if (form.onImageCreate) {
+      form.onImageCreate(JSON.parse(xhr.responseText))
+    }
+  });
+  //form.addEventListener("ajax:error", () => {
+  //  form.insertAdjacentHTML("beforeend", "<p>ERROR</p>");
+  //});
+});
+</script>
