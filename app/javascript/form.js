@@ -27,6 +27,14 @@ const updateModelField = (model, field, value, successCallback=null) => {
     }})
   }
 }
+export const ImageField = ({model, field, ...props}) => {
+  const [value, setValue] = useState(model[field])
+  return (
+    <input type="text" value={value||''} name={model.class_name+"["+field+"]"} id={field} {...props}
+      onChange={(e) => setValue(e.target.value)}
+      onBlur={(e) => {updateModelField(model, field, value)}} />
+  )
+}
 export const ToggleField = ({model, field, labelOn, labelOff, ...props}) => {
   console.log('rendering')
   const id = model.class_name+"_"+field

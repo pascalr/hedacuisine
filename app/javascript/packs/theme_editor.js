@@ -13,7 +13,7 @@ import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from '
 //import Quantity from 'models/quantity'
 //import { Ingredient, Utils } from "recipe_utils"
 
-import {ColorField, TextField} from '../form'
+import {ColorField, TextField, ImageField} from '../form'
 import {themeCssClass, Theme} from '../models/theme'
 
 class ThemeEditor extends React.Component {
@@ -74,6 +74,10 @@ class ThemeEditor extends React.Component {
               <tr>
                 <th><label htmlFor="theme_page_separator_color">Page separator color</label></th>
                 <td><ColorField model={theme} field="page_separator_color"/></td>
+              </tr>
+              <tr>
+                <th><label htmlFor="book_front_page_image_id">Front page image</label></th>
+                <td><ImageField model={theme} field="front_page_image_id" /></td>
               </tr>
             </tbody>
           </table>
