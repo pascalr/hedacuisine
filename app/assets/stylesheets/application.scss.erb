@@ -86,6 +86,16 @@
   font-weight: bold;
   content: counter(stepnb) ". ";
 }
+*[data-link-model="note"]::before {
+  content: "[";
+}
+*[data-link-model="note"]::after {
+  content: "]";
+}
+*[data-link-model="note"] {
+  vertical-align: super;
+  font-size: 70%;
+}
 
 .edited-recipe, .notes {
   font-family: 'Raleway', sans-serif;

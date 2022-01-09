@@ -76,11 +76,22 @@ const ModelLinkComponent = ({node, updateAttributes}) => {
 
   const model = MODELS[node.attrs.model]
   if (!model) {return null;}
-  const placeholder = model.placeholder
-  const modelNamePlural = model.listName
+
+  if (node.attrs.modelId) {
+    const record = model.records.find(f => f.id == node.attrs.modelId)
+    if (model && record) {
+      return (
+        <NodeViewWrapper className="inline-block">
+          <span data-link-model={node.attrs.model}>
+            <a href={model.linkUrl(record)}>{model.linkLabel(record)}</a>
+          </span>
+        </NodeViewWrapper>
+      )
+    }
+  }
 
   const inputFieldProps = {
-    placeholder: placeholder,
+    placeholder: model.placeholder,
     value,
     onChange: (e, {newValue}) => setValue(newValue),
     //ref: foodInputField,
@@ -89,19 +100,6 @@ const ModelLinkComponent = ({node, updateAttributes}) => {
   const setModel = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
     console.log("Setting model!")
     updateAttributes({modelId: suggestion.id, linkName: suggestionValue})
-  }
-
-  console.log(node)
-
-  if (node.attrs.modelId) {
-    const model = gon[modelNamePlural].find(f => f.id == node.attrs.modelId)
-    if (model) {
-      return (
-        <NodeViewWrapper className="inline-block">
-          <a href={model.url}>{model.name}</a>
-        </NodeViewWrapper>
-      )
-    }
   }
 
   // node.attrs....
@@ -115,8 +113,8 @@ const ModelLinkComponent = ({node, updateAttributes}) => {
           const inputValue = value.trim().toLowerCase();
           const inputLength = inputValue.length;
          
-          const matched = inputLength === 0 ? [] : gon[modelNamePlural].filter(model =>
-            model.name.includes(inputValue)
+          const matched = inputLength === 0 ? [] : model.records.filter(record =>
+            record.name.includes(inputValue)
           )
           // Order the matches by relevance?
           setSuggestions(matched)
@@ -136,8 +134,10 @@ const ModelLinkComponent = ({node, updateAttributes}) => {
 }
 
 const MODELS = {
-  food: {listName: 'foodList', placeholder: 'Aliment...'},
-  recipeKind: {listName: 'recipe_kinds', placeholder: 'Sorte de recette...'},
+  food: {placeholder: 'Aliment...', records: gon.foodList, linkLabel: r => r.name, linkUrl: r => r.url},
+  recipeKind: {placeholder: 'Sorte de recette...', records: gon.recipe_kinds, linkLabel: r => r.name, linkUrl: r => r.url},
+  note: {records: gon.noteList, linkLabel: r => r.item_nb.toString(), linkUrl: r => `#note-${r.item_nb}`},
+  //r = ['sup', {}, '[', ['a', {href: `#note-${note.item_nb}`}, note.item_nb.toString()], ']']
 }
 
 const LinkModel = Node.create({
@@ -176,12 +176,9 @@ const LinkModel = Node.create({
     const HTMLAttrs = {'data-link-model': HTMLAttributes['model'], 'data-model-id': HTMLAttributes['model-id']}
     const model = MODELS[node.attrs.model]
     if (model && node.attrs.modelId) {
-      const record = gon[model.listName].find(f => f.id == node.attrs.modelId)
-      console.log("record", record)
-      console.log("model.listName", model.listName)
-      console.log("modelId", node.attrs.modelId)
+      const record = model.records.find(f => f.id == node.attrs.modelId)
       if (record) {
-        let a = ['a', {href: record.url}, record.name]
+        let a = ['a', {href: model.linkUrl(record)}, model.linkLabel(record)]
         console.log(['span', HTMLAttrs, a])
         return ['span', HTMLAttrs, a]
       }
@@ -197,9 +194,9 @@ const LinkModel = Node.create({
 
   addCommands() {
     return {
-      insertLinkModel: (model) => ({ commands }) => {
+      insertLinkModel: (model, id=null) => ({ commands }) => {
         console.log("insertLinkModel")
-        return commands.insertContent({type: 'link-model', attrs: {model: model}})
+        return commands.insertContent({type: 'link-model', attrs: {model: model, modelId: id}})
         //return commands.insertContent(`<span data-link-model="${model}"></span>`)
       },
     }
@@ -228,154 +225,6 @@ const ArticleHeading = Heading.extend({
     })
   },
 })
-
-export const CustomLink = Node.create({
-  name: 'link',
-  priority: 1000,
-  group: 'inline',
-  inline: true,
-  selectable: false,
-
-  addAttributes() {
-    return {
-      linkRaw: {
-        default: null,
-        parseHTML: element => element.getAttribute('data-link-raw'),
-        renderHTML: attributes => {
-          if (attributes.linkRaw == null) {return {}}
-          return {'data-link-raw': attributes.linkRaw}
-        },
-      },
-    }
-  },
-
-  parseHTML() {
-    return [
-      { tag: 'span[data-link-raw]' },
-    ]
-  },
-
-  renderHTML({ HTMLAttributes }) {
-    let r = ''
-    const raw = HTMLAttributes['data-link-raw']
-    if (raw.startsWith("note:")) {
-      const nb = parseInt(raw.slice(5).trim())
-      const note = Object.values(gon.recipe.notes || {}).find(note => note.item_nb == nb)
-      if (note) {
-        r = ['sup', {}, '[', ['a', {href: `#note-${note.item_nb}`}, note.item_nb.toString()], ']']
-      }
-    }
-    return ['span', HTMLAttributes, r]
-  },
-
-  addCommands() {
-    return {
-      insertLink: (raw) => ({ commands }) => {
-        console.log("insertLink")
-        return commands.insertContent(`<span data-link-raw="${raw}"></span>`)
-      },
-    }
-  },
-
-  //addCommands() {
-  //  return {
-  //    setLink: attributes => ({ commands }) => {
-  //      return commands.setMark('link', attributes)
-  //    },
-  //    toggleLink: attributes => ({ commands }) => {
-  //      return commands.toggleMark('link', attributes, { extendEmptyMarkRange: true })
-  //    },
-  //    unsetLink: () => ({ commands }) => {
-  //      return commands.unsetMark('link', { extendEmptyMarkRange: true })
-  //    },
-  //  }
-  //},
-
-  //addPasteRules() {
-  //  return [
-  //    markPasteRule({
-  //      find: text => find(text)
-  //        .filter(link => link.isLink)
-  //        .map(link => ({
-  //          text: link.value,
-  //          index: link.start,
-  //          data: link,
-  //        })),
-  //      type: this.type,
-  //      getAttributes: match => ({
-  //        href: match.data?.href,
-  //      }),
-  //    }),
-  //  ]
-  //},
-
-  //addProseMirrorPlugins() {
-  //  const plugins = []
-
-  //  if (this.options.openOnClick) {
-  //    plugins.push(
-  //      new Plugin({
-  //        key: new PluginKey('handleClickLink'),
-  //        props: {
-  //          handleClick: (view, pos, event) => {
-  //            const attrs = this.editor.getAttributes('link')
-  //            const link = (event.target as HTMLElement)?.closest('a')
-
-  //            if (link && attrs.href) {
-  //              window.open(attrs.href, attrs.target)
-
-  //              return true
-  //            }
-
-  //            return false
-  //          },
-  //        },
-  //      }),
-  //    )
-  //  }
-
-  //  if (this.options.linkOnPaste) {
-  //    plugins.push(
-  //      new Plugin({
-  //        key: new PluginKey('handlePasteLink'),
-  //        props: {
-  //          handlePaste: (view, event, slice) => {
-  //            const { state } = view
-  //            const { selection } = state
-  //            const { empty } = selection
-
-  //            if (empty) {
-  //              return false
-  //            }
-
-  //            let textContent = ''
-
-  //            slice.content.forEach(node => {
-  //              textContent += node.textContent
-  //            })
-
-  //            const link = find(textContent)
-  //              .find(item => item.isLink && item.value === textContent)
-
-  //            if (!textContent || !link) {
-  //              return false
-  //            }
-
-  //            this.editor.commands.setMark(this.type, {
-  //              href: link.href,
-  //            })
-
-  //            return true
-  //          },
-  //        },
-  //      }),
-  //    )
-  //  }
-
-  //  return plugins
-  //},
-})
-
 
 //const InlineBlockNode = Node.create({
 //  name: 'inlineblock',
@@ -799,8 +648,7 @@ const ArticleToolbar = ({ editor }) => {
 }
 
 export const ArticleExtensions = [
-  Bold, Italic, Document, Paragraph, Strike, Text, ArticleHeading, CustomLink,
-  History, // Subscript, Superscript,
+  Bold, Italic, Document, Paragraph, Strike, Text, ArticleHeading, History, // Subscript, Superscript,
 ]
 export const ArticleTiptap = ({model, json_field, html_field, url}) => {
   const editor = useEditor({
@@ -819,7 +667,7 @@ export const ArticleTiptap = ({model, json_field, html_field, url}) => {
 }
 
 export const RecipeExtensions = [
-  Bold, Italic, Document, Paragraph, Strike, Text, CustomHeading, CustomLink,
+  Bold, Italic, Document, Paragraph, Strike, Text, CustomHeading,
   History, IngredientNode, IngredientListNode, StepNode, LinkModel
 ]
 export const recipeEditor = (content) => {
@@ -841,7 +689,7 @@ export const Tiptap = ({content, model, json_field, html_field, url}) => {
   )
 }
 
-export const BubbleExtensions = [Bold, Italic, Strike, InlineDocument, History, Text, CustomLink]
+export const BubbleExtensions = [Bold, Italic, Strike, InlineDocument, History, Text, LinkModel]
 export const BubbleTiptap = ({content, model, json_field, html_field, url}) => {
 
   const width = 24
@@ -867,7 +715,7 @@ export const BubbleTiptap = ({content, model, json_field, html_field, url}) => {
   )
 }
 
-export const DescriptionExtensions = [Bold, Italic, Strike, Document, Paragraph, History, Text, CustomLink, LinkModel]
+export const DescriptionExtensions = [Bold, Italic, Strike, Document, Paragraph, History, Text, LinkModel]
 export const DescriptionTiptap = ({content, model, json_field, html_field, url}) => {
 
   const width = 24

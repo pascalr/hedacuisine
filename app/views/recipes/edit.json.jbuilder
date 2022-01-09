@@ -64,3 +64,8 @@ json.recipe_kinds RecipeKind.order(:name).all do |recipe_kind|
   json.name recipe_kind.name
   json.url recipe_kind_path(recipe_kind)
 end 
+  
+json.noteList @recipe.notes do |note|
+  json.id note.id
+  json.item_nb note.item_nb
+end
