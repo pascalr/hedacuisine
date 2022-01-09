@@ -143,7 +143,7 @@
   <div class='notes'>
     <% recipe.notes.order(:item_nb).each do |note| %>
       <div id="note-<%= note.item_nb %>" style="margin-bottom: 0.5em;">
-        [<%= note.item_nb %>] <%= my_sanitize(note.content) %>
+        [<%= note.item_nb %>] <%= my_sanitize(note.html) %>
       </div>
     <% end %>
   </div>

@@ -1,7 +1,7 @@
 json.articles Article.all.order(:name) do |article|
   json.id article.id
   json.name article.name
-  json.json article.json
+  json.content article.content
   json.url article_path(article)
 end
 
@@ -13,7 +13,7 @@ json.recipes @recipes do |recipe|
   json.new_note_url recipe_recipe_notes_path(recipe)
   json.name recipe.name
   json.recipe_kind_id recipe.recipe_kind_id
-  json.json recipe.json
+  json.text recipe.text
   json.main_ingredient_id recipe.main_ingredient_id
   json.complete_instructions recipe.complete_instructions
   json.base_recipe_id recipe.base_recipe_id
@@ -25,7 +25,7 @@ json.recipes @recipes do |recipe|
   json.notes_array recipe.notes do |note|
     json.id note.id
     json.item_nb note.item_nb
-    json.json note.json
+    json.content note.content
     json.url recipe_recipe_note_path(recipe, note)
   end
   json.notes do # should be deprecated...
@@ -33,7 +33,7 @@ json.recipes @recipes do |recipe|
       json.set! note.id do
         json.id note.id
         json.item_nb note.item_nb
-        json.json note.json
+        json.content note.content
         json.url recipe_recipe_note_path(recipe, note)
       end
     end
@@ -42,7 +42,7 @@ json.recipes @recipes do |recipe|
     json.id ing.id
     json.item_nb ing.item_nb
     json.raw ing.raw
-    json.comment_json ing.comment_json
+    json.comment ing.comment
     json.url recipe_recipe_ingredient_path(recipe, ing)
     json.name ing.name
     if ing.food
@@ -59,7 +59,7 @@ json.recipes @recipes do |recipe|
         json.id ing.id
         json.item_nb ing.item_nb
         json.raw ing.raw
-        json.comment_json ing.comment_json
+        json.comment ing.comment
         json.url recipe_recipe_ingredient_path(recipe, ing)
         json.name ing.name
         if ing.food
@@ -81,6 +81,7 @@ json.foodList Food.all.map {|food| {id: food.id, name: food.name.downcase, url: 
 json.recipe_kinds RecipeKind.order(:name).all do |recipe_kind|
   json.id recipe_kind.id
   json.name recipe_kind.name
+  json.description recipe_kind.description
   json.description_json recipe_kind.description_json
   json.url recipe_kind_path(recipe_kind)
 end 

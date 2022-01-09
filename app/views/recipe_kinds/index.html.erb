@@ -2,7 +2,7 @@
 
 <% [true, false].each do |bool| %>
   <h2>Sortes de recettes <%= bool ? "avec" : "sans" %> descriptions</h2>
-  <% @recipe_kinds.select{|k|k.description.blank? != bool}.each do |recipe_kind| %>
+  <% @recipe_kinds.select{|k|k.description_html.blank? != bool}.each do |recipe_kind| %>
     <div>
       <% c = recipe_kind.recipes.count %>
       <%= link_to recipe_kind.name, edit_recipe_kind_path(recipe_kind) %>(<%= c %> <%= c > 1 ? "recettes" : "recette" %>)

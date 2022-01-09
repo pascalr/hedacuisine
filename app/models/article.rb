@@ -8,4 +8,8 @@ class Article < ApplicationRecord
     return id if name.nil?
     "#{id}-#{name.gsub(' ', '_')}"
   end
+
+  def content
+    raise "deprecated, use json and html"
+  end
 end

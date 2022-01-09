@@ -7,4 +7,8 @@ class RecipeKind < ApplicationRecord
     return "#{id}" if name.nil?
     "#{id}-#{name.downcase.gsub(' ', '_')}"
   end
+
+  def description 
+    raise "deprecated, use description_json and description_html"
+  end
 end

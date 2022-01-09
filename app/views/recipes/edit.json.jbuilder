@@ -6,7 +6,6 @@ json.recipe do
   json.new_note_url recipe_recipe_notes_path(@recipe)
   json.name @recipe.name
   json.recipe_kind_id @recipe.recipe_kind_id
-  json.text @recipe.text
   json.main_ingredient_id @recipe.main_ingredient_id
   json.complete_instructions @recipe.complete_instructions
   json.base_recipe_id @recipe.base_recipe_id
@@ -21,7 +20,7 @@ json.recipe do
       json.set! note.id do
         json.id note.id
         json.item_nb note.item_nb
-        json.content note.content
+        json.html note.html
         json.json note.json
         json.url recipe_recipe_note_path(@recipe, note)
       end
@@ -33,7 +32,6 @@ json.recipe do
         json.id ing.id
         json.item_nb ing.item_nb
         json.raw ing.raw
-        json.comment ing.comment
         json.comment_json ing.comment_json
         json.url recipe_recipe_ingredient_path(@recipe, ing)
         json.name ing.name

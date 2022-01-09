@@ -17,146 +17,73 @@ import '../styles/prose_mirror.scss'
 //
 //import {TextField, CollectionSelect} from '../form'
 
+const updateHTML = (record, model_name, json_field, html_field, extensions) => {
+  if (record[json_field] == null || record[json_field] == '') {
+    console.log('skipping empty '+model_name)
+    return
+  }
+  let data = new FormData()
+  data.append(model_name+"["+html_field+"]", generateHTML(JSON.parse(record[json_field]), extensions))
+  Rails.ajax({url: record.url, type: 'PATCH', data: data, success: () => {
+    console.log('Update ' + model_name + ' (id='+record.id+') JSON success.')
+  }, error: (errors) => {
+    toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
+  }})
+}
 
 const EditRecipes = () => {
 
-  const recipe = gon.recipes[0]
-  gon.recipe = recipe
-
-  // TODO: recipe.json, recipe.html
-  const editor = useEditor(recipeEditor(recipe.text))
-  //if (editor) {
-  //  editor.on('create', ({ editor }) => {
-  //    console.log('editor create')
-  //    console.log('html', editor.getHTML())
-  //    console.log('json', JSON.stringify(editor.getJSON()))
-  //    console.log('html', editor.getHTML().length)
-  //    console.log('json', JSON.stringify(editor.getJSON()).length)
-  //  })
-  //}
-
-  const setJSONForRecipeNotes = () => {
+  const updateHTMLForRecipeNotes = () => {
     for (let i = 0; i < gon.recipes.length; i++) {
       let r0 = gon.recipes[i]
       gon.recipe = r0
       if (!r0.notes_array) {continue}
       for (let j = 0; j < r0.notes_array.length; j++) {
         let r = r0.notes_array[j]
-        if (r.content == null || r.content == '') {
-          console.log('skipping empty recipe note')
-          continue 
-        }
-        let data = new FormData()
-        let json = generateJSON(r.content, BubbleExtensions)
-        data.append("recipe_note[json]", JSON.stringify(json))
-        console.log("json", json)
-        console.log("RecipeExtensions", BubbleExtensions)
-        data.append("recipe_note[html]", generateHTML(json, BubbleExtensions))
-        Rails.ajax({url: r.url, type: 'PATCH', data: data, success: () => {
-          console.log('Update recipe note (id='+r.id+') JSON success.')
-        }, error: (errors) => {
-          toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
-        }})
+        updateHTML(r, 'recipe_note', 'json', 'html', BubbleExtensions)
       }
     }
   }
-  const setJSONForRecipeIngredients = () => {
+  const updateHTMLForRecipeIngredients = () => {
     for (let i = 0; i < gon.recipes.length; i++) {
       let r0 = gon.recipes[i]
       gon.recipe = r0
       if (!r0.ingredients_array) {continue}
       for (let j = 0; j < r0.ingredients_array.length; j++) {
         let r = r0.ingredients_array[j]
-        if (r.comment == null || r.comment == '') {
-          console.log('skipping empty recipe note')
-          continue 
-        }
-        let data = new FormData()
-        let json = generateJSON(r.comment, BubbleExtensions)
-        data.append("recipe_ingredient[comment_json]", JSON.stringify(json))
-        console.log("json", json)
-        console.log("RecipeExtensions", BubbleExtensions)
-        data.append("recipe_ingredient[comment_html]", generateHTML(json, BubbleExtensions))
-        Rails.ajax({url: r.url, type: 'PATCH', data: data, success: () => {
-          console.log('Update recipe comment (id='+r.id+') JSON success.')
-        }, error: (errors) => {
-          toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
-        }})
+        updateHTML(r, 'recipe_ingredient', 'comment_json', 'comment_html', BubbleExtensions)
       }
     }
   }
-  const setJSONForArticles = () => {
+  const updateHTMLForArticles = () => {
     for (let i = 0; i < gon.articles.length; i++) {
       let r = gon.articles[i]
-      if (r.content == null || r.content == '') {
-        console.log('skipping empty article')
-        continue 
-      }
-      let data = new FormData()
-      let json = generateJSON(r.content, ArticleExtensions)
-      data.append("article[json]", JSON.stringify(json))
-      data.append("article[html]", generateHTML(json, ArticleExtensions))
-      Rails.ajax({url: r.url, type: 'PATCH', data: data, success: () => {
-        console.log('Update article (id='+r.id+') JSON success.')
-      }, error: (errors) => {
-        toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
-      }})
+      updateHTML(r, 'article', 'json', 'html', ArticleExtensions)
     }
   }
-  const setJSONForRecipeKinds = () => {
+  const updateHTMLForRecipeKinds = () => {
     for (let i = 0; i < gon.recipes.length; i++) {
       let r = gon.recipe_kinds[i]
-      if (r.description == null || r.description == '') {
-        console.log('skipping empty recipe kind description')
-        continue 
-      }
-      let data = new FormData()
-      let json = generateJSON(r.description, DescriptionExtensions)
-      data.append("recipe_kind[description_json]", JSON.stringify(json))
-      console.log("json", json)
-      console.log("RecipeExtensions", DescriptionExtensions)
-      data.append("recipe_kind[description_html]", generateHTML(json, DescriptionExtensions))
-      Rails.ajax({url: r.url, type: 'PATCH', data: data, success: () => {
-        console.log('Update recipe kind (id='+r.id+') JSON success.')
-      }, error: (errors) => {
-        toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
-      }})
+      updateHTML(r, 'recipe_kind', 'description_json', 'description_html', DescriptionExtensions)
     }
   }
-  const setJSONForRecipes = () => {
+  const updateHTMLForRecipes = () => {
     for (let i = 0; i < gon.recipes.length; i++) {
       let r = gon.recipes[i]
       gon.recipe = r
-      if (r.text == null || r.text == '') {
-        console.log('skipping empty recipe')
-        continue 
-      }
-      let data = new FormData()
-      let json = generateJSON(r.text, RecipeExtensions)
-      data.append("recipe[json]", JSON.stringify(json))
-      console.log("json", json)
-      console.log("RecipeExtensions", RecipeExtensions)
-      data.append("recipe[html]", generateHTML(json, RecipeExtensions))
-      Rails.ajax({url: r.url, type: 'PATCH', data: data, success: () => {
-        console.log('Update recipe (id='+r.id+') JSON success.')
-      }, error: (errors) => {
-        toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
-      }})
+      updateHTML(r, 'recipe', 'json', 'html', RecipeExtensions)
     }
   }
 
   return (<>
     <h1>Edit recipes</h1>
+    <h2>Tout devrait théoriquement fontionner, mais je n'ai rien testé. Tester en dev avant prod.</h2>
     <div>
-      <button className="btn btn-outline-primary" onClick={setJSONForRecipes}>RESET all recipes</button>
-      <button className="btn btn-outline-primary" onClick={setJSONForArticles}>RESET all articles</button>
-      <button className="btn btn-outline-primary" onClick={setJSONForRecipeIngredients}>RESET all recipe ingredients</button>
-      <button className="btn btn-outline-primary" onClick={setJSONForRecipeNotes}>RESET all recipe notes</button>
-      <button className="btn btn-outline-primary" onClick={setJSONForRecipeKinds}>RESET all recipe kinds</button>
-      <button className="btn btn-outline-primary">Update all HTML</button>
-    </div>
-    <div>
-      <EditorContent editor={editor} />
+      <button className="btn btn-outline-primary" onClick={updateHTMLForRecipes}>UPDATE all recipes</button>
+      <button className="btn btn-outline-primary" onClick={updateHTMLForArticles}>UPDATE all articles</button>
+      <button className="btn btn-outline-primary" onClick={updateHTMLForRecipeIngredients}>UPDATE all recipe ingredients</button>
+      <button className="btn btn-outline-primary" onClick={updateHTMLForRecipeNotes}>UPDATE all recipe notes</button>
+      <button className="btn btn-outline-primary" onClick={updateHTMLForRecipeKinds}>UPDATE all recipe kinds</button>
     </div>
   </>)
 }

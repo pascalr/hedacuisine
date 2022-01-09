@@ -11,7 +11,7 @@ module IngredientsHelper
   def scalable_ingredient(ing)
     return nil unless ing
     qty = ing.quantity_model
-    content_tag :span, id: "ingredient-#{ing.id}", data: {"scalable-ingredient": true, grams: qty.grams, ml: qty.ml, total: qty.total, raw: ing.raw, "food-name-singular": ing.name, "food-name-plural": ing.food ? ing.food.plural_in(current_language) : '', preposition: pretty_preposition(ing.food), "food-id": ing.food_id, "comment": my_sanitize(ing.comment)} do
+    content_tag :span, id: "ingredient-#{ing.id}", data: {"scalable-ingredient": true, grams: qty.grams, ml: qty.ml, total: qty.total, raw: ing.raw, "food-name-singular": ing.name, "food-name-plural": ing.food ? ing.food.plural_in(current_language) : '', preposition: pretty_preposition(ing.food), "food-id": ing.food_id, "comment": my_sanitize(ing.comment_html)} do
       pretty_ingredient(ing)
     end
   end
@@ -41,7 +41,7 @@ module IngredientsHelper
   def scalable_detailed_ingredient(ing)
     return scalable_ingredient(ing) if ing.food.nil? or !ing.food.is_public
     qty = ing.quantity_model
-    content_tag :span, id: "ingredient-#{ing.id}", class: "ingredient-list-item", data: {"scalable-ingredient-detailed": true, grams: qty.grams, ml: qty.ml, total: qty.total, raw: ing.raw, "food-name-singular": ing.food.name, "food-name-plural": ing.food.plural_in(current_language), preposition: pretty_preposition(ing.food), "food-id": ing.food.id, "comment": my_sanitize(ing.comment)} do
+    content_tag :span, id: "ingredient-#{ing.id}", class: "ingredient-list-item", data: {"scalable-ingredient-detailed": true, grams: qty.grams, ml: qty.ml, total: qty.total, raw: ing.raw, "food-name-singular": ing.food.name, "food-name-plural": ing.food.plural_in(current_language), preposition: pretty_preposition(ing.food), "food-id": ing.food.id, "comment": my_sanitize(ing.comment_html)} do
       pretty_ingredient_with_conversions(ing)
     end
   end
@@ -230,7 +230,7 @@ module IngredientsHelper
     else
       result += pretty_food(ing.name.downcase, ing.food)
     end
-    result += " #{my_sanitize my_sanitize(ing.comment)}" if ing.comment
+    result += " #{my_sanitize my_sanitize(ing.comment_html)}" if ing.comment_html
     result.html_safe
   end
 
@@ -392,7 +392,7 @@ module IngredientsHelper
   end
   
   def pretty_instruction_text(recipe)
-    return nil if recipe.blank? || recipe.text.blank?
+    return nil if recipe.blank? || recipe.html.blank?
     #translated = my_sanitize(translate_complete_instructions(recipe))
     #replaced = replace_ingredients(recipe, recipe.text.body.to_trix_html)
     #replaced = replace_ingredients(recipe, recipe.text)

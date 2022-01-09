@@ -144,7 +144,7 @@ export const LinkButton = ({editor, width, height}) => (
         <ul className="dropdown-menu dropdown-submenu">
           {Object.values(gon.recipe.notes || {}).map(note => (
             <li key={note.id}>
-              <a className="dropdown-item" onClick={() => editor.chain().focus().insertLinkModel('note', note.id).run()}>[{note.item_nb}] {Utils.stringSnippet(Utils.stripHtml(note.content))}</a>
+              <a className="dropdown-item" onClick={() => editor.chain().focus().insertLinkModel('note', note.id).run()}>[{note.item_nb}] {Utils.stringSnippet(Utils.stripHtml(note.html))}</a>
 
             </li>
           ))}

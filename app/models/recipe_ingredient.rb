@@ -12,6 +12,10 @@ class RecipeIngredient < ApplicationRecord
   
   delegate :plural, to: :food
 
+  def comment
+    raise "deprecated, use comment_json and comment_html"
+  end
+
   def name
     self.food ? self.food.name : self.raw_food
   end
