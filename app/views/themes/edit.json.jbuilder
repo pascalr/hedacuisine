@@ -9,9 +9,11 @@ json.theme do
   json.link_color @theme.link_color
   json.text_color @theme.text_color
   json.front_page_image_id @theme.front_page_image_id
-  json.front_page_image do
-    json.id @theme.front_page_image_id
-    json.filename @theme.front_page_image.filename
+  if @theme.front_page_image
+    json.front_page_image do
+      json.id @theme.front_page_image_id
+      json.filename @theme.front_page_image.filename
+    end
   end
   json.page_separator_color @theme.page_separator_color
 end

@@ -11,34 +11,31 @@
             <%= form.label :original %>
             <%= form.file_field :original %>
           </div>
-          
-          <p>TODO: Un checkbox qui te demande si c'est toi l'auteur ou non. Si non, ne pas demander les field inutiles.</p>
-          
+          <br>
           <div class="field">
-            <%= form.label :author %>
-            <%= form.text_field :author %>
+            <%= form.label :is_user_author, "Je suis l'auteur de cette image." %>
+            <%= form.check_box :is_user_author, checked: true, id: 'is-user-author-checkbox' %>
           </div>
-          
+          <div id="author_credit_fields" class="disabled">
+            <div class="field">
+              <%= form.label :author %>
+              <%= form.text_field :author %>
+            </div>
+            <div class="field">
+              <%= form.label :source %>
+              <%= form.text_field :source %>
+            </div>
+          </div>
+          <br>
           <div class="field">
-            <%= form.label :source %>
-            <%= form.text_field :source %>
+            <%= form.check_box :rights_given, checked: true %>
+            Je confirme que l'image est libre de droit ou que je possède et cède le droit d'utiliser cette image.
           </div>
-          
-          <div class="field">
-            <%= form.label :description %>
-            <%= form.text_field :description %>
-          </div>
-
-          <p>TODO: Add checkbox for rights. Si la personne est l'auteur, affirmé que l'auteur cède ses droits selon telle license. Si la personne n'est pas l'auteur, affirmé que l'image est libre de droit ou que l'auteur a le droit d'utilisé l'image.</p>
-        
+          <br>
           <div class="actions">
-            <%= form.submit %>
+            <%= form.submit "Ajouter", class: "btn btn-primary" %>
           </div>
         <% end %>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
@@ -54,8 +51,14 @@ window.addEventListener("load", () => {
       form.onImageCreate(JSON.parse(xhr.responseText))
     }
   });
+  
   //form.addEventListener("ajax:error", () => {
   //  form.insertAdjacentHTML("beforeend", "<p>ERROR</p>");
   //});
+  const isUserAuthor = document.querySelector("#is-user-author-checkbox");
+  isUserAuthor.addEventListener("change", (event) => {
+    const creditFields = document.querySelector("#author_credit_fields");
+    creditFields.classList.toggle("disabled");
+  });
 });
 </script>

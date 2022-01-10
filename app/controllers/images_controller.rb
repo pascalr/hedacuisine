@@ -82,6 +82,6 @@ private
   end
     
   def image_params
-    params.require(:image).permit(:filename, :zoom, :left, :top, :original, :thumb, :small, :medium, :author, :source, :description)
+    params.require(:image).permit(:filename, :zoom, :left, :top, :original, :thumb, :small, :medium, :author, :source, :description, :is_user_author)
   end
 end

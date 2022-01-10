@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 
 import { colorToHexString, hexStringToColor, Utils } from 'utils'
 
+import { DeleteConfirmButton } from 'components/delete_confirm_button'
+
 export const TextInputField = ({model, field}) => {
   const [value, setValue] = useState(model.currentValue(field))
 
@@ -35,9 +37,18 @@ export const ImageField = ({model, imageAttr, field, ...props}) => {
     const form = document.querySelector("#new-image-modal-form");
     form.onImageCreate = (image) => {
       console.log('form.onImageCreate!!', image)
-      model[image_attr] = image
+      model[imageAttr] = image
       updateModelField(model, field, image.id)
     }
+  }
+
+  const removeImage = (evt) => {
+    model[imageAttr] = null
+    updateModelField(model, field, null)
+    //Rails.ajax({url: ing.url, type: 'DELETE', success: (raw) => {
+    //  window.recipe_editor.current.removeIng(ing.id)
+    //  delete gon.recipe.ingredients[ing.id]
+    //}})
   }
 
   if (!model[field]) {
@@ -47,7 +58,12 @@ export const ImageField = ({model, imageAttr, field, ...props}) => {
       </button>
     </>)
   } else if (model[imageAttr]) {
-    return <span>{model[imageAttr].filename} <a onClick={() => {}}>x</a></span>
+    return (
+      <span>
+        {model[imageAttr].filename}
+        <DeleteConfirmButton id={`del-im-${model[imageAttr].id}`} onDeleteConfirm={removeImage} message="Je veux enlever cette image?" />
+      </span>
+    )
   }
   throw "ImageField missing imageAttr"
 }
