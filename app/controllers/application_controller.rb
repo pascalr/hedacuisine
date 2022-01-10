@@ -5,6 +5,12 @@ class ApplicationController < ActionController::Base
 
   include ApplicationHelper
 
+  # An ugly hack because I don't know how to access external methods form jbuilder.
+  before_action :set_application_controller
+  def set_application_controller
+    @application_controller = self
+  end
+
   def set_region_and_locale
     #@region = current_region
     #I18n.locale = @region.locale

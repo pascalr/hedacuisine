@@ -46,7 +46,6 @@ class BooksController < ApplicationController
   end
   
   def edit
-    @theme = @book.theme
     @recipes_html = {}
     @book.recipes.each do |recipe|
       @recipes_html[recipe.id] = render_to_string partial: "recipes/recipe_page", locals: {recipe: recipe}

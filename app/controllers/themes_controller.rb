@@ -18,7 +18,7 @@ class ThemesController < ApplicationController
   end
 
   def edit
-    @front_page_image_path = original_image_path(@theme.front_page_image)
+    #@front_page_image_path = original_image_path(@theme.front_page_image)
     gon.jbuilder
   end
 
