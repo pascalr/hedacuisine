@@ -37,6 +37,10 @@ module ApplicationHelper
   def _base_image_path(image)
     "/images/#{image.id}"
   end
+  def original_image_path(image)
+    return nil if image.nil?
+    "#{_base_image_path(image)}/original#{image.extension}"
+  end
   def medium_image_path(image)
     return nil if image.nil?
     "#{_base_image_path(image)}/medium#{image.extension}"

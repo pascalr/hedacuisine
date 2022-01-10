@@ -14,9 +14,11 @@ class ThemesController < ApplicationController
 
   def stylesheet
     render partial: 'stylesheet', locals: {theme: @theme}, layout: false
+    #render partial: 'stylesheet_css.css', locals: {theme: @theme}, layout: false
   end
 
   def edit
+    @front_page_image_path = original_image_path(@theme.front_page_image)
     gon.jbuilder
   end
 

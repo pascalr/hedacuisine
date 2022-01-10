@@ -32,6 +32,7 @@ class ThemeEditor extends React.Component {
 
     const theme = this.state.theme
     const book = {name: theme.name + " theme"}
+
     return (<>
       <Theme theme={this.state.theme}/>
       <Row>

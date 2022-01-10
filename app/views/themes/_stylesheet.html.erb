@@ -15,4 +15,11 @@
   .<%= theme.css_class %> .index-page a:hover {
     color: #444;
   }
+  <% if theme.front_page_image %>
+    .<%= theme.css_class %> .title-page {
+      background-size: cover;
+      background-image: url(<%= original_image_path(theme.front_page_image) %>);
+    }
+  <% end %>
+    
 </style>

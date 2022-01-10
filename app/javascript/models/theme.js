@@ -16,6 +16,8 @@ export const Theme = ({theme}) => {
       //  color: ${colorToHexString(theme.text_color)};
       //}
 //.<%= theme.css_class %> h1, .<%= theme.css_class %> h2, .<%= theme.css_class %> h3, .<%= theme.css_class %> h4, .<%= theme.css_class %> h5, .<%= theme.css_class %> h6, .<%= theme.css_class %> p, .<%= theme.css_class %> .author, .<%= theme.css_class %> li {
+
+  //background-size: 100% 100%;
   return (
     <style>{`
       .${themeClass} * {
@@ -33,6 +35,12 @@ export const Theme = ({theme}) => {
       .${themeClass} .index-page a:hover {
         color: #444;
       }
+      ${!theme.front_page_image ? '' : `
+        .${themeClass} .title-page {
+          background-size: cover;
+          background-image: url("${theme.front_page_image.url}");
+        }
+      `}
     `}</style>
   )
 }

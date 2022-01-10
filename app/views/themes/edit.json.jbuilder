@@ -13,6 +13,7 @@ json.theme do
     json.front_page_image do
       json.id @theme.front_page_image_id
       json.filename @theme.front_page_image.filename
+      json.url @front_page_image_path
     end
   end
   json.page_separator_color @theme.page_separator_color
