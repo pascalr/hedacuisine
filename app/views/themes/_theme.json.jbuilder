@@ -10,11 +10,12 @@ json.theme do
   json.link_color theme.link_color
   json.text_color theme.text_color
   json.front_page_image_id theme.front_page_image_id
+  json.partial! 'book_formats/book_format', book_format: theme.book_format
   if theme.front_page_image
     json.front_page_image do
       json.id theme.front_page_image_id
       json.filename theme.front_page_image.filename
-      json.url @application_controller.original_image_path(@theme.front_page_image)
+      json.url @application_controller.original_image_path(theme.front_page_image)
     end
   end
   json.page_separator_color theme.page_separator_color

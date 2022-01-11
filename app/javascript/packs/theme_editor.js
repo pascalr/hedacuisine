@@ -13,7 +13,7 @@ import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from '
 //import Quantity from 'models/quantity'
 //import { Ingredient, Utils } from "recipe_utils"
 
-import {ColorField, TextField, ImageField} from '../form'
+import {ColorField, TextField, ImageField, CollectionSelect} from '../form'
 import {themeCssClass, Theme} from '../models/theme'
 
 class ThemeEditor extends React.Component {
@@ -43,6 +43,10 @@ class ThemeEditor extends React.Component {
               <tr>
                 <th><label htmlFor="theme_name">Name</label></th>
                 <td><TextField model={theme} field="name"/></td>
+              </tr>
+              <tr>
+                <th><label htmlFor="theme_book_format_id">Book format</label></th>
+                <td><CollectionSelect model={theme} field="book_format_id" options={gon.book_formats.map(k => k.id)} showOption={(id) => gon.book_formats.find(k => k.id == id).name} /></td>
               </tr>
               <tr>
                 <th><label htmlFor="theme_font_name">Font name</label></th>

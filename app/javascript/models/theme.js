@@ -41,6 +41,12 @@ export const Theme = ({theme}) => {
           background-image: url("${theme.front_page_image.url}");
         }
       `}
+      ${!theme.book_format ? '' : `
+        .${themeClass} .page {
+          width: 100%;
+          aspect-ratio: ${theme.book_format.page_aspect_ratio};
+        }
+      `}
     `}</style>
   )
 }

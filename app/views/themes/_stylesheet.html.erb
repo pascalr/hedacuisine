@@ -21,5 +21,10 @@
       background-image: url(<%= original_image_path(theme.front_page_image) %>);
     }
   <% end %>
-    
+  <% if theme.book_format %>
+    .<%= theme.css_class %> .page {
+      width: 100%;
+      aspect-ratio: <%= theme.book_format.page_aspect_ratio %>;
+    }
+  <% end %>
 </style>
