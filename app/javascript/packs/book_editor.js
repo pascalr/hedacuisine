@@ -226,11 +226,11 @@ class BookEditor extends React.Component {
                 <td><ToggleField model={book} field="is_public"/></td>
               </tr>
               <tr>
-                <th><label htmlFor="book_theme_id">Theme</label></th>
+                <th><label htmlFor="book_theme_id">Layout</label></th>
                 <td><CollectionSelect model={book} field="theme_id" options={gon.themes.map(k => k.id)} showOption={(id) => gon.themes.find(k => k.id == id).name} /></td>
               </tr>
               <tr>
-                <td colSpan="2"><a className="btn btn-outline-secondary" href={gon.theme.edit_url}>Edit theme</a></td>
+                <td colSpan="2"><a className="btn btn-outline-secondary" href={gon.theme.edit_url}>Edit layout</a></td>
               </tr>
             </tbody>
           </table>

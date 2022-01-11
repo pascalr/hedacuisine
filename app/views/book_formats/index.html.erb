@@ -1,0 +1,33 @@
+<%= render partial: 'meta/nav' %>
+
+<h1>Formats de livre</h1>
+
+<%= form_with(model: BookFormat.new, local: true) do |form| %>
+  <%= form.label :name %>
+  <%= form.text_field :name, size: "10" %>
+  <%= form.submit %>
+<% end %>
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th>Nom</th>
+      <th>Largeur page (mm)</th>
+      <th>Hauteur page (mm)</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @book_formats.each do |book_format| %>
+      <%= form_with(model: book_format, local: true) do |form| %>
+        <tr>
+          <td><%= form.text_field :name %></td>
+          <td><%= form.text_field :page_width_mm  %></td>
+          <td><%= form.text_field :page_height_mm %></td>
+          <td><%= form.submit "Mettre à jour" %></td>
+          <td><%= link_to 'Destroy', book_format, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
