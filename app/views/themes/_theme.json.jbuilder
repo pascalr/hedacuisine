@@ -10,7 +10,9 @@ json.theme do
   json.link_color theme.link_color
   json.text_color theme.text_color
   json.front_page_image_id theme.front_page_image_id
-  json.partial! 'book_formats/book_format', book_format: theme.book_format
+  if theme.book_format
+    json.partial! 'book_formats/book_format', book_format: theme.book_format
+  end
   if theme.front_page_image
     json.front_page_image do
       json.id theme.front_page_image_id
