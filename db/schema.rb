@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_11_232131) do
+ActiveRecord::Schema.define(version: 2022_01_13_225052) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,8 +66,8 @@ ActiveRecord::Schema.define(version: 2022_01_11_232131) do
 
   create_table "book_formats", force: :cascade do |t|
     t.string "name"
-    t.float "page_height_mm"
     t.float "page_width_mm"
+    t.float "page_height_mm"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -392,6 +392,25 @@ ActiveRecord::Schema.define(version: 2022_01_11_232131) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "page_texts", force: :cascade do |t|
+    t.bigint "page_id", null: false
+    t.text "json"
+    t.text "html"
+    t.float "x_mm"
+    t.float "y_mm"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["page_id"], name: "index_page_texts_on_page_id"
+  end
+
+  create_table "pages", force: :cascade do |t|
+    t.bigint "book_id", null: false
+    t.integer "page_nb"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["book_id"], name: "index_pages_on_book_id"
+  end
+
   create_table "recipe_comments", force: :cascade do |t|
     t.text "content"
     t.bigint "recipe_id", null: false
@@ -700,6 +719,8 @@ ActiveRecord::Schema.define(version: 2022_01_11_232131) do
   add_foreign_key "machine_users", "users"
   add_foreign_key "meals", "machines"
   add_foreign_key "meals", "recipes"
+  add_foreign_key "page_texts", "pages"
+  add_foreign_key "pages", "books"
   add_foreign_key "recipe_comments", "recipes"
   add_foreign_key "recipe_comments", "users"
   add_foreign_key "recipe_ingredients", "foods"

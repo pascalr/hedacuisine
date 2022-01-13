@@ -13,34 +13,6 @@ class BooksController < ApplicationController
     head :no_content
   end
 
-  #def on_index_change
-  #  items = @book.book_sections+@book.book_recipes
-  #  # First make sure every item has a position
-  #  position = items.map(&:position).compact.max
-  #  items.each do |item|
-  #    unless item.position
-  #      # I will base myself on sortablejs and start position at 1 instead of 0.
-  #      position = position.nil? ? 1 : position+1
-  #      item.update!(position: position)
-  #    end
-  #  end
-  #  head :no_content
-  #end
-
-  #def on_index_change
-  #  items = @book.book_sections.includes(:order)+@book.book_recipes.includes(:order)
-  #  position = items.map(&:order).compact.map(&:position).max
-  #  # First make sure every item has an order object
-  #  items.each do |item|
-  #    unless item.order
-  #      position += 1
-  #      item.create_order(position: position)
-  #    end
-  #  end
-  #  orders = items.map(&:order)
-  #  head :no_content
-  #end
-
   def show
     @book = Book.find(params[:slug].split('-')[0])
   end

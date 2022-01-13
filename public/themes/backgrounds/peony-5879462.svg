@@ -14,8 +14,8 @@
    viewBox="0 0 210 297"
    version="1.1"
    id="svg8"
-   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
-   sodipodi:docname="pivonkykraj.svg">
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
+   sodipodi:docname="peony-5879462.svg">
   <defs
      id="defs2">
     <clipPath
@@ -67,17 +67,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.18298145"
-     inkscape:cx="1318.2238"
-     inkscape:cy="2000.6783"
+     inkscape:zoom="1.0350994"
+     inkscape:cx="405.60142"
+     inkscape:cy="849.65764"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="986"
-     inkscape:window-x="-11"
-     inkscape:window-y="-11"
-     inkscape:window-maximized="1" />
+     inkscape:window-height="960"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     units="mm" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -102,7 +103,7 @@
        transform="scale(0.26458333)" />
     <g
        id="g6345"
-       transform="matrix(2.2900927,0,0,2.2900927,-1701.8709,-273.62029)"
+       transform="matrix(0.58767053,0,0,0.64173455,-429.69619,137.09957)"
        clip-path="url(#clipPath7065)">
       <path
          inkscape:connector-curvature="0"
@@ -407,7 +408,7 @@
     </g>
     <g
        id="g6345-3"
-       transform="matrix(-2.2900927,0,0,2.2900927,2470.417,-273.62029)"
+       transform="matrix(-0.58767053,0,0,0.64173455,640.97254,137.09957)"
        clip-path="url(#clipPath7061)">
       <path
          inkscape:connector-curvature="0"
@@ -712,7 +713,7 @@
     </g>
     <g
        id="g7053"
-       transform="matrix(1,0,0,-1,100.86551,-1236.3785)"
+       transform="matrix(0.2566143,0,0,-0.28022209,32.911765,-132.68654)"
        clip-path="url(#clipPath7057)">
       <g
          transform="matrix(2.2900927,0,0,2.2900927,-1802.7364,-1045.6654)"
