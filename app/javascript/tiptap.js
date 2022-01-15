@@ -7,7 +7,7 @@ import Autosuggest from 'react-autosuggest'
 
 // TIPTAP
 //import BubbleMenu from '@tiptap/extension-bubble-menu'
-import { useEditor, EditorContent, BubbleMenu, ReactNodeViewRenderer, NodeViewWrapper } from '@tiptap/react'
+import { useEditor, EditorContent, Editor, BubbleMenu, ReactNodeViewRenderer, NodeViewWrapper, NodeViewContent } from '@tiptap/react'
 import Bold from '@tiptap/extension-bold'
 //import BulletList from '@tiptap/extension-bullet-list'
 import Document from '@tiptap/extension-document'
@@ -51,6 +51,155 @@ function elementFromJSX(value) {
 // MINE
 import Quantity from 'models/quantity'
 import { Ingredient, Utils } from "recipe_utils"
+
+const PageComponent = () => {
+  //<span className="label" contentEditable={false}>React Component</span>
+  return (
+    <NodeViewWrapper className="react-component-with-content">
+      <NodeViewContent className="content" />
+    </NodeViewWrapper>
+  )
+}
+
+export const Page = Node.create({
+  name: 'page',
+  content: 'block*',
+  //priority: 1000,
+  //group: 'block',
+  //inline: true,
+  //selectable: true,
+
+  //addAttributes() {
+  //  return {}
+  //},
+
+  //parseHTML() {
+  //  return [{ tag: 'span[data-link-model]' },]
+  //},
+
+  //renderHTML({node, HTMLAttributes}) {
+  //  return ['div', {class: 'page'}, '']
+  //},
+  renderHTML({ HTMLAttributes }) {
+    return ['div', {class: 'page'}, 0]
+  },
+
+  addNodeView() {
+    return ReactNodeViewRenderer(PageComponent)
+  },
+
+  //addNodeView() {
+  //  return ReactNodeViewRenderer(ModelLinkComponent)
+  //},
+
+  addCommands() {
+    return {
+      insertPage: () => ({ commands }) => {
+        console.log("insertPage")
+        //return commands.insertContent({type: 'page', attrs: {model: model, modelId: id}})
+        return commands.insertContentAt(0, {type: 'page'})
+        //return commands.insertContent(`<span data-link-model="${model}"></span>`)
+      },
+    }
+  },
+})
+
+const Book = Node.create({
+  name: 'book',
+  topNode: true,
+  content: 'page*',
+})
+
+const FloatingText = Node.create({
+  name: 'floating-text',
+  //priority: 1000,
+  group: 'block',
+  content: 'inline*',
+  
+  addAttributes() {
+    return {
+      x: {
+        default: 0.0,
+        parseHTML: element => element.getAttribute('x'),
+        renderHTML: attrs => (attrs.x == null ? {} : {x: attrs.x}),
+      },
+      y: {
+        default: 0.0,
+        parseHTML: element => element.getAttribute('y'),
+        renderHTML: attrs => (attrs.y == null ? {} : {y: attrs.x}),
+      },
+    }
+  },
+  
+  addCommands() {
+    return {
+      insertFloatingText: () => ({ commands }) => {
+        console.log("insertFloatingText")
+        return commands.insertContent({type: 'floating-text'})
+        //return commands.insertContent(`<span data-link-model="${model}"></span>`)
+      },
+    }
+  },
+
+  //parseHTML() {
+  //  return [
+  //    { tag: 'p' },
+  //  ]
+  //},
+
+  renderHTML({node}) {
+    return ['p', {}, 0]
+  },
+
+  //addCommands() {
+  //  return {
+  //    setParagraph: () => ({ commands }) => {
+  //      return commands.setNode(this.name)
+  //    },
+  //  }
+  //},
+
+  //addKeyboardShortcuts() {
+  //  return {
+  //    'Mod-Alt-0': () => this.editor.commands.setParagraph(),
+  //  }
+  //},
+})
+
+export const BookExtensions = [
+  Book, Page, Bold, Italic, FloatingText, Strike, Text, History, // Subscript, Superscript,
+]
+export class BookTiptap extends React.Component {
+  constructor(props) {
+    super(props)
+    this.editor = null
+  }
+  componentDidMount() {
+    // custom way to replace useEditor so it works with a react class instead of a react function component.
+    this.editor = new Editor({
+      extensions: BookExtensions,
+      content: JSON.parse(gon[this.props.model][this.props.json_field]),
+    })
+    this.editor.on('transaction', () => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          this.forceUpdate()
+        })
+      })
+    })
+    window.registerEditor(this.editor, this.props.model, this.props.json_field, this.props.html_field, this.props.url)
+  }
+  componentWillUnmount() {
+    this.editor.destroy()
+  }
+  render() {
+    return (
+      <div className="book-editor">
+        <EditorContent className="book-editor" editor={this.editor} />
+      </div>
+    )
+  }
+}
 
 export const InlineDocument = Node.create({
   name: 'idoc',

@@ -5,6 +5,8 @@ json.book do
   json.name @book.name
   json.author @book.author
   json.theme_id @book.theme_id
+  json.json @book.json
+  json.html @book.html
 end
 
 json.pages @book.pages, :id, :page_nb

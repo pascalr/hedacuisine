@@ -59,6 +59,6 @@ class BooksController < ApplicationController
     end
 
     def book_params
-      params.require(:book).permit(:name, :theme_id, :is_public)
+      params.require(:book).permit(:name, :theme_id, :is_public, :json, :html)
     end
 end
