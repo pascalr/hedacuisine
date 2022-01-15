@@ -1,43 +1,8 @@
 <%= render partial: 'themes/stylesheet', locals: {theme: @book.theme} %>
 
-<style>
-.book-sidebar {
-  width: 200px;
-  color: black;
-  background-color: #f6f6f6;
-  margin-right: 10px;
-  padding-left: 5px;
-}
-.book-sidebar .book-title {
-  font-size: 1.5em;
-  text-align: center;
-}
-.book-sidebar > div {
-  font-size: 1.2em;
-  font-weight: bold;
-}
-.book-sidebar a {
-  color: black;
-}
-</style>
-
 <div style="display: flex;">
   <div class="book-sidebar">
-    <div class="book-title"><%= @book.name %></div>
-    <div>Table des matières</div>
-    <ul>
-      <% @book.recipes.each do |recipe| %>
-        <li><%= link_to recipe.name, "#recipe-body-#{recipe.id}" %></li>
-      <% end %>
-    </ul>
-    <% if @book.user_id == current_user_id %>
-      <div><%= link_to 'Modifier', edit_book_path(@book) %></div>
-    <% end %>
-    <div>Partager</div>
-    <div>Imprimer</div>
-    <div>À propos de l'auteur</div>
-    <%= image_tag icon_path("image.svg"), width: "200px;", height: "200px;" %>
-    de <%= @book.author %>
+    <%= render partial: "books/sidebar", locals: {book: @book} %>
   </div>
   <div class="book <%= @book.theme.css_class %>">
     <%= render partial: "books/title_page", locals: {book: @book} %>

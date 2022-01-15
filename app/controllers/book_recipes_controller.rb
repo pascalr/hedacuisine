@@ -1,6 +1,6 @@
 class BookRecipesController < ApplicationController
   before_action :set_book
-  before_action :set_book_recipe, only: [:update, :destroy]
+  before_action :set_book_recipe, only: [:update, :destroy, :show]
   skip_before_action :only_admin!
 
   def create
@@ -9,6 +9,10 @@ class BookRecipesController < ApplicationController
       format.html {redirect_back fallback_location: books_path}
       format.js {render json: {book_recipe: {class_name: "book_recipe", id: book_recipe.id, recipe: {id: book_recipe.recipe.id, name: book_recipe.recipe.name}}}}
     end
+  end
+
+  def show
+    @recipe = @book_recipe.recipe
   end
 
   def update

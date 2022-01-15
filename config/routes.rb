@@ -152,7 +152,7 @@ Rails.application.routes.draw do
       collection do
         get 'my_books'
       end
-      resources :book_recipes, only: [:create, :update, :destroy]
+      resources :book_recipes, only: [:create, :update, :destroy, :show]
       resources :book_sections, only: [:create, :update, :destroy]
       resources :pages, only: [:create, :update, :destroy]
     end
