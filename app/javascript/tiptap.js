@@ -813,8 +813,9 @@ export const ArticleTiptap = ({model, json_field, html_field, url}) => {
     extensions: ArticleExtensions,
     content: JSON.parse(gon[model][json_field]),
   })
-  // Ugly to call this at every render, but I don't know where else to put it.
-  window.registerEditor(editor, model, json_field, html_field, url)
+  useEffect(() => {
+    window.registerEditor(editor, model, json_field, html_field, url)
+  }, [editor])
 
   return (
     <div className="article-editor">
@@ -836,8 +837,10 @@ export const recipeEditor = (content) => {
 }
 export const Tiptap = ({content, model, json_field, html_field, url}) => {
   const editor = useEditor(recipeEditor(content))
-  // Ugly to call this at every render, but I don't know where else to put it.
-  window.registerEditor(editor, model, json_field, html_field, url)
+
+  useEffect(() => {
+    window.registerEditor(editor, model, json_field, html_field, url)
+  }, [editor])
 
   return (
     <div>
@@ -857,8 +860,10 @@ export const BubbleTiptap = ({content, model, json_field, html_field, url}) => {
     extensions: BubbleExtensions,
     content: content,
   })
-  // Ugly to call this at every render, but I don't know where else to put it.
-  window.registerEditor(editor, model, json_field, html_field, url)
+
+  useEffect(() => {
+    window.registerEditor(editor, model, json_field, html_field, url)
+  }, [editor])
 
   return (
     <>
@@ -883,8 +888,10 @@ export const DescriptionTiptap = ({content, model, json_field, html_field, url})
     extensions: DescriptionExtensions,
     content: content,
   })
-  // Ugly to call this at every render, but I don't know where else to put it.
-  window.registerEditor(editor, model, json_field, html_field, url)
+
+  useEffect(() => {
+    window.registerEditor(editor, model, json_field, html_field, url)
+  }, [editor])
 
   return (
     <div className="recipe-kind-editor">
@@ -906,7 +913,9 @@ export class ModificationsHandler {
   }
 
   registerEditor(editor, model, json_field, html_field, url) {
+    console.log('registeringEditor')
     if (!editor || this.editors.has(editor)) {return}
+    console.log('registeringEditor has editor')
     this.editors.add(editor)
     editor.savedJSON = JSON.stringify(editor.getJSON())
     //editor.savedJSON = model[json_field]
