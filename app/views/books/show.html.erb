@@ -1,23 +1,38 @@
-<% if @book.user_id == current_user_id %>
-  <%= link_to 'Edit', edit_book_path(@book) %>
-<% end %>
-
 <%= render partial: 'themes/stylesheet', locals: {theme: @book.theme} %>
 
-<div class="book <%= @book.theme.css_class %>">
-  <%= render partial: "books/title_page", locals: {book: @book} %>
-  <div class="page index-page">
-    <h2>Liste des recettes</h2>
+<style>
+.book-sidebar {
+  width: 200px;
+  color: black;
+  background-color: #f6f6f6;
+  margin-right: 10px;
+  padding-left: 5px;
+}
+.book-sidebar > div {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+.book-sidebar a {
+  color: black;
+}
+</style>
+
+<div style="display: flex;">
+  <div class="book-sidebar">
+    <% if @book.user_id == current_user_id %>
+      <div><%= link_to 'Modifier', edit_book_path(@book) %></div>
+    <% end %>
+
+    <div>Table des matières</div>
     <ul>
       <% @book.recipes.each do |recipe| %>
         <li><%= link_to recipe.name, "#recipe-body-#{recipe.id}" %></li>
       <% end %>
     </ul>
-    <%= %>
+    <div>Partager</div>
+    <div>Imprimer</div>
   </div>
-  <% @book.recipes.each do |recipe| %>
-    <div class="page">
-      <%= render partial: "recipes/recipe_body", locals: {recipe: recipe} %>
-    </div>
-  <% end %>
+  <div class="book <%= @book.theme.css_class %>">
+    <%= render partial: "books/title_page", locals: {book: @book} %>
+  </div>
 </div>
