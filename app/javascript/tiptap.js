@@ -56,7 +56,9 @@ const PageComponent = () => {
   //<span className="label" contentEditable={false}>React Component</span>
   return (
     <NodeViewWrapper className="react-component-with-content">
-      <NodeViewContent className="content" />
+      <div className="page">
+        <NodeViewContent className="content" />
+      </div>
     </NodeViewWrapper>
   )
 }
