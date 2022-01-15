@@ -9,6 +9,12 @@
 .book-sidebar .book-title {
   font-size: 1.5em;
   text-align: center;
+  margin-top: 0.2em;
+}
+.book-sidebar .book-author {
+  font-size: 1.1em;
+  text-align: center;
+  margin-bottom: 1em;
 }
 .book-sidebar > div {
   font-size: 1.2em;
@@ -20,18 +26,29 @@
 </style>
 
 <div class="book-title"><%= book.name %></div>
-<div>Table des matières</div>
-<ul>
-  <% book.book_recipes.each do |book_recipe| %>
-    <li><%= link_to book_recipe.recipe.name, [book, book_recipe] %></li>
+<div class="book-author">de <%= book.author %></div>
+<div><%# image_tag icon_path("book.svg") %> Table des matières</div>
+<ul style="list-style-type: none; padding-left: 0.5em;">
+  <% (book.book_recipes.to_a + book.book_sections.to_a).sort_by(&:position).each do |item| %>
+    <% if item.is_a? BookRecipe %>
+      <li style="padding-left: 0.5em;"><%= link_to item.recipe.name, [book, item] %></li>
+    <% else %>
+      <li><b><%= item.name %></b></li>
+    <% end %>
   <% end %>
 </ul>
 <% if book.user_id == current_user_id %>
-  <div><%= link_to 'Modifier', edit_book_path(book) %></div>
+  <div>
+    <%= link_to edit_book_path(book) do %>
+      <%= image_tag icon_path("pencil.svg") %> Modifier
+    <% end %>
+  </div>
 <% end %>
-<div>Partager</div>
-<div>Imprimer</div>
-<div>À propos de l'auteur</div>
-<%= image_tag icon_path("image.svg"), width: "160px;", height: "160;" %>
-<div>de <%= book.author %></diV>
+<div><%= image_tag icon_path("share.svg") %> Partager</div>
+<div><%= image_tag icon_path("download.svg") %> Télécharger</div>
+<div><%= image_tag icon_path("printer.svg") %> Imprimer</div>
+<div style="height: 1em;"></div>
+<!--<div>À propos de l'auteur</div>
+<%# image_tag icon_path("image.svg"), width: "160px;", height: "160;" %>
+<div>de <%# book.author %></div>-->
 
