@@ -4,7 +4,7 @@
   color: black;
   background-color: #f6f6f6;
   margin-right: 10px;
-  padding-left: 5px;
+  padding-left: 10px;
 }
 .book-sidebar .book-title {
   font-size: 1.5em;
@@ -16,24 +16,22 @@
   text-align: center;
   margin-bottom: 1em;
 }
-.book-sidebar > div {
-  font-size: 1.2em;
-  font-weight: bold;
-}
 .book-sidebar a {
   color: black;
 }
 </style>
 
-<div class="book-title"><%= book.name %></div>
-<div class="book-author">de <%= book.author %></div>
-<div><%# image_tag icon_path("book.svg") %> Table des matières</div>
+<%= render partial: 'themes/stylesheet', locals: {theme: book.theme} %>
+<%= render partial: "books/title_page_thumbnail", locals: {book: book} %>
+<!--<div class="book-title"><%# book.name %></div>
+<div class="book-author">de <%# book.author %></div>-->
+<div><%# image_tag icon_path("book.svg") %> <b>Table des matières</b></div>
 <ul style="list-style-type: none; padding-left: 0.5em;">
   <% (book.book_recipes.to_a + book.book_sections.to_a).sort_by(&:position).each do |item| %>
     <% if item.is_a? BookRecipe %>
       <li style="padding-left: 0.5em;"><%= link_to item.recipe.name, [book, item] %></li>
     <% else %>
-      <li><b><%= item.name %></b></li>
+      <li><%= item.name %></li>
     <% end %>
   <% end %>
 </ul>
