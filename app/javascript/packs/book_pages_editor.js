@@ -59,9 +59,11 @@ const RecipeKindFinder = ({onRecipeKindFound}) => {
   )
 }
 
-const PageThumbnail = () => {
+const PageThumbnail = ({pageNb}) => {
   return (<>
-    <div style={{width: '150px', height: (150*11/8.5)+'px', border: '1px solid black', marginTop: '10px'}}/>
+    <div style={{width: '150px', height: (150*11/8.5)+'px', border: '1px solid black', marginTop: '10px'}}>
+      <b>{pageNb}</b>
+    </div>
   </>)
 }
 
@@ -75,14 +77,29 @@ class BookEditor extends React.Component {
     this.state = {
       book: gon.book,
       indexItems: [...gon.book_recipes, ...gon.book_sections].sort((a, b) => (a.position-b.position)),
+      pages: gon.pages || []
     };
     this.state.book.onUpdate = (book) => this.setState({book})
 
     this.theme = gon.theme
     this.addRecipe = this.addRecipe.bind(this)
     this.addSection = this.addSection.bind(this)
+    this.addPage = this.addPage.bind(this)
     this.removeIndexItem = this.removeIndexItem.bind(this)
     this.handleIndexDrop = this.handleIndexDrop.bind(this)
+  }
+    
+  addPage() {
+    let data = new FormData()
+    data.append("page[empty]", true)
+    Rails.ajax({url: gon.book_pages_path, type: 'POST', data: data, success: (raw) => {
+      const page = JSON.parse(raw)
+      const pages = [...this.state.pages, page]
+      this.setState({pages})
+    }, error: (errors) => {
+      console.error(errors)
+      //toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
+    }})
   }
     
   addSection() {
@@ -167,16 +184,12 @@ class BookEditor extends React.Component {
       <Row>
         <div style={{width: '200px', height: '90vh', overflowX: 'hidden', overflowY: 'auto'}}>
           <h2>Pages</h2>
-          <PageThumbnail/>
-          <PageThumbnail/>
-          <PageThumbnail/>
-          <PageThumbnail/>
-          <PageThumbnail/>
-          <PageThumbnail/>
-          <PageThumbnail/>
-          <PageThumbnail/>
-          <PageThumbnail/>
-          <button type="button" className="plain-btn" onClick={() => {}}>
+          {this.state.pages.map(page => {
+            return <div key={`page-${page.id}`}>
+              <PageThumbnail pageNb={page.page_nb} />
+            </div>
+          })}
+          <button type="button" className="plain-btn" onClick={this.addPage}>
             <img src="/icons/plus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}}/>
           </button>
         </div>

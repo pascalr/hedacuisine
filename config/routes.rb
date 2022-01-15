@@ -154,6 +154,7 @@ Rails.application.routes.draw do
       end
       resources :book_recipes, only: [:create, :update, :destroy]
       resources :book_sections, only: [:create, :update, :destroy]
+      resources :pages, only: [:create, :update, :destroy]
     end
     
     get 'billing', to: 'billing#index', as: 'billing'

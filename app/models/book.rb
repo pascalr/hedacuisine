@@ -4,6 +4,8 @@ class Book < ApplicationRecord
   has_many :recipes, through: :book_recipes
   belongs_to :theme
   has_many :book_sections
+
+  has_many :pages
   
   scope :all_public, -> { where(is_public: true) }
   scope :all_featured, -> { where(is_featured: true) }
