@@ -9,8 +9,11 @@
 
 <div style="display: flex; gap: 20px;">
   <% @books.each do |book| %>
-    <%= link_to book do %>
-      <%= render partial: "books/title_page_thumbnail", locals: {book: book} %>
-    <% end %>
+    <div>
+      <%= link_to book do %>
+        <%= render partial: "books/details", locals: {book: book} %>
+        <%# render partial: "books/title_page_thumbnail", locals: {book: book} %>
+      <% end %>
+    </div>
   <% end %>
 </div>
