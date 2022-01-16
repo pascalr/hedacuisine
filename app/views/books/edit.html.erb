@@ -1,5 +1,5 @@
-<%= link_to "Show", @book %>
+<%= render partial: "books/edit_tabs", locals: {book: @book} %>
 
 <div id="root"></div>
 
-<%= javascript_pack_tag "book_editor_4" %>
+<%= javascript_pack_tag "book_editor_5" %>

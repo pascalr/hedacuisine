@@ -10,6 +10,9 @@ class Book < ApplicationRecord
   scope :all_public, -> { where(is_public: true) }
   scope :all_featured, -> { where(is_public: true, is_featured: true) }
 
+  belongs_to :book_format, optional: true # FIXME: Temporarily optional for db migration
+  belongs_to :front_page_image, class_name: "Image", optional: true
+
   def name_with_author
     "#{self.name} — #{user.name}"
   end
@@ -32,6 +35,10 @@ class Book < ApplicationRecord
     items = book_sections+book_recipes
     position = items.map {|i| i[:position]}.compact.max
     position.nil? ? 1 : position+1
+  end
+
+  def page_aspect_ratio
+    book_format ? book_format.page_aspect_ratio : 8.5 / 11
   end
 
 end

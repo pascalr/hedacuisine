@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_15_020820) do
+ActiveRecord::Schema.define(version: 2022_01_16_200902) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -101,6 +101,11 @@ ActiveRecord::Schema.define(version: 2022_01_15_020820) do
     t.boolean "is_featured"
     t.text "json"
     t.text "html"
+    t.integer "book_format_id"
+    t.integer "front_page_image_id"
+    t.integer "front_page_text_color"
+    t.boolean "hide_front_page_text"
+    t.integer "background_color"
     t.index ["user_id"], name: "index_books_on_user_id"
   end
 

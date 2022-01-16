@@ -148,6 +148,7 @@ Rails.application.routes.draw do
     resources :books, param: 'slug' do
       member do
         patch 'on_index_change'
+        get 'edit_appearance'
       end
       collection do
         get 'my_books'

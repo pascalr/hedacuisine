@@ -8,11 +8,6 @@
   padding-top: 10px;
   height: 100%;
 }
-.book-sidebar .book-title {
-  font-size: 1.5em;
-  text-align: center;
-  margin-top: 0.2em;
-}
 .book-sidebar .book-author {
   font-size: 1.1em;
   text-align: center;
@@ -32,8 +27,6 @@
       <%= render partial: "books/title_page_thumbnail", locals: {book: book} %>
     <% end %>
   <% end %>
-  <!--<div class="book-title"><%# book.name %></div>
-  <div class="book-author">de <%# book.author %></div>-->
   <div><%# image_tag icon_path("book.svg") %> <b>Table des matières</b></div>
   <ul style="list-style-type: none; padding-left: 0.5em;">
     <% book.items.each do |item| %>

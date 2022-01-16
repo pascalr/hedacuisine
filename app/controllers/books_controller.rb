@@ -1,5 +1,5 @@
 class BooksController < ApplicationController
-  before_action :set_book, only: %i[ edit update destroy on_index_change]
+  before_action :set_book, only: %i[ edit update destroy on_index_change edit_appearance]
   skip_before_action :authenticate_user!, only: [:index, :show]
   skip_before_action :only_admin!, only: [:index, :show]
 
@@ -22,6 +22,10 @@ class BooksController < ApplicationController
     @book.recipes.each do |recipe|
       @recipes_html[recipe.id] = render_to_string partial: "recipes/recipe_page", locals: {recipe: recipe}
     end
+    gon.jbuilder
+  end
+
+  def edit_appearance
     gon.jbuilder
   end
 
@@ -59,6 +63,6 @@ class BooksController < ApplicationController
     end
 
     def book_params
-      params.require(:book).permit(:name, :theme_id, :is_public, :json, :html)
+      params.require(:book).permit(:name, :theme_id, :is_public, :json, :html, :book_format_id, :front_page_image_id, :front_page_text_color, :hide_front_page_text, :background_color)
     end
 end

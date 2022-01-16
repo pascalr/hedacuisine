@@ -1,0 +1,9 @@
+<%= render partial: "books/edit_tabs", locals: {book: @book} %>
+
+<%= render partial: "modals/add_image" %>
+
+<h1>Editing layout</h1>
+
+<div id="root"></div>
+
+<%= javascript_pack_tag "book_appearance_editor" %>

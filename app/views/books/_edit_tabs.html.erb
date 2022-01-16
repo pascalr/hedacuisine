@@ -1,0 +1,9 @@
+<nav>
+  <ul class="nav nav-tabs" style="margin-bottom: 10px;">
+    <span class="nav-item navbar-brand"><b><%= book.name %></b></span>
+    <%= link_to_active_if controller_name == "books" && action_name == "edit", translated("Recettes"), edit_book_path(book), class: "nav-item nav-link" %>
+    <%= link_to_active_if controller_name == "books" && action_name == "edit_appearance", translated("Apparence"), edit_appearance_book_path(book), class: "nav-item nav-link" %>
+    <%= link_to_active_if controller_name == "recipes" && action_name == "new", translated("Paramètres"), edit_theme_path(book.theme), class: "nav-item nav-link" %>
+    <%= link_to translated("Retour"), book, class: "nav-item nav-link" %>
+  </ul>
+</nav>
