@@ -28,7 +28,21 @@
       </div>
     <% end %>
     
-    <%= render partial: "recipes/recipe_full" %>
+    <% if @recipe.recipe_kind %>
+      <%= render partial: "recipes/recipe_details", locals: {recipe: @recipe} %>
+    <% end %>
+    
+    <div style="height: 0.5em;"></div>
+    
+    <%= render partial: "recipes/recipe_body", locals: {recipe: @recipe} %>
+    
+    <div style="height: 1rem;"></div>
+    
   </div>
 </div>
 
+<%# javascript_pack_tag "recipe" %>
+<%= javascript_pack_tag "toggle_link" %>
+<%= javascript_pack_tag "dropdown_submenu" %>
+<%= javascript_pack_tag current_user ? "recipe_rating" : "recipe_rating_read_only" %>
+<%= javascript_pack_tag "recipes_show" %>
