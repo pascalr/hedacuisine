@@ -1,7 +1,22 @@
 <%= content_for :title, "HedaCuisine - Acceuil" %>
 <%= content_for :description, "Le site officiel de Heda, le robot garde manger. Apprenez-en d'avantages et découvrez des recettes qu'il vous aide à cuisiner." %>
 
+<h2>Livres en vedettes</h2>
+
+<% @books.map(&:theme).uniq.compact.each do |theme| %>
+  <%= render partial: 'themes/stylesheet', locals: {theme: theme} %>
+<% end %>
+
+<div style="display: flex; gap: 20px;">
+  <% @books.each do |book| %>
+    <%= link_to book do %>
+      <%= render partial: "books/title_page_thumbnail", locals: {book: book} %>
+    <% end %>
+  <% end %>
+</div>
+
 <br>
+<h2>Recettes en vedettes</h2>
 
 <% @kinds_by_categories.each do |(kind, recipe_kinds)| %>
   <div style="height: 250px;">

@@ -3,7 +3,15 @@
 <%= content_for :title, "HedaCuisine - Recettes" %>
 <%= content_for :description, "Découvrez nos dernières recettes ou recherchez une recette en particulier." %>
 
-<style>
+<% @kinds_by_categories.each do |(kind, recipe_kinds)| %>
+  <div style="height: 250px;">
+    <%= render partial: "recipes/recipe_carrousel", locals: {title: link_to(kind.name, kind, style: "color: black;"), recipes: recipe_kinds, carrousel_id: kind.id} %>
+  </div>
+<% end %>
+
+<%= javascript_pack_tag "recipe_slider_pack_v2" %>
+
+<!--<style>
 @media screen and (max-width: 576px) {
   .recipe-details-small {
     max-width: 300px;
@@ -11,7 +19,7 @@
 }
 </style>
 
-<%# Recipe.where.not(image_id: nil).order(:created_at).each do |recipe| %>
-<% @recipes.each do |recipe| %>
-  <%= render recipe %>
-<% end %>
+<%# @recipes.each do |recipe| %>
+  <%# render recipe %>
+<%# end %>
+-->

@@ -2,6 +2,8 @@ class HomeController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index]
   skip_before_action :only_admin!
   def index
+    #@books = Book.all_featured.limit(5)
+    @books = Book.all.limit(5)
     if Rails.env == "production" && current_user
       redirect_to my_recipes_recipes_path
     else

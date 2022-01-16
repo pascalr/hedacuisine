@@ -8,7 +8,7 @@ class Book < ApplicationRecord
   has_many :pages
   
   scope :all_public, -> { where(is_public: true) }
-  scope :all_featured, -> { where(is_featured: true) }
+  scope :all_featured, -> { where(is_public: true, is_featured: true) }
 
   def name_with_author
     "#{self.name} — #{user.name}"

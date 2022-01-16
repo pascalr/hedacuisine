@@ -5,7 +5,11 @@ class RecipesController < ApplicationController
 
   def index
     respond_to do |format|
-      format.html {@recipes = Recipe.all_main.all_public.with_images.order(:created_at)}
+      format.html {
+        #@recipes = Recipe.all_main.all_public.with_images.order(:created_at)
+        @kinds = Kind.all
+        @kinds_by_categories = @kinds.map {|k| [k, k.recipe_kinds.limit(10)] }.sort_by {|(k, rs)| rs.size }.reverse
+      }
       format.json {@recipes = Recipe.all_main.all_for(current_user).includes(:image).order(:name)}
     end
     #@recipes = Recipe.where(is_public: true).order(:created_at)
