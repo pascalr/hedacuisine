@@ -28,11 +28,7 @@
       </div>
     <% end %>
     
-    <% if @recipe.recipe_kind %>
-      <%= render partial: "recipes/recipe_description_with_image", locals: {recipe: @recipe} %>
-    <% end %>
-    
-    <div style="height: 0.5em;"></div>
+    <%= render partial: "recipes/recipe_description_with_image", locals: {recipe: @recipe} %>
     
     <%= render partial: "recipes/recipe_body", locals: {recipe: @recipe, hide_header: true} %>
     

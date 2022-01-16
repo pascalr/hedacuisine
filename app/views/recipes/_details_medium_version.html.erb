@@ -22,7 +22,7 @@
     <span style="color: gray;"><%= scalable_qty(recipe.servings_quantity) %> <%= recipe.servings_name %></span>
   </div>
 <% end %>
-<br>
-<% unless @recipe.source.blank? %>
-  <%= link_to 'Voir la recette originale', @recipe.source, class: "btn btn-outline-primary" %>
+<% unless @recipe.recipe_kind.blank? %>
+  <br>
+  <%= link_to "Voir les recettes similaires (#{@recipe.recipe_kind.recipes.all_public.count-1})", @recipe.recipe_kind, class: "btn btn-outline-primary" %>
 <% end %>

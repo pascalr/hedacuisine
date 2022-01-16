@@ -1,7 +1,7 @@
-<% image = recipe.recipe_kind.image %>
+<% image = recipe.recipe_kind.image if recipe.recipe_kind %>
 <div class="responsive-sm-above">
   <div>
-    <% if recipe.recipe_kind.image_id and image %>
+    <% if recipe.recipe_kind and recipe.recipe_kind.image_id and image %>
       <%= image_tag medium_image_path(image), width: 452, height: 304, class: "recipe-show-image", style: "display: block;" %>
       <% unless image.author.blank? %>
         <% if image.source.blank? %>
@@ -14,7 +14,12 @@
   </div>
   <div style="width: 100%;">
     <h1>
-      <span class="recipe-title"><%= translated(recipe.name) %></span>
+      <span class="recipe-title">
+        <%= translated(recipe.name) %>
+      </span>
+      <% if user_signed_in? %>
+        <%= render partial: "recipes/edit_menu", locals: {recipe: recipe, black_icon: true} %>
+      <% end %>
     </h1>
     <%= render partial: "recipes/details_medium_version", locals: {recipe: recipe} %>
   </div>
