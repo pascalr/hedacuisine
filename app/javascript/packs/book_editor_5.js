@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 
-import {themeCssClass, Theme} from '../models/theme'
-
 import { DeleteConfirmButton } from 'components/delete_confirm_button'
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -72,7 +70,6 @@ class BookEditor extends React.Component {
     };
     this.state.book.onUpdate = (book) => this.setState({book})
 
-    this.theme = gon.theme
     this.addRecipe = this.addRecipe.bind(this)
     this.addSection = this.addSection.bind(this)
     this.removeIndexItem = this.removeIndexItem.bind(this)
@@ -159,7 +156,7 @@ class BookEditor extends React.Component {
     
     return (<>
       <div ref={this.recipeFindRef} />
-      <div className={`book ${themeCssClass(this.theme)}`}>
+      <div className={`book`}>
         <div className="page index-page">
           <h2>Table des matières</h2>
           <ul>

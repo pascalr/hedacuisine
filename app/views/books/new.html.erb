@@ -1,14 +1,5 @@
 <h1>Nouveau livre de recette</h1>
 
-<style>
-  input[type="radio"] {
-    display: none;
-  }
-  input[type="radio"]:checked+label {
-    border: 4px double blue;
-  }
-</style>
-
 <%= form_with(model: @book, local: true) do |form| %>
   <% if @book.errors.any? %>
     <div id="error_explanation">
@@ -29,22 +20,17 @@
 
   <br>
 
-  <%= form.label :theme_id %>
-  <div style="display: flex; gap: 20px;">
-    <% @themes.each do |theme| %>
-      <%= form.radio_button :theme_id, theme.id %>
-      <%= form.label :theme_id, value: theme.id do %>
-        <%= render partial: 'themes/stylesheet', locals: {theme: theme} %>
-        <% book = Book.new %>
-        <% book.theme = theme %>
-        <% book.name = "#{theme.name.capitalize} theme" %>
-        <% book.user = current_user %>
-        <% book.theme = theme %>
-        <%= render partial: "books/title_page_thumbnail", locals: {book: book} %>
-      <% end %>
-    <% end %>
+  <div><b>Rendre le livre public ou privé?</b></div>
+  <div class="field">
+    <%= form.radio_button 'is_public', @book.is_public %>
+    <%= form.label :is_public, 'Public', value: @book.is_public %>
+    <%= form.radio_button 'is_public', !@book.is_public %>
+    <%= form.label :is_public, 'Privé', value: !@book.is_public %>
   </div>
+  <div>(Ce paramètre peut être modifié plus tard)</div>
 
+  <br>
+  <p>L'avantage de rendre le livre public est de pouvoir y avoir accès en tout temps sans avoir à se connnecter. De plus, cela permet de le partager avec vos proches.</p>
   <br>
 
   <div class="actions">

@@ -2,7 +2,7 @@ class Book < ApplicationRecord
   belongs_to :user
   has_many :book_recipes
   has_many :recipes, through: :book_recipes
-  belongs_to :theme
+  belongs_to :theme, optional: true # deprecated actually
   has_many :book_sections
 
   has_many :pages

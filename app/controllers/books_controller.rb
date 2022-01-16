@@ -30,7 +30,7 @@ class BooksController < ApplicationController
   end
 
   def new
-    @themes = Theme.all
+    #@themes = Theme.all
     @book = Book.new
   end
 

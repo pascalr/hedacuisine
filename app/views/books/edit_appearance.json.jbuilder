@@ -24,13 +24,6 @@ end
 
 json.pages @book.pages, :id, :page_nb
 
-json.partial! 'themes/theme', theme: @book.theme
-
-json.themes Theme.order(:name).all do |theme|
-  json.id theme.id
-  json.name theme.name
-end 
-
 json.book_pages_path book_pages_path(@book, format: :js)
 json.book_book_recipes_path book_book_recipes_path(@book, format: :js)
 json.book_book_sections_path book_book_sections_path(@book, format: :js)
