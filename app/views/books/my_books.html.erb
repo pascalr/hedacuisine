@@ -1,7 +1,7 @@
 <%= link_to "Nouveau livre", new_book_path %> |
 <%= link_to "Trouver un livre", new_book_path %>
 
-<h1>Mes livres</h1>
+<h2>Mes livres</h2>
 
 <% @books.map(&:theme).uniq.compact.each do |theme| %>
   <%= render partial: 'themes/stylesheet', locals: {theme: theme} %>
@@ -11,9 +11,15 @@
   <% @books.each do |book| %>
     <div>
       <%= link_to book do %>
-        <%= render partial: "books/details", locals: {book: book} %>
-        <%# render partial: "books/title_page_thumbnail", locals: {book: book} %>
+        <%# render partial: "books/details", locals: {book: book} %>
+        <%= render partial: "books/title_page_thumbnail", locals: {book: book} %>
       <% end %>
     </div>
   <% end %>
 </div>
+
+<h2>Livres favoris</h2>
+<h2>Suggestions de livres pour vous</h2>
+<h2>Livres de mes amis</h2>
+
+

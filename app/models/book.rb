@@ -24,6 +24,10 @@ class Book < ApplicationRecord
     "#{user.name}"
   end
 
+  def items
+    (self.book_recipes.to_a + self.book_sections.to_a).sort_by(&:position)
+  end
+
   def next_index_position
     items = book_sections+book_recipes
     position = items.map {|i| i[:position]}.compact.max

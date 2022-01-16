@@ -22,8 +22,8 @@ class RecipesController < ApplicationController
 
   def my_recipes
     # OPTIMIZE: Using paginage for this is too much for nothing I believe
-    @recipes = current_user.recipes.paginate(page: params[:page], per_page: 1)
-    @recipe = @recipes.first
+    #@recipes = current_user.recipes.paginate(page: params[:page], per_page: 1)
+    #@recipe = @recipes.first
   end
 
   def move_ing

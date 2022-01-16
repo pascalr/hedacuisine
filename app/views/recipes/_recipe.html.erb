@@ -1,3 +1,5 @@
+<% book_recipe = nil unless local_assigns[:book_recipe] %>
+
 <div class="row" style="margin-top: 10px;">
   <div class="col-sm-auto">
     <%= link_to recipe_path(recipe) do %>
@@ -9,7 +11,7 @@
     <% end %>
   </div>
   <div class="col recipe-details-small">
-    <%= link_to recipe_path(recipe) do %>
+    <%= link_to book_recipe ? [@book, book_recipe] : recipe do %>
       <div class="recipe-listing-title">
         <%= translated(recipe.name) %>
       </div>

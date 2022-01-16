@@ -1,22 +1,6 @@
 <%= render partial: "recipes/tabs" %>
 
-<%= render partial: "recipes/recipe_carrousel", locals: {title: "Dernières recettes favorites", recipes: current_user.user_recipes.includes(:recipe).where.not(recipe: {image_id: nil}).limit(10).map(&:recipe)} %>
-
-<style>
-.recipe-body {
-  border: 1px solid black;
-  padding: 0.5em 0.5em 0 0.5em;
-}
-</style>
-
-<style>
-.category {
-  margin-bottom: 1.5rem;
-}
-#user-recipe-list > * + * {
-  margin-bottom: 1.5rem;
-}
-</style>
+<%# render partial: "recipes/recipe_carrousel", locals: {title: "Dernières recettes favorites", recipes: current_user.user_recipes.includes(:recipe).where.not(recipe: {image_id: nil}).limit(10).map(&:recipe)} %>
 
 <div style="display: flex; align-items: center; gap: 1.5rem;">
   <h2>Mes recettes</h2>
@@ -34,4 +18,4 @@
   <% end %>
 </ul>
 
-<%= javascript_pack_tag "recipe_slider_pack_v2" %>
+<%# javascript_pack_tag "recipe_slider_pack_v2" %>
