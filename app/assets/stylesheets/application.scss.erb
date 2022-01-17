@@ -525,9 +525,6 @@ ul.dash > li:before {
 
 .page {
   width: 100%;
-  max-width: 828px;
-  min-height: 100vh;
-  padding: 1em;
 }
 .page + .page {
   border-top: 4px solid white;
@@ -563,15 +560,11 @@ ul.dash > li:before {
   font-size: 1.15em;
 }
 .book-thumbnail {
-  width: 170px;
   font-size: 0.25em;
   border: 1px solid black;
+  min-width: 140px;
   /*transform: scale(0.25);*/
   /*scale: 0.25;*/
-}
-.book-thumbnail .page {
-  height: 220px;
-  min-height: initial;
 }
 li.section {
   list-style-type: none;

@@ -36,6 +36,11 @@ class BookAppearanceEditor extends React.Component {
     const style = {
       backgroundColor: colorToHexString(book.background_color),
       color: colorToHexString(book.front_page_text_color),
+      aspectRatio: book.page_aspect_ratio.toString(),
+      backgroundSize: 'cover',
+    }
+    if (book.front_page_image) {
+      style.backgroundImage = `url(${book.front_page_image.url})`
     }
 
     return (<>

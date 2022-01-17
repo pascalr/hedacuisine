@@ -10,6 +10,7 @@ json.book do
   json.background_color @book.background_color
   json.front_page_text_color @book.front_page_text_color
   json.front_page_image_id @book.front_page_image_id
+  json.page_aspect_ratio @book.page_aspect_ratio
   if @book.book_format
     json.partial! 'book_formats/book_format', book_format: @book.book_format
   end

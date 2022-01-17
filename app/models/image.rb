@@ -31,6 +31,9 @@ class Image < ApplicationRecord
   def height
     original.analyzed? ? original.metadata[:height] : nil
   end
+  def aspect_ratio
+    self.width.to_f / self.height.to_f
+  end
 
   # FIXME: This is recent in rails and it does not work yet for me. calling image.original.variant(:thumb) like the docs says does not work yet
   #do

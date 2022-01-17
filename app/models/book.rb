@@ -38,7 +38,11 @@ class Book < ApplicationRecord
   end
 
   def page_aspect_ratio
-    book_format ? book_format.page_aspect_ratio : 8.5 / 11
+    if book_format
+      book_format.page_aspect_ratio
+    else
+      front_page_image ? front_page_image.aspect_ratio : 8.5 / 11
+    end
   end
 
 end
