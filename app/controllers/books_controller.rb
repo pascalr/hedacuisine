@@ -29,13 +29,19 @@ class BooksController < ApplicationController
     gon.jbuilder
   end
 
+  def set_is_featured
+    @book = Book.find(params[:slug].split('-')[0])
+    @book.update! is_featured: params[:is_featured]
+    redirect_to @book
+  end
+
   def new
     #@themes = Theme.all
     @book = Book.new
   end
 
   def index
-    @books = Book.all_public.order(:name)
+    @books = Book.all_featured.order(:name)
   end
 
   def my_books

@@ -149,6 +149,7 @@ Rails.application.routes.draw do
       member do
         patch 'on_index_change'
         get 'edit_appearance'
+        patch 'set_is_featured'
       end
       collection do
         get 'my_books'

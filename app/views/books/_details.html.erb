@@ -42,6 +42,26 @@
         <%= image_tag icon_path("pencil.svg") %> Modifier
       <% end %>
     </div>
+    <% if book.is_public %>
+      <div><%= link_to book_path(book, book: {is_public: false}), method: :put do %>
+        <%= image_tag icon_path("eye.svg") %> Rendre privé
+      <% end %></div>
+    <% else %>
+      <div><%= link_to book_path(book, book: {is_public: true}), method: :put do %>
+        <%= image_tag icon_path("eye.svg") %> Rendre public
+      <% end %></div>
+    <% end %>
+  <% end %>
+  <% if current_user.admin? %>
+    <% if book.is_featured %>
+      <div><%= link_to set_is_featured_book_path(book, is_featured: false), method: :patch do %>
+        <%= image_tag icon_path("star-fill.svg") %> Enlever la vedette
+      <% end %></div>
+    <% else %>
+      <div><%= link_to set_is_featured_book_path(book, is_featured: true), method: :patch do %>
+        <%= image_tag icon_path("star.svg") %> Mettre en vedette
+      <% end %></div>
+    <% end %>
   <% end %>
   <div><%= image_tag icon_path("share.svg") %> Partager</div>
   <div><%= image_tag icon_path("download.svg") %> Télécharger</div>
