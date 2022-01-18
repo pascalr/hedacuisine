@@ -1,5 +1,11 @@
-<div class="page title-page"
-     style="background-color: <%= color_to_hex_string(book.background_color) %>; color: <%= color_to_hex_string(book.front_page_text_color) %>; aspect-ratio: <%= book.page_aspect_ratio %>; <%= book.front_page_image ? "background-size: cover; background-image: url(#{original_image_path(book.front_page_image)}" : "" %>">
-  <div class="book-title"><span><%= book.name %></span></div>
-  <div class="author">de <%= book.author %></div>
-</div>
+<% if book.front_page_image %>
+  <div class="page title-page"
+       style="aspect-ratio: <%= book.page_aspect_ratio %>; <%= book.front_page_image ? "background-size: cover; background-image: url(#{original_image_path(book.front_page_image)}" : "" %>;">
+  </div>
+<% else %>
+  <div class="page title-page"
+       style="background-color: <%= color_to_hex_string(book.background_color) %>; color: <%= color_to_hex_string(book.front_page_text_color) %>; aspect-ratio: <%= book.page_aspect_ratio %>;">
+    <div class="book-title"><span><%= book.name %></span></div>
+    <div class="author">de <%= book.author %></div>
+  </div>
+<% end %>

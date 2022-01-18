@@ -1,7 +1,10 @@
-<%= link_to "Nouveau livre", new_book_path %> |
-<%= link_to "Trouver un livre", new_book_path %>
+<div style="height: 0.5em;"></div>
 
-<h2>Mes livres</h2>
+<div style="display: flex; align-items: center; gap: 1.5rem;">
+  <h2>Mes livres</h2>
+  <%= link_to translated("Nouveau livre"), new_book_path, class: "btn btn-outline-primary btn-sm" %>
+</div>
+<hr style="margin-top: 0;">
 
 <% @books.map(&:theme).uniq.compact.each do |theme| %>
   <%= render partial: 'themes/stylesheet', locals: {theme: theme} %>
@@ -20,6 +23,3 @@
 
 <h2>Livres favoris</h2>
 <h2>Suggestions de livres pour vous</h2>
-<h2>Livres de mes amis</h2>
-
-

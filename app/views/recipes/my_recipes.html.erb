@@ -1,4 +1,6 @@
-<%= render partial: "recipes/tabs" %>
+<%# render partial: "recipes/tabs" %>
+
+<div style="height: 0.5em;"></div>
 
 <%# render partial: "recipes/recipe_carrousel", locals: {title: "Dernières recettes favorites", recipes: current_user.user_recipes.includes(:recipe).where.not(recipe: {image_id: nil}).limit(10).map(&:recipe)} %>
 
