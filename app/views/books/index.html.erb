@@ -3,10 +3,6 @@
 
 <h1>Livres</h1>
 
-<% @books.map(&:theme).uniq.compact.each do |theme| %>
-  <%= render partial: 'themes/stylesheet', locals: {theme: theme} %>
-<% end %>
-
 <div style="display: flex; gap: 20px;">
   <% @books.each do |book| %>
     <%= link_to book do %>

@@ -6,10 +6,6 @@
 </div>
 <hr style="margin-top: 0;">
 
-<% @books.map(&:theme).uniq.compact.each do |theme| %>
-  <%= render partial: 'themes/stylesheet', locals: {theme: theme} %>
-<% end %>
-
 <div style="display: flex; gap: 20px;">
   <% @books.each do |book| %>
     <div>

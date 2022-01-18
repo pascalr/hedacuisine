@@ -41,7 +41,7 @@ class Book < ApplicationRecord
     if book_format
       book_format.page_aspect_ratio
     else
-      front_page_image ? front_page_image.aspect_ratio : 8.5 / 11
+      front_page_image ? front_page_image.aspect_ratio : 480.0 / 640.0
     end
   end
 
