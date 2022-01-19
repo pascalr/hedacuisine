@@ -6,7 +6,7 @@
       <% if recipe.image %>
         <%= image_tag small_image_path(recipe.image), width: 255, height: 171 %>
       <% else %>
-        <img width="255" height="171"></img>
+        <%= image_tag '/default_recipe_01.png', width: 255, height: 171 %>
       <% end %>
     <% end %>
   </div>

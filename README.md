@@ -1,3 +1,6 @@
+https://pixabay.com/illustrations/plate-dishes-white-cover-1190178/
+Image by <a href="https://pixabay.com/users/murloccra4ler-1667206/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1190178">MurlocCra4ler</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1190178">Pixabay</a>
+
 En payant, les utilisateurs peuvent rendre leur menus privés. Sinon leur menus sont publiques.
 
 Toutes les images originales seront stockés à part de l'application dans un dossier /images qui ne sera pas trackés dans git
