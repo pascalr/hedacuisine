@@ -51,7 +51,7 @@
       <% end %></div>
     <% end %>
   <% end %>
-  <% if current_user.admin? %>
+  <% if current_user_admin? %>
     <% if book.is_featured %>
       <div><%= link_to set_is_featured_book_path(book, is_featured: false), method: :patch do %>
         <%= image_tag icon_path("star-fill.svg") %> Enlever la vedette
