@@ -26,10 +26,12 @@ class Image < ApplicationRecord
   end
 
   def width
-    original.analyzed? ? original.metadata[:width] : nil
+    original.analyze unless original.analyzed?
+    original.metadata[:width]
   end
   def height
-    original.analyzed? ? original.metadata[:height] : nil
+    original.analyze unless original.analyzed?
+    original.metadata[:height]
   end
   def aspect_ratio
     self.width.to_f / self.height.to_f
