@@ -6,11 +6,11 @@
   <div class="collapse navbar-collapse bg-dark">
     <div class="navbar-nav" style="width: 100%;">
       <%= link_to_active_controller "Heda", public_url(home_path), "home", class: "navbar-brand" %>
-      <%= link_to_active_if "recipes" == controller_name && action_name == "index", t("heda.menu.recipes"), public_url(recipes_path), class: "nav-item nav-link" %>
+      <%= link_to_active t("heda.menu.recipes"), public_url(recipes_path), class: "nav-item nav-link" %>
+      <%= link_to_active 'Livres', books_path, class: "nav-item nav-link" %>
       <%# link_to_active 'Utilisateurs', users_index_path, class: "nav-item nav-link" %>
       <% if current_user_admin? %>
         <%# link_to_active 'Appareils', machines_path, class: "nav-item nav-link" %>
-        <%= link_to_active 'Livres', books_path, class: "nav-item nav-link" %>
         <%= link_to_active 'Articles', articles_path, class: "nav-item nav-link" %>
       <% end %>
       <div style="flex-grow: 3;"></div>

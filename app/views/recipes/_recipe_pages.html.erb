@@ -3,7 +3,7 @@
 <div style="min-height: 100vh;">
   <div style="display: flex; gap: 2em;">
     <div style="font-size: 1.2rem;">
-      (<span id="page-number"><%= page %></span> de <%= versions.count %>) recettes
+      (<span id="page-number"><%= page %></span> de <%= versions.count %>) recettes d'utilisateurs
       <span id="previous-container">
         <% if page == 1 %>
           <%= image_tag icon_path("chevron-left.svg"), style: "opacity: 0.5;" %>
@@ -82,7 +82,19 @@
   </div>
   <div style="height: 0.2em;"></div>
   <div id="current-page">
-    <%= render partial: "recipes/recipe_body", locals: {recipe: recipe} %>
+    <div style="display: flex; gap: 20px;">
+      <div>
+        <%= render partial: "recipes/recipe_body", locals: {recipe: recipe} %>
+      </div>
+      <% if recipe.book %>
+        <div style="width: 200px; font-size: 1.2em;">
+          <div><b>Recette tiré du livre</b></div>
+          <%= link_to recipe.book do %>
+            <%= render partial: "books/title_page_thumbnail", locals: {book: recipe.book} %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>
 <%= javascript_pack_tag "paginator" %>

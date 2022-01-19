@@ -63,6 +63,13 @@ class Recipe < ApplicationRecord
   has_many :recipe_ingredients, dependent: :delete_all#, foreign_key: 'recipe_id'
   has_many :recipe_notes, dependent: :delete_all#, foreign_key: 'recipe_id'
 
+  has_many :book_recipes
+
+  def book
+    book_recipe = book_recipes.left_outer_joins(:book).where(book: {user_id: self.user_id}).first
+    book_recipe ? book_recipe.book : nil
+  end
+
   def text
     raise "deprecated, use json and html"
   end
