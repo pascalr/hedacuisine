@@ -141,9 +141,9 @@ Rails.application.routes.draw do
 
       collection do
         get 'new_variant'
-        get 'my_recipes'
       end
     end
+    get 'my_recipes', to: 'recipes#my_recipes'
 
     resources :books, param: 'slug' do
       member do
@@ -151,13 +151,11 @@ Rails.application.routes.draw do
         get 'edit_appearance'
         patch 'set_is_featured'
       end
-      collection do
-        get 'my_books'
-      end
       resources :book_recipes, only: [:create, :update, :destroy, :show]
       resources :book_sections, only: [:create, :update, :destroy]
       resources :pages, only: [:create, :update, :destroy]
     end
+    get 'my_books', to: 'books#my_books'
     
     get 'billing', to: 'billing#index', as: 'billing'
 
