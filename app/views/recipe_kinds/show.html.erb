@@ -7,7 +7,7 @@
   
   <p>On dirait qu'il n'y a pas encore de recettes dans cette catégorie.</p>
   
-  <%= link_to_active_if "recipes" == controller_name && action_name == "my_recipes", "Ajouter une recette", public_editor_url(my_recipes_recipes_path), class: "btn btn-outline-primary" %>
+  <%= link_to_active_if "recipes" == controller_name && action_name == "my_recipes", "Ajouter une recette", public_editor_url(my_recipes_path), class: "btn btn-outline-primary" %>
 
   <div style="height: 2em;"></div>
   <h2>Un partage de recettes</h2>
