@@ -30,7 +30,24 @@
     
     <%= render partial: "recipes/recipe_description_with_image", locals: {recipe: @recipe} %>
     
-    <%= render partial: "recipes/recipe_body", locals: {recipe: @recipe, hide_header: true} %>
+    <div style="display: flex; gap: 30px;">
+      <div>
+        <%= render partial: "recipes/recipe_body", locals: {recipe: @recipe, hide_header: true} %>
+      </div>
+      <% if @recipe.recipe_kind %>
+        <div>
+          <div style="width: 280px; font-size: 1.2em; border: 2px solid black; border-radius: 20px; padding: 1em;">
+            <%= link_to @recipe.recipe_kind, style: "color: black;" do %>
+              <div style="font-size: 1.2em;"><b><%= translated(@recipe.recipe_kind.name) %></b></div>
+              <p><i><%= my_sanitize(@recipe.recipe_kind.description_html) %></i></p>
+              <% nb = @recipe.recipe_kind.recipes.all_public.count %>
+              <p style="font-size: 0.9em;">Sur ce site, il y a <%= nb %> recettes disponibles dans cette catégorie.</p>
+              <%= link_to "Voir les recettes similaires", @recipe.recipe_kind, class: "btn btn-outline-primary" %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
     
     <div style="height: 1rem;"></div>
     
