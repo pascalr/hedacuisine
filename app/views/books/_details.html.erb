@@ -29,9 +29,12 @@
   <ul style="list-style-type: none; padding-left: 0.5em;">
     <% book.items.each do |item| %>
       <% if item.is_a? BookRecipe %>
-        <li style="padding-left: 0.5em;"><%= link_to item.recipe.name, [book, item] %></li>
-      <% else %>
-        <li><%= item.name %></li>
+        <li style="padding-left: 0.5em;">
+          <%= link_to item.recipe.name, [book, item] %>
+          <%= item.recipe.is_public ? '' : image_tag(icon_path("lock.svg")) %>
+        </li>
+      <% elsif item.is_a? BookSection %>
+        <li><b style="font-size: 0.97em;"><%= item.name %></b></li>
       <% end %>
     <% end %>
   </ul>
