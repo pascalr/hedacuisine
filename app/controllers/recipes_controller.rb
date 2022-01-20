@@ -1,5 +1,5 @@
 class RecipesController < ApplicationController
-  before_action :set_recipe, only: [:do_process, :edit, :update, :destroy, :rate, :cheat, :validate, :view_body, :move_ing, :old_edit, :page]
+  before_action :set_recipe, only: [:do_process, :edit, :update, :destroy, :rate, :cheat, :view_body, :move_ing, :old_edit, :page]
   skip_before_action :authenticate_user!, only: [:show, :index]
   skip_before_action :only_admin!, only: [:show, :index]
 
@@ -30,10 +30,6 @@ class RecipesController < ApplicationController
     ing = @recipe.ingredients.find(params[:ing_id])
     ing.insert_at(params[:position].to_i)
     head :ok
-  end
-
-  def validate
-    @warnings = @recipe.warnings
   end
 
   def visibility

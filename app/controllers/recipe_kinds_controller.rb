@@ -8,6 +8,11 @@ class RecipeKindsController < ApplicationController
   end
 
   def show
+    if current_user
+      @recipes = @recipe_kind.recipes.where(is_public: true).or(@recipe_kind.recipes.where(user_id: current_user.id))
+    else
+      @recipes = @recipe_kind.recipes.all_public
+    end
   end
 
   def search_recipe

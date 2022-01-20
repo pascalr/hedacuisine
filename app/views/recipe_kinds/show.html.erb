@@ -2,20 +2,24 @@
 
 <%= render partial: @recipe_kind %>
 
-<div style="max-width: 800px;">
-  <h2>0 recettes</h2>
+<% unless @recipes.blank? %>
+  <%= render partial: "recipes/recipe_pages", locals: {recipe: @recipes.first} %>
+<% else %>
+  <div style="max-width: 800px;">
+    <h2>0 recettes</h2>
+    
+    <p>On dirait qu'il n'y a pas encore de recettes dans cette catégorie.</p>
+    
+    <%= link_to_active_if "recipes" == controller_name && action_name == "my_recipes", "Ajouter une recette", public_editor_url(my_recipes_path), class: "btn btn-outline-primary" %>
   
-  <p>On dirait qu'il n'y a pas encore de recettes dans cette catégorie.</p>
-  
-  <%= link_to_active_if "recipes" == controller_name && action_name == "my_recipes", "Ajouter une recette", public_editor_url(my_recipes_path), class: "btn btn-outline-primary" %>
-
-  <div style="height: 2em;"></div>
-  <h2>Un partage de recettes</h2>
-  
-  <p>Si vous apprécié voir les recettes des autres, considérer partager vos propres recettes. En plus, cela permet de converser vos recettes pour ne jamais les oublier et toujours y avoir accès.</p>
-  
-  <div style="height: 2em;"></div>
-  <h2>Un livre de recettes</h2>
-  
-  <p>Sur ce site, il va être possible de faire votre propre livre de recette. C'est une manière simple de contenir et de partager vos recettes avec vos proches. La version électronique est gratuite. Il faut payer seulement si vous voulez le faire imprimer professionnellement.</p>
-</div>
+    <div style="height: 2em;"></div>
+    <h2>Un partage de recettes</h2>
+    
+    <p>Si vous apprécié voir les recettes des autres, considérer partager vos propres recettes. En plus, cela permet de converser vos recettes pour ne jamais les oublier et toujours y avoir accès.</p>
+    
+    <div style="height: 2em;"></div>
+    <h2>Un livre de recettes</h2>
+    
+    <p>Sur ce site, il va être possible de faire votre propre livre de recette. C'est une manière simple de contenir et de partager vos recettes avec vos proches. La version électronique est gratuite. Il faut payer seulement si vous voulez le faire imprimer professionnellement.</p>
+  </div>
+<% end %>

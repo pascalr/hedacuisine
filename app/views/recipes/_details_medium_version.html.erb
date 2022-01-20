@@ -22,7 +22,23 @@
     <span style="color: gray;"><%= scalable_qty(recipe.servings_quantity) %> <%= recipe.servings_name %></span>
   </div>
 <% end %>
-<% unless @recipe.recipe_kind.blank? %>
+<div style="display: flex; gap: 5px; margin-top: 10px;">
+  <%= link_to "FIXME", class: "btn btn-outline-secondary" do %>
+    <%= image_tag icon_path("printer.svg") %>
+  <% end %>
+  <%= link_to "FIXME", class: "btn btn-outline-secondary" do %>
+    <%= image_tag icon_path("share.svg") %>
+  <% end %>
+  <%= link_to "FIXME", class: "btn btn-outline-secondary" do %>
+    <%= image_tag icon_path("download.svg") %>
+  <% end %>
+  <%= link_to "FIXME", class: "btn btn-outline-secondary" do %>
+    <%= image_tag icon_path("star.svg") %>
+  <% end %>
+</div>
+<% unless true or @recipe.recipe_kind.blank? %>
   <br>
-  <%= link_to "Voir les recettes similaires (#{@recipe.recipe_kind.recipes.all_public.count-1})", @recipe.recipe_kind, class: "btn btn-outline-primary" %>
+  <% nb = @recipe.recipe_kind.recipes.all_public.count %>
+  <% nb += 1 unless @recipe.is_public %>
+  <%= link_to "Voir les recettes similaires (#{nb-1})", @recipe.recipe_kind, class: "btn btn-outline-primary" %>
 <% end %>

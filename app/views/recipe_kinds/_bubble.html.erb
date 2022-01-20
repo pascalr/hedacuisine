@@ -1,0 +1,17 @@
+<div>
+  <div style="width: 280px; font-size: 1.2em; border: 2px solid black; border-radius: 20px; padding: 1em;">
+    <%= link_to recipe_kind, style: "color: black;" do %>
+      <div style="font-size: 1.2em;"><b><%= translated(recipe_kind.name) %></b></div>
+      <p><i><%= my_sanitize(recipe_kind.description_html) %></i></p>
+      <% nb = recipe_kind.recipes.all_public.count %>
+      <% nb += 1 unless recipe.is_public %>
+      <% if nb <= 1 %>
+        <p style="font-size: 0.9em;">Il n'y a pas encore de recette similaire disponible dans cette catégorie.</p>
+        <%= link_to "Voir la catégorie", recipe_kind, class: "btn btn-outline-primary" %>
+      <% else %>
+        <p style="font-size: 0.9em;">Sur ce site, il y a <%= nb %> recettes disponibles dans cette catégorie.</p>
+        <%= link_to "Voir les recettes similaires", recipe_kind, class: "btn btn-outline-primary" %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

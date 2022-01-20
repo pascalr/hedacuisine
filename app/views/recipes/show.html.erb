@@ -1,9 +1,5 @@
 <%= render partial: "recipes/tabs" %>
 
-<% if @recipe.recipe_kind %>
-  <%= render partial: "kinds/breadcrumbs", locals: {leaf: @recipe.recipe_kind} %>
-<% end %>
-
 <%= content_for :title, @recipe.fullname + " - HedaCuisine" %>
 <% description = description_recipe_ingredients(@recipe) %>
 <%= content_for :description, description_recipe_ingredients(@recipe) %>
@@ -15,12 +11,23 @@
   <meta property="og:description" content="<%= description %>">
 <% end %>
 
-<% if user_signed_in? %>
-  <% machine = current_user.machines.first_or_create %>
-  <div class="collapse" id="calendar">
-    <%= render partial: "meals/calendar", locals: {recipe: @recipe, machine: machine, meals: machine.meals.includes(:recipe) } %>
-    <div style="height: 10px;"></div>
-  </div>
+<% if @recipe.recipe_kind %>
+  <%= render partial: "kinds/breadcrumbs", locals: {leaf: @recipe.recipe_kind} %>
 <% end %>
 
-<%= render partial: "recipes/recipe_full" %>
+<%= render partial: "recipes/recipe_description_with_image", locals: {recipe: @recipe} %>
+
+<div style="display: flex; gap: 30px;">
+  <div>
+    <%= render partial: "recipes/recipe_body", locals: {recipe: @recipe, hide_header: true} %>
+  </div>
+  <% if @recipe.recipe_kind %>
+    <%= render partial: "recipe_kinds/bubble", locals: {recipe: @recipe, recipe_kind: @recipe.recipe_kind} %>
+  <% end %>
+</div>
+
+<%# javascript_pack_tag "recipe" %>
+<%= javascript_pack_tag "toggle_link" %>
+<%= javascript_pack_tag "dropdown_submenu" %>
+<%= javascript_pack_tag current_user ? "recipe_rating" : "recipe_rating_read_only" %>
+<%= javascript_pack_tag "recipes_show" %>
