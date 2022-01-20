@@ -28,7 +28,7 @@
   </head>
   <body>
     <div id="top-search">
-      <%= search_field_tag :search, nil, placeholder: "#{t_no_span("heda.search")}...", 'aria-lable': "Search", 'data-autocomplete-url': recipes_path(format: 'json'), value: params[:search] %>
+      <%= search_field_tag :search, nil, placeholder: "#{t_no_span("heda.search")}...", 'aria-lable': "Search", 'data-autocomplete-url': search_data_path(format: 'json'), value: params[:search] %>
       <%= image_tag icon_path('search.svg'), class: "search-image", style: "width: 20px; height: 20px; margin-right: 5px; transform: translate(0px, -5px);" %>
     </div>
     <div class="responsive-margins-lg">

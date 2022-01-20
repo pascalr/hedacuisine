@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   end
   resources :food_tags
   get 'search/index'
+  get 'search/data', as: 'search_data'
   resources :listings
   resources :ingredients
   resources :recipe_steps

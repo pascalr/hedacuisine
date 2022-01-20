@@ -12,9 +12,9 @@
 #  json.image thumb_image_path(recipe.image)
 #end
 
-@recipes.each do |recipe|
-  json.set! recipe.name do
-    json.url recipe_path(recipe)
-    json.image thumb_image_path(recipe.image)
+@items.each do |item|
+  json.set! item[:label] do
+    json.url item[:url]
+    json.image item[:image]
   end
 end
