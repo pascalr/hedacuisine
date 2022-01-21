@@ -10,20 +10,23 @@ document.addEventListener("DOMContentLoaded", function(event) {
         selector: elem,
         minChars: 1,
         source: function(term, suggest){
-          console.log(this)
           term = term.toLowerCase();
           const matches = [];
-          for (const choice in choices)
-            if (~choice.toLowerCase().indexOf(term)) matches.push(choice);
+          for (const choiceId in choices) {
+            let choice = choices[choiceId].label
+            if (~choice.toLowerCase().indexOf(term)) matches.push(choiceId);
+          }
           suggest(matches);
         },
-        renderItem: function (item, search){
+        renderItem: function (choiceId, search){
+          let item = choices[choiceId]
           search = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
           var re = new RegExp("(" + search.split(' ').join('|') + ")", "gi");
-          return '<a class="autocomplete-suggestion" data-val="' + item + '" href="'+choices[item].url+'"><img src="'+choices[item].image+'"></img>' + item.replace(re, "<b>$1</b>") + '</a>';
+          // FIXME: Why data-val???
+          return '<a class="autocomplete-suggestion" data-id="' + choiceId + '" href="'+item.url+'"><img src="'+item.image+'"></img>' + item.label.replace(re, "<b>$1</b>") + '</a>';
         },
         onSelect: function(e, term, item){
-          window.location.href = choices[term].url
+          window.location.href = choices[item.dataset.id].url
         }
       })
 

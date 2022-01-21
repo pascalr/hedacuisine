@@ -12,9 +12,11 @@
 #  json.image thumb_image_path(recipe.image)
 #end
 
-@items.each do |item|
-  json.set! item[:label] do
-    json.url item[:url]
-    json.image item[:image]
-  end
-end
+#@items.each do |item|
+#  json.set! item[:label] do
+#    json.url item[:url]
+#    json.image item[:image]
+#  end
+#end
+
+json.array! @items, :label, :url, :image
