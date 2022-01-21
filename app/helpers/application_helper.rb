@@ -53,6 +53,10 @@ module ApplicationHelper
     return nil if image.nil?
     "#{_base_image_path(image)}/thumb#{image.extension}"
   end
+  def portrait_thumb_image_path(image)
+    return nil if image.nil?
+    "#{_base_image_path(image)}/portrait_thumb#{image.extension}"
+  end
 
   def icon_path(name)
     "/icons/#{name}"

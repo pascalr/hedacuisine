@@ -18,6 +18,9 @@ class Image < ApplicationRecord
   def thumb_variant
     original.representation(resize_to_fill: [71, 48])
   end
+  def portrait_thumb_variant
+    original.representation(resize_to_fill: [71, 106.5])
+  end
   def small_variant
     original.representation(resize_to_fill: [255, 171])
   end

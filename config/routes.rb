@@ -40,6 +40,7 @@ Rails.application.routes.draw do
       patch 'process_image'
       get 'original', defaults: {locale: nil}, as: nil
       get 'thumb', defaults: {locale: nil}, as: nil
+      get 'portrait_thumb', defaults: {locale: nil}, as: nil
       get 'small', defaults: {locale: nil}, as: nil
       get 'medium', defaults: {locale: nil}, as: nil
     end

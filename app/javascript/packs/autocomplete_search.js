@@ -23,11 +23,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
           search = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
           var re = new RegExp("(" + search.split(' ').join('|') + ")", "gi");
           // FIXME: Why data-val???
-          return '<a class="autocomplete-suggestion" data-id="' + choiceId + '" href="'+item.url+'"><img src="'+item.image+'"></img>' + item.label.replace(re, "<b>$1</b>") + '</a>';
+          return '<div class="autocomplete-suggestion" data-id="' + choiceId + '" href="'+item.url+'"><img src="'+item.image+'"></img>' + item.label.replace(re, "<b>$1</b>") + '</div>';
         },
-        onSelect: function(e, term, item){
-          window.location.href = choices[item.dataset.id].url
-        }
+        //onSelect: function(e, term, item){
+        //  window.location.href = choices[item.dataset.id].url
+        //}
       })
 
     });
