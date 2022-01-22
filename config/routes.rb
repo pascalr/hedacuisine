@@ -49,7 +49,6 @@ Rails.application.routes.draw do
   get 'sitemap', to: "sitemap#index"
 
   resources :expressions, only: [:index, :create, :update, :destroy, :show]
-  resources :user_recipe_categories, only: [:create, :update, :destroy]
   resources :machine_users, only: [:create, :update, :destroy, :new]
   resources :food_substitutions, only: [:create, :update, :destroy, :index]
   resources :book_formats, only: [:create, :update, :destroy, :index]
@@ -166,12 +165,6 @@ Rails.application.routes.draw do
     get '/', to: 'home#index', as: 'home'
 
     resources :articles, param: 'slug'
-
-    resources :user_recipes, only: [:index, :create, :update, :destroy]
-    get 'user_recipes/index_with_pictures'
-    get 'user_recipes/index_with_details'
-    get 'user_recipes/index_edit'
-    get 'user_recipes/show_recipe_page'
 
   end
 
