@@ -9,20 +9,21 @@ class SearchController < ApplicationController
   def data
     respond_to do |format|
       format.json {
+        @items = []
         recipe_kinds = RecipeKind.includes(:image).order(:name)
+        books = Book.all_public.includes(:front_page_image).order(:name)
         if current_user
-          recipes = current_user.recipes.order(:name)
-          @recipes = recipes.map {|r| {label: r.name, url: recipe_path(r), image: thumb_image_path(r.image)} }
+          @items += books.select {|b| b.user_id == current_user.id}
+          recipes = current_user.recipes.includes(:image).order(:name)
+          @items += recipes
           kinds = recipes.map(&:recipe_kind_id)
-          recipe_kinds = recipe_kinds.filter {|r| !kinds.include?(r.id) }
+          recipe_kinds = recipe_kinds.reject {|r| kinds.include?(r.id) }
+          @items += recipe_kinds
+          @items += books.reject {|b| b.user_id == current_user.id}
+        else
+          @items += recipe_kinds
+          @items += books
         end
-        @recipe_kinds = recipe_kinds.map {|r| {label: r.name, url: recipe_kind_path(r), image: thumb_image_path(r.image)} }
-        @books = Book.all_public.includes(:front_page_image).order(:name).map {|r| {label: r.name, url: book_path(r), image: portrait_thumb_image_path(r.front_page_image), author: r.author} }
-  #<% links = RecipeKind.all.order(:name).map {|r| {label: r.name, url: recipe_kind_path(r)} } %>
-  #<% if current_user %>
-  #  <% links += current_user.recipes.order(:name).map {|r| {label: r.name, url: recipe_path(r)} } %>
-  #<% end %>
-        #@recipes = Recipe.all_main.all_for(current_user).includes(:image).order(:name)
       }
     end
   end

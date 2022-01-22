@@ -14,9 +14,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
           term = normalizeSearchText(term)
           const matches = [];
           for (const choiceId in choices) {
-            let choice = choices[choiceId].label
-            //if (~choice.toLowerCase().indexOf(term)) matches.push(choiceId);
-            if (~normalizeSearchText(choice).indexOf(term)) matches.push(choiceId);
+            let item = choices[choiceId]
+            if (~normalizeSearchText(item.label).indexOf(term)) {
+              matches.push(choiceId);
+            } else if (item.author && ~normalizeSearchText(item.author).indexOf(term)) {
+              matches.push(choiceId);
+            }
           }
           suggest(matches);
         },
