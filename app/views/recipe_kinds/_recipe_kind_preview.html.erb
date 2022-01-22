@@ -1,0 +1,24 @@
+<div class="row" style="margin-top: 10px;">
+  <div class="col-sm-auto">
+    <%= link_to recipe_kind do %>
+      <% if recipe_kind.image %>
+        <%= image_tag small_image_path(recipe_kind.image), width: 255, height: 171 %>
+      <% else %>
+        <%= image_tag '/default_recipe_01.png', width: 255, height: 171 %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="col recipe-details-small">
+    <%= link_to recipe_kind do %>
+      <div class="recipe-listing-title" style="margin-top: 0.5em;">
+        <%= translated(recipe_kind.name) %>
+      </div>
+    <% end %>
+    <div style="font-size: 1.3rem;">
+      <% count = recipe_kind.recipes.all_public.count %>
+      (<%= count %> <%= count > 1 ? "recettes" : "recette" %>)
+    </div>
+    <%# render partial: "recipes/details_small_version", locals: {recipe: recipe} %>
+
+  </div>
+</div>

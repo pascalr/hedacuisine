@@ -5,19 +5,19 @@
 
 <div style="margin-bottom: 1rem;">
   <h1 style="display: inline;"><%= @kind.name.capitalize %> </h1>
-  <% count = @kind.all_recipes_count %>
-  <span style="font-size: 1.3rem;"> (<%= count %> <%= count > 1 ? "recettes" : "recette" %>)</span>
 </div>
 
 <% @kind.kinds.each do |kind| %>
   <%= render partial: "recipe_kinds/carrousel", locals: {title: link_to(kind.name, kind, style: "color: black;"), recipe_kinds: kind.recipe_kinds, carrousel_id: kind.id} %>
 <% end %>
 
-<% if count <= 0 %>
-  <p>Aucune recette ne contient cet ingrédient pour l'instant.</p>
+<% if @kind.recipe_kinds.count <= 0 and @kind.kinds.blank? %>
+  <p>Cette catégorie est vide pour l'instant.</p>
 <% end %>
 
-<% @kind.recipes.each do |recipe| %>
-  <%= render recipe %>
+<% @kind.recipe_kinds.each do |recipe_kind| %>
+  <%= render partial: "recipe_kinds/recipe_kind_preview", locals: {recipe_kind: recipe_kind} %>
   <%# link_to translated(recipe.name).capitalize, recipe %>
 <% end %>
+
+<%= javascript_pack_tag "recipe_slider_pack_v2" %>

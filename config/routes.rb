@@ -94,7 +94,7 @@ Rails.application.routes.draw do
 
   resources :items, only: [:destroy]
   resources :menus
-  resources :categories, only: [:create, :update, :destroy]
+  #resources :categories, only: [:create, :update, :destroy]
   post 'menus/add_or_create_recipe'
 
   get 'users/index'
