@@ -58,8 +58,6 @@ class Recipe < ApplicationRecord
   has_many :foods, through: :ingredients
   belongs_to :group, optional: true
 
-  has_many :user_recipes
-
   has_many :recipe_ingredients, dependent: :delete_all#, foreign_key: 'recipe_id'
   has_many :recipe_notes, dependent: :delete_all#, foreign_key: 'recipe_id'
 
@@ -234,11 +232,6 @@ class Recipe < ApplicationRecord
   
   def missing_ingredients
     recipe_ingredients.map(&:food).reject(&:in_pantry)
-  end
-
-  def user_recipe_for(user)
-    return nil if user.nil?
-    user_recipes.where(user_id: user.id).first
   end
 
   def warnings

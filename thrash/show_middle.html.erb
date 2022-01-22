@@ -30,27 +30,9 @@ tr:last-child td:first-child { border-bottom-left-radius: 5px; }
 tr:last-child td:last-child { border-bottom-right-radius: 5px; }
 </style>
 
-<!--<div class="mx-n2">
-  <ul class="nav nav-tabs">
-    <li class="subnav-item"><%# translated("Catégories") %></li>
-    <%# @recipe.categories.reject {|c| c.menu.listing_id.nil? }.each do |category| %>
-      <li class="subnav-item">
-        <%# link_to "#{translated category.menu.name}/#{translated category.name}", category.menu %>
-      </li>
-    <%# end %>
-    <li class="nav-item">
-      <%# link_to "Nouvelle version", new_recipe_path(clone_id: @recipe.id), class: "subnav-link" %>
-    </li>
-  </ul>
-</div>-->
-
 <% if @recipe.owned_by?(current_user) %>
   <%= link_to 'Edit', edit_recipe_path(@recipe) %> |
-  <%= link_to 'Ajouter à mes recettes', user_recipes_path(user_recipe: {recipe_id: @recipe.id}), method: :post %>
 <% end %>
-<%# form_with(url: 'TODO', local: true, class: 'inline') do |form| %>
-  <%# form.collection_select :unit_system, UnitSystem.all, :id, :name, selected: params[:unit_system_id], class: 'inline' %>
-<%# end %>
 
 <div class="recipe-body">
 

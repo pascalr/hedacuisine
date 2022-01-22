@@ -1,5 +1,3 @@
-<%= render partial: "recipes/tabs" %>
-
 <%= content_for :title, @recipe.fullname + " - HedaCuisine" %>
 <% description = description_recipe_ingredients(@recipe) %>
 <%= content_for :description, description_recipe_ingredients(@recipe) %>

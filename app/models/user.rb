@@ -24,9 +24,6 @@ class User < ApplicationRecord
   has_many :machine_users
   has_many :machines, through: :machine_users
 
-  has_many :user_recipes
-  has_many :user_recipe_categories
-
   has_many :siblings_1, class_name: 'UserSibling', foreign_key: 'user_id'
   has_many :siblings_2, class_name: 'UserSibling', foreign_key: 'sibling_id'
   def siblings

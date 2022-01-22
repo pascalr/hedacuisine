@@ -18,10 +18,6 @@ class BooksController < ApplicationController
   end
   
   def edit
-    @recipes_html = {}
-    @book.recipes.each do |recipe|
-      @recipes_html[recipe.id] = render_to_string partial: "recipes/recipe_page", locals: {recipe: recipe}
-    end
     gon.jbuilder
   end
 
