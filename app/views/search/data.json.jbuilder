@@ -19,5 +19,8 @@
 #  end
 #end
 
+if @recipes
+  json.array! @recipes, :label, :url, :image
+end
 json.array! @books, :label, :url, :image, :author
 json.array! @recipe_kinds, :label, :url, :image
