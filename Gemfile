@@ -5,11 +5,11 @@ ruby '3.0.2'
 
 # -------- MINE --------------
 gem 'figaro' # For environment variables
-gem 'activestorage-backblaze'
-gem 'react-rails'
-gem 'gon'
-gem 'will_paginate', '~> 3.1.0'
-gem 'route_translator'
+gem 'activestorage-backblaze' # For storing images on backblaze
+gem 'react-rails' # For using react
+gem 'gon' # For passing data from rails to js
+gem 'will_paginate', '~> 3.1.0' # Unused I believe...
+gem 'route_translator' # To translate routes based on locale
 gem 'ruby-prof' # For profiling
 gem 'devise' # For authentication
 gem 'devise-i18n' # For authentication in all languages
