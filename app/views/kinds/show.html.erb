@@ -10,7 +10,7 @@
 </div>
 
 <% @kind.kinds.each do |kind| %>
-  <%= render partial: "recipes/recipe_carrousel", locals: {title: link_to(kind.name, kind, style: "color: black;"), recipes: kind.recipes.all_main.all_public.with_images.limit(10), carrousel_id: kind.id} %>
+  <%= render partial: "recipe_kinds/carrousel", locals: {title: link_to(kind.name, kind, style: "color: black;"), recipe_kinds: kind.recipe_kinds, carrousel_id: kind.id} %>
 <% end %>
 
 <% if count <= 0 %>

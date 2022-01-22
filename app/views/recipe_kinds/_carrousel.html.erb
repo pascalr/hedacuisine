@@ -1,0 +1,24 @@
+<% carrousel_id = 1 if local_assigns[:carrousel_id].nil? %>
+
+<% unless recipe_kinds.blank? %>
+  <% title = "" if local_assigns[:title].nil? %>
+
+  <span style="font-size: 1.4rem; font-weight: bold;"><%= title %></span>
+  
+  
+  <span id="prev-recipe-carrousel-<%= carrousel_id %>" class="my-tns-control"><%= image_tag icon_path("left_arrow.svg"), size: "15x15" %></span>
+  <span id="next-recipe-carrousel-<%= carrousel_id %>" class="my-tns-control"><%= image_tag icon_path("right_arrow.svg"), size: "15x15" %></span>
+
+  <div id="recipe-carrousel-<%= carrousel_id %>" class="recipe-carrousel" style="display: flex;">
+    <% recipe_kinds.select(&:image).each do |recipe_kind| %>
+      <div class="recipe" style="width: 280px;">
+        <%= link_to recipe_kind do %>
+          <%= image_tag small_image_path(recipe_kind.image), width: 255, height: 171 %>
+          <div style="width: 255px; text-align: center; font-family: 'Satisfy', cursive; font-size: 1.8rem; color: black; line-height: 1; margin-top: 0.25em;">
+            <%= recipe_kind.name %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

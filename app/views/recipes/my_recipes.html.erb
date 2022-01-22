@@ -1,7 +1,5 @@
 <div style="height: 0.5em;"></div>
 
-<%# render partial: "recipes/recipe_carrousel", locals: {title: "Dernières recettes favorites", recipes: current_user.user_recipes.includes(:recipe).where.not(recipe: {image_id: nil}).limit(10).map(&:recipe)} %>
-
 <div style="display: flex; align-items: center; gap: 1.5rem;">
   <h2>Mes recettes</h2>
   <%= link_to translated("Nouvelle recette"), new_recipe_path, class: "btn btn-outline-primary btn-sm" %>

@@ -3,7 +3,7 @@
 
 <% @kinds_by_categories.each do |(kind, recipe_kinds)| %>
   <div style="height: 250px;">
-    <%= render partial: "recipes/recipe_carrousel", locals: {title: link_to(kind.name, kind, style: "color: black;"), recipes: recipe_kinds, carrousel_id: kind.id} %>
+    <%= render partial: "recipe_kinds/carrousel", locals: {title: link_to(kind.name, kind, style: "color: black;"), recipe_kinds: recipe_kinds, carrousel_id: kind.id} %>
   </div>
 <% end %>
 
