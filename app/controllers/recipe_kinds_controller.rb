@@ -12,10 +12,12 @@ class RecipeKindsController < ApplicationController
       return redirect_to recipe_kind_path(@recipe_kind, recipe_id: @recipe_kind.recipes.all_public.first.id)
     end
     if current_user
-      @recipes = @recipe_kind.recipes.where(is_public: true).or(@recipe_kind.recipes.where(user_id: current_user.id))
+      # FIXME: Does the or prioritize the first one? It should
+      recipes = @recipe_kind.recipes.where(is_public: true).or(@recipe_kind.recipes.where(user_id: current_user.id))
     else
-      @recipes = @recipe_kind.recipes.all_public
+      recipes = @recipe_kind.recipes.all_public
     end
+    @recipe = recipes.find(params[:recipe_id]) if params[:recipe_id]
   end
 
   def search_recipe

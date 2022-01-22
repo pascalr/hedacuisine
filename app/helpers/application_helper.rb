@@ -17,6 +17,24 @@ module ApplicationHelper
     url_for({locale: current_region.locale}.merge(args))
   end
 
+  # Probablement inutile... Attendre pour voir.
+  def recipe_in_category_path(recipe_kind, args={})
+    if args[:recipe_id]
+      recipe_kind_path(recipe_kind, args)
+    else
+      if current_user
+        recipes = recipe_kind.recipes.where(is_public: true).or(recipe_kind.recipes.where(user_id: current_user.id))
+      else
+        recipes = recipe_kind.recipes.all_public
+      end
+      if recipes.first
+        recipe_kind_path(recipe_kind, {recipe_id: recipes.first.id}.merge(args))
+      else
+        recipe_kind_path(recipe_kind, args)
+      end
+    end
+  end
+
   def public_editor_url(path)
     Rails.env == "local" ? "https://aqueous-fortress-30634.herokuapp.com#{path}" : path
   end

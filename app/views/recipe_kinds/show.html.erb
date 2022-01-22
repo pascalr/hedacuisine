@@ -2,8 +2,8 @@
 
 <%= render partial: @recipe_kind %>
 
-<% unless @recipes.blank? %>
-  <%= render partial: "recipes/recipe_pages", locals: {recipe: @recipes.first} %>
+<% unless @recipe.blank? %>
+  <%= render partial: "recipes/recipe_pages", locals: {recipe: @recipe} %>
 <% else %>
   <div style="max-width: 800px;">
     <h2>0 recettes</h2>

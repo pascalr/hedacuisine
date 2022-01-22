@@ -116,6 +116,7 @@ Rails.application.routes.draw do
     resources :kinds, param: 'slug'
     resources :foods, param: 'slug'
 
+    #resources :recipe_kinds, only: [:index, :create, :edit] do
     resources :recipe_kinds, only: [:index, :create, :update, :destroy, :edit, :show] do
       member do
         get 'search_recipe'

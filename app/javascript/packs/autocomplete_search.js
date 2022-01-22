@@ -29,14 +29,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
           var re = new RegExp("(" + search.split(' ').join('|') + ")", "gi");
           // FIXME: Why data-val???
           if (item.author) {
-            return '<div class="autocomplete-suggestion book_search_thumb" data-id="' + choiceId + '" href="'+item.url+'"><img src="'+item.image+'"></img><div><b>' + item.label + '</b><div>de '+item.author+'</div></div></div>';
+            return '<a class="autocomplete-suggestion book_search_thumb" data-id="' + choiceId + '" href="'+item.url+'"><img src="'+item.image+'"></img><div><b>' + item.label + '</b><div>de '+item.author+'</div></div></a>';
           } else {
-            return '<div class="autocomplete-suggestion" data-id="' + choiceId + '" href="'+item.url+'"><img src="'+item.image+'"></img>' + item.label.replace(re, "<b>$1</b>") + '</div>';
+            return '<a class="autocomplete-suggestion" data-id="' + choiceId + '" href="'+item.url+'"><img src="'+item.image+'"></img>' + item.label.replace(re, "<b>$1</b>") + '</a>';
           }
         },
-        //onSelect: function(e, term, item){
-        //  window.location.href = choices[item.dataset.id].url
-        //}
+        onSelect: function(e, term, item){
+          window.location.href = choices[item.dataset.id].url
+        }
       })
 
     });
