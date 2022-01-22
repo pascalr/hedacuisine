@@ -89,10 +89,9 @@ namespace :website do
     execute_download
 
     locales.each do |locale|
-      add_download(recipes_path(locale: locale))
+      #add_download(recipes_path(locale: locale))
       add_download(recipe_kinds_path(locale: locale))
-      # FIXME: Ah le problème que j'avait est-ce que c'est parce que j'ai 2 recipes_path ici?
-      add_download(recipes_path(locale: locale, format: :json))
+      add_download(search_data_path(locale: locale, format: :json))
       add_download(books_path(locale: locale))
       #add_download(articles_path(locale: locale))
     end
@@ -105,9 +104,9 @@ namespace :website do
         add_download(food_path(food, locale: locale))
       end
 
-      Recipe.all_public.each do |recipe|
-        add_download(recipe_path(recipe, locale: locale))
-      end
+      #Recipe.all_public.each do |recipe|
+      #  add_download(recipe_path(recipe, locale: locale))
+      #end
       
       Kind.all.each do |kind|
         add_download(kind_path(kind, locale: locale))
