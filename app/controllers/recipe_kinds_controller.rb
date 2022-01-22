@@ -18,6 +18,7 @@ class RecipeKindsController < ApplicationController
       recipes = @recipe_kind.recipes.all_public
     end
     @recipe = recipes.find(params[:recipe_id]) if params[:recipe_id]
+    gon.jbuilder
   end
 
   def search_recipe
