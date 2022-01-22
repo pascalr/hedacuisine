@@ -19,4 +19,5 @@
 #  end
 #end
 
-json.array! @items, :label, :url, :image
+json.array! @books, :label, :url, :image, :author
+json.array! @recipe_kinds, :label, :url, :image

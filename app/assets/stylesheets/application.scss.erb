@@ -322,6 +322,7 @@ h3, .instructions-header {
 }
 .autocomplete-suggestion img {
   height: auto;
+  min-height: 50px;
 }
 html {
 }
@@ -589,4 +590,18 @@ li.section {
 }
 .book {
   width: 800px;
+}
+
+.book_search_thumb {
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+}
+.autocomplete-suggestion.book_search_thumb b {
+  font-weight: bold;
+  color: black;
+}
+.book_search_thumb > div {
+  display: flex;
+  flex-direction: column;
 }

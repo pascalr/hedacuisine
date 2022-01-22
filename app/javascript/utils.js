@@ -17,8 +17,14 @@ export function addExtensionToPath(ext, path) {
   }
 }
 
+// https://stackoverflow.com/questions/990904/remove-accents-diacritics-in-a-string-in-javascript
+export function normalizeSearchText(text) {
+  return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+}
+
 const Utils = {}
 Utils.addExtensionToPath = addExtensionToPath
 Utils.colorToHexString = colorToHexString
 Utils.hexStringToColor = hexStringToColor
+Utils.normalizeSearchText = normalizeSearchText
 export { Utils }

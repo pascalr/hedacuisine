@@ -9,8 +9,8 @@ class SearchController < ApplicationController
   def data
     respond_to do |format|
       format.json {
-        @items = RecipeKind.includes(:image).order(:name).map {|r| {label: r.name, url: recipe_kind_path(r), image: thumb_image_path(r.image)} }
-        @items += Book.all_public.includes(:front_page_image).order(:name).map {|r| {label: r.name, url: book_path(r), image: portrait_thumb_image_path(r.front_page_image)} }
+        @recipe_kinds = RecipeKind.includes(:image).order(:name).map {|r| {label: r.name, url: recipe_kind_path(r), image: thumb_image_path(r.image)} }
+        @books = Book.all_public.includes(:front_page_image).order(:name).map {|r| {label: r.name, url: book_path(r), image: portrait_thumb_image_path(r.front_page_image), author: r.author} }
   #<% links = RecipeKind.all.order(:name).map {|r| {label: r.name, url: recipe_kind_path(r)} } %>
   #<% if current_user %>
   #  <% links += current_user.recipes.order(:name).map {|r| {label: r.name, url: recipe_path(r)} } %>
