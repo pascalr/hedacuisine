@@ -24,7 +24,6 @@
     "bootstrap": "5.1.1",
     "chart.js": "^3.5.0",
     "chartkick": "^4.0.5",
-    "easy-autocomplete": "^1.3.5",
     "jquery": "^3.5.1",
     "js-autocomplete": "^1.0.4",
     "jsxstyle": "^2.5.1",
