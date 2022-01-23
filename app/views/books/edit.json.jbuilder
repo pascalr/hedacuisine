@@ -34,7 +34,6 @@ json.book_recipes @book.book_recipes do |book_recipe|
   json.recipe do
     json.id book_recipe.recipe.id
     json.name book_recipe.recipe.name
-    json.html @recipes_html[book_recipe.recipe.id]
   end
 end
 
