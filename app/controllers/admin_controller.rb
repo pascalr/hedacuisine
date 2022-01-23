@@ -5,4 +5,6 @@ class AdminController < ApplicationController
     @recipes = Recipe.all.order(:name)
     gon.jbuilder
   end
+  def test
+  end
 end

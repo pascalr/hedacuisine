@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   get '/robot_home', to: 'home#robot_index', as: 'robot_home'
   
   get 'admin/edit_recipes', to: 'admin#edit_recipes', as: 'admin_edit_recipes'
+  get 'admin/test', to: 'admin#test', as: 'admin_test'
 
   resources :images do
     member do
