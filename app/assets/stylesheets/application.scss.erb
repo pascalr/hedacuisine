@@ -149,6 +149,30 @@
   scrollbar-width: thin;
 }
 
+.over-container {
+  position: relative;
+  text-align: center;
+}
+.over-container .bottom-right {
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+}
+.over-container .centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.editable-input {
+  border: none;
+  border-bottom: 1px dashed black;
+  //font-family: inherit;
+  //font-size: inherit;
+  padding: 0;
+  width: auto;
+}
 .plain-input {
   border: none;
   //font-family: inherit;

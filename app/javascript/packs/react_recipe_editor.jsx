@@ -357,16 +357,53 @@ class RecipeEditor extends React.Component {
     ))
 
     const recipe = this.state.recipe
+    const image_path = gon.recipe.image_path || "/default_recipe_01.png"
     //console.log(model)
     
+    // <% image = recipe.recipe_kind.image if recipe.recipe_kind %>
     return (<>
       <div className="recipe-body">
 
-        <div className="bg-fill" style={{width: "100%", height: "0.5rem"}}></div>
-        <div className="d-flex bg-fill ps-3 w-100" style={{fontSize: "1.2rem", alignItems: "center", flexWrap: "wrap", fontWeight: "bold"}}>
-          <TextField model={recipe} field="name" className="bg-fill plain-input" />
+
+        <div className="responsive-sm-above">
+          <div>
+            <div class="over-container">
+              <img className="recipe-show-image" src={image_path} width="452" height="304"/>
+              <div class="centered" style={{fontSize: '2em', width: '100%'}}>Ajouter une image<br/>ou<br/>Sélectionner une catégorie</div>
+            </div> 
+          </div>
+          <div style={{width: '100%'}}>
+            <h1>
+              <span className="recipe-title">
+                <TextField model={recipe} field="name" className="plain-input" />
+              </span>
+            </h1>
+            <div>
+              <b>Préparation (minutes): </b>
+              <span style={{color: 'gray'}}>
+                <TextField model={recipe} field="preparation_time" className="editable-input" />
+              </span>
+            </div>
+            <div>
+              <b>Cuisson (minutes): </b>
+              <span style={{color: 'gray'}}>
+                <TextField model={recipe} field="cooking_time" className="editable-input" />
+              </span>
+            </div>
+            <div>
+              <b>Total (minutes): </b>
+              <span style={{color: 'gray'}}>
+                <TextField model={recipe} field="total_time" className="editable-input" />
+              </span>
+            </div>
+            <div>
+              <b>Portions: </b>
+              <span style={{color: 'gray'}}>
+                <TextField model={recipe} field="raw_servings" className="editable-input" />
+              </span>
+            </div>
+          </div>
         </div>
-        <div className="bg-fill" style={{width: "100%", height: "0.5rem"}}></div>
 
         <h2>Ingrédients</h2>
         {IngredientList}

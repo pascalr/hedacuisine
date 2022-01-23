@@ -2,7 +2,7 @@
 <div class="responsive-sm-above">
   <div>
     <% if recipe.recipe_kind and recipe.recipe_kind.image_id and image %>
-      <%= image_tag medium_image_path(image), width: 452, height: 304, class: "recipe-show-image", style: "display: block;" %>
+      <%= image_tag medium_image_path(image), width: 452, height: 304, class: "recipe-show-image" %>
       <% unless image.author.blank? %>
         <% if image.source.blank? %>
           <div style="text-align: center;"><i>Crédit photo: <%= image.author %></i></div>
