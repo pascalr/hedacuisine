@@ -95,7 +95,7 @@ class RecipesController < ApplicationController
         end
       end
     end
-    redirect_to @recipe
+    redirect_to edit_recipe_path(@recipe)
   end
   
   # Somehow process is an invalid method name in a Rails controller.

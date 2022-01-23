@@ -357,108 +357,114 @@ class RecipeEditor extends React.Component {
     ))
 
     const recipe = this.state.recipe
+    const recipe_kind = gon.recipe_kinds.find(k => k.id == recipe.recipe_kind_id)
     const image_path = gon.recipe.image_path || "/default_recipe_01.png"
     //console.log(model)
     
-    // <% image = recipe.recipe_kind.image if recipe.recipe_kind %>
     return (<>
-      <div className="recipe-body">
-
-
-        <div className="responsive-sm-above">
-          <div>
-            <div class="over-container">
-              <img className="recipe-show-image" src={image_path} width="452" height="304"/>
+      <div className="responsive-sm-above">
+        <div>
+          <div class="over-container">
+            <img className="recipe-show-image" src={image_path} width="452" height="304"/>
+            {gon.recipe.image_path ?
+              <div class="bottom-right" style={{color: 'white', fontSize: '2em'}}>Modifier</div>
+              :
               <div class="centered" style={{fontSize: '2em', width: '100%'}}>Ajouter une image<br/>ou<br/>Sélectionner une catégorie</div>
-            </div> 
+            }
+          </div> 
+        </div>
+        <div style={{width: '100%'}}>
+          <h1>
+            <span className="recipe-title">
+              <TextField model={recipe} field="name" className="plain-input" />
+            </span>
+          </h1>
+          <div>
+            <b>Préparation (minutes): </b>
+            <span style={{color: 'gray'}}>
+              <TextField model={recipe} field="preparation_time" className="editable-input" />
+            </span>
           </div>
-          <div style={{width: '100%'}}>
-            <h1>
-              <span className="recipe-title">
-                <TextField model={recipe} field="name" className="plain-input" />
-              </span>
-            </h1>
-            <div>
-              <b>Préparation (minutes): </b>
-              <span style={{color: 'gray'}}>
-                <TextField model={recipe} field="preparation_time" className="editable-input" />
-              </span>
-            </div>
-            <div>
-              <b>Cuisson (minutes): </b>
-              <span style={{color: 'gray'}}>
-                <TextField model={recipe} field="cooking_time" className="editable-input" />
-              </span>
-            </div>
-            <div>
-              <b>Total (minutes): </b>
-              <span style={{color: 'gray'}}>
-                <TextField model={recipe} field="total_time" className="editable-input" />
-              </span>
-            </div>
-            <div>
-              <b>Portions: </b>
-              <span style={{color: 'gray'}}>
-                <TextField model={recipe} field="raw_servings" className="editable-input" />
-              </span>
-            </div>
+          <div>
+            <b>Cuisson (minutes): </b>
+            <span style={{color: 'gray'}}>
+              <TextField model={recipe} field="cooking_time" className="editable-input" />
+            </span>
+          </div>
+          <div>
+            <b>Total (minutes): </b>
+            <span style={{color: 'gray'}}>
+              <TextField model={recipe} field="total_time" className="editable-input" />
+            </span>
+          </div>
+          <div>
+            <b>Portions: </b>
+            <span style={{color: 'gray'}}>
+              <TextField model={recipe} field="raw_servings" className="editable-input" />
+            </span>
           </div>
         </div>
+      </div>
+      <div style={{display: 'flex', gap: '30px'}}>
+        <div>
+          <div className="recipe-body">
 
-        <h2>Ingrédients</h2>
-        {IngredientList}
-      
-        <h2>Instructions</h2>
-        <Tiptap model="recipe" json_field="json" html_field="html" url={gon.recipe.url} content={JSON.parse(gon.recipe.json)} />
-        <InstructionsShortcuts/>
-        
-        <h3>Notes</h3>
-        {NoteList}
-        <button type="button" className="plain-btn" onClick={() => this.appendNote()}>
-          <img src="/icons/plus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}}/>
-        </button>
-        
-        <h2>Outils</h2>
-        <ul style={{fontSize: "1.1rem"}}>
-          {Tools}
-        </ul>
-        
-        <h2>Informations</h2>
-        <table className="table table-light">
-          <tbody>
-            <tr>
-              <th>Sorte de recette</th>
-              <td><CollectionSelect model={recipe} field="recipe_kind_id" options={gon.recipe_kinds.map(k => k.id)} showOption={(id) => gon.recipe_kinds.find(k => k.id == id).name} includeBlank="true"></CollectionSelect></td>
-            </tr>
-            <tr>
-              <th>Temps de préparation</th>
-              <td><TextField model={recipe} field="preparation_time"></TextField></td>
-            </tr>
-            <tr>
-              <th>Temps de cuisson</th>
-              <td><TextField model={recipe} field="cooking_time"></TextField></td>
-            </tr>
-            <tr>
-              <th>Temps total</th>
-              <td><TextField model={recipe} field="total_time"></TextField></td>
-            </tr>
-            <tr>
-              <th>Portions</th>
-              <td><TextField model={recipe} field="raw_servings"></TextField></td>
-            </tr>
-            <tr>
-              <th>Ingrédient principal</th>
-              <td><CollectionSelect model={recipe} field="main_ingredient_id" options={this.state.ingIds} showOption={(ingId) => gon.recipe.ingredients[ingId].name} includeBlank="true"></CollectionSelect></td>
-            </tr>
-          </tbody>
-        </table>
+            <h2>Ingrédients</h2>
+            {IngredientList}
+          
+            <h2>Instructions</h2>
+            <Tiptap model="recipe" json_field="json" html_field="html" url={gon.recipe.url} content={JSON.parse(gon.recipe.json)} />
+            <InstructionsShortcuts/>
+            
+            <h3>Notes</h3>
+            {NoteList}
+            <button type="button" className="plain-btn" onClick={() => this.appendNote()}>
+              <img src="/icons/plus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}}/>
+            </button>
+            
+            <h2>Outils</h2>
+            <ul style={{fontSize: "1.1rem"}}>
+              {Tools}
+            </ul>
+            
+            <h2>Informations</h2>
+            <table className="table table-light">
+              <tbody>
+                <tr>
+                  <th>Sorte de recette</th>
+                  <td><CollectionSelect model={recipe} field="recipe_kind_id" options={gon.recipe_kinds.map(k => k.id)} showOption={(id) => gon.recipe_kinds.find(k => k.id == id).name} includeBlank="true"></CollectionSelect></td>
+                </tr>
+                <tr>
+                  <th>Ingrédient principal</th>
+                  <td><CollectionSelect model={recipe} field="main_ingredient_id" options={this.state.ingIds} showOption={(ingId) => gon.recipe.ingredients[ingId].name} includeBlank="true"></CollectionSelect></td>
+                </tr>
+              </tbody>
+            </table>
 
-        <h2>Références</h2>
+            <h2>Références</h2>
 
+          </div>
+        </div>
+        <div>
+          <div>Catégorie</div>
+          <div className="category-bubble">
+            <div style={{fontSize: "1.2em"}}><b>{recipe_kind ? recipe_kind.name : ''}</b></div>
+          </div>
+        </div>
       </div>
     </>)
   }
 }
+//            <p><i><%= my_sanitize(recipe_kind.description_html) %></i></p>
+//            <% nb = recipe_kind.recipes.all_public.count %>
+//            <% nb += 1 unless recipe.is_public %>
+//            <% if nb <= 1 %>
+//              <p style="font-size: 0.9em;">Il n'y a pas encore de recette similaire disponible dans cette catégorie.</p>
+//              <%= link_to "Voir la catégorie", recipe_kind, class: "btn btn-outline-primary" %>
+//            <% else %>
+//              <p style="font-size: 0.9em;">Sur ce site, il y a <%= nb %> recettes disponibles dans cette catégorie.</p>
+//              <%= link_to "Voir les recettes similaires", recipe_kind, class: "btn btn-outline-primary" %>
+//            <% end %>
 
 // https://reactjs.org/docs/integrating-with-other-libraries.html
 class Partial extends React.Component {
@@ -490,3 +496,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (root) {ReactDOM.render(<RecipeEditor ref={window.recipe_editor}/>, root)}
 })
+
+
+//            <tr>
+//              <th>Temps de préparation</th>
+//              <td><TextField model={recipe} field="preparation_time"></TextField></td>
+//            </tr>
+//            <tr>
+//              <th>Temps de cuisson</th>
+//              <td><TextField model={recipe} field="cooking_time"></TextField></td>
+//            </tr>
+//            <tr>
+//              <th>Temps total</th>
+//              <td><TextField model={recipe} field="total_time"></TextField></td>
+//            </tr>
+//            <tr>
+//              <th>Portions</th>
+//              <td><TextField model={recipe} field="raw_servings"></TextField></td>
+//            </tr>

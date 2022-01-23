@@ -1,5 +1,5 @@
 <div>
-  <div style="width: 280px; font-size: 1.2em; border: 2px solid black; border-radius: 20px; padding: 1em;">
+  <div class="category-bubble">
     <%= link_to recipe_kind, style: "color: black;" do %>
       <div style="font-size: 1.2em;"><b><%= translated(recipe_kind.name) %></b></div>
       <p><i><%= my_sanitize(recipe_kind.description_html) %></i></p>
