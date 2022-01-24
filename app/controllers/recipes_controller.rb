@@ -75,6 +75,7 @@ class RecipesController < ApplicationController
 
   def create
     @recipe = Recipe.new(recipe_params)
+    @recipe.recipe_kind = @recipe.match_category
     @recipe.user = current_user
     if @recipe.base_recipe
       @recipe.complete_instructions = @recipe.base_recipe.complete_instructions if @recipe.complete_instructions.blank?

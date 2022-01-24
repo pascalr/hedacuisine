@@ -1,4 +1,4 @@
-<h1>New Recipe</h1>
+<h1>Nouvelle recette</h1>
 
 <%= form_with(model: @recipe, local: true) do |form| %>
   <% if @recipe.errors.any? %>
@@ -14,60 +14,13 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :kind_id %>
-    <%= form.collection_select :kind_id, Kind.order(:name), :id, :name, include_blank: true %>
-  </div>
-
-  <div class="field">
-    <%= form.label :name %>
+    <%= form.label :name %><br>
     <%= form.text_field :name %>
   </div>
 
-  <%# select_radio_image(form, :recipe, :image_id) %>
-  
-  <!--
-
-  <div class="field">
-    <%# form.label :source_image %>
-    <%# form.file_field :source_image %>
-  </div>
-
-  <div class="field">
-    <%# form.label :comment %>
-    <%# form.text_area :comment, cols: 120, rows: 12 %>
-  </div>
-    <div id='paste-div' contenteditable='true' style="border: 1px solid black; width: 400px; height: 300px;">Paste an image here...</div>
-
-
-  <div class="field">
-    <%# form.label :tags %>
-    <%# collection_check_boxes(:recipe, :tag_ids, Tag.all, :id, :name) do |b|
-      b.label(:"data-value" => b.value, class: "inline_label") { b.check_box + b.text }
-    end %>
-  </div>
-
-<%# form_with(model: RecipeImage.new) do |form| %>
-  <div class="field">
-    <%# form.label :source %>
-    <%# form.text_field :source, size: 80 %>
-  </div>
-  <div class="field">
-    <%# form.label :attribution %>
-    <%# form.text_field :attribution, size: 80 %>
-  </div>
-  <div class="field">
-    <%# form.label :source_image %>
-    <%# form.file_field :source_image %>
-  </div>
-  <div class="actions">
-    <%# form.submit %>
-  </div>
-<%# end %>
-  -->
+  <br>
 
   <div class="actions">
     <%= form.submit %>
   </div>
 <% end %>
-
-<%= link_to 'Back', recipes_path %>

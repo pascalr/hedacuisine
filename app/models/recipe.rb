@@ -29,7 +29,7 @@ class Recipe < ApplicationRecord
 
   has_rich_text :rich_text
 
-  belongs_to :image, optional: true
+  belongs_to :recipe_image, optional: true, class_name: "Image", foreign_key: "image_id"
 
   belongs_to :recipe_kind, optional: true
 
@@ -140,9 +140,10 @@ class Recipe < ApplicationRecord
   def image_id
     base_recipe ? base_recipe.image_id : self[:image_id]
   end
-  alias_method :original_image, :image
   def image
-    base_recipe ? base_recipe.image : self.original_image
+    self.recipe_image || self.recipe_kind.image
+    #base_recipe ? base_recipe.image : self.recipe_image
+    #base_recipe ? base_recipe.image : self.recipe_image
   end
   
   def self.parse_quantity_and_servings_name(raw)
@@ -269,6 +270,14 @@ class Recipe < ApplicationRecord
   
   alias ingredients recipe_ingredients
   alias notes recipe_notes
+
+  def match_category
+    #words = self.name.split(' ').reject {|w| w.length <= 2}.map {|w| I18n.transliterate(w.downcase) }
+    words = self.name.split(' ').reject {|w| w.length <= 2}.map {|w| w.downcase }
+    categories = RecipeKind.where("LOWER(name) like ?", "%#{words.join('%')}%")
+    return categories.first if categories.size == 1
+    nil
+  end
 
 private
 

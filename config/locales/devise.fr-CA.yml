@@ -1,6 +1,8 @@
 fr-CA:
   activerecord:
     attributes:
+      recipe:
+        name: Nom
       user:
         confirmation_sent_at: Date d'envoi de la confirmation
         confirmation_token: Clé de confirmation du mot de passe
@@ -27,6 +29,7 @@ fr-CA:
         updated_at: Date de mise à jour
     models:
       user: Utilisateur
+      recipe: Recette
   devise:
     confirmations:
       confirmed: Votre compte a bien été confirmé.
