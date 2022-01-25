@@ -367,7 +367,9 @@ class RecipeEditor extends React.Component {
           <div class="over-container">
             <img className="recipe-show-image" src={image_path} width="452" height="304"/>
             {gon.recipe.image_path ?
-              <div class="bottom-right" style={{color: 'white', fontSize: '2em'}}>Modifier</div>
+              <div class="bottom-right" style={{color: 'white', fontSize: '2em'}}>
+                <img src="/icons/pencil-circle.svg" style={{width: "5rem", padding: "0.5rem"}}/>
+              </div>
               :
               <div class="centered" style={{fontSize: '2em', width: '100%'}}>Ajouter une image<br/>ou<br/>Sélectionner une catégorie</div>
             }
@@ -405,52 +407,42 @@ class RecipeEditor extends React.Component {
           </div>
         </div>
       </div>
-      <div style={{display: 'flex', gap: '30px'}}>
-        <div>
-          <div className="recipe-body">
+      <div className="recipe-body">
 
-            <h2>Ingrédients</h2>
-            {IngredientList}
-          
-            <h2>Instructions</h2>
-            <Tiptap model="recipe" json_field="json" html_field="html" url={gon.recipe.url} content={JSON.parse(gon.recipe.json)} />
-            <InstructionsShortcuts/>
-            
-            <h3>Notes</h3>
-            {NoteList}
-            <button type="button" className="plain-btn" onClick={() => this.appendNote()}>
-              <img src="/icons/plus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}}/>
-            </button>
-            
-            <h2>Outils</h2>
-            <ul style={{fontSize: "1.1rem"}}>
-              {Tools}
-            </ul>
-            
-            <h2>Informations</h2>
-            <table className="table table-light">
-              <tbody>
-                <tr>
-                  <th>Sorte de recette</th>
-                  <td><CollectionSelect model={recipe} field="recipe_kind_id" options={gon.recipe_kinds.map(k => k.id)} showOption={(id) => gon.recipe_kinds.find(k => k.id == id).name} includeBlank="true"></CollectionSelect></td>
-                </tr>
-                <tr>
-                  <th>Ingrédient principal</th>
-                  <td><CollectionSelect model={recipe} field="main_ingredient_id" options={this.state.ingIds} showOption={(ingId) => gon.recipe.ingredients[ingId].name} includeBlank="true"></CollectionSelect></td>
-                </tr>
-              </tbody>
-            </table>
+        <h2>Ingrédients</h2>
+        {IngredientList}
+      
+        <h2>Instructions</h2>
+        <Tiptap model="recipe" json_field="json" html_field="html" url={gon.recipe.url} content={JSON.parse(gon.recipe.json)} />
+        <InstructionsShortcuts/>
+        
+        <h3>Notes</h3>
+        {NoteList}
+        <button type="button" className="plain-btn" onClick={() => this.appendNote()}>
+          <img src="/icons/plus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}}/>
+        </button>
+        
+        <h2>Outils</h2>
+        <ul style={{fontSize: "1.1rem"}}>
+          {Tools}
+        </ul>
+        
+        <h2>Informations</h2>
+        <table className="table table-light">
+          <tbody>
+            <tr>
+              <th>Sorte de recette</th>
+              <td><CollectionSelect model={recipe} field="recipe_kind_id" options={gon.recipe_kinds.map(k => k.id)} showOption={(id) => gon.recipe_kinds.find(k => k.id == id).name} includeBlank="true"></CollectionSelect></td>
+            </tr>
+            <tr>
+              <th>Ingrédient principal</th>
+              <td><CollectionSelect model={recipe} field="main_ingredient_id" options={this.state.ingIds} showOption={(ingId) => gon.recipe.ingredients[ingId].name} includeBlank="true"></CollectionSelect></td>
+            </tr>
+          </tbody>
+        </table>
 
-            <h2>Références</h2>
+        <h2>Références</h2>
 
-          </div>
-        </div>
-        <div>
-          <div>Catégorie</div>
-          <div className="category-bubble">
-            <div style={{fontSize: "1.2em"}}><b>{recipe_kind ? recipe_kind.name : ''}</b></div>
-          </div>
-        </div>
       </div>
     </>)
   }
