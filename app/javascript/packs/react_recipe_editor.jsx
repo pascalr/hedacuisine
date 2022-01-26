@@ -16,6 +16,54 @@ import '../styles/prose_mirror.scss'
 
 import {TextField, CollectionSelect} from '../form'
 
+export const RecipeImage = ({model, imageAttr, field, modal, ...props}) => {
+
+  const [value, setValue] = useState(model[field])
+  const handleOpen = () => {
+
+    let m = new bootstrap.Modal(document.querySelector(modal));
+    const form = document.querySelector(`${modal} form`);
+    form.addEventListener("ajax:success", (event) => {
+      const [data, status, xhr] = event.detail;
+      let image = JSON.parse(xhr.responseText)
+      model[imageAttr] = image
+      updateModelField(model, field, image.id)
+    });
+    m.show();
+  }
+
+  const removeImage = (evt) => {
+    model[imageAttr] = null
+    updateModelField(model, field, null)
+    //Rails.ajax({url: ing.url, type: 'DELETE', success: (raw) => {
+    //  window.recipe_editor.current.removeIng(ing.id)
+    //  delete gon.recipe.ingredients[ing.id]
+    //}})
+  }
+
+
+  return (<>
+    <div style={{cursor: "pointer"}} onClick={handleOpen}>
+      {props.children}
+    </div>
+  </>)
+  //if (!model[field]) {
+  //  return (<>
+  //    <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-recipe-image-modal" onClick={handleOpen}>
+  //      Ajouter une image
+  //    </button>
+  //  </>)
+  //} else if (model[imageAttr]) {
+  //  return (
+  //    <span>
+  //      {model[imageAttr].filename}
+  //      <DeleteConfirmButton id={`del-im-${model[imageAttr].id}`} onDeleteConfirm={removeImage} message="Je veux enlever cette image?" />
+  //    </span>
+  //  )
+  //}
+  //throw "ImageField missing imageAttr"
+}
+
 
 function updateIngQuantityCallback() {
 }
@@ -364,15 +412,17 @@ class RecipeEditor extends React.Component {
     return (<>
       <div className="responsive-sm-above">
         <div>
-          <div class="over-container">
-            <img className="recipe-show-image" src={image_path} width="452" height="304"/>
-            {gon.recipe.image_path ?
-              <div class="bottom-right" style={{color: 'white', fontSize: '2em'}}>
-                <img src="/icons/pencil-circle.svg" style={{width: "5rem", padding: "0.5rem"}}/>
-              </div>
-              :
-              <div class="centered" style={{fontSize: '2em', width: '100%'}}>Ajouter une image<br/>ou<br/>Sélectionner une catégorie</div>
-            }
+          <div className="over-container">
+            <RecipeImage model={recipe} field='image_id' imageAttr='image' modal='#edit-recipe-image-modal'>
+              <img className="recipe-show-image" src={image_path} width="452" height="304"/>
+              {gon.recipe.image_path ?
+                <div className="bottom-right" style={{color: 'white', fontSize: '2em'}}>
+                  <img src="/icons/pencil-circle.svg" style={{width: "5rem", padding: "0.5rem"}}/>
+                </div>
+                :
+                <div className="centered" style={{fontSize: '2em', width: '100%'}}>Ajouter une image<br/>ou<br/>Sélectionner une catégorie</div>
+              }
+            </RecipeImage>
           </div> 
         </div>
         <div style={{width: '100%'}}>

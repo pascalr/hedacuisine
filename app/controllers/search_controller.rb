@@ -14,7 +14,7 @@ class SearchController < ApplicationController
         books = Book.all_public.includes(:front_page_image).order(:name)
         if current_user
           @items += books.select {|b| b.user_id == current_user.id}
-          recipes = current_user.recipes.includes(:image).order(:name)
+          recipes = current_user.recipes.includes(:recipe_image).order(:name)
           @items += recipes
           kinds = recipes.map(&:recipe_kind_id)
           recipe_kinds = recipe_kinds.reject {|r| kinds.include?(r.id) }

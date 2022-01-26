@@ -15,17 +15,23 @@ class Image < ApplicationRecord
 
   # image_tag user.avatar.variant(resize_to_limit: [100, 100], format: :jpeg, sampling_factor: "4:2:0", strip: true, interlace: "JPEG", colorspace: "sRGB", quality: 80)
 
+  VARIANTS = {
+    thumb: {width: 71, height: 48},
+    portrait_thumb: {width: 71, height: 106.5},
+    small: {width: 255, height: 171},
+    medium: {width: 452, height: 304}
+  }
   def thumb_variant
-    original.representation(resize_to_fill: [71, 48])
+    original.representation(resize_to_fill: [VARIANTS[:thumb][:width], VARIANTS[:thumb][:height]])
   end
   def portrait_thumb_variant
-    original.representation(resize_to_fill: [71, 106.5])
+    original.representation(resize_to_fill: [VARIANTS[:portrait_thumb][:width], VARIANTS[:portrait_thumb][:height]])
   end
   def small_variant
-    original.representation(resize_to_fill: [255, 171])
+    original.representation(resize_to_fill: [VARIANTS[:small][:width], VARIANTS[:small][:height]])
   end
   def medium_variant
-    original.representation(resize_to_fill: [452, 304])
+    original.representation(resize_to_fill: [VARIANTS[:medium][:width], VARIANTS[:medium][:height]])
   end
 
   def width
