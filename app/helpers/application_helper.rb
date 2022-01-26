@@ -53,10 +53,6 @@ module ApplicationHelper
     "#{_base_image_path(image)}/original#{image.extension}"
   end
   # All below should be deprecated? Can I use image_variant_path(image, :thumb) everywhere?
-  def medium_image_path(image) 
-    return nil if image.nil?
-    "#{_base_image_path(image)}/medium#{image.extension}"
-  end
   def small_image_path(image)
     return nil if image.nil?
     "#{_base_image_path(image)}/small#{image.extension}"
