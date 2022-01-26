@@ -1,15 +1,13 @@
 <div class="modal fade" id="edit-recipe-image-modal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog  modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="add_image_modal_label">Aperçu</h5>
-        <% if recipe.image %>
-        <% else %>
-          Aucune image
-        <% end %>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
       <div class="modal-body">
+        <h5 class="modal-title" id="add_image_modal_label">Aperçu</h5>
+        <div>
+          <%= render partial: recipe.image, locals: {variant: :small} if recipe.image %>
+        </div>
+        <hr>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         <%= form_with(model: recipe.image, local: false, id: 'edit-recipe-image-form') do |form| %>
           <br>
           <br>
