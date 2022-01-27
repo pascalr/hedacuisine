@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_16_200902) do
+ActiveRecord::Schema.define(version: 2022_01_27_083824) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -528,6 +528,7 @@ ActiveRecord::Schema.define(version: 2022_01_16_200902) do
     t.boolean "mods_unpublished"
     t.text "json"
     t.text "html"
+    t.boolean "use_personalised_image"
   end
 
   create_table "references", force: :cascade do |t|

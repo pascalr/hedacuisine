@@ -2,73 +2,45 @@
   <div class="modal-dialog  modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-body">
+        <button style="float: right;" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         <h5 class="modal-title" id="add_image_modal_label">Aperçu</h5>
         <div>
           <%= render partial: recipe.image, locals: {variant: :small} if recipe.image %>
         </div>
         <hr>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        <%= form_with(model: recipe.image, local: false, id: 'edit-recipe-image-form') do |form| %>
-          <br>
-          <br>
-          <%= form.radio_button 'use_blah_blah', 0 %>
-          <%= form.label 'use_blah_blah', "Utliser l'image de la catégorie de recette", value: 0 %>
+        <%= form_with(url: update_image_recipe_path(recipe), local: false, id: 'edit-recipe-image-form') do |form| %>
+          <%= radio_button_tag 'recipe[use_personalised_image]', false, recipe.use_personalised_image.blank? %>
+          <%= label_tag 'recipe_use_personalised_image_false', "Utliser l'image de la catégorie de cette recette" %>
           <div style="padding-left: 2em;">
             <% unless recipe.recipe_kind %>
               <p>Nous n'avons pas ou nous n'avons pas encore trouvé de catégorie pour cette recette pour l'instant.</p>
             <% end %>
             <br>
           </div>
-          <%= form.radio_button 'use_blah_blah', 1 %>
-          <%= form.label 'use_blah_blah', 'Utiliser une image personnelle', value: 1 %>
+          <%= radio_button_tag 'recipe[use_personalised_image]', true, recipe.use_personalised_image == true %>
+          <%= label_tag 'recipe_use_personalised_image_true', "Utiliser une image personnalisée" %>
           <div style="padding-left: 2em;">
-            <%= form.radio_button 'license_blah_blah', 1 %>
-            <%= form.label 'license_blah_blah', 'Image privé', value: 1 %>
+            <div style="height: 0.5em;"></div>
+            <%= file_field_tag 'image[original]', value: recipe.image.original %>
+            <div style="height: 0.5em;"></div>
+            <%= radio_button_tag 'image[user_is_author]', true %>
+            <%= label_tag 'image_user_is_author_true', "Je suis l'auteur de cette image", value: true %>
+            <div style="height: 0.5em;"></div>
+            <%= radio_button_tag 'image[user_is_author]', false %>
+            <%= label_tag 'image_user_is_author_false', "L'image est publique sous une license qui permet son usage", value: false %>
+            <div style="height: 0.5em;"></div>
+            <div style="padding-left: 2em;">
+              <%= label_tag :author %>
+              <%= text_field_tag :author, recipe.recipe_image ? recipe.recipe_image.author : nil%>
+              <div style="height: 0.5em;"></div>
+              <%= label_tag :source %>
+              <%= text_field_tag :source, recipe.recipe_image ? recipe.recipe_image.source : nil %>
+            </div>
             <br>
-            <%= form.radio_button 'license_blah_blah', 2 %>
-            <%= form.label 'license_blah_blah', 'Image public', value: 2 %>
-          </div>
-          <br>
-          <%= form.radio_button 'use_blah_blah', 2 %>
-          <%= form.label 'use_blah_blah', 'Utiliser une image publique', value: 2 %>
-          <div style="padding-left: 2em;">
-            <p>L'image doit être sous une license qui permet d'être utilisé sur ce site.</p>
-            <div class="field">
-              <%= form.label :author %>
-              <%= form.text_field :author %>
-            </div>
-            <div class="field">
-              <%= form.label :source %>
-              <%= form.text_field :source %>
-            </div>
-          </div>
-          <div class="field">
-            <%= form.label :original %>
-            <%= form.file_field :original %>
-          </div>
-          <br>
-          <div class="field">
-            <%= form.label :is_user_author, "Je suis l'auteur de cette image." %>
-            <%= form.check_box :is_user_author, checked: true, id: 'is-user-author-checkbox' %>
-          </div>
-          <div id="author_credit_fields" class="disabled">
-            <div class="field">
-              <%= form.label :author %>
-              <%= form.text_field :author %>
-            </div>
-            <div class="field">
-              <%= form.label :source %>
-              <%= form.text_field :source %>
-            </div>
-          </div>
-          <br>
-          <div class="field">
-            <%= form.check_box :rights_given, checked: true %>
-            Je confirme que l'image est libre de droit ou que je possède et cède le droit d'utiliser cette image.
           </div>
           <br>
           <div class="actions">
-            <%= form.submit "Ajouter", class: "btn btn-primary" %>
+            <%= submit_tag "Modifier", class: "btn btn-primary" %>
           </div>
         <% end %>
       </div>

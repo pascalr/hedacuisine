@@ -142,6 +142,7 @@ Rails.application.routes.draw do
         patch 'cheat', param: 'slug'
         get 'validate'#, param: 'slug'
         patch 'move_ing', param: 'slug'
+        patch 'update_image', param: 'slug'
       end
 
       collection do
