@@ -2,6 +2,7 @@ class Image < ApplicationRecord
   has_one_attached :original
 
   has_many :recipes
+  has_many :recipe_kinds
 
   def original=(file)
     super(file)

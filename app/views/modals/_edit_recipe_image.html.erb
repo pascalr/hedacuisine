@@ -1,3 +1,4 @@
+<% recipe.recipe_image = Image.new if recipe.recipe_image.blank? %>
 <div class="modal fade" id="edit-recipe-image-modal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog  modal-dialog-centered">
     <div class="modal-content">
@@ -17,17 +18,17 @@
             <% end %>
             <br>
           </div>
-          <%= radio_button_tag 'recipe[use_personalised_image]', true, recipe.use_personalised_image == true %>
+          <%= radio_button_tag 'recipe[use_personalised_image]', true, recipe.use_personalised_image %>
           <%= label_tag 'recipe_use_personalised_image_true', "Utiliser une image personnalisée" %>
           <div style="padding-left: 2em;">
             <div style="height: 0.5em;"></div>
-            <%= file_field_tag 'image[original]', value: recipe.image.original %>
+            <%= file_field_tag 'image[original]', value: recipe.recipe_image.original %>
             <div style="height: 0.5em;"></div>
-            <%= radio_button_tag 'image[user_is_author]', true %>
-            <%= label_tag 'image_user_is_author_true', "Je suis l'auteur de cette image", value: true %>
+            <%= radio_button_tag 'image[is_user_author]', true, recipe.recipe_image.is_user_author %>
+            <%= label_tag 'image_is_user_author_true', "Je suis l'auteur de cette image", value: true %>
             <div style="height: 0.5em;"></div>
-            <%= radio_button_tag 'image[user_is_author]', false %>
-            <%= label_tag 'image_user_is_author_false', "L'image est publique sous une license qui permet son usage", value: false %>
+            <%= radio_button_tag 'image[is_user_author]', false, recipe.recipe_image.is_user_author.blank? %>
+            <%= label_tag 'image_is_user_author_false', "L'image est publique sous une license qui permet son usage", value: false %>
             <div style="height: 0.5em;"></div>
             <div style="padding-left: 2em;">
               <%= label_tag :author %>

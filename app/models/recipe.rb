@@ -141,7 +141,8 @@ class Recipe < ApplicationRecord
     base_recipe ? base_recipe.image_id : self[:image_id]
   end
   def image
-    self.recipe_image || (self.recipe_kind ? self.recipe_kind.image : nil)
+    use_personalised_image ? self.recipe_image : (self.recipe_kind ? self.recipe_kind.image : nil)
+    #self.recipe_image || (self.recipe_kind ? self.recipe_kind.image : nil)
     #base_recipe ? base_recipe.image : self.recipe_image
     #base_recipe ? base_recipe.image : self.recipe_image
   end
