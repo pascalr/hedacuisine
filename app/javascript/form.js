@@ -14,6 +14,33 @@ export const TextInputField = ({model, field}) => {
   )
 }
 
+const asyncUpdateModelField = (model, field, value) => {
+
+  if (value == model[field]) {
+    console.log(`Skipping update ${model.class_name} ${field} because it is unchanged.`)
+  } else {
+    if (!model.onUpdate) {
+      throw("asyncUpdateModelField requires the model to handle onUpdate")
+    }
+    model[field] = value
+    model.onUpdate(model)
+
+    let data = new FormData()
+    data.append(model.class_name+"["+field+"]", value)
+    console.log('PATCH', model.url)
+    Rails.ajax({url: model.url, type: 'PATCH', data: data})
+    // TODO: Handle the errors especially properly. Warn the user that the data has not been saved. Maybe retry?
+    //Rails.ajax({url: model.url, type: 'PATCH', data: data, success: () => {
+    //  console.log(`Updating model ${field} from ${model[field]} to ${value}.`)
+    //  model[field] = value
+    //  if (successCallback) {successCallback()}
+    //  if (model.onUpdate) {model.onUpdate(model)}
+    //}, error: (errors) => {
+    //  toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
+    //}})
+  }
+}
+
 const updateModelField = (model, field, value, successCallback=null) => {
   if (value != model[field]) {
 
@@ -81,22 +108,23 @@ export const ToggleField = ({model, field, labelOn, labelOff, ...props}) => {
   </>)
 }
 export const RadioField = ({model, field, value, label, ...props}) => {
-  const [checked, setChecked] = useState(model[field] == value)
   let id = `${model.class_name}_${field}_${value}`
+  console.log(id, model[field])
   return (<>
     <input type="radio" value={value} name={model.class_name+"["+field+"]"}
-      id={id} {...props} checked={checked}
-      onChange={(e) => {
-        let checked = e.target.checked
-        setChecked(checked)
-        if (checked) {
-          updateModelField(model, field, value)
-        }
-      }}
+      id={id} {...props} checked={model[field] == value}
+      onChange={(e) => {asyncUpdateModelField(model, field, value)}}
     />
     {label ? <label htmlFor={id}>{' '}{label}</label> : ''}
           
   </>)
+      //onChange={(e) => {
+      //  let checked = e.target.checked
+      //  setChecked(checked)
+      //  if (checked) {
+      //    updateModelField(model, field, value)
+      //  }
+      //}}
 }
 export const TextField = ({model, field, ...props}) => {
   const [value, setValue] = useState(model[field])

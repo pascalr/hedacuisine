@@ -18,12 +18,12 @@ export const EditRecipeImageModal = ({recipe, show, handleClose}) => {
             </div>
           </div>
           <hr/>
-          <RadioField model={recipe} field="use_personalised_image" value={false} label="Utliser l'image de la catégorie de cette recette"/>
+          <RadioField model={recipe} field="use_personalised_image" value={false} label="Utiliser l'image de la catégorie de cette recette"/>
           <div style={{paddingLeft: "2em"}}>
             <br/>
           </div>
           <RadioField model={recipe} field="use_personalised_image" value={true} label="Utiliser une image personnalisée"/>
-          <div style={{paddingLeft: "2em"}}>
+          <div className={recipe.use_personalised_image ? undefined : 'disabled'} style={{paddingLeft: "2em"}}>
             <div style={{height: "0.5em"}}/>
             <input type="file" name="image[original]" id="image_original"/>
             <div style={{height: "0.5em"}}/>
