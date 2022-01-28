@@ -3,9 +3,14 @@ import ReactDOM from 'react-dom'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 
+import { getRecipeImage } from "lib"
 import {RadioField} from 'form'
 
 export const EditRecipeImageModal = ({recipe, show, handleClose}) => {
+
+  const image = getRecipeImage(recipe)
+  const imagePath = image.path || "/default_recipe_01.png"
+
   return (<>
     <Modal show={show} onHide={handleClose}>
       <Modal.Dialog>
@@ -14,7 +19,7 @@ export const EditRecipeImageModal = ({recipe, show, handleClose}) => {
           <h5 className="modal-title">Aperçu</h5>
           <div>
             <div style={{width: "fit-content"}}>
-              <img style={{maxWidth: "100vh", height: "auto"}} src="/images/15/small.jpg" width="255" height="171"/>
+              <img style={{maxWidth: "100vh", height: "auto"}} src={imagePath} width="255" height="171"/>
             </div>
           </div>
           <hr/>

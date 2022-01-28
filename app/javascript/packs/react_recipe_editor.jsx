@@ -8,6 +8,7 @@ import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from '
 
 import Quantity from 'models/quantity'
 import { Ingredient, Utils } from "recipe_utils"
+import { getRecipeImage } from "lib"
 
 import { DeleteConfirmButton } from 'components/delete_confirm_button'
 
@@ -411,7 +412,8 @@ class RecipeEditor extends React.Component {
 
     const recipe = this.state.recipe
     const recipe_kind = gon.recipe_kinds.find(k => k.id == recipe.recipe_kind_id)
-    const image_path = gon.recipe.image_path || "/default_recipe_01.png"
+    const image = getRecipeImage(recipe)
+    const imagePath = image.path || "/default_recipe_01.png"
     //console.log(model)
     
     return (<>
@@ -419,8 +421,8 @@ class RecipeEditor extends React.Component {
         <div>
           <div className="over-container">
             <RecipeImage model={recipe} field='image_id' imageAttr='image' modal='#edit-recipe-image-modal'>
-              <img className="recipe-show-image" src={image_path} width="452" height="304"/>
-              {gon.recipe.image_path ?
+              <img style={{maxWidth: "100vh", height: "auto"}} src={imagePath} width="452" height="304"/>
+              {imagePath ?
                 <div className="bottom-right" style={{color: 'white', fontSize: '2em'}}>
                   <img src="/icons/pencil-circle.svg" style={{width: "5rem", padding: "0.5rem"}}/>
                 </div>
