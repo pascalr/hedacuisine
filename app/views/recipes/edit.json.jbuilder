@@ -15,6 +15,18 @@ json.recipe do
   json.raw_servings @recipe.raw_servings
   json.move_ing_url move_ing_recipe_path(@recipe)
   json.json @recipe.json
+  json.use_personalised_image @recipe.use_personalised_image
+  if @recipe.recipe_image
+    json.recipe_image do
+      json.path @application_controller.image_variant_path(@recipe.recipe_image, :medium)
+      json.is_user_author @recipe.recipe_image.is_user_author
+    end
+  end
+  if @recipe.recipe_kind && @recipe.recipe_kind.image
+    json.recipe_kind_image do
+      json.path @application_controller.image_variant_path(@recipe.recipe_kind.image, :medium)
+    end
+  end
   json.image_path @application_controller.image_variant_path(@recipe.image, :medium)
   json.notes do
     @recipe.notes.order(:item_nb).each do |note|

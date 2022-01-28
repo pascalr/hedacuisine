@@ -22,9 +22,14 @@ export function normalizeSearchText(text) {
   return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
 }
 
+export function toBoolean(a) {
+  return String(a).toLowerCase() == "true"
+}
+
 const Utils = {}
 Utils.addExtensionToPath = addExtensionToPath
 Utils.colorToHexString = colorToHexString
 Utils.hexStringToColor = hexStringToColor
 Utils.normalizeSearchText = normalizeSearchText
+Utils.toBoolean = toBoolean
 export { Utils }

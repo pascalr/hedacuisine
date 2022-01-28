@@ -19,6 +19,7 @@ const updateModelField = (model, field, value, successCallback=null) => {
 
     let data = new FormData()
     data.append(model.class_name+"["+field+"]", value)
+    console.log('PATCH', model.url)
     Rails.ajax({url: model.url, type: 'PATCH', data: data, success: () => {
       console.log(`Updating model ${field} from ${model[field]} to ${value}.`)
       model[field] = value
@@ -77,6 +78,24 @@ export const ToggleField = ({model, field, labelOn, labelOff, ...props}) => {
     <label htmlFor={id}>{model[field] ? on : off}</label> 
     <input type="checkbox" value={model[field]||''} name={name} id={id} {...props}
       onChange={(e) => {updateModelField(model, field, e.target.checked)}} hidden />
+  </>)
+}
+export const RadioField = ({model, field, value, label, ...props}) => {
+  const [checked, setChecked] = useState(model[field] == value)
+  let id = `${model.class_name}_${field}_${value}`
+  return (<>
+    <input type="radio" value={value} name={model.class_name+"["+field+"]"}
+      id={id} {...props} checked={checked}
+      onChange={(e) => {
+        let checked = e.target.checked
+        setChecked(checked)
+        if (checked) {
+          updateModelField(model, field, value)
+        }
+      }}
+    />
+    {label ? <label htmlFor={id}>{' '}{label}</label> : ''}
+          
   </>)
 }
 export const TextField = ({model, field, ...props}) => {

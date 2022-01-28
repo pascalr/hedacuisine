@@ -16,20 +16,24 @@ import '../styles/prose_mirror.scss'
 
 import {TextField, CollectionSelect} from '../form'
 
+import {EditRecipeImageModal} from '../modals'
+
 export const RecipeImage = ({model, imageAttr, field, modal, ...props}) => {
 
+  const [showModal, setShowModal] = useState(false);
   const [value, setValue] = useState(model[field])
   const handleOpen = () => {
 
-    let m = new bootstrap.Modal(document.querySelector(modal));
-    const form = document.querySelector(`${modal} form`);
-    form.addEventListener("ajax:success", (event) => {
-      const [data, status, xhr] = event.detail;
-      let image = JSON.parse(xhr.responseText)
-      model[imageAttr] = image
-      updateModelField(model, field, image.id)
-    });
-    m.show();
+    setShowModal(true)
+    //let m = new bootstrap.Modal(document.querySelector(modal));
+    //const form = document.querySelector(`${modal} form`);
+    //form.addEventListener("ajax:success", (event) => {
+    //  const [data, status, xhr] = event.detail;
+    //  let image = JSON.parse(xhr.responseText)
+    //  model[imageAttr] = image
+    //  updateModelField(model, field, image.id)
+    //});
+    //m.show();
   }
 
   const removeImage = (evt) => {
@@ -43,6 +47,7 @@ export const RecipeImage = ({model, imageAttr, field, modal, ...props}) => {
 
 
   return (<>
+    <EditRecipeImageModal recipe={model} show={showModal} handleClose={() => setShowModal(false)} />
     <div style={{cursor: "pointer"}} onClick={handleOpen}>
       {props.children}
     </div>
