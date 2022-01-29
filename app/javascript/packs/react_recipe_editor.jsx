@@ -251,6 +251,12 @@ class RecipeEditor extends React.Component {
       instructionsSlave: gon.recipe.complete_instructions,
       showImageModal: false,
     };
+    //this.state.recipe.recipe_image.onUpdate = () => {
+    //  throw "TODO: Image onUpdate"
+    //  recipe = {...this.state.recipe}
+    //  recipe.recipe_image 
+    //  this.setStete
+    //}
     this.state.recipe.onUpdate = (recipe) => {this.setState({recipe})}
     this.handleDropIng = this.handleDropIng.bind(this);
   }
@@ -362,7 +368,7 @@ class RecipeEditor extends React.Component {
     const recipe = this.state.recipe
     const recipe_kind = gon.recipe_kinds.find(k => k.id == recipe.recipe_kind_id)
     const image = getRecipeImage(recipe)
-    const imagePath = image.path || "/default_recipe_01.png"
+    const imagePath = (image && image.path) || "/default_recipe_01.png"
     //console.log(model)
     
     return (<>
@@ -455,16 +461,6 @@ class RecipeEditor extends React.Component {
     </>)
   }
 }
-//            <p><i><%= my_sanitize(recipe_kind.description_html) %></i></p>
-//            <% nb = recipe_kind.recipes.all_public.count %>
-//            <% nb += 1 unless recipe.is_public %>
-//            <% if nb <= 1 %>
-//              <p style="font-size: 0.9em;">Il n'y a pas encore de recette similaire disponible dans cette catégorie.</p>
-//              <%= link_to "Voir la catégorie", recipe_kind, class: "btn btn-outline-primary" %>
-//            <% else %>
-//              <p style="font-size: 0.9em;">Sur ce site, il y a <%= nb %> recettes disponibles dans cette catégorie.</p>
-//              <%= link_to "Voir les recettes similaires", recipe_kind, class: "btn btn-outline-primary" %>
-//            <% end %>
 
 // https://reactjs.org/docs/integrating-with-other-libraries.html
 class Partial extends React.Component {
@@ -496,21 +492,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (root) {ReactDOM.render(<RecipeEditor ref={window.recipe_editor}/>, root)}
 })
-
-
-//            <tr>
-//              <th>Temps de préparation</th>
-//              <td><TextField model={recipe} field="preparation_time"></TextField></td>
-//            </tr>
-//            <tr>
-//              <th>Temps de cuisson</th>
-//              <td><TextField model={recipe} field="cooking_time"></TextField></td>
-//            </tr>
-//            <tr>
-//              <th>Temps total</th>
-//              <td><TextField model={recipe} field="total_time"></TextField></td>
-//            </tr>
-//            <tr>
-//              <th>Portions</th>
-//              <td><TextField model={recipe} field="raw_servings"></TextField></td>
-//            </tr>

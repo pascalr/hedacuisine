@@ -9,7 +9,7 @@ import {RadioField} from 'form'
 export const EditRecipeImageModal = ({recipe, show, handleClose}) => {
 
   const image = getRecipeImage(recipe)
-  const imagePath = image.path || "/default_recipe_01.png"
+  const imagePath = (image && image.path) || "/default_recipe_01.png";
 
   return (<>
     <Modal show={show} onHide={handleClose}>
@@ -23,28 +23,37 @@ export const EditRecipeImageModal = ({recipe, show, handleClose}) => {
             </div>
           </div>
           <hr/>
-          <RadioField model={recipe} field="use_personalised_image" value={false} label="Utiliser l'image de la catégorie de cette recette"/>
-          <div style={{paddingLeft: "2em"}}>
-            <br/>
-          </div>
-          <RadioField model={recipe} field="use_personalised_image" value={true} label="Utiliser une image personnalisée"/>
-          <div className={recipe.use_personalised_image ? undefined : 'disabled'} style={{paddingLeft: "2em"}}>
-            <div style={{height: "0.5em"}}/>
-            <input type="file" name="image[original]" id="image_original"/>
-            <div style={{height: "0.5em"}}/>
-            <RadioField model={image} field="is_user_author" value={true} label="Je suis l'auteur de cette image" />
-            <div style={{height: "0.5em"}}/>
-            <RadioField model={image} field="is_user_author" value={false} label="L'image est publique sous une license qui permet son usage" />
-            <div style={{height: "0.5em"}}/>
-            <div style={{paddingLeft: "2em"}}>
-              <label htmlFor="author">Author</label>
-              <input type="text" name="author" id="author"/>
+          {!recipe.recipe_kind || !recipe.recipe_kind.path ?
+            <div className="disabled">
+              <RadioField model={recipe} field="use_personalised_image" value={'foo'} label="Utiliser l'image de la catégorie de cette recette"/>
               <div style={{height: "0.5em"}}/>
-              <label htmlFor="source">Source</label>
-              <input type="text" name="source" id="source"/>
+              <div style={{paddingLeft: "2em"}}>
+                <p><i>Nous n'avons pas ou nous n'avons pas encore trouvé de catégorie avec une image pour cette recette.</i></p>
+              </div>
             </div>
-            <br/>
-          </div>
+          :
+            <RadioField model={recipe} field="use_personalised_image" value={false} label="Utiliser l'image de la catégorie de cette recette"/>
+          }
+          <RadioField model={recipe} field="use_personalised_image" value={true} label="Utiliser une image personnalisée"/>
+          {!recipe.recipe_image ? '' :
+            <div className={recipe.use_personalised_image ? undefined : 'disabled'} style={{paddingLeft: "2em"}}>
+              <div style={{height: "0.5em"}}/>
+              <input type="file" name="image[original]" id="image_original"/>
+              <div style={{height: "0.5em"}}/>
+              <RadioField model={recipe.recipe_image} field="is_user_author" value={true} label="Je suis l'auteur de cette image" />
+              <div style={{height: "0.5em"}}/>
+              <RadioField model={recipe.recipe_image} field="is_user_author" value={false} label="L'image est publique sous une license qui permet son usage" />
+              <div style={{height: "0.5em"}}/>
+              <div style={{paddingLeft: "2em"}}>
+                <label htmlFor="author">Author</label>
+                <input type="text" name="author" id="author"/>
+                <div style={{height: "0.5em"}}/>
+                <label htmlFor="source">Source</label>
+                <input type="text" name="source" id="source"/>
+              </div>
+              <br/>
+            </div>
+          }
         </Modal.Body>
       </Modal.Dialog>
     </Modal>

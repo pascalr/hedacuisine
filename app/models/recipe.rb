@@ -243,6 +243,14 @@ class Recipe < ApplicationRecord
     list
     # TODO: Add warnings when ingredients are not in the ingredient text.
   end
+
+  def use_personalised_image=(value)
+    if value && !self.recipe_image
+      self.recipe_image = Image.new
+      self.recipe_image.save!
+    end
+    super(value)
+  end
   
   #def missing_ingredients_for(user)
   #  #ingredients.filter {|i| user.food_preferences.in_stock.not.where(food_id: i.food_id).exists? }
