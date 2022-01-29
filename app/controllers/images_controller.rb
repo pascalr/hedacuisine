@@ -58,7 +58,7 @@ class ImagesController < ApplicationController
     respond_to do |format|
       @image.update!(image_params)
       format.html { redirect_back fallback_location: image_path(@image) }
-      format.json { render partial: @image }
+      format.json { render json: {image: to_obj(@image)} }
     end
   end
 

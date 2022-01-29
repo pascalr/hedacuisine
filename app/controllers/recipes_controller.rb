@@ -3,8 +3,6 @@ class RecipesController < ApplicationController
   skip_before_action :authenticate_user!, only: [:show, :index]
   skip_before_action :only_admin!, only: [:show, :index]
 
-  include SerializeHelper 
-
   def index
     #@recipes = Recipe.all_main.all_public.with_images.order(:created_at)
     @kinds = Kind.all

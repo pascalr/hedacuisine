@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   before_action :only_admin!
 
   include ApplicationHelper
+  include SerializeHelper 
 
   # An ugly hack because I don't know how to access external methods form jbuilder.
   before_action :set_application_controller
