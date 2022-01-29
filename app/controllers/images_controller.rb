@@ -55,8 +55,11 @@ class ImagesController < ApplicationController
   end
 
   def update
-    @image.update!(image_params)
-    redirect_back fallback_location: image_path(@image)
+    respond_to do |format|
+      @image.update!(image_params)
+      format.html { redirect_back fallback_location: image_path(@image) }
+      format.json { render partial: @image }
+    end
   end
 
   def destroy

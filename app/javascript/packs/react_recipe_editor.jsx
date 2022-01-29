@@ -243,7 +243,7 @@ class RecipeEditor extends React.Component {
     let noteIds = gon.recipe.notes ? Object.values(gon.recipe.notes).sort((a,b) => a.item_nb - b.item_nb).map(ing => ing.id) : []
     this.state = {
       recipe: gon.recipe,
-      recipeImage: gon.recipe_image || {},
+      recipe_image: gon.recipe_image || {},
       name: gon.recipe.name,
       ingIds: ingIds,
       noteIds: noteIds,
@@ -258,12 +258,12 @@ class RecipeEditor extends React.Component {
     //  this.setStete
     //}
     this.state.recipe.onUpdate = (recipe) => {this.setState({recipe})}
-    this.state.recipe.onServerUpdate = ({recipe, recipeImage}) => {
-      if (!this.state.recipeImage.url && recipeImage && recipeImage.url) {
-        this.setState({recipeImage})
+    this.state.recipe.onServerUpdate = ({recipe, recipe_image}) => {
+      if (!this.state.recipe_image.url && recipe_image && recipe_image.url) {
+        this.setState({recipe_image: {...this.state.recipe_image, ...recipe_image}})
       }
     }
-    this.state.recipeImage.onUpdate = (recipeImage) => {this.setState({recipeImage})}
+    this.state.recipe_image.onUpdate = (recipe_image) => {this.setState({recipe_image})}
     this.handleDropIng = this.handleDropIng.bind(this);
   }
 
@@ -373,9 +373,9 @@ class RecipeEditor extends React.Component {
 
     const recipe = this.state.recipe
     const recipe_kind = gon.recipe_kinds.find(k => k.id == recipe.recipe_kind_id)
-    const recipeImage = this.state.recipeImage
+    const recipe_image = this.state.recipe_image
     const recipeKindImage = gon.recipe_kind_image
-    const image = recipe.use_personalised_image ? recipeImage : recipeKindImage
+    const image = recipe.use_personalised_image ? recipe_image : recipeKindImage
     const imagePath = (image && image.path) || "/default_recipe_01.png"
     //console.log(model)
     
@@ -385,7 +385,7 @@ class RecipeEditor extends React.Component {
           <div className="over-container">
             <EditRecipeImageModal recipe={recipe} show={this.state.showImageModal}
                                   handleClose={() => this.setState({showImageModal: false})}
-                                  recipeImage={recipeImage} recipeKindImage={recipeKindImage} />
+                                  recipeImage={recipe_image} recipeKindImage={recipeKindImage} />
             <div style={{cursor: "pointer"}} onClick={() => this.setState({showImageModal: true})}>
               <img style={{maxWidth: "100vh", height: "auto"}} src={imagePath} width="452" height="304"/>
               <div className="bottom-right" style={{color: 'white', fontSize: '2em'}}>

@@ -35,7 +35,7 @@ export const EditRecipeImageModal = ({recipe, recipeImage, recipeKindImage, show
           }
           <div style={{height: "0.5em"}}/>
           <RadioField model={recipe} field="use_personalised_image" value={true} label="Utiliser une image personnalisée"/>
-          {!recipeImage ? '' :
+          {!recipeImage || !recipeImage.url ? '' :
             <div className={recipe.use_personalised_image ? undefined : 'disabled'} style={{paddingLeft: "2em"}}>
               <div style={{height: "0.5em"}}/>
               <FileField model={recipeImage} field="original" maxSizeBytes={2*1000*1000} />

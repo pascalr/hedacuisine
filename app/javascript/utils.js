@@ -22,30 +22,34 @@ export function addExtensionToPath(ext, path) {
  * url
  * contentType: default is "application/json"
  * type: "GET", "PATCH" or "POST"
- * data: the object to send
+ * data: the data to send either as an object or a FormData
  * sucess: success callback function
  * error: error callback function
 **/
 export function ajax(params) {
-  //let data = new FormData()
-  //data.append(model.class_name+"["+field+"]", value)
-  // Rails.ajax does not work with contentType "application/json"
-  // https://github.com/rails/rails/issues/31507
-  // I don't think I should be using it anyways...
-  //Rails.ajax({contentType: "application/json", beforeSend: () => true, ...params})
-  let data = {
-    authenticity_token: $('[name="csrf-token"]')[0].content,
-    ...params.data
+
+  if (params.data instanceof FormData) {
+
+    params.url = addExtensionToPath("json", params.url)
+    Rails.ajax(params)
+
+  } else {
+
+    let data = {
+      authenticity_token: $('[name="csrf-token"]')[0].content,
+      ...params.data
+    }
+    $.ajax({
+      type: params.type,
+      url: addExtensionToPath("json", params.url),
+      data: data,
+      //contentType: "application/json",
+      //data: JSON.stringify(data),
+      success: params.success,
+      error: params.error,
+    });
+
   }
-  $.ajax({
-    type: params.type,
-    url: addExtensionToPath("json", params.url),
-    data: data,
-    //contentType: "application/json",
-    //data: JSON.stringify(data),
-    success: params.success,
-    error: params.error,
-  });
 }
 
 // https://stackoverflow.com/questions/990904/remove-accents-diacritics-in-a-string-in-javascript

@@ -25,11 +25,11 @@ const asyncUpdateModelField = (model, field, value) => {
     model[field] = value
     model.onUpdate(model)
 
-    let data = {
-      [model.class_name]: {[field]: value}
-    }
-    //let data = new FormData()
-    //data.append(model.class_name+"["+field+"]", value)
+    //let data = {
+    //  [model.class_name]: {[field]: value}
+    //}
+    let data = new FormData()
+    data.append(model.class_name+"["+field+"]", value)
     //Rails.ajax({url: model.url, type: 'PATCH', data: data})
     // TODO: Handle the errors especially properly. Warn the user that the data has not been saved. Maybe retry?
     console.log('PATCH', model.url)

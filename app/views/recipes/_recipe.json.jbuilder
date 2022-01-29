@@ -50,12 +50,7 @@ json.recipe do
   json.tools recipe.tools.inject({}) {|tools_by_id, tool| tools_by_id[tool.id] = {name: tool.name}; tools_by_id }
 end
 if recipe.recipe_image
-  json.recipe_image do
-    json.class_name "image"
-    json.url image_path(recipe.recipe_image)
-    json.path @application_controller.image_variant_path(recipe.recipe_image, :medium)
-    json.is_user_author !!recipe.recipe_image.is_user_author
-  end
+  json.partial! "images/image", image: @recipe.recipe_image, locals: {label: "recipe_image"}
 end
 if recipe.recipe_kind && recipe.recipe_kind.image
   json.recipe_kind_image do
