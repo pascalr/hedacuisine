@@ -3,6 +3,8 @@ class RecipesController < ApplicationController
   skip_before_action :authenticate_user!, only: [:show, :index]
   skip_before_action :only_admin!, only: [:show, :index]
 
+  include SerializeHelper 
+
   def index
     #@recipes = Recipe.all_main.all_public.with_images.order(:created_at)
     @kinds = Kind.all
@@ -70,6 +72,9 @@ class RecipesController < ApplicationController
   end
 
   def edit
+    gon.recipe = to_obj(@recipe)
+    gon.recipe_image = to_obj(@recipe.recipe_image) if @recipe.recipe_image
+    gon.recipe_kind_image = to_obj(@recipe.recipe_kind) if @recipe.recipe_kind && @recipe.recipe_kind.image
     gon.jbuilder
   end
 
@@ -118,7 +123,7 @@ class RecipesController < ApplicationController
     respond_to do |format|
       if @recipe.update(recipe_params)
         format.html { redirect_back fallback_location: edit_recipe_path(@recipe), notice: 'Recipe was successfully updated.' }
-        format.json { render partial: @recipe }
+        format.json { render json: {recipe: to_obj(@recipe), recipe_image: to_obj(@recipe.recipe_image)} }
         format.js { render partial: @recipe }
       else
         format.html { render :edit }

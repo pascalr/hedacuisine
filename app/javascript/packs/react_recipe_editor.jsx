@@ -259,6 +259,9 @@ class RecipeEditor extends React.Component {
     //}
     this.state.recipe.onUpdate = (recipe) => {this.setState({recipe})}
     this.state.recipe.onServerUpdate = ({recipe, recipe_image}) => {
+      console.log("onServerUpdate")
+      console.log(recipe)
+      console.log(recipe_image)
       if (!this.state.recipe_image.url && recipe_image && recipe_image.url) {
         this.setState({recipe_image: {...this.state.recipe_image, ...recipe_image}})
       }

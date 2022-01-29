@@ -1,4 +1,4 @@
-json.partial! "recipes/recipe", recipe: @recipe
+#json.partial! "recipes/recipe", recipe: @recipe
 
 json.units Unit.all, :name, :value, :is_weight, :is_volume, :show_fraction
 
