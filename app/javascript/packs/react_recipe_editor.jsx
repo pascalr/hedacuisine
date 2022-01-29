@@ -8,7 +8,6 @@ import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from '
 
 import Quantity from 'models/quantity'
 import { Ingredient, Utils } from "recipe_utils"
-import { getRecipeImage } from "lib"
 
 import { DeleteConfirmButton } from 'components/delete_confirm_button'
 
@@ -244,6 +243,7 @@ class RecipeEditor extends React.Component {
     let noteIds = gon.recipe.notes ? Object.values(gon.recipe.notes).sort((a,b) => a.item_nb - b.item_nb).map(ing => ing.id) : []
     this.state = {
       recipe: gon.recipe,
+      recipeImage: gon.recipe_image || {},
       name: gon.recipe.name,
       ingIds: ingIds,
       noteIds: noteIds,
@@ -258,6 +258,7 @@ class RecipeEditor extends React.Component {
     //  this.setStete
     //}
     this.state.recipe.onUpdate = (recipe) => {this.setState({recipe})}
+    this.state.recipeImage.onUpdate = (recipeImage) => {this.setState({recipeImage})}
     this.handleDropIng = this.handleDropIng.bind(this);
   }
 
@@ -367,7 +368,9 @@ class RecipeEditor extends React.Component {
 
     const recipe = this.state.recipe
     const recipe_kind = gon.recipe_kinds.find(k => k.id == recipe.recipe_kind_id)
-    const image = getRecipeImage(recipe)
+    const recipeImage = this.state.recipeImage
+    const recipeKindImage = gon.recipe_kind_image
+    const image = recipe.use_personalised_image ? recipeImage : recipeKindImage
     const imagePath = (image && image.path) || "/default_recipe_01.png"
     //console.log(model)
     
@@ -376,7 +379,8 @@ class RecipeEditor extends React.Component {
         <div>
           <div className="over-container">
             <EditRecipeImageModal recipe={recipe} show={this.state.showImageModal}
-                                  handleClose={() => this.setState({showImageModal: false})} />
+                                  handleClose={() => this.setState({showImageModal: false})}
+                                  recipeImage={recipeImage} recipeKindImage={recipeKindImage} />
             <div style={{cursor: "pointer"}} onClick={() => this.setState({showImageModal: true})}>
               <img style={{maxWidth: "100vh", height: "auto"}} src={imagePath} width="452" height="304"/>
               {imagePath ?

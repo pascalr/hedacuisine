@@ -3,12 +3,11 @@ import ReactDOM from 'react-dom'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 
-import { getRecipeImage } from "lib"
-import {RadioField} from 'form'
+import {FileField, RadioField} from 'form'
 
-export const EditRecipeImageModal = ({recipe, show, handleClose}) => {
+export const EditRecipeImageModal = ({recipe, recipeImage, recipeKindImage, show, handleClose}) => {
 
-  const image = getRecipeImage(recipe)
+  const image = recipe.use_personalised_image ? recipeImage : recipeKindImage
   const imagePath = (image && image.path) || "/default_recipe_01.png";
 
   return (<>
@@ -23,7 +22,7 @@ export const EditRecipeImageModal = ({recipe, show, handleClose}) => {
             </div>
           </div>
           <hr/>
-          {!recipe.recipe_kind || !recipe.recipe_kind.path ?
+          {!recipeKindImage ?
             <div className="disabled">
               <RadioField model={recipe} field="use_personalised_image" value={'foo'} label="Utiliser l'image de la catégorie de cette recette"/>
               <div style={{height: "0.5em"}}/>
@@ -34,15 +33,16 @@ export const EditRecipeImageModal = ({recipe, show, handleClose}) => {
           :
             <RadioField model={recipe} field="use_personalised_image" value={false} label="Utiliser l'image de la catégorie de cette recette"/>
           }
+          <div style={{height: "0.5em"}}/>
           <RadioField model={recipe} field="use_personalised_image" value={true} label="Utiliser une image personnalisée"/>
-          {!recipe.recipe_image ? '' :
+          {!recipeImage ? '' :
             <div className={recipe.use_personalised_image ? undefined : 'disabled'} style={{paddingLeft: "2em"}}>
               <div style={{height: "0.5em"}}/>
-              <input type="file" name="image[original]" id="image_original"/>
+              <FileField model={recipeImage} field="original" maxSizeBytes={2*1000*1000} />
               <div style={{height: "0.5em"}}/>
-              <RadioField model={recipe.recipe_image} field="is_user_author" value={true} label="Je suis l'auteur de cette image" />
+              <RadioField model={recipeImage} field="is_user_author" value={true} label="Je suis l'auteur de cette image" />
               <div style={{height: "0.5em"}}/>
-              <RadioField model={recipe.recipe_image} field="is_user_author" value={false} label="L'image est publique sous une license qui permet son usage" />
+              <RadioField model={recipeImage} field="is_user_author" value={false} label="L'image est publique sous une license qui permet son usage" />
               <div style={{height: "0.5em"}}/>
               <div style={{paddingLeft: "2em"}}>
                 <label htmlFor="author">Author</label>

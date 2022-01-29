@@ -107,9 +107,59 @@ export const ToggleField = ({model, field, labelOn, labelOff, ...props}) => {
       onChange={(e) => {updateModelField(model, field, e.target.checked)}} hidden />
   </>)
 }
+export const FileField = ({model, field, maxSizeBytes, ...props}) => {
+  let id = `${model.class_name}_${field}`
+  const handleChange = (e) => {
+    if (e.target.files.length > 1) {
+      alert('Error. You can only upload one file.');
+      return;
+    }
+    var file = e.target.files[0];
+    if (maxSizeBytes && file.size > maxSizeBytes) {
+      alert(`Error. Max upload size is ${maxSizeBytes/1000.0}kb. Was ${file.size/1000.0}kb.`);
+      return;
+    }
+    asyncUpdateModelField(model, field, file)
+
+    // https://stackoverflow.com/questions/166221/how-can-i-upload-files-asynchronously-with-jquery
+    //$.ajax({
+    //// Your server script to process the upload
+    //url: 'upload.php',
+    //type: 'POST',
+
+    //// Form data
+    //data: new FormData($('form')[0]),
+
+    //// Tell jQuery not to process data or worry about content-type
+    //// You *must* include these options!
+    //cache: false,
+    //contentType: false,
+    //processData: false,
+
+    //// Custom XMLHttpRequest
+    //xhr: function () {
+    //  var myXhr = $.ajaxSettings.xhr();
+    //  if (myXhr.upload) {
+    //    // For handling the progress of the upload
+    //    myXhr.upload.addEventListener('progress', function (e) {
+    //      if (e.lengthComputable) {
+    //        $('progress').attr({
+    //          value: e.loaded,
+    //          max: e.total,
+    //        });
+    //      }
+    //    }, false);
+    //  }
+    //  return myXhr;
+    //}
+    //});
+  }
+  return (<>
+    <input type="file" name="image[original]" id="image_original" {...props} onChange={handleChange} />
+  </>)
+}
 export const RadioField = ({model, field, value, label, ...props}) => {
   let id = `${model.class_name}_${field}_${value}`
-  console.log(id, model[field])
   return (<>
     <input type="radio" value={value} name={model.class_name+"["+field+"]"}
       id={id} {...props} checked={model[field] == value}
@@ -118,13 +168,6 @@ export const RadioField = ({model, field, value, label, ...props}) => {
     {label ? <label htmlFor={id}>{' '}{label}</label> : ''}
           
   </>)
-      //onChange={(e) => {
-      //  let checked = e.target.checked
-      //  setChecked(checked)
-      //  if (checked) {
-      //    updateModelField(model, field, value)
-      //  }
-      //}}
 }
 export const TextField = ({model, field, ...props}) => {
   const [value, setValue] = useState(model[field])
