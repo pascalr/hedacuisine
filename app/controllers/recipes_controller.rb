@@ -145,7 +145,7 @@ class RecipesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def recipe_params
-      params.require(:recipe).permit(:name, :source, :instructions, :version_name, :group_id, :complete_instructions, :image_id, :raw_servings, :preparation_time, :cooking_time, :total_time, :is_public, :base_recipe_id, :description, :main_ingredient_id, :kind_id, :version_nb, :content, :text, :recipe_kind_id, :json, :html, :use_personalised_image) # FIXME: html (NOT SAFE)
+      params.require(:recipe).permit(:name, :source, :instructions, :version_name, :group_id, :complete_instructions, :image_id, :raw_servings, :preparation_time, :cooking_time, :total_time, :is_public, :base_recipe_id, :description, :main_ingredient_id, :kind_id, :version_nb, :content, :text, :json, :html, :use_personalised_image) # FIXME: html (NOT SAFE)
       # FIXME: Remove version_nb from this list when it works properly. When don't want users to change that...
       #p[:image_id] == "on" ? p.except(:image_id) : p
     end

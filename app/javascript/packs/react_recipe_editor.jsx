@@ -258,6 +258,11 @@ class RecipeEditor extends React.Component {
     //  this.setStete
     //}
     this.state.recipe.onUpdate = (recipe) => {this.setState({recipe})}
+    this.state.recipe.onServerUpdate = ({recipe, recipeImage}) => {
+      if (!this.state.recipeImage.url && recipeImage && recipeImage.url) {
+        this.setState({recipeImage})
+      }
+    }
     this.state.recipeImage.onUpdate = (recipeImage) => {this.setState({recipeImage})}
     this.handleDropIng = this.handleDropIng.bind(this);
   }
@@ -383,13 +388,9 @@ class RecipeEditor extends React.Component {
                                   recipeImage={recipeImage} recipeKindImage={recipeKindImage} />
             <div style={{cursor: "pointer"}} onClick={() => this.setState({showImageModal: true})}>
               <img style={{maxWidth: "100vh", height: "auto"}} src={imagePath} width="452" height="304"/>
-              {imagePath ?
-                <div className="bottom-right" style={{color: 'white', fontSize: '2em'}}>
-                  <img src="/icons/pencil-circle.svg" style={{width: "5rem", padding: "0.5rem"}}/>
-                </div>
-                :
-                <div className="centered" style={{fontSize: '2em', width: '100%'}}>Ajouter une image<br/>ou<br/>Sélectionner une catégorie</div>
-              }
+              <div className="bottom-right" style={{color: 'white', fontSize: '2em'}}>
+                <img src="/icons/pencil-circle.svg" style={{width: "5rem", padding: "0.5rem"}}/>
+              </div>
             </div>
           </div> 
         </div>
@@ -448,10 +449,6 @@ class RecipeEditor extends React.Component {
         <h2>Informations</h2>
         <table className="table table-light">
           <tbody>
-            <tr>
-              <th>Sorte de recette</th>
-              <td><CollectionSelect model={recipe} field="recipe_kind_id" options={gon.recipe_kinds.map(k => k.id)} showOption={(id) => gon.recipe_kinds.find(k => k.id == id).name} includeBlank="true"></CollectionSelect></td>
-            </tr>
             <tr>
               <th>Ingrédient principal</th>
               <td><CollectionSelect model={recipe} field="main_ingredient_id" options={this.state.ingIds} showOption={(ingId) => gon.recipe.ingredients[ingId].name} includeBlank="true"></CollectionSelect></td>

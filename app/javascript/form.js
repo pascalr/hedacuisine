@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-import { colorToHexString, hexStringToColor, Utils } from 'utils'
+import { colorToHexString, hexStringToColor, Utils, ajax } from 'utils'
 
 import { DeleteConfirmButton } from 'components/delete_confirm_button'
 
@@ -25,19 +25,25 @@ const asyncUpdateModelField = (model, field, value) => {
     model[field] = value
     model.onUpdate(model)
 
-    let data = new FormData()
-    data.append(model.class_name+"["+field+"]", value)
-    console.log('PATCH', model.url)
-    Rails.ajax({url: model.url, type: 'PATCH', data: data})
+    let data = {
+      [model.class_name]: {[field]: value}
+    }
+    //let data = new FormData()
+    //data.append(model.class_name+"["+field+"]", value)
+    //Rails.ajax({url: model.url, type: 'PATCH', data: data})
     // TODO: Handle the errors especially properly. Warn the user that the data has not been saved. Maybe retry?
-    //Rails.ajax({url: model.url, type: 'PATCH', data: data, success: () => {
+    console.log('PATCH', model.url)
+    ajax({url: model.url, type: 'PATCH', data: data, success: (response) => {
+      if (model.onServerUpdate) {
+        model.onServerUpdate(response)
+      }
     //  console.log(`Updating model ${field} from ${model[field]} to ${value}.`)
     //  model[field] = value
     //  if (successCallback) {successCallback()}
     //  if (model.onUpdate) {model.onUpdate(model)}
     //}, error: (errors) => {
     //  toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
-    //}})
+    }})
   }
 }
 
