@@ -14,9 +14,9 @@ export const TextInputField = ({model, field}) => {
   )
 }
 
-const asyncUpdateModelField = (model, field, value) => {
+const asyncUpdateModelField = (model, field, value, options={}) => {
 
-  if (value == model[field]) {
+  if (value == model[field] && !options.force) {
     console.log(`Skipping update ${model.class_name} ${field} because it is unchanged.`)
   } else {
     if (!model.onUpdate) {
@@ -54,7 +54,7 @@ const updateModelField = (model, field, value, successCallback=null) => {
     data.append(model.class_name+"["+field+"]", value)
     console.log('PATCH', model.url)
     Rails.ajax({url: model.url, type: 'PATCH', data: data, success: () => {
-      console.log(`Updating model ${field} from ${model[field]} to ${value}.`)
+      console.log(`Updating model ${model.class_name} field ${field} from ${model[field]} to ${value}.`)
       model[field] = value
       if (successCallback) {successCallback()}
       if (model.onUpdate) {model.onUpdate(model)}
@@ -101,18 +101,6 @@ export const ImageField = ({model, imageAttr, field, ...props}) => {
   }
   throw "ImageField missing imageAttr"
 }
-export const ToggleField = ({model, field, labelOn, labelOff, ...props}) => {
-  console.log('rendering')
-  const id = model.class_name+"_"+field
-  const name = model.class_name+"["+field+"]"
-  const on = labelOn || "True"
-  const off = labelOff || "False"
-  return (<>
-    <label htmlFor={id}>{model[field] ? on : off}</label> 
-    <input type="checkbox" value={model[field]||''} name={name} id={id} {...props}
-      onChange={(e) => {updateModelField(model, field, e.target.checked)}} hidden />
-  </>)
-}
 export const FileField = ({model, field, maxSizeBytes, ...props}) => {
   let id = `${model.class_name}_${field}`
   const handleChange = (e) => {
@@ -126,42 +114,33 @@ export const FileField = ({model, field, maxSizeBytes, ...props}) => {
       return;
     }
     asyncUpdateModelField(model, field, file)
-
-    // https://stackoverflow.com/questions/166221/how-can-i-upload-files-asynchronously-with-jquery
-    //$.ajax({
-    //// Your server script to process the upload
-    //url: 'upload.php',
-    //type: 'POST',
-
-    //// Form data
-    //data: new FormData($('form')[0]),
-
-    //// Tell jQuery not to process data or worry about content-type
-    //// You *must* include these options!
-    //cache: false,
-    //contentType: false,
-    //processData: false,
-
-    //// Custom XMLHttpRequest
-    //xhr: function () {
-    //  var myXhr = $.ajaxSettings.xhr();
-    //  if (myXhr.upload) {
-    //    // For handling the progress of the upload
-    //    myXhr.upload.addEventListener('progress', function (e) {
-    //      if (e.lengthComputable) {
-    //        $('progress').attr({
-    //          value: e.loaded,
-    //          max: e.total,
-    //        });
-    //      }
-    //    }, false);
-    //  }
-    //  return myXhr;
-    //}
-    //});
   }
+  const removeFile = (evt) => {
+    asyncUpdateModelField(model, field, null, {force: true})
+  }
+  if (!model.filename) {
+    return (<>
+      <input type="file" name={`${model.class_name}[${field}]`} id={id} {...props} onChange={handleChange} />
+    </>)
+  } else {
+    return (
+      <span>
+        {model.filename}
+        <DeleteConfirmButton id={`del-im-${model.id}`} onDeleteConfirm={removeFile} message="Je veux enlever cette image?" />
+      </span>
+    )
+  }
+}
+export const ToggleField = ({model, field, labelOn, labelOff, ...props}) => {
+  console.log('rendering')
+  const id = model.class_name+"_"+field
+  const name = model.class_name+"["+field+"]"
+  const on = labelOn || "True"
+  const off = labelOff || "False"
   return (<>
-    <input type="file" name="image[original]" id="image_original" {...props} onChange={handleChange} />
+    <label htmlFor={id}>{model[field] ? on : off}</label> 
+    <input type="checkbox" value={model[field]||''} name={name} id={id} {...props}
+      onChange={(e) => {updateModelField(model, field, e.target.checked)}} hidden />
   </>)
 }
 export const RadioField = ({model, field, value, label, ...props}) => {

@@ -17,12 +17,13 @@ module SerializeHelper
   end
 
   def image_to_obj(image)
-    obj = {
+    obj = extract_attributes(image, :id, :author, :source, :filename)
+    obj.merge!({
       class_name: "image",
       url: image_path(image),
       path: image_variant_path(image, :medium),
       is_user_author: !!image.is_user_author
-    }
+    })
     obj
   end
 

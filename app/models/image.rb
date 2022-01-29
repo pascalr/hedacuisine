@@ -10,8 +10,8 @@ class Image < ApplicationRecord
   end
 
   def update_file_info
-    self.filename = self.original.filename.to_s
-    self.extension = File.extname(self.filename)
+    self.filename = self.original ? self.original.filename.to_s : nil
+    self.extension = self.original ? File.extname(self.filename) : nil
   end
 
   # image_tag user.avatar.variant(resize_to_limit: [100, 100], format: :jpeg, sampling_factor: "4:2:0", strip: true, interlace: "JPEG", colorspace: "sRGB", quality: 80)

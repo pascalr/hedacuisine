@@ -3,12 +3,14 @@ import ReactDOM from 'react-dom'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 
-import {FileField, RadioField} from 'form'
+import {TextField, FileField, RadioField} from 'form'
 
 export const EditRecipeImageModal = ({recipe, recipeImage, recipeKindImage, show, handleClose}) => {
 
   const image = recipe.use_personalised_image ? recipeImage : recipeKindImage
   const imagePath = (image && image.path) || "/default_recipe_01.png";
+
+  console.log("recipeImage", recipeImage)
 
   return (<>
     <Modal show={show} onHide={handleClose}>
@@ -44,12 +46,12 @@ export const EditRecipeImageModal = ({recipe, recipeImage, recipeKindImage, show
               <div style={{height: "0.5em"}}/>
               <RadioField model={recipeImage} field="is_user_author" value={false} label="L'image est publique sous une license qui permet son usage" />
               <div style={{height: "0.5em"}}/>
-              <div style={{paddingLeft: "2em"}}>
+              <div className={recipeImage.is_user_author ? 'disabled' : undefined} style={{paddingLeft: "2em"}}>
                 <label htmlFor="author">Author</label>
-                <input type="text" name="author" id="author"/>
+                <TextField model={recipeImage} field="author" id="author"/>
                 <div style={{height: "0.5em"}}/>
                 <label htmlFor="source">Source</label>
-                <input type="text" name="source" id="source"/>
+                <TextField model={recipeImage} field="source" id="author"/>
               </div>
               <br/>
             </div>
