@@ -18,6 +18,8 @@ json.recipe do
   json.use_personalised_image !!@recipe.use_personalised_image
   if @recipe.recipe_image
     json.recipe_image do
+      json.class_name "image"
+      json.url image_path(@recipe.recipe_image)
       json.path @application_controller.image_variant_path(@recipe.recipe_image, :medium)
       json.is_user_author !!@recipe.recipe_image.is_user_author
     end

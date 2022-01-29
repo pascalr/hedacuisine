@@ -32,11 +32,9 @@ export const EditRecipeImageModal = ({recipe, show, handleClose}) => {
             <div style={{height: "0.5em"}}/>
             <input type="file" name="image[original]" id="image_original"/>
             <div style={{height: "0.5em"}}/>
-            <RadioField model={recipe.recipe_image} field="is_user_author" value={true} id="is_user_author_true"/>
-            <label value="true" htmlFor="image_is_user_author_true">Je suis l'auteur de cette image</label>
+            <RadioField model={image} field="is_user_author" value={true} label="Je suis l'auteur de cette image" />
             <div style={{height: "0.5em"}}/>
-            <RadioField model={recipe.recipe_image} field="is_user_author" value={false} id="is_user_author_false"/>
-            <label value="false" htmlFor="is_user_author_false">L'image est publique sous une license qui permet son usage</label>
+            <RadioField model={image} field="is_user_author" value={false} label="L'image est publique sous une license qui permet son usage" />
             <div style={{height: "0.5em"}}/>
             <div style={{paddingLeft: "2em"}}>
               <label htmlFor="author">Author</label>
