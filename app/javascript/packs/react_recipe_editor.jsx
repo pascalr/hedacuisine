@@ -7,7 +7,7 @@ import Autosuggest from 'react-autosuggest'
 import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from 'jsxstyle'
 
 import Quantity from 'models/quantity'
-import { Ingredient, Utils } from "recipe_utils"
+import { Ingredient, Utils, ajax } from "recipe_utils"
 
 import { DeleteConfirmButton } from 'components/delete_confirm_button'
 
@@ -247,6 +247,7 @@ class RecipeEditor extends React.Component {
       name: gon.recipe.name,
       ingIds: ingIds,
       noteIds: noteIds,
+      ingredientSections: gon.ingredient_sections || [],
       toolIds: Object.keys(gon.recipe.tools),
       instructionsSlave: gon.recipe.complete_instructions,
       showImageModal: false,
@@ -270,6 +271,10 @@ class RecipeEditor extends React.Component {
       this.setState({recipe_image: {...this.state.recipe_image, ...image}})
     }
     this.handleDropIng = this.handleDropIng.bind(this);
+    this.appendIngredientSection = this.appendIngredientSection.bind(this)
+    this.addIng = this.addIng.bind(this)
+    this.removeIng = this.removeIng.bind(this)
+    this.appendNote = this.appendNote.bind(this)
   }
 
   //swapIng(dragIndex, dropIndex) {
@@ -283,6 +288,13 @@ class RecipeEditor extends React.Component {
   removeIng(id) {
     let ids = this.state.ingIds.filter(item => item != id)
     this.setState({ingIds: ids})
+  }
+
+  appendIngredientSection() {
+    let data = new FormData()
+    ajax({url: gon.recipe.new_ingredient_section_url, type: 'POST', data: data, success: (section) => {
+      this.setState({ingredient_sections: [...this.state.ingredient_sections, section]})
+    }})
   }
 
   appendNote() {
@@ -438,7 +450,9 @@ class RecipeEditor extends React.Component {
           <div className="dropstart" style={{padding: "0 1em"}}>
             <img data-bs-toggle="dropdown" style={{cursor: "pointer"}} src="/icons/list.svg"/>
             <div className="dropdown-menu">
-              <a className="dropdown-item" href="/qc/recettes/567-tarte_au_sucre/edit">Ajouter une section</a>
+              <button className="dropdown-item" type="button" className="plain-btn" onClick={this.appendIngredientSection}>
+                Ajouter une section
+              </button>
             </div>
           </div>
         </div>

@@ -3,15 +3,15 @@ class IngredientSectionsController < ApplicationController
   before_action :set_ingredient_section, only: [:update, :destroy, :move]
 
   def create
-    note = @recipe.ingredient_sections.create(ingredient_section_params)
+    section = @recipe.ingredient_sections.create(ingredient_section_params)
     respond_to do |format|
-      format.js {render json: {id: note.id, item_nb: note.item_nb, content: note.content, url: recipe_ingredient_section_path(@recipe, note)}}
+      format.js {render json: to_obj(section) }
       format.html {redirect_back fallback_location: recipe_path(@recipe)}
     end
   end
 
   def move
-    @ingredient_section.insert_at(params[:item_nb].to_i)
+    #@ingredient_section.insert_at(params[:item_nb].to_i)
     head :ok
   end
 
