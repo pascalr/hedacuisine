@@ -81,12 +81,8 @@ const NewIngInputField = props => {
   };
 
   const postNewIngredient = (data) => {
-    Rails.ajax({url: gon.recipe.new_ingredient_url, type: 'POST', data: data, success: (raw) => {
-      const response = JSON.parse(raw)
-      //gon.recipe.ingredients.push({url: response.url, food: {name: response.food_name, url: response.food_url}})
-      if (!gon.recipe.ingredients) {gon.recipe.ingredients = {}}
-      gon.recipe.ingredients[response.id] = response
-      window.recipe_editor.current.addIng(response.id)
+    Rails.ajax({url: gon.recipe.new_ingredient_url, type: 'POST', data: data, success: (ingredient) => {
+      window.recipe_editor.current.addIng(ingredient)
       setValue(''); setQty('');
       quantityInputField.current.focus()
     }})
@@ -194,33 +190,28 @@ const EditableIngredientComment = (props) => {
   }
 }
 
-const EditableIngredient = (props) => {
+const EditableIngredient = ({ingredient}) => {
 
-  const ing = gon.recipe.ingredients[props.objId]
-  if (ing == null) {return null;}
+  if (ingredient == null) {return null;}
 
   const removeIngredient = (evt) => {
-    ajax({url: ing.url, type: 'DELETE', success: () => {
-      window.recipe_editor.current.removeIng(ing.id)
-      delete gon.recipe.ingredients[ing.id]
+    ajax({url: ingredient.url, type: 'DELETE', success: () => {
+      window.recipe_editor.current.removeIng(ingredient)
     }})
   }
 
   return (
     <Row alignItems="center" gap="5px">
-      <span style={{padding: "0 10px 0 0"}}><b>{props.position}.</b></span>
-      <input onBlur={updateIngQuantityCallback} type="text" size="8" defaultValue={ing.raw} style={{border: "none", borderBottom: "1px dashed #444"}} />
+      <span style={{padding: "0 10px 0 0"}}><b>{ingredient.item_nb}.</b></span>
+      <input onBlur={updateIngQuantityCallback} type="text" size="8" defaultValue={ingredient.raw} style={{border: "none", borderBottom: "1px dashed #444"}} />
       de{/*" de " ou bien " - " si la quantité n'a pas d'unité => _1_____ - oeuf*/}
-      {ing.food ? <a href={ing.food.url}>{ing.food.name}</a> : <div>{ing.name}</div>}
-      <EditableIngredientComment ingUrl={ing.url} commentJson={ing.comment_json} />
+      {ingredient.food ? <a href={ingredient.food.url}>{ingredient.food.name}</a> : <div>{ingredient.name}</div>}
+      <EditableIngredientComment ingUrl={ingredient.url} commentJson={ingredient.comment_json} />
       <Block flexGrow="1" />
-      <DeleteConfirmButton id={`ing-${ing.id}`} onDeleteConfirm={removeIngredient} message="Je veux enlever cet ingrédient?" />
+      <DeleteConfirmButton id={`ing-${ingredient.id}`} onDeleteConfirm={removeIngredient} message="Je veux enlever cet ingrédient?" />
     </Row>
   )
-  //<a href={ing.url} data-confirm="Are you sure?" data-method="delete"><img src="/icons/x-lg.svg" style={{float: "right"}}/></a>
 }
-
-//const RECIPE_MODEL = new Model("recipe")
 
 const Toggleable = ({children, ...props}) => {
   const [showToggled, setShowToggled] = useState(false)
@@ -240,13 +231,12 @@ class RecipeEditor extends React.Component {
   
   constructor(props) {
     super(props);
-    let ingIds = gon.recipe.ingredients ? Object.values(gon.recipe.ingredients).sort((a,b) => a.item_nb - b.item_nb).map(ing => ing.id) : []
     let noteIds = gon.recipe.notes ? Object.values(gon.recipe.notes).sort((a,b) => a.item_nb - b.item_nb).map(ing => ing.id) : []
     this.state = {
       recipe: gon.recipe,
       recipe_image: gon.recipe_image || {},
       name: gon.recipe.name,
-      ingIds: ingIds,
+      ingredients: gon.recipe.ingredients || [],
       noteIds: noteIds,
       ingredient_sections: gon.recipe.ingredient_sections || [],
       toolIds: Object.keys(gon.recipe.tools),
@@ -284,12 +274,13 @@ class RecipeEditor extends React.Component {
   //  this.setState({ings: swappedIngs})
   //}
 
-  addIng(id) {
-    this.setState({ingIds: [...this.state.ingIds, id]})
+  addIng(ingredient) {
+    console.log("added ingredient ", ingredient)
+    this.setState({ingredients: [...this.state.ingredients, ingredient]})
   }
   removeIng(id) {
-    let ids = this.state.ingIds.filter(item => item != id)
-    this.setState({ingIds: ids})
+    let ings = this.state.ingredients.filter(item => item.id != id)
+    this.setState({ingredients: ings})
   }
 
   appendIngredientSection() {
@@ -314,7 +305,7 @@ class RecipeEditor extends React.Component {
           return ingItems[i].item_nb
         }
       }
-      throw "impossible?"
+      return this.state.ingredients.length
     }
 
     console.log('Handle drop ing')
@@ -329,7 +320,7 @@ class RecipeEditor extends React.Component {
     //console.log("destination", destination)
     if (droppedRecord.class_name == "recipe_ingredient") {
       console.log("dropping recipe ingredient")
-      var updatedList = [...this.state.ingIds];
+      var updatedList = [...this.state.ingredients];
       const [reorderedItem] = updatedList.splice(source, 1);
       updatedList.splice(destination, 0, reorderedItem);
 
@@ -337,7 +328,10 @@ class RecipeEditor extends React.Component {
       data.append('ing_id', droppedRecord.id)
       data.append('position', destination+1)
       ajax({url: gon.recipe.move_ing_url, type: 'PATCH', data: data})
-      this.setState({ingIds: updatedList})
+      for (let i = 0; i < updatedList.length; i++) {
+        updatedList[i].item_nb = i+1
+      }
+      this.setState({ingredients: updatedList})
     } else {
       var others = [...this.state.ingredient_sections].filter(i => i.id != droppedRecord.id);
       droppedRecord.before_ing_nb = droppedItem.source.index < droppedItem.destination.index ? destination+2 : destination+1
@@ -358,14 +352,15 @@ class RecipeEditor extends React.Component {
 
   render() {
     let ingItems = []
-    for (let i=0, index=0; i < this.state.ingIds.length; i++, index++) {
+    for (let i=0, index=0; i < this.state.ingredients.length; i++, index++) {
       this.state.ingredient_sections.forEach((section, j) => {
         if (section.before_ing_nb == i+1) {
           ingItems.push(section)
         }
       })
-      ingItems.push(gon.recipe.ingredients[this.state.ingIds[i]])
+      ingItems.push(this.state.ingredients[i])
     }
+    ingItems = ingItems.concat(this.state.ingredient_sections.filter(s => s.before_ing_nb > this.state.ingredients.length))
     const renderedIngItems = []
     for (let i=0; i < ingItems.length; i++) {
       let item = ingItems[i]
@@ -388,7 +383,7 @@ class RecipeEditor extends React.Component {
           {(provided) => (
             <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
               <li className="list-group-item">
-                {<EditableIngredient objId={item.id} position={item.item_nb}/>}
+                {<EditableIngredient ingredient={item} />}
               </li>
             </div>
           )}
@@ -535,7 +530,7 @@ class RecipeEditor extends React.Component {
           <tbody>
             <tr>
               <th>Ingrédient principal</th>
-              <td><CollectionSelect model={recipe} field="main_ingredient_id" options={this.state.ingIds} showOption={(ingId) => gon.recipe.ingredients[ingId].name} includeBlank="true"></CollectionSelect></td>
+              <td><CollectionSelect model={recipe} field="main_ingredient_id" options={this.state.ingredients.map(i => i.id)} showOption={(ingId) => this.state.ingredients.filter(i => i.id == ingId).name} includeBlank="true"></CollectionSelect></td>
             </tr>
           </tbody>
         </table>

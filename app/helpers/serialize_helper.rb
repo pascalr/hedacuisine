@@ -15,6 +15,7 @@ module SerializeHelper
     return food_to_obj(record) if record.is_a? Food
     return recipe_note_to_obj(record) if record.is_a? RecipeNote
     return ingredient_section_to_obj(record) if record.is_a? IngredientSection
+    return recipe_ingredient_to_obj(record) if record.is_a? RecipeIngredient
   end
 
   def image_to_obj(image)
@@ -52,9 +53,10 @@ module SerializeHelper
       notes: collection_by_id(recipe.notes.order(:item_nb)) { |note|
         recipe_note_to_obj(note)
       },
-      ingredients: collection_by_id(recipe.ingredients.order(:item_nb)) { |note|
-        recipe_ingredient_to_obj(recipe, note)
-      },
+      ingredients: recipe.ingredients.order(:item_nb).map {|s| recipe_ingredient_to_obj(s)},
+      #ingredients: collection_by_id(recipe.ingredients.order(:item_nb)) { |note|
+      #  recipe_ingredient_to_obj(recipe, note)
+      #},
       tools: collection_by_id(recipe.tools) { |tool|
         tool_to_obj(tool)
       },
@@ -86,11 +88,11 @@ module SerializeHelper
     obj
   end
 
-  def recipe_ingredient_to_obj(recipe, ing)
+  def recipe_ingredient_to_obj(ing)
     obj = extract_attributes(ing, :id, :name, :item_nb, :raw, :comment_json)
     obj.merge!({
       class_name: "recipe_ingredient",
-      url: recipe_recipe_ingredient_path(recipe, ing)
+      url: recipe_recipe_ingredient_path(ing.recipe, ing)
     })
     if ing.food
       obj[:food] = food_to_obj(ing.food)
