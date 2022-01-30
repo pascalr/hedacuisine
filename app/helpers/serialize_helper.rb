@@ -4,7 +4,7 @@ module SerializeHelper
     attributes.inject({}) {|extracted, attr| extracted[attr] = record.send(attr); extracted}
   end
 
-  def collection_id_array(records, &block)
+  def collection_by_id(records, &block)
     records.inject({}) {|objs_by_id, record| objs_by_id[record.id] = yield(record); objs_by_id}
   end
 
@@ -48,16 +48,22 @@ module SerializeHelper
       new_ingredient_section_url: recipe_ingredient_sections_path(recipe),
       move_ing_url: move_ing_recipe_path(recipe),
       use_personalised_image: !!recipe.use_personalised_image,
-      notes: collection_id_array(recipe.notes.order(:item_nb)) { |note|
+      notes: collection_by_id(recipe.notes.order(:item_nb)) { |note|
         recipe_note_to_obj(recipe, note)
       },
-      ingredients: collection_id_array(recipe.ingredients.order(:item_nb)) { |note|
+      ingredients: collection_by_id(recipe.ingredients.order(:item_nb)) { |note|
         recipe_ingredient_to_obj(recipe, note)
       },
-      tools: collection_id_array(recipe.tools) { |tool|
+      tools: collection_by_id(recipe.tools) { |tool|
         tool_to_obj(tool)
-      }
+      },
+      ingredient_sections: recipe.ingredient_sections.map {|s| ingredient_section_to_obj(s)},
     })
+    obj
+  end
+
+  def ingredient_section_to_obj(section)
+    obj = extract_attributes(section, :name, :before_ing_nb)
     obj
   end
 

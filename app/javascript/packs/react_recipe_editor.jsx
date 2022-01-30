@@ -248,7 +248,7 @@ class RecipeEditor extends React.Component {
       name: gon.recipe.name,
       ingIds: ingIds,
       noteIds: noteIds,
-      ingredientSections: gon.ingredient_sections || [],
+      ingredient_sections: gon.recipe.ingredient_sections || [],
       toolIds: Object.keys(gon.recipe.tools),
       instructionsSlave: gon.recipe.complete_instructions,
       showImageModal: false,
