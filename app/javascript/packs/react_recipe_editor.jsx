@@ -306,14 +306,14 @@ class RecipeEditor extends React.Component {
     }})
   }
 
-  handleDropIng(droppedItem) {
+  handleDropIng(ingItems, droppedItem) {
     console.log('Handle drop ing')
     // Ignore drop outside droppable container
     if (!droppedItem.destination) return;
     var updatedList = [...this.state.ingIds];
     // Remove dragged item
-    console.log("source", droppedItem.source)
-    console.log("destination", droppedItem.destination)
+    console.log("source", ingItems[droppedItem.source.index])
+    console.log("destination", ingItems[droppedItem.destination.index])
     const [reorderedItem] = updatedList.splice(droppedItem.source.index, 1);
     // Add dropped item
     updatedList.splice(droppedItem.destination.index, 0, reorderedItem);
@@ -335,44 +335,50 @@ class RecipeEditor extends React.Component {
   }
 
   render() {
-    const ingItems = []
+    let ingItems = []
     for (let i=0, index=0; i < this.state.ingIds.length; i++, index++) {
-      let id = this.state.ingIds[i]
       this.state.ingredient_sections.forEach((section, j) => {
         if (section.before_ing_nb == i+1) {
-          let sectionId = `ing-section-${j}`
-          ingItems.push(<Draggable key={sectionId} draggableId={sectionId} index={index}>
-            {(provided) => (
-              <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
-                <h3>
-                  Section
-                  <DeleteConfirmButton id={`del-${sectionId}`} onDeleteConfirm={() => this.removeIngSection(section)} message="Je veux enlever ce titre?" />
-                </h3>
-              </div>
-            )}
-          </Draggable>)
-          index++
+          ingItems.push(section)
         }
       })
-      console.log(index)
-      ingItems.push(<Draggable key={id} draggableId={id.toString()} index={index}>
-        {(provided) => (
-          <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
-            <li className="list-group-item">
-              {<EditableIngredient objId={id} position={i+1}/>}
-            </li>
-          </div>
-        )}
-      </Draggable>)
+      ingItems.push(gon.recipe.ingredients[this.state.ingIds[i]])
+    }
+    const renderedIngItems = []
+    for (let i=0; i < ingItems.length; i++) {
+      let item = ingItems[i]
+      if (item.class_name == "ingredient_section") {
+        let sectionId = 'section-'+item.id
+        renderedIngItems.push(<Draggable key={sectionId} draggableId={sectionId} index={i}>
+          {(provided) => (
+            <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
+              <h3>
+                Section
+                <DeleteConfirmButton id={`del-${sectionId}`} onDeleteConfirm={() => this.removeIngSection(section)} message="Je veux enlever ce titre?" />
+              </h3>
+            </div>
+          )}
+        </Draggable>)
+      } else {
+        renderedIngItems.push(<Draggable key={item.id} draggableId={item.id.toString()} index={i}>
+          {(provided) => (
+            <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
+              <li className="list-group-item">
+                {<EditableIngredient objId={item.id} position={item.item_nb}/>}
+              </li>
+            </div>
+          )}
+        </Draggable>)
+      }
     }
 
     const IngredientList = 
       <ul className="list-group" style={{maxWidth: "800px"}}>
-        <DragDropContext onDragEnd={this.handleDropIng}>
+        <DragDropContext onDragEnd={(droppedItem) => this.handleDropIng(ingItems, droppedItem)}>
           <Droppable droppableId="list-container">
             {(provided) => (
               <div className="list-container" {...provided.droppableProps} ref={provided.innerRef}>
-                {ingItems}
+                {renderedIngItems}
                 {provided.placeholder}
               </div>
             )}

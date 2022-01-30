@@ -49,7 +49,7 @@ module SerializeHelper
       move_ing_url: move_ing_recipe_path(recipe),
       use_personalised_image: !!recipe.use_personalised_image,
       notes: collection_by_id(recipe.notes.order(:item_nb)) { |note|
-        recipe_note_to_obj(recipe, note)
+        recipe_note_to_obj(note)
       },
       ingredients: collection_by_id(recipe.ingredients.order(:item_nb)) { |note|
         recipe_ingredient_to_obj(recipe, note)
@@ -64,7 +64,10 @@ module SerializeHelper
 
   def ingredient_section_to_obj(section)
     obj = extract_attributes(section, :id, :name, :before_ing_nb)
-    obj[:url] = recipe_ingredient_section_path(section.recipe, section)
+    obj.merge!({
+      class_name: "ingredient_section",
+      url: recipe_ingredient_section_path(section.recipe, section)
+    })
     obj
   end
 
@@ -73,9 +76,12 @@ module SerializeHelper
     obj
   end
 
-  def recipe_note_to_obj(recipe, note)
+  def recipe_note_to_obj(note)
     obj = extract_attributes(note, :id, :item_nb, :html, :json)
-    obj[:url] = recipe_recipe_note_path(recipe, note)
+    obj.merge!({
+      class_name: "recipe_note",
+      url: recipe_recipe_note_path(note.recipe, note)
+    })
     obj
   end
 
