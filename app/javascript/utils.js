@@ -17,6 +17,17 @@ export function addExtensionToPath(ext, path) {
   }
 }
 
+// Unfortunately, FormData only handles strings.
+// FormData sends null as "null", but we want ""
+// FormData sends true as "true", but we want "1"
+// FormData sends false as "false", but we want "0"
+function convertFormDataValue(val) {
+  if (val === null || val === "null") {return ''}
+  if (val === false || val === "false") {return '0'}
+  if (val === true || val === "true") {return '1'}
+  return val
+}
+
 /**
  * Parameters
  * url
@@ -28,7 +39,15 @@ export function addExtensionToPath(ext, path) {
 **/
 export function ajax(params) {
 
+  // I think using FormData is better in order to be able to send files.
   if (params.data instanceof FormData) {
+
+    let c = new FormData()
+    for (let [k, v] of params.data) {
+      let v1 = convertFormDataValue(v)
+      c.append(k, convertFormDataValue(v))
+    }
+    params.data = c
 
     params.url = addExtensionToPath("json", params.url)
     Rails.ajax(params)

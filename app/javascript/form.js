@@ -14,7 +14,26 @@ export const TextInputField = ({model, field}) => {
   )
 }
 
-const asyncUpdateModelField = (model, field, value, options={}) => {
+export const asyncUpdateModel = (model, diffs, options={}) => {
+
+  if (!model.onUpdate) {
+    throw("asyncUpdateModelField requires the model to handle onUpdate")
+  }
+  let data = new FormData()
+  for(let field in diffs) {
+    model[field] = diffs[field]
+    data.append(model.class_name+"["+field+"]", diffs[field] == null ? '' : diffs[field])
+  }
+  model.onUpdate(model)
+
+  console.log('PATCH', model.url)
+  ajax({url: model.url, type: 'PATCH', data: data, success: (response) => {
+    if (model.onServerUpdate) {
+      model.onServerUpdate(response)
+    }
+  }})
+}
+export const asyncUpdateModelField = (model, field, value, options={}) => {
 
   if (value == model[field] && !options.force) {
     console.log(`Skipping update ${model.class_name} ${field} because it is unchanged.`)
@@ -29,18 +48,12 @@ const asyncUpdateModelField = (model, field, value, options={}) => {
     //  [model.class_name]: {[field]: value}
     //}
     let data = new FormData()
-    data.append(model.class_name+"["+field+"]", value)
-    //Rails.ajax({url: model.url, type: 'PATCH', data: data})
-    // TODO: Handle the errors especially properly. Warn the user that the data has not been saved. Maybe retry?
+    data.append(model.class_name+"["+field+"]", value == null ? '' : value)
     console.log('PATCH', model.url)
     ajax({url: model.url, type: 'PATCH', data: data, success: (response) => {
       if (model.onServerUpdate) {
         model.onServerUpdate(response)
       }
-    //  console.log(`Updating model ${field} from ${model[field]} to ${value}.`)
-    //  model[field] = value
-    //  if (successCallback) {successCallback()}
-    //  if (model.onUpdate) {model.onUpdate(model)}
     //}, error: (errors) => {
     //  toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
     }})
@@ -101,7 +114,7 @@ export const ImageField = ({model, imageAttr, field, ...props}) => {
   }
   throw "ImageField missing imageAttr"
 }
-export const FileField = ({model, field, maxSizeBytes, ...props}) => {
+export const FileField = ({model, field, maxSizeBytes, onRemove, ...props}) => {
   let id = `${model.class_name}_${field}`
   const handleChange = (e) => {
     if (e.target.files.length > 1) {
@@ -115,9 +128,6 @@ export const FileField = ({model, field, maxSizeBytes, ...props}) => {
     }
     asyncUpdateModelField(model, field, file)
   }
-  const removeFile = (evt) => {
-    asyncUpdateModelField(model, field, null, {force: true})
-  }
   if (!model.filename) {
     return (<>
       <input type="file" name={`${model.class_name}[${field}]`} id={id} {...props} onChange={handleChange} />
@@ -126,7 +136,7 @@ export const FileField = ({model, field, maxSizeBytes, ...props}) => {
     return (
       <span>
         {model.filename}
-        <DeleteConfirmButton id={`del-im-${model.id}`} onDeleteConfirm={removeFile} message="Je veux enlever cette image?" />
+        <DeleteConfirmButton id={`del-im-${model.id}`} onDeleteConfirm={onRemove} message="Je veux enlever cette image?" />
       </span>
     )
   }

@@ -3,12 +3,17 @@ import ReactDOM from 'react-dom'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 
-import {TextField, FileField, RadioField} from 'form'
+import {asyncUpdateModel, TextField, FileField, RadioField} from 'form'
 
 export const EditRecipeImageModal = ({recipe, recipeImage, recipeKindImage, show, handleClose}) => {
 
   const image = recipe.use_personalised_image ? recipeImage : recipeKindImage
   const imagePath = (image && image.path) || "/default_recipe_01.png";
+  
+  const handleRemove = () => {
+    recipeImage.onUpdate({})
+    asyncUpdateModel(recipe, {use_personalised_image: '', image_id: null})
+  }
 
   console.log("recipeImage", recipeImage)
 
@@ -40,7 +45,7 @@ export const EditRecipeImageModal = ({recipe, recipeImage, recipeKindImage, show
           {!recipeImage || !recipeImage.url ? '' :
             <div className={recipe.use_personalised_image ? undefined : 'disabled'} style={{paddingLeft: "2em"}}>
               <div style={{height: "0.5em"}}/>
-              <FileField model={recipeImage} field="original" maxSizeBytes={2*1000*1000} />
+              <FileField model={recipeImage} field="original" onRemove={handleRemove} maxSizeBytes={2*1000*1000} />
               <div style={{height: "0.5em"}}/>
               <RadioField model={recipeImage} field="is_user_author" value={true} label="Je suis l'auteur de cette image" />
               <div style={{height: "0.5em"}}/>

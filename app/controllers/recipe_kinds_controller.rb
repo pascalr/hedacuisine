@@ -8,8 +8,9 @@ class RecipeKindsController < ApplicationController
   end
 
   def show
-    if params[:recipe_id].blank? and !@recipe_kind.recipes.all_public.blank?
-      return redirect_to recipe_kind_path(@recipe_kind, recipe_id: @recipe_kind.recipes.all_public.first.id)
+    @recipes = @recipe_kind.recipes.where(is_public: true).or(@recipe_kind.recipes.where(user_id: current_user.id))
+    if params[:recipe_id].blank? and !@recipes.blank?
+      return redirect_to recipe_kind_path(@recipe_kind, recipe_id: @recipes.first.id)
     end
     if current_user
       # FIXME: Does the or prioritize the first one? It should

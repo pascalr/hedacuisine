@@ -5,7 +5,7 @@ class Image < ApplicationRecord
   has_many :recipe_kinds
 
   def original=(file)
-    super(file)
+    super(file == '' ? nil : file)
     update_file_info
   end
 

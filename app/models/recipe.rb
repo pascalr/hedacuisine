@@ -245,11 +245,11 @@ class Recipe < ApplicationRecord
   end
 
   def use_personalised_image=(value)
-    if value && !self.recipe_image
+    super(value)
+    if self.use_personalised_image && !self.recipe_image
       self.recipe_image = Image.new
       self.recipe_image.save!
     end
-    super(value)
   end
   
   #def missing_ingredients_for(user)
