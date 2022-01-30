@@ -1,0 +1,26 @@
+<h1>Nouvelle catégorie</h1>
+
+<%= form_with(model: @recipe_kind, local: true) do |form| %>
+  <% if @recipe_kind.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@recipe_kind.errors.count, "error") %> prohibited this recipe_kind from being saved:</h2>
+
+      <ul>
+        <% @recipe_kind.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %><br>
+    <%= form.text_field :name %>
+  </div>
+
+  <br>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

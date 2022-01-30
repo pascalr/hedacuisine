@@ -30,10 +30,14 @@ class RecipeKindsController < ApplicationController
     gon.jbuilder
   end
 
+  def new
+    @recipe_kind = RecipeKind.new
+  end
+
   def create
     @recipe_kind = RecipeKind.new(recipe_kind_params)
     @recipe_kind.save!
-    redirect_to recipe_kinds_path
+    redirect_to edit_recipe_kind_path(@recipe_kind)
   end
 
   def update

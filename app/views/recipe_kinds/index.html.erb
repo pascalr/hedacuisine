@@ -1,4 +1,8 @@
-<h1>Recipe kinds</h1>
+<div style="display: flex; align-items: center; gap: 1.5rem;">
+  <h1>Catégories</h1>
+  <%= link_to translated("Nouvelle catégorie"), new_recipe_kind_path, class: "btn btn-outline-primary btn-sm" %>
+</div>
+<hr style="margin-top: 0;">
 
 <% [true, false].each do |bool| %>
   <h2>Sortes de recettes <%= bool ? "avec" : "sans" %> descriptions</h2>

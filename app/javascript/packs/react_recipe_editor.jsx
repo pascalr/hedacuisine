@@ -542,25 +542,6 @@ class RecipeEditor extends React.Component {
   }
 }
 
-// https://reactjs.org/docs/integrating-with-other-libraries.html
-class Partial extends React.Component {
-
-  constructor(props){
-    super(props);
-    this.partialId = props.partialId
-  }
-
-  componentDidMount() {
-    let el = document.getElementById(this.partialId)
-    el.style.display = "block"
-    this.ref.appendChild(el)
-  }
-
-  render() {
-    return <div ref={el => this.ref = el} />;
-  }
-}
-
 document.addEventListener('DOMContentLoaded', () => {
   window.recipe_editor = React.createRef()
   const root = document.getElementById('root')
