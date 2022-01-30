@@ -92,10 +92,6 @@ export const ImageField = ({model, imageAttr, field, ...props}) => {
   const removeImage = (evt) => {
     model[imageAttr] = null
     updateModelField(model, field, null)
-    //Rails.ajax({url: ing.url, type: 'DELETE', success: (raw) => {
-    //  window.recipe_editor.current.removeIng(ing.id)
-    //  delete gon.recipe.ingredients[ing.id]
-    //}})
   }
 
   if (!model[field]) {

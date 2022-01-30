@@ -200,7 +200,7 @@ const EditableIngredient = (props) => {
   if (ing == null) {return null;}
 
   const removeIngredient = (evt) => {
-    Rails.ajax({url: ing.url, type: 'DELETE', success: (raw) => {
+    ajax({url: ing.url, type: 'DELETE', success: () => {
       window.recipe_editor.current.removeIng(ing.id)
       delete gon.recipe.ingredients[ing.id]
     }})
@@ -298,13 +298,10 @@ class RecipeEditor extends React.Component {
   }
 
   appendNote() {
-    let data = new FormData()
-    //data.append('recipe_note[content]', '')
-    Rails.ajax({url: gon.recipe.new_note_url, type: 'POST', data: data, success: (raw) => {
-      const response = JSON.parse(raw)
+    ajax({url: gon.recipe.new_note_url, type: 'POST', data: {}, success: (recipe_note) => {
       if (!gon.recipe.notes) {gon.recipe.notes = {}}
-      gon.recipe.notes[response.id] = response
-      this.setState({noteIds: [...this.state.noteIds, response.id]})
+      gon.recipe.notes[recipe_note.id] = recipe_note
+      this.setState({noteIds: [...this.state.noteIds, recipe_note.id]})
     }})
   }
 
@@ -364,7 +361,7 @@ class RecipeEditor extends React.Component {
       const note = gon.recipe.notes[id]
 
       const removeNote = (evt) => {
-        Rails.ajax({url: note.url, type: 'DELETE', success: (raw) => {
+        ajax({url: note.url, type: 'DELETE', success: () => {
           let ids = this.state.noteIds.filter(item => item != note.id)
           this.setState({noteIds: ids})
           delete gon.recipe.notes[note.id]
