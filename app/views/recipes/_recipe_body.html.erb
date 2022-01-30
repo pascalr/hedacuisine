@@ -16,6 +16,9 @@
   <div id="ing_list">
     <ul class="list-group">
       <% recipe.ingredients.order(:item_nb).each do |ing| %>
+        <% recipe.ingredient_sections.select {|s| s.before_ing_nb == ing.item_nb}.each do |section| %>
+          <h3><%= section.name %></h3>
+        <% end %>
         <li class="list-group-item">
           <%= scalable_detailed_ingredient(ing) %><%# "*" if foods_dup.include?(ing.food_id) %>
 
