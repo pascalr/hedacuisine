@@ -87,7 +87,10 @@ module SerializeHelper
 
   def recipe_ingredient_to_obj(recipe, ing)
     obj = extract_attributes(ing, :id, :name, :item_nb, :raw, :comment_json)
-    obj[:url] = recipe_recipe_ingredient_path(recipe, ing)
+    obj.merge!({
+      class_name: "recipe_ingredient",
+      url: recipe_recipe_ingredient_path(recipe, ing)
+    })
     if ing.food
       obj[:food] = food_to_obj(ing.food)
     end

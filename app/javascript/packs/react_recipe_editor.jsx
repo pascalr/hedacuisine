@@ -307,24 +307,38 @@ class RecipeEditor extends React.Component {
   }
 
   handleDropIng(ingItems, droppedItem) {
+
+    const getClosestItemNb = (index) => {
+      for (let i = index; i < ingItems.length; i++) {
+        if (ingItems[i].class_name == "recipe_ingredient") {
+          return ingItems[i].item_nb
+        }
+      }
+      throw "impossible?"
+    }
+
     console.log('Handle drop ing')
     // Ignore drop outside droppable container
     if (!droppedItem.destination) return;
-    var updatedList = [...this.state.ingIds];
-    // Remove dragged item
-    console.log("source", ingItems[droppedItem.source.index])
-    console.log("destination", ingItems[droppedItem.destination.index])
-    const [reorderedItem] = updatedList.splice(droppedItem.source.index, 1);
-    // Add dropped item
-    updatedList.splice(droppedItem.destination.index, 0, reorderedItem);
+    let source = getClosestItemNb(droppedItem.source.index)-1
+    let destination = getClosestItemNb(droppedItem.destination.index)-1
+    let droppedRecord = ingItems[droppedItem.source.index]
+    //console.log("droppedRecord", droppedRecord)
+    //console.log("droppedItem", droppedItem)
+    //console.log("source", source)
+    //console.log("destination", destination)
+    if (droppedRecord.class_name == "recipe_ingredient") {
+      var updatedList = [...this.state.ingIds];
+      const [reorderedItem] = updatedList.splice(source, 1);
+      updatedList.splice(destination, 0, reorderedItem);
 
-    console.log(droppedItem)
-
-    let data = new FormData()
-    data.append('ing_id', droppedItem.draggableId)
-    data.append('position', droppedItem.destination.index+1)
-    Rails.ajax({url: gon.recipe.move_ing_url, type: 'PATCH', data: data})
-    this.setState({ingIds: updatedList})
+      let data = new FormData()
+      data.append('ing_id', droppedRecord.id)
+      data.append('position', destination+1)
+      ajax({url: gon.recipe.move_ing_url, type: 'PATCH', data: data})
+      this.setState({ingIds: updatedList})
+    } else {
+    }
   }
 
   removeIngSection(section) {
