@@ -275,6 +275,7 @@ class RecipeEditor extends React.Component {
     this.appendIngredientSection = this.appendIngredientSection.bind(this)
     this.addIng = this.addIng.bind(this)
     this.removeIng = this.removeIng.bind(this)
+    this.removeIngSection = this.removeIngSection.bind(this)
     this.appendNote = this.appendNote.bind(this)
   }
 
@@ -311,6 +312,8 @@ class RecipeEditor extends React.Component {
     if (!droppedItem.destination) return;
     var updatedList = [...this.state.ingIds];
     // Remove dragged item
+    console.log("source", droppedItem.source)
+    console.log("destination", droppedItem.destination)
     const [reorderedItem] = updatedList.splice(droppedItem.source.index, 1);
     // Add dropped item
     updatedList.splice(droppedItem.destination.index, 0, reorderedItem);
@@ -324,7 +327,44 @@ class RecipeEditor extends React.Component {
     this.setState({ingIds: updatedList})
   }
 
+  removeIngSection(section) {
+    ajax({url: section.url, type: 'DELETE', success: () => {
+      let sections = this.state.ingredient_sections.filter(i => i.id != section.id)
+      this.setState({ingredient_sections: sections})
+    }})
+  }
+
   render() {
+    const ingItems = []
+    for (let i=0, index=0; i < this.state.ingIds.length; i++, index++) {
+      let id = this.state.ingIds[i]
+      this.state.ingredient_sections.forEach((section, j) => {
+        if (section.before_ing_nb == i+1) {
+          let sectionId = `ing-section-${j}`
+          ingItems.push(<Draggable key={sectionId} draggableId={sectionId} index={index}>
+            {(provided) => (
+              <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
+                <h3>
+                  Section
+                  <DeleteConfirmButton id={`del-${sectionId}`} onDeleteConfirm={() => this.removeIngSection(section)} message="Je veux enlever ce titre?" />
+                </h3>
+              </div>
+            )}
+          </Draggable>)
+          index++
+        }
+      })
+      console.log(index)
+      ingItems.push(<Draggable key={id} draggableId={id.toString()} index={index}>
+        {(provided) => (
+          <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
+            <li className="list-group-item">
+              {<EditableIngredient objId={id} position={i+1}/>}
+            </li>
+          </div>
+        )}
+      </Draggable>)
+    }
 
     const IngredientList = 
       <ul className="list-group" style={{maxWidth: "800px"}}>
@@ -332,17 +372,7 @@ class RecipeEditor extends React.Component {
           <Droppable droppableId="list-container">
             {(provided) => (
               <div className="list-container" {...provided.droppableProps} ref={provided.innerRef}>
-                {this.state.ingIds.map((id, index) =>
-                  <Draggable key={id} draggableId={id.toString()} index={index}>
-                    {(provided) => (
-                      <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
-                        <li className="list-group-item">
-                          {<EditableIngredient objId={id} position={index+1}/>}
-                        </li>
-                      </div>
-                    )}
-                  </Draggable>
-                )}
+                {ingItems}
                 {provided.placeholder}
               </div>
             )}

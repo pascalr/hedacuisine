@@ -22,7 +22,10 @@ class IngredientSectionsController < ApplicationController
 
   def destroy
     @ingredient_section.destroy!
-    redirect_back fallback_location: recipe_path(@recipe)
+    respond_to do |format|
+      format.json {render json: {}}
+      format.html {redirect_back fallback_location: recipe_path(@recipe)}
+    end
   end
 
   private

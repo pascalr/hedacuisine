@@ -22,7 +22,7 @@ export const DeleteConfirmButton = ({id, onDeleteConfirm, message}) => {
     >
       <Typography sx={{ p: 2 }}>
         {message}
-        <button type="button" className="btn btn-primary" style={{marginLeft: "10px"}} onClick={onDeleteConfirm}>Oui</button>
+        <button type="button" className="btn btn-primary" style={{marginLeft: "10px"}} onClick={(e) => {onDeleteConfirm(e); setAnchorEl(null)}}>Oui</button>
       </Typography>
     </Popover>
   </>)

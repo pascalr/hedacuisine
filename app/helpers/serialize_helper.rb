@@ -63,7 +63,8 @@ module SerializeHelper
   end
 
   def ingredient_section_to_obj(section)
-    obj = extract_attributes(section, :name, :before_ing_nb)
+    obj = extract_attributes(section, :id, :name, :before_ing_nb)
+    obj[:url] = recipe_ingredient_section_path(section.recipe, section)
     obj
   end
 
