@@ -37,7 +37,6 @@ class ApplicationController < ActionController::Base
     #request.referrer
   end
 
-
   def default_url_options
     { locale: I18n.locale }
   end

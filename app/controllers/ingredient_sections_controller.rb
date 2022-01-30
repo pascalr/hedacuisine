@@ -5,7 +5,7 @@ class IngredientSectionsController < ApplicationController
   def create
     section = @recipe.ingredient_sections.create(ingredient_section_params)
     respond_to do |format|
-      format.js {render json: to_obj(section) }
+      format.json {render json: to_obj(section) }
       format.html {redirect_back fallback_location: recipe_path(@recipe)}
     end
   end
@@ -36,6 +36,7 @@ class IngredientSectionsController < ApplicationController
     end
 
     def ingredient_section_params
+      return {} unless params.key? :ingredient_section
       params.require(:ingredient_section).permit(:name, :before_ing_nb)
     end
 end

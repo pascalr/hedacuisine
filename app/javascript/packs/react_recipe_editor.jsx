@@ -7,7 +7,8 @@ import Autosuggest from 'react-autosuggest'
 import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from 'jsxstyle'
 
 import Quantity from 'models/quantity'
-import { Ingredient, Utils, ajax } from "recipe_utils"
+import { Ingredient, Utils } from "recipe_utils"
+import { ajax } from "../utils"
 
 import { DeleteConfirmButton } from 'components/delete_confirm_button'
 
@@ -291,8 +292,7 @@ class RecipeEditor extends React.Component {
   }
 
   appendIngredientSection() {
-    let data = new FormData()
-    ajax({url: gon.recipe.new_ingredient_section_url, type: 'POST', data: data, success: (section) => {
+    ajax({url: gon.recipe.new_ingredient_section_url, type: 'POST', data: {}, success: (section) => {
       this.setState({ingredient_sections: [...this.state.ingredient_sections, section]})
     }})
   }
