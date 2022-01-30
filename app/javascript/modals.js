@@ -15,8 +15,6 @@ export const EditRecipeImageModal = ({recipe, recipeImage, recipeKindImage, show
     asyncUpdateModel(recipe, {use_personalised_image: '', image_id: null})
   }
 
-  console.log("recipeImage", recipeImage)
-
   return (<>
     <Modal show={show} onHide={handleClose}>
       <Modal.Dialog>

@@ -328,6 +328,7 @@ class RecipeEditor extends React.Component {
     //console.log("source", source)
     //console.log("destination", destination)
     if (droppedRecord.class_name == "recipe_ingredient") {
+      console.log("dropping recipe ingredient")
       var updatedList = [...this.state.ingIds];
       const [reorderedItem] = updatedList.splice(source, 1);
       updatedList.splice(destination, 0, reorderedItem);
@@ -338,6 +339,13 @@ class RecipeEditor extends React.Component {
       ajax({url: gon.recipe.move_ing_url, type: 'PATCH', data: data})
       this.setState({ingIds: updatedList})
     } else {
+      var others = [...this.state.ingredient_sections].filter(i => i.id != droppedRecord.id);
+      droppedRecord.before_ing_nb = destination+2
+      console.log("dropping ingredient section at ", droppedRecord.before_ing_nb)
+      let data = new FormData()
+      data.append('ingredient_section[before_ing_nb]', droppedRecord.before_ing_nb)
+      ajax({url: droppedRecord.url, type: 'PATCH', data: data})
+      this.setState({ingredient_sections: [...others, droppedRecord]})
     }
   }
 

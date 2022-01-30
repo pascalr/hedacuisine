@@ -17,7 +17,10 @@ class IngredientSectionsController < ApplicationController
 
   def update
     @ingredient_section.update!(ingredient_section_params)
-    redirect_back fallback_location: recipe_path(@recipe)
+    respond_to do |format|
+      format.json {render json: to_obj(@ingredient_section)}
+      format.html {redirect_back fallback_location: recipe_path(@recipe)}
+    end
   end
 
   def destroy

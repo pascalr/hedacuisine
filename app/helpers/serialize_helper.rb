@@ -13,6 +13,7 @@ module SerializeHelper
     return recipe_to_obj(record) if record.is_a? Recipe
     return image_to_obj(record) if record.is_a? Image
     return food_to_obj(record) if record.is_a? Food
+    return recipe_note_to_obj(record) if record.is_a? RecipeNote
     return ingredient_section_to_obj(record) if record.is_a? IngredientSection
   end
 
