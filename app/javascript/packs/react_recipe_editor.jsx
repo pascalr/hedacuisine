@@ -340,7 +340,7 @@ class RecipeEditor extends React.Component {
       this.setState({ingIds: updatedList})
     } else {
       var others = [...this.state.ingredient_sections].filter(i => i.id != droppedRecord.id);
-      droppedRecord.before_ing_nb = destination+2
+      droppedRecord.before_ing_nb = droppedItem.source.index < droppedItem.destination.index ? destination+2 : destination+1
       console.log("dropping ingredient section at ", droppedRecord.before_ing_nb)
       let data = new FormData()
       data.append('ingredient_section[before_ing_nb]', droppedRecord.before_ing_nb)
@@ -374,9 +374,11 @@ class RecipeEditor extends React.Component {
         renderedIngItems.push(<Draggable key={sectionId} draggableId={sectionId} index={i}>
           {(provided) => (
             <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
-              <h3>
-                Section
-                <DeleteConfirmButton id={`del-${sectionId}`} onDeleteConfirm={() => this.removeIngSection(section)} message="Je veux enlever ce titre?" />
+              <h3 style={{margin: "0", padding: "0.5em 0 0.2em 0"}}>
+                <TextField model={item} field="name" className="plain-input" />
+                <span style={{margin: "0 0.2em"}}>
+                  <DeleteConfirmButton id={`del-${sectionId}`} onDeleteConfirm={() => this.removeIngSection(section)} message="Je veux enlever ce titre?" />
+                </span>
               </h3>
             </div>
           )}
