@@ -7,7 +7,7 @@ class RecipeStepsController < ApplicationController
   #end
 
   def create
-    recipe = Recipe.find(params[:recipe_id])
+    recipe = current_user.recipes.find(params[:recipe_id])
     step = Step.find_by(id: params[:step_id])
     step ||= Step.create!(content: params[:recipe_step][:step_content])
     recipe_step = recipe.recipe_steps.create!(step: step)

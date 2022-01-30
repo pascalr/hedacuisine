@@ -433,7 +433,15 @@ class RecipeEditor extends React.Component {
       </div>
       <div className="recipe-body">
 
-        <h2>Ingrédients</h2>
+        <div style={{display: 'flex', alignItems: 'baseline'}}>
+          <h2 style={{flexGrow: '1'}}>Ingrédients</h2>
+          <div className="dropstart" style={{padding: "0 1em"}}>
+            <img data-bs-toggle="dropdown" style={{cursor: "pointer"}} src="/icons/list.svg"/>
+            <div className="dropdown-menu">
+              <a className="dropdown-item" href="/qc/recettes/567-tarte_au_sucre/edit">Ajouter une section</a>
+            </div>
+          </div>
+        </div>
         {IngredientList}
       
         <h2>Instructions</h2>

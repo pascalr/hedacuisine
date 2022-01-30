@@ -54,14 +54,14 @@ class RecipesController < ApplicationController
 
   def new_variant
     @recipe = Recipe.new
-    @recipe.base_recipe = Recipe.find(params[:base_recipe_id])
+    @recipe.base_recipe = current_user.recipes.find(params[:base_recipe_id])
   end
 
   def new
     # FIXME: This allows any user to read any recipe. Ensure permission
     # if I allow private recipes.
     @recipe = Recipe.new
-    #@recipe = params[:clone_id] ? Recipe.find(params[:clone_id]).dup : Recipe.new
+    #@recipe = params[:clone_id] ? current_user.recipes.find(params[:clone_id]).dup : Recipe.new
     #@recipe.version_name = nil
   end
 

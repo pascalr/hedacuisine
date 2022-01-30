@@ -28,7 +28,7 @@ class RecipeNotesController < ApplicationController
   private
     
     def set_recipe
-      @recipe = Recipe.find(params[:recipe_slug].split('-')[0])
+      @recipe = current_user.recipes.find(params[:recipe_slug].split('-')[0])
     end
 
     def set_recipe_note

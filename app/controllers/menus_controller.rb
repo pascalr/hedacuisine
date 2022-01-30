@@ -27,7 +27,7 @@ class MenusController < ApplicationController
 
   def add_or_create_recipe
     category = Category.find params[:category_id]
-    recipe = Recipe.find_by id: params[:recipe_id]
+    recipe = current_user.recipes.find_by id: params[:recipe_id]
     ActiveRecord::Base.transaction do
       recipe = Recipe.create!(name: params[:recipe_name], source: params[:source], user: current_user) unless recipe
       Item.create!(category: category, menu: category.menu, recipe: recipe)

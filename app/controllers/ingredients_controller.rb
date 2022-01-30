@@ -8,7 +8,7 @@ class IngredientsController < ApplicationController
 
   def create
     raise "DEPRECATED. Use RecipeIngredients instead."
-    recipe = Recipe.find(params[:recipe_id])
+    recipe = current_user.recipes.find(params[:recipe_id])
     food = Food.find(params[:food_id])
     qty = params[:qty].split(',')
     quantity = qty.blank? ? nil : qty[0].to_f

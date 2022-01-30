@@ -19,7 +19,7 @@ class MealsController < ApplicationController
 
   def create
     meal = @machine.meals.build(meal_params)
-    meal.recipe = Recipe.find(params[:meal][:recipe_id])
+    meal.recipe = current_user.recipes.find(params[:meal][:recipe_id])
     t = meal.start_time
     t = DateTime.new.noon unless t
     meal.start_time = DateTime.new(params[:year].to_i, params[:month].to_i, params[:day].to_i, t.hour, t.min, t.sec, t.zone)

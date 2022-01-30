@@ -301,6 +301,7 @@ module IngredientsHelper
   end
 
   def replace_links(text)
+    raise "deprecated"
     return nil if text.nil?
     # link syntaxes:
     # [note: 1]
