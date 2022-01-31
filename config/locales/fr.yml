@@ -6,9 +6,9 @@ fr-CA:
     foods: aliments
     recipes: recettes
     new: nouveau
-    kinds: catégories
+    kinds: groupes
     books: livres
-    recipe_kinds: sortes_de_recette
+    recipe_kinds: catégories
     my_recipes: mes_recettes
     my_books: mes_livres
   heda:
