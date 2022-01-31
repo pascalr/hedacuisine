@@ -17,7 +17,10 @@ class RecipeNotesController < ApplicationController
 
   def update
     @recipe_note.update!(recipe_note_params)
-    redirect_back fallback_location: recipe_path(@recipe)
+    respond_to do |format|
+      format.json {render json: to_obj(@recipe_note)}
+      format.html {redirect_back fallback_location: recipe_path(@recipe)}
+    end
   end
 
   def destroy

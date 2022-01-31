@@ -51,6 +51,7 @@ function elementFromJSX(value) {
 // MINE
 import Quantity from 'models/quantity'
 import { Ingredient, Utils } from "recipe_utils"
+import { ajax } from "utils"
 
 const PageComponent = () => {
   //<span className="label" contentEditable={false}>React Component</span>
@@ -947,7 +948,7 @@ export class ModificationsHandler {
           let data = new FormData()
           data.append(`${editor.updateModel}[${editor.jsonField}]`, json)
           data.append(`${editor.updateModel}[${editor.htmlField}]`, editor.getHTML())
-          Rails.ajax({url: editor.updateUrl, type: 'PATCH', data: data, success: () => {
+          ajax({url: editor.updateUrl, type: 'PATCH', data: data, success: () => {
             editor.savedJSON = json
           }})
         }

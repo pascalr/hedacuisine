@@ -278,8 +278,10 @@ class RecipeEditor extends React.Component {
     console.log("added ingredient ", ingredient)
     this.setState({ingredients: [...this.state.ingredients, ingredient]})
   }
-  removeIng(id) {
-    let ings = this.state.ingredients.filter(item => item.id != id)
+  removeIng(ing) {
+    console.log("this.state.ingredients", this.state.ingredients)
+    let ings = this.state.ingredients.filter(item => item.id != ing.id)
+    console.log("ings", ings)
     this.setState({ingredients: ings})
   }
 
