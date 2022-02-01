@@ -5,8 +5,11 @@ class RecipeKind < ApplicationRecord
 
   alias image_assoc image
   def image
-    self.create_image!() if self.image_assoc.blank?
-    self.image_assoc
+    if self.image_assoc.blank?
+      self.create_image!
+      self.save!
+    end
+    image_assoc
   end
 
   def to_param

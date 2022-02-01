@@ -44,7 +44,7 @@ class RecipeKindsController < ApplicationController
   def update
     @recipe_kind.update!(recipe_kind_params)
     respond_to do |format|
-      format.json {render json: {}}
+      format.json {render json: to_obj(@recipe_kind)}
       format.html {redirect_back fallback_location: edit_recipe_kind_path(@recipe_kind)}
     end
   end

@@ -16,16 +16,17 @@ export const TextInputField = ({model, field}) => {
 
 export const asyncUpdateModel = (model, diffs, options={}) => {
 
-  if (!model.onUpdate) {
-    throw("asyncUpdateModelField requires the model to handle onUpdate")
+  if (!model.onUpdate && !model.onServerUpdate) {
+    throw("asyncUpdateModelField requires the model to handle onUpdate or onServerUpdate")
   }
   let data = new FormData()
   for(let field in diffs) {
     model[field] = diffs[field]
     data.append(model.class_name+"["+field+"]", diffs[field] == null ? '' : diffs[field])
   }
-  model.onUpdate(model)
-
+  if (model.onUpdate) {
+    model.onUpdate(model)
+  }
   console.log('PATCH', model.url)
   ajax({url: model.url, type: 'PATCH', data: data, success: (response) => {
     if (model.onServerUpdate) {
@@ -34,30 +35,7 @@ export const asyncUpdateModel = (model, diffs, options={}) => {
   }})
 }
 export const asyncUpdateModelField = (model, field, value, options={}) => {
-
-  if (value == model[field] && !options.force) {
-    console.log(`Skipping update ${model.class_name} ${field} because it is unchanged.`)
-  } else {
-    if (!model.onUpdate) {
-      throw("asyncUpdateModelField requires the model to handle onUpdate")
-    }
-    model[field] = value
-    model.onUpdate(model)
-
-    //let data = {
-    //  [model.class_name]: {[field]: value}
-    //}
-    let data = new FormData()
-    data.append(model.class_name+"["+field+"]", value == null ? '' : value)
-    console.log('PATCH', model.url)
-    ajax({url: model.url, type: 'PATCH', data: data, success: (response) => {
-      if (model.onServerUpdate) {
-        model.onServerUpdate(response)
-      }
-    //}, error: (errors) => {
-    //  toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
-    }})
-  }
+  asyncUpdateModel(model, {[field]: value}, options)
 }
 
 const updateModelField = (model, field, value, successCallback=null) => {

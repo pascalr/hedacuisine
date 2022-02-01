@@ -49,16 +49,16 @@ class ImagesController < ApplicationController
     #process_variants(image)
     image.save!
     respond_to do |format|
-      format.js { render :json => {id: image.id, filename: image.filename} }
+      format.json { render json: to_obj(image) }
       format.html {redirect_back fallback_location: image_path(image)}
     end
   end
 
   def update
+    @image.update!(image_params)
     respond_to do |format|
-      @image.update!(image_params)
+      format.json { render json: to_obj(@image) }
       format.html { redirect_back fallback_location: image_path(@image) }
-      format.json { render json: {image: to_obj(@image)} }
     end
   end
 
