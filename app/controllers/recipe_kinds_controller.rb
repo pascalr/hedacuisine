@@ -27,6 +27,7 @@ class RecipeKindsController < ApplicationController
   end
 
   def edit
+    gon.recipe_kind = to_obj(@recipe_kind)
     gon.jbuilder
   end
 
@@ -42,12 +43,18 @@ class RecipeKindsController < ApplicationController
 
   def update
     @recipe_kind.update!(recipe_kind_params)
-    redirect_to recipe_kinds_path
+    respond_to do |format|
+      format.json {render json: {}}
+      format.html {redirect_back fallback_location: edit_recipe_kind_path(@recipe_kind)}
+    end
   end
 
   def destroy
     @recipe_kind.destroy
-    redirect_to recipe_kinds_path
+    respond_to do |format|
+      format.json {render json: {}}
+      format.html {redirect_back fallback_location: recipe_kinds_path}
+    end
   end
 
   private

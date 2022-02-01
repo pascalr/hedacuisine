@@ -72,7 +72,7 @@ class RecipesController < ApplicationController
   def edit
     gon.recipe = to_obj(@recipe)
     gon.recipe_image = to_obj(@recipe.recipe_image) if @recipe.recipe_image
-    gon.recipe_kind_image = to_obj(@recipe.recipe_kind) if @recipe.recipe_kind && @recipe.recipe_kind.image
+    gon.recipe_kind_image.image = to_obj(@recipe.recipe_kind) if @recipe.recipe_kind && @recipe.recipe_kind.image
     gon.jbuilder
   end
 

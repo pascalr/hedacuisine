@@ -14,6 +14,7 @@ module SerializeHelper
     return image_to_obj(record) if record.is_a? Image
     return food_to_obj(record) if record.is_a? Food
     return recipe_note_to_obj(record) if record.is_a? RecipeNote
+    return recipe_kind_to_obj(record) if record.is_a? RecipeKind
     return ingredient_section_to_obj(record) if record.is_a? IngredientSection
     return recipe_ingredient_to_obj(record) if record.is_a? RecipeIngredient
   end
@@ -23,15 +24,22 @@ module SerializeHelper
     obj.merge!({
       class_name: "image",
       url: image_path(image),
-      path: image_variant_path(image, :medium),
+      variants: {
+        thumb: image_variant_path(image, :thumb),
+        portrait_thumb: image_variant_path(image, :portrait_thumb),
+        small: image_variant_path(image, :small),
+        medium: image_variant_path(image, :medium),
+      },
+      path: image_variant_path(image, :medium), # DEPRECATED, use variants
       is_user_author: !!image.is_user_author
     })
     obj
   end
 
   def recipe_kind_to_obj(recipe_kind)
-    obj = {}
-    obj[:path] = image_variant_path(recipe_kind.image, :medium)
+    obj = extract_attributes(recipe_kind, :id, :name, :description_json)
+    obj[:image] = to_obj(recipe_kind.image)
+    obj[:url] = recipe_kind_path(@recipe_kind)
     obj
   end
 
