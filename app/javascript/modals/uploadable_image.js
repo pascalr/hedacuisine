@@ -5,11 +5,6 @@ import Button from 'react-bootstrap/Button'
 
 import {asyncUpdateModel, TextField, FileField, RadioField} from 'form'
 
-// TODO:
-//const onDelete = () => {
-//  recipeImage.onUpdate({})
-//  asyncUpdateModel(recipe, {use_personalised_image: '', image_id: null})
-//}
 export const UploadableImage = ({onDelete, image}) => {
   // add imagePlaceholder??? width??? height???
   const [showModal, setShowModal] = useState(false)
