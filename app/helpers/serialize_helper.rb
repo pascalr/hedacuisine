@@ -41,7 +41,7 @@ module SerializeHelper
   def recipe_kind_to_obj(recipe_kind)
     obj = extract_attributes(recipe_kind, :name, :description_json)
     obj[:image] = to_obj(recipe_kind.image)
-    obj[:url] = recipe_kind_path(@recipe_kind)
+    obj[:url] = recipe_kind_path(recipe_kind)
     obj
   end
 

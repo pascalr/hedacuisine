@@ -14,6 +14,19 @@ export const TextInputField = ({model, field}) => {
   )
 }
 
+// onUpdate is a callback to set the state
+// onServerUpdate is a callback to handle the data returned by the controllers update method
+
+// Updates a record to a new value, but keeps the callbacks.
+export const setRecordLocally(oldRecord, newRecord) {
+  if (!oldRecord.onUpdate) {
+    throw("setRecordLocally requires the model ("+oldRecord.class_name+") to handle onUpdate")
+  }
+  newRecord.onUpdate = oldRecord.onUpdate
+  newRecord.onServerUpdate = oldRecord.onServerUpdate
+  oldRecord.onUpdate(newRecord)
+}
+
 // FIXME: There can be a race condition between onUpdate and onServerUpdate... I don't know how to handle this properly...
 // I need onServerUpdate to get the modifications from the server.
 // Why not always onServerUpdate again???
@@ -21,7 +34,7 @@ export const TextInputField = ({model, field}) => {
 export const asyncUpdateModel = (model, diffs, options={}) => {
 
   if (!model.onUpdate && !model.onServerUpdate) {
-    throw("asyncUpdateModelField requires the model to handle onUpdate or onServerUpdate")
+    throw("asyncUpdateModelField requires the model ("+model.class_name+") to handle onUpdate or onServerUpdate")
   }
   let data = new FormData()
   for(let field in diffs) {
@@ -33,6 +46,7 @@ export const asyncUpdateModel = (model, diffs, options={}) => {
   }
   console.log('PATCH', model.url)
   ajax({url: model.url, type: 'PATCH', data: data, success: (response) => {
+    console.log('PATCH received', response)
     if (model.onServerUpdate) {
       if (response.class_name == model.class_name) {
         response.onUpdate = model.onUpdate
