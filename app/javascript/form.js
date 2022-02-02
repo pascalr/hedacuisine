@@ -14,6 +14,10 @@ export const TextInputField = ({model, field}) => {
   )
 }
 
+// FIXME: There can be a race condition between onUpdate and onServerUpdate... I don't know how to handle this properly...
+// I need onServerUpdate to get the modifications from the server.
+// Why not always onServerUpdate again???
+//this.state.recipe_kind.onUpdate = (recipe_kind) => {this.setState({recipe_kind})}
 export const asyncUpdateModel = (model, diffs, options={}) => {
 
   if (!model.onUpdate && !model.onServerUpdate) {
@@ -30,6 +34,10 @@ export const asyncUpdateModel = (model, diffs, options={}) => {
   console.log('PATCH', model.url)
   ajax({url: model.url, type: 'PATCH', data: data, success: (response) => {
     if (model.onServerUpdate) {
+      if (response.class_name == model.class_name) {
+        response.onUpdate = model.onUpdate
+        response.onServerUpdate = model.onServerUpdate
+      }
       model.onServerUpdate(response)
     }
   }})

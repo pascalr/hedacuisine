@@ -20,10 +20,13 @@ class RecipeKindEditor extends React.Component {
     this.state = {
       recipe_kind: gon.recipe_kind
     }
-    this.state.recipe_kind.onUpdate = (recipe_kind) => {this.setState({recipe_kind})}
     this.state.recipe_kind.image.onServerUpdate = (image) => {
       let recipe_kind = {...this.state.recipe_kind}
       recipe_kind.image = image
+      this.setState({recipe_kind})
+    }
+    this.state.recipe_kind.onServerUpdate = (recipe_kind) => {
+      recipe_kind.image.onServerUpdate = this.state.recipe_kind.image.onServerUpdate
       this.setState({recipe_kind})
     }
   }
