@@ -29,6 +29,9 @@ class RecipeKindEditor extends React.Component {
     this.state.recipe_kind.onServerUpdate = (recipe_kind) => {
       //recipe_kind.image.onServerUpdate = this.state.recipe_kind.image.onServerUpdate
       //this.setState({recipe_kind: updateRecord(this.state.recipe_kind, recipe_kind)})
+      console.log("this.state.recipe_kind", this.state.recipe_kind)
+      console.log("recipe_image", recipe_kind)
+      console.log("updateRecord", updateRecord(this.state.recipe_kind, recipe_kind, {image: {}}))
       this.setState({recipe_kind: updateRecord(this.state.recipe_kind, recipe_kind, {image: {}})})
     }
   }

@@ -23,7 +23,8 @@ export const clearRecord = (record) => {
 export const updateRecord = (oldRecord, newRecord, nested={}) => {
   let obj = {...oldRecord, ...newRecord}
   for (const key in nested) {
-    obj[key] = updateRecord(obj[key], nested[key])
+    obj[key] = {...oldRecord[key], ...newRecord[key], ...nested[key]}
+    //obj[key] = updateRecord(obj[key], nested[key])
   }
   return obj
 }
@@ -42,19 +43,11 @@ export const asyncUpdateModel = (model, diffs, options={}) => {
     model[field] = diffs[field]
     data.append(model.class_name+"["+field+"]", diffs[field] == null ? '' : diffs[field])
   }
-  if (model.onUpdate) {
-    model.onUpdate(model)
-  }
+  if (model.onUpdate) { model.onUpdate(model) }
   console.log('PATCH', model.url)
   ajax({url: model.url, type: 'PATCH', data: data, success: (response) => {
     console.log('PATCH received', response)
-    if (model.onServerUpdate) {
-      if (response.class_name == model.class_name) {
-        response.onUpdate = model.onUpdate
-        response.onServerUpdate = model.onServerUpdate
-      }
-      model.onServerUpdate(response)
-    }
+    if (model.onServerUpdate) { model.onServerUpdate(response) }
   }})
 }
 export const asyncUpdateModelField = (model, field, value, options={}) => {

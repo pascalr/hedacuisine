@@ -15,7 +15,7 @@ import { DeleteConfirmButton } from 'components/delete_confirm_button'
 import { Tiptap, BubbleTiptap, ModificationsHandler } from 'tiptap'
 import '../styles/prose_mirror.scss'
 
-import {TextField, CollectionSelect} from '../form'
+import {updateRecord, TextField, CollectionSelect} from '../form'
 
 import {EditRecipeImageModal} from '../modals'
 
@@ -251,15 +251,16 @@ class RecipeEditor extends React.Component {
     //}
     this.state.recipe.onUpdate = (recipe) => {this.setState({recipe})}
     this.state.recipe.onServerUpdate = ({recipe, recipe_image}) => {
-      console.log("recipe", recipe)
-      console.log("recipe_image", recipe_image)
-      if (!this.state.recipe_image.url && recipe_image && recipe_image.url) {
-        this.setState({recipe_image: {...this.state.recipe_image, ...recipe_image}})
-      }
+      //console.log("recipe", recipe)
+      //console.log("recipe_image", recipe_image)
+      //if (!this.state.recipe_image.url && recipe_image && recipe_image.url) {
+      //  this.setState({recipe_image: {...this.state.recipe_image, ...recipe_image}})
+        this.setState({recipe_image: updateRecord(this.state.recipe_image, recipe_image)})
+      //}
     }
     this.state.recipe_image.onUpdate = (recipe_image) => {this.setState({recipe_image})}
-    this.state.recipe_image.onServerUpdate = ({image}) => {
-      this.setState({recipe_image: {...this.state.recipe_image, ...image}})
+    this.state.recipe_image.onServerUpdate = (image) => {
+      this.setState({recipe_image: updateRecord(this.state.recipe_image, image)})
     }
     this.handleDropIng = this.handleDropIng.bind(this);
     this.appendIngredientSection = this.appendIngredientSection.bind(this)
@@ -447,7 +448,7 @@ class RecipeEditor extends React.Component {
     const recipe_image = this.state.recipe_image
     const recipeKindImage = gon.recipe_kind_image
     const image = recipe.use_personalised_image ? recipe_image : recipeKindImage
-    const imagePath = (image && image.path) || "/default_recipe_01.png"
+    const imagePath = (image && image.variants && image.variants.medium) || "/default_recipe_01.png"
     //console.log(model)
     
     return (<>

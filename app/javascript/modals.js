@@ -11,7 +11,7 @@ export const EditRecipeImageModal = ({recipe, recipeImage, recipeKindImage, show
   const imagePath = (image && image.path) || "/default_recipe_01.png";
   
   const handleRemove = () => {
-    recipeImage.onUpdate(clearRecord(recipe_image))
+    recipeImage.onUpdate(clearRecord(recipeImage))
     asyncUpdateModel(recipe, {use_personalised_image: '', image_id: null})
   }
 
