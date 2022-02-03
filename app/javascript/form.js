@@ -17,14 +17,15 @@ export const TextInputField = ({model, field}) => {
 // onUpdate is a callback to set the state
 // onServerUpdate is a callback to handle the data returned by the controllers update method
 
-// Updates a record to a new value, but keeps the callbacks.
-export const setRecordLocally(oldRecord, newRecord) {
-  if (!oldRecord.onUpdate) {
-    throw("setRecordLocally requires the model ("+oldRecord.class_name+") to handle onUpdate")
+export const clearRecord = (record) => {
+  return {id: record.id, class_name: record.class_name, onUpdate: record.onUpdate, onServerUpdate: record.onServerUpdate}
+}
+export const updateRecord = (oldRecord, newRecord, nested={}) => {
+  let obj = {...oldRecord, ...newRecord}
+  for (const key in nested) {
+    obj[key] = updateRecord(obj[key], nested[key])
   }
-  newRecord.onUpdate = oldRecord.onUpdate
-  newRecord.onServerUpdate = oldRecord.onServerUpdate
-  oldRecord.onUpdate(newRecord)
+  return obj
 }
 
 // FIXME: There can be a race condition between onUpdate and onServerUpdate... I don't know how to handle this properly...

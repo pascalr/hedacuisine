@@ -5,7 +5,7 @@ import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from '
 
 import {UploadableImage} from '../modals/uploadable_image'
 
-import {asyncUpdateModel, TextField} from '../form'
+import {updateRecord, asyncUpdateModel, TextField} from '../form'
 
 //import Quantity from 'models/quantity'
 //import { Ingredient, Utils } from "recipe_utils"
@@ -21,13 +21,15 @@ class RecipeKindEditor extends React.Component {
       recipe_kind: gon.recipe_kind
     }
     this.state.recipe_kind.image.onServerUpdate = (image) => {
-      let recipe_kind = {...this.state.recipe_kind}
-      recipe_kind.image = image
-      this.setState({recipe_kind})
+      //let recipe_kind = {...this.state.recipe_kind}
+      //recipe_kind.image = updateRecord(recipe_kind.image, image)
+      //this.setState(recipe_kind)
+      this.setState({recipe_kind: updateRecord(this.state.recipe_kind, {}, {image: image})})
     }
     this.state.recipe_kind.onServerUpdate = (recipe_kind) => {
-      recipe_kind.image.onServerUpdate = this.state.recipe_kind.image.onServerUpdate
-      this.setState({recipe_kind})
+      //recipe_kind.image.onServerUpdate = this.state.recipe_kind.image.onServerUpdate
+      //this.setState({recipe_kind: updateRecord(this.state.recipe_kind, recipe_kind)})
+      this.setState({recipe_kind: updateRecord(this.state.recipe_kind, recipe_kind, {image: {}})})
     }
   }
 

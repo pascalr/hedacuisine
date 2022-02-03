@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 
-import {setRecordLocally, asyncUpdateModel, TextField, FileField, RadioField} from 'form'
+import {clearRecord, asyncUpdateModel, TextField, FileField, RadioField} from 'form'
 
 export const EditRecipeImageModal = ({recipe, recipeImage, recipeKindImage, show, handleClose}) => {
 
@@ -11,7 +11,7 @@ export const EditRecipeImageModal = ({recipe, recipeImage, recipeKindImage, show
   const imagePath = (image && image.path) || "/default_recipe_01.png";
   
   const handleRemove = () => {
-    setRecordLocally(recipeImage, {})
+    recipeImage.onUpdate(clearRecord(recipe_image))
     asyncUpdateModel(recipe, {use_personalised_image: '', image_id: null})
   }
 
