@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
           const matches = [];
           for (const choiceId in choices) {
             let item = choices[choiceId]
-            if (~normalizeSearchText(item.label).indexOf(term)) {
+            if (item.label && ~normalizeSearchText(item.label).indexOf(term)) {
               matches.push(choiceId);
             } else if (item.author && ~normalizeSearchText(item.author).indexOf(term)) {
               matches.push(choiceId);
