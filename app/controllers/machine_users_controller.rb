@@ -26,7 +26,7 @@ class MachineUsersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_machine_user
       @machine_user = current_user.machine_users.find(params[:id])
-      raise "Invalid user exception" unless @machine_user.menu.user_id == current_user.id
+      raise "Invalid user exception" unless @machine_user.menu.user_id == current_user_id
     end
 
     # Only allow a list of trusted parameters through.

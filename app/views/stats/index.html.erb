@@ -63,7 +63,7 @@
     <tbody>
       <tr>
         <% formats.each do |format| %>
-          <td><%= format.food_preferences.where(user_id: current_user.id).count %></td>
+          <td><%= format.food_preferences.where(user_id: current_user_id).count %></td>
         <% end %>
       </tr>
     </tfoot>

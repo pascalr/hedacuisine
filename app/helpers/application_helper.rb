@@ -23,7 +23,7 @@ module ApplicationHelper
       recipe_kind_path(recipe_kind, args)
     else
       if current_user
-        recipes = recipe_kind.recipes.where(is_public: true).or(recipe_kind.recipes.where(user_id: current_user.id))
+        recipes = recipe_kind.recipes.where(is_public: true).or(recipe_kind.recipes.where(user_id: current_user_id))
       else
         recipes = recipe_kind.recipes.all_public
       end

@@ -32,7 +32,7 @@
     <%# end %>
     <!--Imprimer |
       Télécharger-->
-    <% if current_user and @menu.user_id == current_user.id %>
+    <% if current_user and @menu.user_id == current_user_id %>
       <%= link_to 'Edit', edit_menu_path(@menu) %>
     <% end %>
   </div>

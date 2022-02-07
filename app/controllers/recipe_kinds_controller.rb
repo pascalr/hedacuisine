@@ -8,13 +8,13 @@ class RecipeKindsController < ApplicationController
   end
 
   def show
-    @recipes = @recipe_kind.recipes.where(is_public: true).or(@recipe_kind.recipes.where(user_id: current_user.id))
+    @recipes = @recipe_kind.recipes.where(is_public: true).or(@recipe_kind.recipes.where(user_id: current_user_id))
     if params[:version].blank? and !@recipes.blank?
       return redirect_to recipe_kind_path(@recipe_kind, version: @recipes.first.id)
     end
     if current_user
       # FIXME: Does the or prioritize the first one? It should
-      recipes = @recipe_kind.recipes.where(is_public: true).or(@recipe_kind.recipes.where(user_id: current_user.id))
+      recipes = @recipe_kind.recipes.where(is_public: true).or(@recipe_kind.recipes.where(user_id: current_user_id))
     else
       recipes = @recipe_kind.recipes.all_public
     end

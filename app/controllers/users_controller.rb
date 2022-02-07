@@ -18,12 +18,12 @@ class UsersController < ApplicationController
 
   def toggle_favorite_menu
     @menu = Menu.find(params[:menu_id])
-    fav_menu = FavoriteMenu.find_by(menu_id: @menu.id, user_id: current_user.id)
+    fav_menu = FavoriteMenu.find_by(menu_id: @menu.id, user_id: current_user_id)
     if fav_menu
       fav_menu.destroy!
       redirect_to request.referrer
     else
-      FavoriteMenu.create!(menu_id: @menu.id, user_id: current_user.id)
+      FavoriteMenu.create!(menu_id: @menu.id, user_id: current_user_id)
       redirect_to request.referrer
     end
   end
