@@ -15,7 +15,7 @@ import { DeleteConfirmButton } from 'components/delete_confirm_button'
 import { Tiptap, BubbleTiptap, ModificationsHandler } from 'tiptap'
 import '../styles/prose_mirror.scss'
 
-import {updateRecord, TextField, CollectionSelect} from '../form'
+import {AutocompleteInput, updateRecord, TextField, CollectionSelect} from '../form'
 
 import {EditRecipeImageModal} from '../modals'
 
@@ -59,11 +59,12 @@ const NewIngInputField = props => {
 
   const [value, setValue] = useState('')
   const [qty, setQty] = useState('')
-  const [suggestions, setSuggestions] = useState([])
   const [newlyAdded, setNewlyAdded] = useState(true);
 
   //const foodInputField = useRef(null);
   const quantityInputField = useRef(null);
+
+  const id = "autocomplete-form"
 
   useEffect(() => {
     if (newlyAdded) {
@@ -81,60 +82,50 @@ const NewIngInputField = props => {
   };
 
   const postNewIngredient = (data) => {
-    Rails.ajax({url: gon.recipe.new_ingredient_url, type: 'POST', data: data, success: (ingredient) => {
+    ajax({url: gon.recipe.new_ingredient_url, type: 'POST', data: data, success: (ingredient) => {
       window.recipe_editor.current.addIng(ingredient)
       setValue(''); setQty('');
       quantityInputField.current.focus()
     }})
   }
 
-  const addIngredient = (event, {suggestion, suggestionValue, suggestionIndex, sectionIndex, method}) => {
-    let data = new FormData()
-    data.append('recipe_ingredient[raw]', qty)
-    data.append('recipe_ingredient[food_id]', suggestion.id)
-    postNewIngredient(data)
-  }
+  //const addIngredient = (event, {suggestion, suggestionValue, suggestionIndex, sectionIndex, method}) => {
+  //  let data = new FormData()
+  //  data.append('recipe_ingredient[raw]', qty)
+  //  data.append('recipe_ingredient[food_id]', suggestion.id)
+  //  postNewIngredient(data)
+  //}
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    let rawFood = e.currentTarget.elements.newRecipeIngredientRawFood.value
     let data = new FormData()
     data.append('recipe_ingredient[raw]', qty)
-    data.append('recipe_ingredient[raw_food]', rawFood)
+    data.append('recipe_ingredient[raw_food]', e.currentTarget.elements.raw_food.value)
     postNewIngredient(data)
   }
 
-  return (
-    <Row gap="7px" align-items="flex-start">
-      <form onSubmit={handleSubmit}>
-        <input type="text" size="8" style={{border: "none", borderBottom: "1px dashed #444"}} value={qty} onChange={(e) => setQty(e.target.value)} ref={quantityInputField} />
+  const onSelect = (e, term, item) => {
+    e.preventDefault()
+    let data = new FormData()
+    let form = document.getElementById(id)
+    data.append('recipe_ingredient[raw]', form.elements.raw.value)
+    data.append('recipe_ingredient[food_id]', item.dataset.id)
+    postNewIngredient(data)
+  }
+
+  return (<>
+    <form id={id} onSubmit={handleSubmit}>
+      <Row gap="0.5em;">
+        <input type="text" name="raw" size="8" style={{border: "none", borderBottom: "1px dashed #444"}} value={qty} onChange={(e) => setQty(e.target.value)} ref={quantityInputField} />
+        {' '}
         de
-        <Autosuggest
-          suggestions={suggestions}
-          onSuggestionsFetchRequested={({value}) => {
-            const inputValue = value.trim().toLowerCase();
-            const inputLength = inputValue.length;
-           
-            const matched = inputLength === 0 ? [] : gon.foodList.filter(food =>
-              food.name.includes(inputValue)
-            )
-            // Order the matches by relevance?
-            setSuggestions(matched)
-          }}
-          onSuggestionsClearRequested={() => setSuggestions([])}
-          getSuggestionValue={suggestion => suggestion.name}
-          renderSuggestion={(suggestion, { isHighlighted }) => (
-            <div style={{ background: isHighlighted ? '#4095bf' : 'white', color: isHighlighted ? 'white' : 'black' }}>
-              {suggestion.name}
-            </div>
-          )}
-          onSuggestionSelected={addIngredient}
-          inputProps={inputFieldProps}
-        />
+        {' '}
+        <input type="hidden" name="food_id" value="" />
+        <AutocompleteInput name="raw_food" choices={gon.foodList} onSelect={onSelect} />
         <input type="submit" value="Ajouter" />
-      </form>
-    </Row>
-  )
+      </Row>
+    </form>
+  </>)
 }
 
 const VisualState = {

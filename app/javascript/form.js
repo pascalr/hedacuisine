@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-import { colorToHexString, hexStringToColor, Utils, ajax } from 'utils'
+import { normalizeSearchText, colorToHexString, hexStringToColor, Utils, ajax } from 'utils'
 
 import { DeleteConfirmButton } from 'components/delete_confirm_button'
+
+import autocomplete from 'js-autocomplete'; //Already included in app/javascript/packs/autocomplete.js?
 
 export const TextInputField = ({model, field}) => {
   const [value, setValue] = useState(model.currentValue(field))
@@ -12,6 +14,47 @@ export const TextInputField = ({model, field}) => {
       id={field} onChange={(e) => setValue(e.target.value)}
       onBlur={() => model.updateValue(field, value)} />
   )
+}
+
+export const AutocompleteInput = ({name, choices, placeholder, onSelect}) => {
+  const inputRef = useRef(null);
+  useEffect(() => { // Same as componentDidMount
+    
+    if (inputRef.current) {
+      console.log('new autocomplete')
+      let my_autocomplete = new autocomplete({
+        selector: inputRef.current,
+        minChars: 1,
+        source: function(term, suggest){
+          term = normalizeSearchText(term)
+          const matches = [];
+          for (const idx in choices) {
+            let item = choices[idx]
+            if (item.name && ~normalizeSearchText(item.name).indexOf(term)) {
+              matches.push(idx);
+            }
+          }
+          suggest(matches);
+        },
+        renderItem: function (idx, search){
+          let item = choices[idx]
+          search = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+          var re = new RegExp("(" + search.split(' ').join('|') + ")", "gi");
+          let r = '<a class="autocomplete-suggestion id="'+idx+'" data-id="'+item.id+'" href="'+item.url+'">'
+          if (item.image) {r += '<img src="'+item.image+'"></img>'}
+          r += item.name.replace(re, "<b>$1</b>") + '</a>';
+          return r
+        },
+        onSelect: onSelect,
+      })
+      return () => {
+        my_autocomplete.destroy()
+      }
+    }
+  }, [])
+  return <>
+    <input type="search" name={name} id={name} placeholder={placeholder} aria-label="Search" autoComplete="off" ref={inputRef} />
+  </>
 }
 
 // onUpdate is a callback to set the state
@@ -143,6 +186,7 @@ export const ToggleField = ({model, field, labelOn, labelOff, ...props}) => {
       onChange={(e) => {updateModelField(model, field, e.target.checked)}} hidden />
   </>)
 }
+
 export const RadioField = ({model, field, value, label, ...props}) => {
   let id = `${model.class_name}_${field}_${value}`
   return (<>
