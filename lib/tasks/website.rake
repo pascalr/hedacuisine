@@ -10,7 +10,11 @@ end
 def execute_download
   puts "Executing the download for the download list"
   File.open("tmp/download-list", 'w') { |file| file.write($download_list.join("\n")) }
-  system("wget -e robots=off -p -P tmp -i tmp/download-list")
+  # -e robots=off Download even if not allowed by robots.txt
+  # -P prefix Download inside tmp directory
+  # -p ?????
+  # -nv no verbose
+  system("wget -nv -e robots=off -p -P tmp -i tmp/download-list")
   #system("wget -q -e robots=off -p -P tmp -i tmp/download-list")
   move_files_without_extensions
   $download_list.clear
@@ -64,9 +68,15 @@ namespace :website do
     require "#{Rails.root}/app/helpers/application_helper"
     include ApplicationHelper
 
-    Recipe.all_main.all_public.with_images.map(&:image).each do |image|
+    RecipeKind.where.not(image_id: nil).includes(:image).order(:name).map(&:image).each do |image|
       add_download(thumb_image_path(image))
     end
+    Book.all_public.where.not(front_page_image_id: nil).includes(:front_page_image).order(:name).map(&:front_page_image).each do |image|
+      add_download(portrait_thumb_image_path(image))
+    end
+    #Recipe.all_main.all_public.with_images.map(&:image).each do |image|
+    #  add_download(thumb_image_path(image))
+    #end
     execute_download
   end
 
@@ -89,7 +99,7 @@ namespace :website do
     execute_download
 
     locales.each do |locale|
-      #add_download(recipes_path(locale: locale))
+      add_download(recipes_path(locale: locale))
       add_download(recipe_kinds_path(locale: locale))
       add_download(search_data_path(locale: locale, format: :json))
       add_download(books_path(locale: locale))
@@ -170,6 +180,10 @@ namespace :website do
   task convert_sync_to_local: :environment do
 
     # OPTIMIZE: Be smart and not erase everything everytime...
+    # Maybe try this:
+    # sync the sync folder with the remote data
+    # move the files from the root folder to subfolders like local storage does
+    # take all the blobs and update service name to "local"
 
     storage_folder = Rails.root.join('storage')
     FileUtils.rm_rf(storage_folder.to_s + '/*')

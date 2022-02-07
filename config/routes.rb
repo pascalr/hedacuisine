@@ -15,7 +15,6 @@ Rails.application.routes.draw do
   end
   resources :food_tags
   get 'search/index'
-  get 'search/data', as: 'search_data'
   resources :listings
   resources :ingredients
   resources :recipe_steps
@@ -116,6 +115,8 @@ Rails.application.routes.draw do
   localized do
     resources :kinds, param: 'slug'
     resources :foods, param: 'slug'
+  
+    get 'search/data', as: 'search_data'
 
     #resources :recipe_kinds, only: [:index, :create, :edit] do
     resources :recipe_kinds, only: [:index, :create, :update, :destroy, :edit, :show, :new] do
