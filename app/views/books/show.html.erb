@@ -4,9 +4,9 @@
   </div>
   <div>
     <% @book.items.each do |item| %>
-      <% if item.is_a? BookRecipe %>
-        <%= render partial: "recipes/recipe", locals: {recipe: item.recipe, book: @book, book_recipe: item, test12: "FUCK OFF"} %>
-      <% else %>
+      <% if item.is_a?(BookRecipe) && (item.recipe.is_public || @book.user_id == current_user_id) %>
+        <%= render partial: "recipes/recipe", locals: {recipe: item.recipe, book: @book, book_recipe: item} %>
+      <% elsif item.is_a? BookSection %>
         <h2><%= item.name %></h2>
       <% end %>
     <% end %>
