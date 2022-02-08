@@ -15,7 +15,8 @@
         <%= link_to recipe_kind do %>
           <%= image_tag small_image_path(recipe_kind.image), width: 255, height: 171 %>
           <div style="width: 255px; text-align: center; font-family: 'Satisfy', cursive; font-size: 1.8rem; color: black; line-height: 1; margin-top: 0.25em;">
-            <%= recipe_kind.name %>
+            <% c = recipe_kind.recipes.where(is_public: true).count %>
+            <%= recipe_kind.name %> <span style="font-size: 0.8em;">(<%= c %>&nbsp;<%= c > 1 ? "recettes" : "recette" %>)</span>
           </div>
         <% end %>
       </div>
