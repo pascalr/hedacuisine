@@ -10,4 +10,9 @@ class BookRecipe < ApplicationRecord
       update!(position: book.next_index_position)
     end
   end
+  
+  def to_param
+    return "#{id}" if recipe.name.nil?
+    return "#{id}-#{recipe.name.gsub(' ', '-')}"
+  end
 end

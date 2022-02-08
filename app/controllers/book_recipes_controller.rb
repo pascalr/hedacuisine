@@ -1,7 +1,8 @@
 class BookRecipesController < ApplicationController
-  before_action :set_book
-  before_action :set_book_recipe, only: [:update, :destroy, :show]
-  skip_before_action :only_admin!
+  before_action :set_book, except: [:show]
+  before_action :set_book_recipe, only: [:update, :destroy]
+  skip_before_action :only_admin!, only: [:show]
+  skip_before_action :authenticate_user!, only: [:show]
 
   def create
     book_recipe = @book.book_recipes.create!(book_recipe_params)
@@ -12,6 +13,8 @@ class BookRecipesController < ApplicationController
   end
 
   def show
+    @book = Book.where(is_public: true).find(params[:book_slug].split('-')[0])
+    @book_recipe = @book.book_recipes.find(params[:id])
     @recipe = @book_recipe.recipe
   end
 

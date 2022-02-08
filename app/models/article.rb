@@ -6,7 +6,7 @@ class Article < ApplicationRecord
   
   def to_param
     return id if name.nil?
-    "#{id}-#{name.gsub(' ', '_')}"
+    "#{id}-#{name.gsub(' ', '-')}"
   end
 
   def content

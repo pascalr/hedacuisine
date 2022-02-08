@@ -214,7 +214,7 @@ class Recipe < ApplicationRecord
 
   def to_param
     return "#{id}" if name.nil?
-    return "#{id}-#{name.downcase.gsub(' ', '_')}"# if version_name.blank?
+    return "#{id}-#{name.gsub(' ', '-')}"# if version_name.blank?
     #"#{id}-#{name.downcase.gsub(' ', '_')}_#{version_name.downcase.gsub(' ', '_')}"
   end
 
