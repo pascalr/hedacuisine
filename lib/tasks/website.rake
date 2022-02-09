@@ -1,6 +1,9 @@
 OUT_DIR = "tmp/localhost:3001"
   
 $download_list ||= []
+    
+LOCALES = ["fr-CA"]
+#LOCALES = ["fr", "en"]
 
 def add_download(path)
   puts "Adding path to download: #{path}"
@@ -80,25 +83,27 @@ namespace :website do
     execute_download
   end
 
+  task build: [:environment, :clear, :build_main, :build_image_thumbnails, :build_book_recipes] do
+  end
+
+  task :url_helpers do
+    include Rails.application.routes.url_helpers
+  end
+
   desc "TODO"
-  task build: [:environment, :clear, :build_image_thumbnails] do
+  task build_main: [:environment, :url_helpers, :clear, :build_image_thumbnails] do
 
     #Rake::Task["website:build_image_thumbnails"].invoke
-
-    include Rails.application.routes.url_helpers
-
-    locales = ["fr-CA"]
-    #locales = ["fr", "en"]
       
     add_download("/")
     execute_download
 
-    locales.each do |locale|
+    LOCALES.each do |locale|
       add_download(home_path(locale: locale))
     end
     execute_download
 
-    locales.each do |locale|
+    LOCALES.each do |locale|
       add_download(recipes_path(locale: locale))
       add_download(recipe_kinds_path(locale: locale))
       add_download(search_data_path(locale: locale, format: :json))
@@ -107,7 +112,7 @@ namespace :website do
     end
     execute_download
 
-    locales.each do |locale|
+    LOCALES.each do |locale|
 
       Food.all_public.each do |food|
         next if food.recipes.blank?
@@ -126,7 +131,7 @@ namespace :website do
         add_download(recipe_kind_path(recipe_kind, locale: locale))
       end
 
-      Book.all.each do |book|
+      Book.all_public.each do |book|
         add_download(book_path(book, locale: locale))
       end
 
@@ -136,7 +141,17 @@ namespace :website do
 
     end
     execute_download
+  end
 
+  task build_book_recipes: [:environment, :url_helpers] do
+    LOCALES.each do |locale|
+      Book.all_public.each do |book|
+        book.book_recipes.includes(:recipe).where(recipe: {is_public: true}).each do |book_recipe|
+          add_download(book_book_recipe_path(book_slug: book.to_param, locale: locale, slug: book_recipe.to_param))
+        end
+      end
+    end
+    execute_download
   end
 
   task sync_from_local_to_b2: :environment do

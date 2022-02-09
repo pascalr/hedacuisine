@@ -14,7 +14,7 @@ class BookRecipesController < ApplicationController
 
   def show
     @book = Book.where(is_public: true).find(params[:book_slug].split('-')[0])
-    @book_recipe = @book.book_recipes.find(params[:id])
+    @book_recipe = @book.book_recipes.find(params[:slug].split('-')[0])
     @recipe = @book_recipe.recipe
   end
 
@@ -35,7 +35,7 @@ class BookRecipesController < ApplicationController
     end
 
     def set_book_recipe
-      @book_recipe = @book.book_recipes.find(params[:id])
+      @book_recipe = @book.book_recipes.find(params[:slug].split('-')[0])
     end
 
     def book_recipe_params

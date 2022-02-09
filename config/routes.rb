@@ -161,7 +161,7 @@ Rails.application.routes.draw do
         get 'edit_appearance'
         patch 'set_is_featured'
       end
-      resources :book_recipes, only: [:create, :update, :destroy, :show], path: 'recipes'
+      resources :book_recipes, only: [:create, :update, :destroy, :show], path: 'recipes', param: 'slug'
       resources :book_sections, only: [:create, :update, :destroy]
       resources :pages, only: [:create, :update, :destroy]
     end
