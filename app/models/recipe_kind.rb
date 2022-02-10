@@ -12,6 +12,15 @@ class RecipeKind < ApplicationRecord
     image_assoc
   end
 
+  def public_recipe_count
+    recipes.where(is_public: true).count
+  end
+
+  def public_recipe_count_str
+    c = public_recipe_count
+    "(#{c} #{(c > 1 ? "recettes" : "recette")})"
+  end
+
   def to_param
     return "#{id}" if name.nil?
     "#{id}-#{name.gsub(' ', '-')}"

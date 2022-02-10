@@ -30,6 +30,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
           // FIXME: Why data-val???
           if (item.author) {
             return '<a class="autocomplete-suggestion book_search_thumb" data-id="' + choiceId + '" href="'+item.url+'"><img src="'+item.image+'"></img><div><b>' + item.label + '</b><div>de '+item.author+'</div></div></a>';
+          } else if (item.recipe_count) {
+            return '<a class="autocomplete-suggestion" data-id="' + choiceId + '" href="'+item.url+'"><img src="'+item.image+'"></img>' + item.label.replace(re, "<b>$1</b>") + ' ' + item.recipe_count + '</a>';
           } else {
             return '<a class="autocomplete-suggestion" data-id="' + choiceId + '" href="'+item.url+'"><img src="'+item.image+'"></img>' + item.label.replace(re, "<b>$1</b>") + '</a>';
           }
