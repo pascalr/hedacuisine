@@ -20,7 +20,8 @@ class Image < ApplicationRecord
     thumb: {width: 71, height: 48},
     portrait_thumb: {width: 71, height: 106.5},
     small: {width: 255, height: 171},
-    medium: {width: 452, height: 304}
+    medium: {width: 452, height: 304},
+    small_book: {width: 178, height: 258} # La variante devrait avoir une hauteur minimale du livre sur la page d'acceuil, et une largeur minimale du livre dans le preview à gauche.
   }
   def thumb_variant
     original.representation(resize_to_fill: [VARIANTS[:thumb][:width], VARIANTS[:thumb][:height]])
@@ -33,6 +34,17 @@ class Image < ApplicationRecord
   end
   def medium_variant
     original.representation(resize_to_fill: [VARIANTS[:medium][:width], VARIANTS[:medium][:height]])
+  end
+  def small_book_variant
+    # La variante devrait avoir une hauteur minimale du livre sur la page d'acceuil, et une largeur minimale du livre dans le preview à gauche.
+    # If the image is wider than the minimums, than limit by height
+    if self.aspect_ratio > (VARIANTS[:small_book][:width].to_f / VARIANTS[:small_book][:height].to_f)
+      # Limit with a really wide image, so it should limit by height only
+      original.representation(resize_to_limit: [VARIANTS[:small_book][:height]*2, VARIANTS[:small_book][:height]])
+    else # limit by width
+      # Limit with a really tall image, so it should limit by width only
+      original.representation(resize_to_limit: [VARIANTS[:small_book][:width], VARIANTS[:small_book][:width]*3])
+    end
   end
 
   def width

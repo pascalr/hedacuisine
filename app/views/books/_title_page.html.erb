@@ -1,6 +1,6 @@
 <% if book.front_page_image %>
   <div class="page title-page"
-  style="aspect-ratio: <%= book.page_aspect_ratio %>; background-size: cover; background-image: url(<%= original_image_path(book.front_page_image) %>);">
+  style="aspect-ratio: <%= book.page_aspect_ratio %>; background-size: cover; background-image: url(<%= image_variant_path(book.front_page_image, :small_book) %>);">
   </div>
 <% else %>
   <div class="page title-page"

@@ -1,9 +1,9 @@
 class ImagesController < ApplicationController
   #skip_before_action :authenticate_user!, only: [:show]
   #skip_before_action :only_admin!, only: [ :show]
-  before_action :set_image, only: [:show, :update, :destroy, :edit, :process_image, :small, :medium, :thumb, :original, :portrait_thumb]
-  skip_before_action :authenticate_user!, only: [:thumb, :medium, :small, :original, :portrait_thumb]
-  skip_before_action :only_admin!, only: [:thumb, :medium, :small, :original, :portrait_thumb]
+  before_action :set_image, only: [:show, :update, :destroy, :edit, :process_image, :small, :medium, :thumb, :original, :portrait_thumb, :small_book]
+  skip_before_action :authenticate_user!, only: [:thumb, :medium, :small, :original, :portrait_thumb, :small_book]
+  skip_before_action :only_admin!, only: [:thumb, :medium, :small, :original, :portrait_thumb, :small_book]
 
   def index
     @images = Image.order(id: :desc).all
@@ -12,21 +12,20 @@ class ImagesController < ApplicationController
   def original
     redirect_to @image.original
   end
-
   def thumb
     redirect_to @image.thumb_variant
   end
-
   def small
     redirect_to @image.small_variant
   end
-
   def medium
     redirect_to @image.medium_variant
   end
-  
   def portrait_thumb
     redirect_to @image.portrait_thumb_variant
+  end
+  def small_book
+    redirect_to @image.small_book_variant
   end
 
   def show
