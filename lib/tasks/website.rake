@@ -105,7 +105,6 @@ namespace :website do
 
     LOCALES.each do |locale|
       add_download(recipes_path(locale: locale))
-      add_download(recipe_kinds_path(locale: locale))
       add_download(search_data_path(locale: locale, format: :json))
       add_download(books_path(locale: locale))
       #add_download(articles_path(locale: locale))
