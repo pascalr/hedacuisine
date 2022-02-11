@@ -8,6 +8,11 @@ fi
 
 export LOAD_FILE=$1
 
+# By error, I loaded an old database version and it fucked everything (it took the schema from back then)
+# Running these two lines fixed it. I should probably run them every time, but I am scared to do so.
+#DISABLE_DATABASE_ENVIRONMENT_CHECK=1 rake db:drop
+#rake db:create
+
 rails database:load_dev $1
 rails database:load_local $1
 
