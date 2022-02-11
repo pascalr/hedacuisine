@@ -17,6 +17,8 @@ import '../styles/prose_mirror.scss'
 
 import {AutocompleteInput, updateRecord, TextField, CollectionSelect} from '../form'
 
+import { combineOrderedListWithHeaders } from '../lib'
+
 import {EditRecipeImageModal} from '../modals'
 
 function updateIngQuantityCallback() {
@@ -345,15 +347,7 @@ class RecipeEditor extends React.Component {
   }
 
   render() {
-    let ingItems = []
-    for (let i=0, index=0; i < this.state.ingredients.length; i++, index++) {
-      this.state.ingredient_sections.forEach((section, j) => {
-        if (section.before_ing_nb == i+1) {
-          ingItems.push(section)
-        }
-      })
-      ingItems.push(this.state.ingredients[i])
-    }
+    let ingItems = combineOrderedListWithHeaders(this.state.ingredients, this.state.ingredient_sections, header => header.before_ing_nb)
     ingItems = ingItems.concat(this.state.ingredient_sections.filter(s => s.before_ing_nb > this.state.ingredients.length))
     const renderedIngItems = []
     for (let i=0; i < ingItems.length; i++) {

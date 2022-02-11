@@ -4,6 +4,7 @@ class Book < ApplicationRecord
   has_many :recipes, through: :book_recipes
   belongs_to :theme, optional: true # deprecated actually
   has_many :book_sections
+  alias sections book_sections
 
   has_many :pages
   
@@ -27,16 +28,6 @@ class Book < ApplicationRecord
   
   def author
     "#{user.name}"
-  end
-
-  def items
-    (self.book_recipes.to_a + self.book_sections.to_a).sort_by(&:position)
-  end
-
-  def next_index_position
-    items = book_sections+book_recipes
-    position = items.map {|i| i[:position]}.compact.max
-    position.nil? ? 1 : position+1
   end
 
   def page_aspect_ratio

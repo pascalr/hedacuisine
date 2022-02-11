@@ -27,14 +27,15 @@
   <% end %>
   <div><%# image_tag icon_path("book.svg") %> <b>Table des matières</b></div>
   <ul style="list-style-type: none; padding-left: 0.5em;">
-    <% book.items.each do |item| %>
-      <% if item.is_a?(BookRecipe) && (item.recipe.is_public || @book.user_id == current_user_id) %>
+    <% book.book_recipes.each do |book_recipe| %>
+      <% book.book_sections.select {|s| s.before_recipe_at == book_recipe.position}.each do |section| %>
+        <li><b style="font-size: 0.97em;"><%= section.name %></b></li>
+      <% end %>
+      <% if book_recipe.recipe.is_public || @book.user_id == current_user_id %>
         <li style="padding-left: 0.5em;">
-          <%= link_to item.recipe.name, [book, item] %>
-          <%= item.recipe.is_public ? '' : image_tag(icon_path("eye-slash.svg")) %>
+          <%= link_to book_recipe.recipe.name, [book, book_recipe] %>
+          <%= book_recipe.recipe.is_public ? '' : image_tag(icon_path("eye-slash.svg")) %>
         </li>
-      <% elsif item.is_a? BookSection %>
-        <li><b style="font-size: 0.97em;"><%= item.name %></b></li>
       <% end %>
     <% end %>
   </ul>

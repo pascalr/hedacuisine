@@ -1,5 +1,13 @@
 namespace :once do
 
+  task update_book_recipes_position: :environment do
+    Book.all.each do |book|
+      book.book_recipes.each_with_index do |book_recipe, i|
+        book_recipe.update! position: i+1
+      end
+    end
+  end
+
   task update_images_file_info: :environment do
     Image.all.each do |image|
       image.update_file_info

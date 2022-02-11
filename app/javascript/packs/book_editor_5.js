@@ -115,25 +115,70 @@ class BookEditor extends React.Component {
     }})
   }
 
-  handleIndexDrop(droppedItem) {
-    console.log('Handle index drop')
+  handleIndexDrop(ingItems, droppedItem) {
+
+    const getClosestItemNb = (index) => {
+      for (let i = index; i < ingItems.length; i++) {
+        if (ingItems[i].class_name == "recipe_ingredient") {
+          return ingItems[i].item_nb
+        }
+      }
+      return this.state.ingredients.length
+    }
+
+    console.log('Handle drop ing')
     // Ignore drop outside droppable container
     if (!droppedItem.destination) return;
-    var updatedList = [...this.state.indexItems];
-    //// Remove dragged item
-    const [reorderedItem] = updatedList.splice(droppedItem.source.index, 1);
-    //// Add dropped item
-    updatedList.splice(droppedItem.destination.index, 0, reorderedItem);
-    this.setState({indexItems: updatedList})
+    let source = getClosestItemNb(droppedItem.source.index)-1
+    let destination = getClosestItemNb(droppedItem.destination.index)-1
+    let droppedRecord = ingItems[droppedItem.source.index]
+    //console.log("droppedRecord", droppedRecord)
+    //console.log("droppedItem", droppedItem)
+    //console.log("source", source)
+    //console.log("destination", destination)
+    if (droppedRecord.class_name == "recipe_ingredient") {
+      console.log("dropping recipe ingredient")
+      var updatedList = [...this.state.ingredients];
+      const [reorderedItem] = updatedList.splice(source, 1);
+      updatedList.splice(destination, 0, reorderedItem);
 
-    let data = new FormData()
-    data.append('source_index', droppedItem.source.index)
-    data.append('destination_index', droppedItem.destination.index)
-    //data.append('draggable_id', droppedItem.draggableId)
-    //data.append('draggable_type', droppedItem.draggableType)
-    //data.append('position', droppedItem.destination.index+1)
-    Rails.ajax({url: gon.on_index_change_book_path , type: 'PATCH', data: data})
+      let data = new FormData()
+      data.append('ing_id', droppedRecord.id)
+      data.append('position', destination+1)
+      ajax({url: gon.recipe.move_ing_url, type: 'PATCH', data: data})
+      for (let i = 0; i < updatedList.length; i++) {
+        updatedList[i].item_nb = i+1
+      }
+      this.setState({ingredients: updatedList})
+    } else {
+      var others = [...this.state.ingredient_sections].filter(i => i.id != droppedRecord.id);
+      droppedRecord.before_ing_nb = droppedItem.source.index < droppedItem.destination.index ? destination+2 : destination+1
+      console.log("dropping ingredient section at ", droppedRecord.before_ing_nb)
+      let data = new FormData()
+      data.append('ingredient_section[before_ing_nb]', droppedRecord.before_ing_nb)
+      ajax({url: droppedRecord.url, type: 'PATCH', data: data})
+      this.setState({ingredient_sections: [...others, droppedRecord]})
+    }
   }
+  //handleIndexDrop(droppedItem) {
+  //  console.log('Handle index drop')
+  //  // Ignore drop outside droppable container
+  //  if (!droppedItem.destination) return;
+  //  var updatedList = [...this.state.indexItems];
+  //  //// Remove dragged item
+  //  const [reorderedItem] = updatedList.splice(droppedItem.source.index, 1);
+  //  //// Add dropped item
+  //  updatedList.splice(droppedItem.destination.index, 0, reorderedItem);
+  //  this.setState({indexItems: updatedList})
+
+  //  let data = new FormData()
+  //  data.append('source_index', droppedItem.source.index)
+  //  data.append('destination_index', droppedItem.destination.index)
+  //  //data.append('draggable_id', droppedItem.draggableId)
+  //  //data.append('draggable_type', droppedItem.draggableType)
+  //  //data.append('position', droppedItem.destination.index+1)
+  //  Rails.ajax({url: gon.on_index_change_book_path , type: 'PATCH', data: data})
+  //}
 
   render() {
 

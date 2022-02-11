@@ -21,7 +21,7 @@ json.index_items @book.book_sections.map(&:order)+@book.book_recipes.map(&:order
 json.book_sections @book.book_sections do |book_section|
   json.id book_section.id
   json.class_name "book_section"
-  json.position book_section.position
+  json.before_recipe_at book_section.before_recipe_at
   json.name book_section.name
   json.url book_book_section_path(@book, book_section)
 end
