@@ -20,7 +20,7 @@
     
     <%= render partial: "recipes/recipe_description_with_image", locals: {recipe: @recipe} %>
     
-    <div style="display: flex; gap: 30px;">
+    <div class="responsive-sm-above" style="gap: 30px;">
       <div>
         <%= render partial: "recipes/recipe_body", locals: {recipe: @recipe, hide_header: true} %>
       </div>
