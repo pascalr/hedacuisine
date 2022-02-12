@@ -3,7 +3,7 @@ export function combineOrderedListWithHeaders(orderedList, headers, mapHeaderAtt
   for (let i=0; i < orderedList.length; i++) {
     headers.forEach((header, j) => {
       if (mapHeaderAttr(header) == i+1) {
-        items.push(section)
+        items.push(header)
       }
     })
     items.push(orderedList[i])

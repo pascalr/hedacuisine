@@ -7,18 +7,24 @@ class BookSectionsController < ApplicationController
     book_section = @book.book_sections.create!(book_section_params)
     respond_to do |format|
       format.html {redirect_back fallback_location: books_path}
-      format.js {render json: {book_section: {class_name: "book_section", id: book_section.id, name: book_section.name, url: book_book_section_path(@book, book_section)}}}
+      format.json {render json: to_obj(book_section)}
     end
   end
 
   def update
     @book_section.update!(book_section_params)
-    redirect_back fallback_location: books_path
+    respond_to do |format|
+      format.json {render json: to_obj(@book_section)}
+      format.html {redirect_back fallback_location: books_path}
+    end
   end
 
   def destroy
     @book_section.destroy!
-    redirect_back fallback_location: books_path
+    respond_to do |format|
+      format.json {render json: {}}
+      format.html {redirect_back fallback_location: books_path}
+    end
   end
 
   private
@@ -32,6 +38,7 @@ class BookSectionsController < ApplicationController
     end
 
     def book_section_params
+      return {} unless params.key? :book_section
       params.require(:book_section).permit(:name)
     end
 end
