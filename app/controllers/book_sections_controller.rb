@@ -39,6 +39,6 @@ class BookSectionsController < ApplicationController
 
     def book_section_params
       return {} unless params.key? :book_section
-      params.require(:book_section).permit(:name)
+      params.require(:book_section).permit(:name, :before_recipe_at)
     end
 end

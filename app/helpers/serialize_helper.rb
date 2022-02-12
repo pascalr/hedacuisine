@@ -21,6 +21,17 @@ module SerializeHelper
     return ingredient_section_to_obj(record) if record.is_a? IngredientSection
     return recipe_ingredient_to_obj(record) if record.is_a? RecipeIngredient
     return book_section_to_obj(record) if record.is_a? BookSection
+    return book_recipe_to_obj(record) if record.is_a? BookRecipe
+  end
+
+  def book_recipe_to_obj(book_recipe)
+    obj = extract_attributes(book_recipe, :position)
+    obj[:url] = book_book_recipe_path(book_recipe.book, book_recipe)
+    obj[:recipe] = {
+      id: book_recipe.recipe.id,
+      name: book_recipe.recipe.name
+    }
+    obj
   end
 
   def book_section_to_obj(book_section)

@@ -123,15 +123,8 @@ class BookEditor extends React.Component {
     const recipeId = this.newBookRecipeRecipeIdRef.current.value
     let data = new FormData()
     data.append("book_recipe[recipe_id]", recipeId)
-    ajax({url: gon.book_book_recipes_path, type: 'POST', data: data, success: (raw) => {
-      const response = JSON.parse(raw)
-      const book_recipe = response.book_recipe
-      console.log(response)
-      const indexItems = [...this.state.indexItems, book_recipe]
-      this.setState({indexItems})
-    }, error: (errors) => {
-      console.error(errors)
-      //toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
+    ajax({url: gon.book_book_recipes_path, type: 'POST', data: data, success: (book_recipe) => {
+      this.setState({book_recipes: [...this.state.book_recipes, book_recipe]})
     }})
   }
 

@@ -1,6 +1,6 @@
 json.book do
   json.class_name "book"
-  json.url book_path(@book, format: :js)
+  json.url book_path(@book)
   json.id @book.id
   json.name @book.name
   json.author @book.author
@@ -13,9 +13,9 @@ end
 
 json.pages @book.pages, :id, :page_nb
 
-json.book_pages_path book_pages_path(@book, format: :js)
-json.book_book_recipes_path book_book_recipes_path(@book, format: :js)
-json.book_book_sections_path book_book_sections_path(@book, format: :js)
+json.book_pages_path book_pages_path(@book)
+json.book_book_recipes_path book_book_recipes_path(@book)
+json.book_book_sections_path book_book_sections_path(@book)
 json.on_index_change_book_path on_index_change_book_path(@book)
 
 json.index_items @book.book_sections.map(&:order)+@book.book_recipes.map(&:order)

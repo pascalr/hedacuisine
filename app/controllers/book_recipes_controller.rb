@@ -8,7 +8,7 @@ class BookRecipesController < ApplicationController
     book_recipe = @book.book_recipes.create!(book_recipe_params)
     respond_to do |format|
       format.html {redirect_back fallback_location: books_path}
-      format.js {render json: {book_recipe: {class_name: "book_recipe", id: book_recipe.id, recipe: {id: book_recipe.recipe.id, name: book_recipe.recipe.name}}}}
+      format.json {render json: to_obj(book_recipe)}
     end
   end
 
@@ -20,12 +20,18 @@ class BookRecipesController < ApplicationController
 
   def update
     @book_recipe.update!(book_recipe_params)
-    redirect_back fallback_location: books_path
+    respond_to do |format|
+      format.json {render json: to_obj(@book_recipe)}
+      format.html {redirect_back fallback_location: books_path}
+    end
   end
 
   def destroy
     @book_recipe.destroy!
-    redirect_back fallback_location: books_path
+    respond_to do |format|
+      format.json {render json: {}}
+      format.html {redirect_back fallback_location: books_path}
+    end
   end
 
   private
