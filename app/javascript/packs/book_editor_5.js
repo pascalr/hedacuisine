@@ -142,49 +142,42 @@ class BookEditor extends React.Component {
     }})
   }
 
-  handleIndexDrop(ingItems, droppedItem) {
+  handleIndexDrop(items, droppedItem) {
 
     const getClosestItemNb = (index) => {
-      for (let i = index; i < ingItems.length; i++) {
-        if (ingItems[i].class_name == "book_recipe") {
-          return ingItems[i].item_nb
+      for (let i = index; i < items.length; i++) {
+        if (items[i].class_name == "book_recipe") {
+          return items[i].position
         }
       }
-      return this.state.ingredients.length
+      return this.state.book_recipes.length
     }
 
-    console.log('Handle drop ing')
     // Ignore drop outside droppable container
     if (!droppedItem.destination) return;
     let source = getClosestItemNb(droppedItem.source.index)-1
     let destination = getClosestItemNb(droppedItem.destination.index)-1
-    let droppedRecord = ingItems[droppedItem.source.index]
-    //console.log("droppedRecord", droppedRecord)
-    //console.log("droppedItem", droppedItem)
-    //console.log("source", source)
-    //console.log("destination", destination)
-    if (droppedRecord.class_name == "recipe_ingredient") {
-      console.log("dropping recipe ingredient")
-      var updatedList = [...this.state.ingredients];
+    let droppedRecord = items[droppedItem.source.index]
+    if (droppedRecord.class_name == "book_recipe") {
+      var updatedList = [...this.state.book_recipes];
       const [reorderedItem] = updatedList.splice(source, 1);
       updatedList.splice(destination, 0, reorderedItem);
 
       let data = new FormData()
-      data.append('ing_id', droppedRecord.id)
+      data.append('moved_id', droppedRecord.id)
       data.append('position', destination+1)
-      ajax({url: gon.recipe.move_ing_url, type: 'PATCH', data: data})
+      ajax({url: gon.book.move_book_recipe_url, type: 'PATCH', data: data})
       for (let i = 0; i < updatedList.length; i++) {
-        updatedList[i].item_nb = i+1
+        updatedList[i].position = i+1
       }
-      this.setState({ingredients: updatedList})
+      this.setState({book_recipes: updatedList})
     } else {
-      var others = [...this.state.ingredient_sections].filter(i => i.id != droppedRecord.id);
-      droppedRecord.before_ing_nb = droppedItem.source.index < droppedItem.destination.index ? destination+2 : destination+1
-      console.log("dropping ingredient section at ", droppedRecord.before_ing_nb)
+      var others = [...this.state.book_sections].filter(i => i.id != droppedRecord.id);
+      droppedRecord.before_recipe_at = droppedItem.source.index < droppedItem.destination.index ? destination+2 : destination+1
       let data = new FormData()
-      data.append('ingredient_section[before_ing_nb]', droppedRecord.before_ing_nb)
+      data.append('book_section[before_recipe_at]', droppedRecord.before_recipe_at)
       ajax({url: droppedRecord.url, type: 'PATCH', data: data})
-      this.setState({ingredient_sections: [...others, droppedRecord]})
+      this.setState({book_sections: [...others, droppedRecord]})
     }
   }
   //handleIndexDrop(droppedItem) {
@@ -234,7 +227,7 @@ class BookEditor extends React.Component {
         <div className="page index-page">
           <h2>Table des matières</h2>
           <ul>
-            <DragDropContext onDragEnd={this.handleIndexDrop}>
+            <DragDropContext onDragEnd={(droppedItem) => this.handleIndexDrop(indexItems, droppedItem)}>
               <Droppable droppableId="list-container">
                 {(provided) => (
                   <div className="list-container" {...provided.droppableProps} ref={provided.innerRef}>

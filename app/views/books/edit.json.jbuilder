@@ -8,6 +8,7 @@ json.book do
   json.json @book.json
   json.html @book.html
   json.new_book_section_url book_book_sections_path(@book)
+  json.move_book_recipe_url move_book_recipe_book_path(@book)
 end
 
 json.pages @book.pages, :id, :page_nb
@@ -27,7 +28,7 @@ json.book_sections @book.book_sections do |book_section|
   json.url book_book_section_path(@book, book_section)
 end
 
-json.book_recipes @book.book_recipes do |book_recipe|
+json.book_recipes @book.book_recipes.order(:position) do |book_recipe|
   json.id book_recipe.id
   json.class_name "book_recipe"
   json.position book_recipe.position

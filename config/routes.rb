@@ -161,6 +161,7 @@ Rails.application.routes.draw do
         patch 'on_index_change'
         get 'edit_appearance'
         patch 'set_is_featured'
+        patch 'move_book_recipe', param: 'slug'
       end
       resources :book_recipes, only: [:create, :update, :destroy, :show], path: 'recipes', param: 'slug'
       resources :book_sections, only: [:create, :update, :destroy]
