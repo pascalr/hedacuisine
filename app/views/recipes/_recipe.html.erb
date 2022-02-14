@@ -1,8 +1,9 @@
 <% book_recipe = nil unless local_assigns[:book_recipe] %>
+<% path = book_recipe ? [@book, book_recipe] : recipe %>
 
 <div class="row" style="margin-top: 10px;">
   <div class="col-sm-auto">
-    <%= link_to recipe_path(recipe) do %>
+    <%= link_to path do %>
       <% if recipe.image %>
         <%= image_tag small_image_path(recipe.image), width: 255, height: 171 %>
       <% else %>
@@ -11,7 +12,7 @@
     <% end %>
   </div>
   <div class="col recipe-details-small">
-    <%= link_to book_recipe ? [@book, book_recipe] : recipe do %>
+    <%= link_to path do %>
       <div class="recipe-listing-title">
         <%= translated(recipe.name) %>
       </div>
