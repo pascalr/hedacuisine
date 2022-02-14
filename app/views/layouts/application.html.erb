@@ -10,9 +10,7 @@
     <%= csp_meta_tag %>
     <meta charset="utf-8"/>
     <%= stylesheet_link_tag 'application', media: 'all' %>
-    <%= javascript_pack_tag 'application' %>
     <%= stylesheet_pack_tag 'autocomplete' %>
-    <%= javascript_pack_tag "autocomplete_search" %>
     <link href='https://fonts.googleapis.com/css?family=Caveat' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <% description = yield(:description) %>
@@ -57,9 +55,10 @@
       </footer>        
     </div>
 
+    <%= javascript_pack_tag 'application' %>
+    <%= javascript_pack_tag "autocomplete_search" %>
+
     <script async src="//static.getclicky.com/101337754.js"></script>
     <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101337754ns.gif" /></p></noscript>
-
   </body>
-  <%= content_for :render_async %>
 </html>
