@@ -17,7 +17,7 @@ class Book < ApplicationRecord
   def name_with_author
     "#{self.name} — #{user.name}"
   end
-  
+
   def to_param
     return "#{id}" if name.nil?
     #return "#{id}-#{name.downcase.gsub(' ', '_')}"# if version_name.blank?

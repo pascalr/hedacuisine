@@ -1,6 +1,8 @@
 <style>
-.book-sidebar {
+#sidebarCollapsable {
   width: 200px;
+}
+.book-sidebar {
   color: black;
   background-color: #f6f6f6;
   margin-right: 10px;
@@ -18,59 +20,70 @@
 </style>
 
 <div class="book-sidebar">
-  <% if controller_name == "books" and action_name == "show" %>
-    <%= render partial: "books/title_page_thumbnail", locals: {book: book} %>
-  <% else %>
-    <%= link_to book do %>
-      <%= render partial: "books/title_page_thumbnail", locals: {book: book} %>
-    <% end %>
-  <% end %>
-  <div><%# image_tag icon_path("book.svg") %> <b>Table des matières</b></div>
-  <ul style="list-style-type: none; padding-left: 0.5em;">
-    <% book.book_recipes.each do |book_recipe| %>
-      <% book.book_sections.select {|s| s.before_recipe_at == book_recipe.position}.each do |section| %>
-        <li><b style="font-size: 0.97em;"><%= section.name %></b></li>
-      <% end %>
-      <% if book_recipe.recipe.is_public || @book.user_id == current_user_id %>
-        <li style="padding-left: 0.5em;">
-          <%= link_to book_recipe.recipe.name, [book, book_recipe] %>
-          <%= book_recipe.recipe.is_public ? '' : image_tag(icon_path("eye-slash.svg")) %>
-        </li>
-      <% end %>
-    <% end %>
-  </ul>
-  <% if book.user_id == current_user_id %>
-    <div>
-      <%= link_to edit_book_path(book) do %>
-        <%= image_tag icon_path("pencil.svg") %> Modifier
-      <% end %>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <button style="border: 2px solid #333; border-radius: 5px; padding: 3px; margin-bottom: 10px;" class="plain-btn" type="button" data-bs-toggle="collapse" data-bs-target=".sidebar-collapse">
+      <%= image_tag icon_path('book.svg'), width: "24px" %>
+    </button>
+    <div class="vertical-text collapse show sidebar-collapse" style="font-size: 1.2em; font-weight: bold;">
+      <%= book.name %>
+      <%= " de " + book.author unless book.author.blank? %>
     </div>
-    <% if book.is_public %>
-      <div><%= link_to book_path(book, book: {is_public: false}), method: :put do %>
-        <%= image_tag icon_path("eye.svg") %> Rendre privé
-      <% end %></div>
+  </div>
+  <div id="sidebarCollapsable" class="collapse collapse-horizontal sidebar-collapse">
+    <% if controller_name == "books" and action_name == "show" %>
+      <%= render partial: "books/title_page_thumbnail", locals: {book: book} %>
     <% else %>
-      <div><%= link_to book_path(book, book: {is_public: true}), method: :put do %>
-        <%= image_tag icon_path("eye.svg") %> Rendre public
-      <% end %></div>
+      <%= link_to book do %>
+        <%= render partial: "books/title_page_thumbnail", locals: {book: book} %>
+      <% end %>
     <% end %>
-  <% end %>
-  <% if current_user_admin? %>
-    <% if book.is_featured %>
-      <div><%= link_to set_is_featured_book_path(book, is_featured: false), method: :patch do %>
-        <%= image_tag icon_path("star-fill.svg") %> Enlever la vedette
-      <% end %></div>
-    <% else %>
-      <div><%= link_to set_is_featured_book_path(book, is_featured: true), method: :patch do %>
-        <%= image_tag icon_path("star.svg") %> Mettre en vedette
-      <% end %></div>
+    <div><%# image_tag icon_path("book.svg") %> <b>Table des matières</b></div>
+    <ul style="list-style-type: none; padding-left: 0.5em;">
+      <% book.book_recipes.each do |book_recipe| %>
+        <% book.book_sections.select {|s| s.before_recipe_at == book_recipe.position}.each do |section| %>
+          <li><b style="font-size: 0.97em;"><%= section.name %></b></li>
+        <% end %>
+        <% if book_recipe.recipe.is_public || @book.user_id == current_user_id %>
+          <li style="padding-left: 0.5em;">
+            <%= link_to book_recipe.recipe.name, [book, book_recipe] %>
+            <%= book_recipe.recipe.is_public ? '' : image_tag(icon_path("eye-slash.svg")) %>
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+    <% if book.user_id == current_user_id %>
+      <div>
+        <%= link_to edit_book_path(book) do %>
+          <%= image_tag icon_path("pencil.svg") %> Modifier
+        <% end %>
+      </div>
+      <% if book.is_public %>
+        <div><%= link_to book_path(book, book: {is_public: false}), method: :put do %>
+          <%= image_tag icon_path("eye.svg") %> Rendre privé
+        <% end %></div>
+      <% else %>
+        <div><%= link_to book_path(book, book: {is_public: true}), method: :put do %>
+          <%= image_tag icon_path("eye.svg") %> Rendre public
+        <% end %></div>
+      <% end %>
     <% end %>
-  <% end %>
-  <!--<div><%# image_tag icon_path("share.svg") %> Partager</div>-->
-  <!--<div><%# image_tag icon_path("download.svg") %> Télécharger</div>-->
-  <!--<div><%# image_tag icon_path("printer.svg") %> Imprimer</div>-->
-  <div style="height: 1em;"></div>
-  <!--<div>À propos de l'auteur</div>
-  <%# image_tag icon_path("image.svg"), width: "160px;", height: "160;" %>
-  <div>de <%# book.author %></div>-->
+    <% if current_user_admin? %>
+      <% if book.is_featured %>
+        <div><%= link_to set_is_featured_book_path(book, is_featured: false), method: :patch do %>
+          <%= image_tag icon_path("star-fill.svg") %> Enlever la vedette
+        <% end %></div>
+      <% else %>
+        <div><%= link_to set_is_featured_book_path(book, is_featured: true), method: :patch do %>
+          <%= image_tag icon_path("star.svg") %> Mettre en vedette
+        <% end %></div>
+      <% end %>
+    <% end %>
+    <!--<div><%# image_tag icon_path("share.svg") %> Partager</div>-->
+    <!--<div><%# image_tag icon_path("download.svg") %> Télécharger</div>-->
+    <!--<div><%# image_tag icon_path("printer.svg") %> Imprimer</div>-->
+    <div style="height: 1em;"></div>
+    <!--<div>À propos de l'auteur</div>
+    <%# image_tag icon_path("image.svg"), width: "160px;", height: "160;" %>
+    <div>de <%# book.author %></div>-->
+  </div>
 </div>
