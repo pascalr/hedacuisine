@@ -90,7 +90,7 @@
         <div style="width: 200px; font-size: 1.2em;">
           <div><b>Recette tiré du livre</b></div>
           <%= link_to recipe.book do %>
-            <%= render partial: "books/title_page_thumbnail", locals: {book: recipe.book} %>
+            <%= render partial: "books/title_page", locals: {book: recipe.book} %>
           <% end %>
         </div>
       <% end %>

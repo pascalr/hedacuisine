@@ -1,11 +1,14 @@
+<% max_axis = :width unless local_assigns[:max_axis] %>
 <% if book.front_page_image %>
-  <div class="page title-page"
-  style="aspect-ratio: <%= book.page_aspect_ratio %>; background-size: cover; background-image: url(<%= image_variant_path(book.front_page_image, :small_book) %>);">
-  </div>
+  <% if max_axis == :width %>
+    <%= image_tag image_variant_path(book.front_page_image, :small_book), width: Image::VARIANTS[:small_book][:width], height: book.front_page_image.small_book_height %>
+  <% else %>
+    <%= image_tag image_variant_path(book.front_page_image, :small_book), height: Image::VARIANTS[:small_book][:height], width: book.front_page_image.small_book_width %>
+  <% end %>
 <% else %>
-  <div class="page title-page"
-  style="aspect-ratio: <%= book.page_aspect_ratio %>; background-size: cover; background-image: url('/books/default01.jpg');">
-    <div class="book-title"><span><%= book.name %></span></div>
-    <div class="author">de <%= book.author %></div>
+  <div style="display: flex; flex-direction: column; align-items: center; max-width: <%= Image::VARIANTS[:small_book][:width] %>px;">
+    <%= image_tag "/books/default01.jpg", height: Image::VARIANTS[:small_book][:height], width: Image::VARIANTS[:small_book][:width] %>
+    <div><div style="transform: translate(0, -60px); color: black;">de <%= book.author %></div></div>
+    <div><div class="book-title"><b><%= book.name %></b></div></div>
   </div>
 <% end %>

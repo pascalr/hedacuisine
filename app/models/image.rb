@@ -46,6 +46,12 @@ class Image < ApplicationRecord
       original.representation(resize_to_limit: [VARIANTS[:small_book][:width], VARIANTS[:small_book][:width]*3])
     end
   end
+  def small_book_width
+    (VARIANTS[:small_book][:height].to_f * self.aspect_ratio.to_f).to_i
+  end
+  def small_book_height
+    (VARIANTS[:small_book][:width].to_f / self.aspect_ratio.to_f).to_i
+  end
 
   def width
     original.analyze unless original.analyzed?

@@ -11,7 +11,7 @@
     <div>
       <%= link_to book do %>
         <%# render partial: "books/details", locals: {book: book} %>
-        <%= render partial: "books/title_page_thumbnail_fixed_height", locals: {book: book} %>
+        <%= render partial: "books/title_page", locals: {book: book, max_axis: :height} %>
       <% end %>
     </div>
   <% end %>

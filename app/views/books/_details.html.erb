@@ -31,10 +31,10 @@
   </div>
   <div id="sidebarCollapsable" class="collapse collapse-horizontal sidebar-collapse">
     <% if controller_name == "books" and action_name == "show" %>
-      <%= render partial: "books/title_page_thumbnail", locals: {book: book} %>
+      <%= render partial: "books/title_page", locals: {book: book} %>
     <% else %>
       <%= link_to book do %>
-        <%= render partial: "books/title_page_thumbnail", locals: {book: book} %>
+        <%= render partial: "books/title_page", locals: {book: book} %>
       <% end %>
     <% end %>
     <div><%# image_tag icon_path("book.svg") %> <b>Table des matières</b></div>
