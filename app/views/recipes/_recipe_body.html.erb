@@ -40,13 +40,15 @@
     </ul>
 
     <% val = recipe.main_ingredient ? recipe.main_ingredient.raw : '' %>
-    <div style="text-align: center; margin-top: 4px;">
-      <div style="float: left;">
+    <div class="d-flex" style="text-align: center; margin-top: 4px;">
+      <div class="d-none d-md-block">
         <%= text_field_tag :quantity, pretty_ingredient_qty(recipe.main_ingredient), class: "form-control", style: "width: 9rem; display: inline; text-align: right;", "data-quantity": val, id: "ingredient-qty-input-field" %>
         <%= collection_select :foo, :input_ingredient, recipe.ingredients, :id, :name, {selected: recipe.main_ingredient_id}, class: "form-select", id: "input-ingredients", style: "display: inline-block; width: auto;" %>
       </div>
-      <%= image_tag icon_path("right_arrow.svg"), style: "width: 1.5rem;" %>
-      <div style="float: right;">
+      <div style="flex-grow: 1;"></div>
+      <%= image_tag icon_path("right_arrow.svg"), class: "d-none d-md-block", style: "height: 2.45em; margin-right: 5px;" %>
+      <div style="flex-grow: 1;"></div>
+      <div style="margin-right: 5px;">
         <%= image_tag(icon_path("minus-square.svg"), style: "cursor: pointer; width: 1.5rem;", id: "less-servings-button") %>
         <%= text_field_tag :servings, recipe.servings, style: "width: 9rem; display: inline; text-align: right;", class: "form-control", id: "servings-input-field", "data-initial": recipe.servings %>
         <%= image_tag(icon_path("plus-square.svg"), style: "cursor: pointer; width: 1.5rem;", id: "more-servings-button") %>

@@ -1,26 +1,24 @@
 <% versions = recipe.recipe_kind ? recipe.recipe_kind.recipes : [] %>
 <% page = versions.index(recipe) + 1 %>
 <div style="min-height: 100vh;">
-  <div style="display: flex; gap: 2em;">
-    <div style="font-size: 1.2rem;">
-      (<span id="page-number"><%= page %></span> de <%= versions.count %>) recettes d'utilisateurs
-      <span id="previous-container">
-        <% if page == 1 %>
-          <%= image_tag icon_path("chevron-left.svg"), style: "opacity: 0.5;" %>
-        <% else %>
-          <%= link_to image_tag(icon_path("chevron-left.svg")), recipe_path(versions[page-2]), id: "previous-recipe-link" %>
-        <% end %>
-      </span>
-      <span id="next-container">
-        <% if page == versions.count %>
-          <%= image_tag icon_path("chevron-right.svg"), style: "opacity: 0.5;" %>
-        <% else %>
-          <%= link_to image_tag(icon_path("chevron-right.svg")), recipe_path(versions[page]), id: "next-recipe-link" %>
-        <% end %>
-      </span>
-    </div>
-    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#filter-collapse" aria-expanded="false" aria-controls="filterCollapse">Filter</button>
-  </div>
+  <span style="font-size: 1.2rem;">
+    (<span id="page-number"><%= page %></span> de <%= versions.count %>) recettes d'utilisateurs
+    <span id="previous-container">
+      <% if page == 1 %>
+        <%= image_tag icon_path("chevron-left.svg"), style: "opacity: 0.5;" %>
+      <% else %>
+        <%= link_to image_tag(icon_path("chevron-left.svg")), recipe_path(versions[page-2]), id: "previous-recipe-link" %>
+      <% end %>
+    </span>
+    <span id="next-container">
+      <% if page == versions.count %>
+        <%= image_tag icon_path("chevron-right.svg"), style: "opacity: 0.5;" %>
+      <% else %>
+        <%= link_to image_tag(icon_path("chevron-right.svg")), recipe_path(versions[page]), id: "next-recipe-link" %>
+      <% end %>
+    </span>
+  </span>
+  <button type="button" style="margin-left: 2em;" class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#filter-collapse" aria-expanded="false" aria-controls="filterCollapse">Filter</button>
   <div class="collapse" id="filter-collapse">
     <% if current_user_admin? %>
       <div style="height: 0.5em;"></div>
@@ -82,7 +80,7 @@
   </div>
   <div style="height: 0.2em;"></div>
   <div id="current-page">
-    <div class="responsive-sm-above" style="gap: 20px;">
+    <div class="d-lg-flex gap-lg-20">
       <div>
         <%= render partial: "recipes/recipe_body", locals: {recipe: recipe} %>
       </div>
