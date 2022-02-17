@@ -699,3 +699,8 @@ input[type="radio"] {
   writing-mode: vertical-rl;
   text-orientation: upright;
 }
+
+/* gap in flex does not work on my old smartphone */
+.gap-20 > * + * {
+  margin-left: 20px;
+}
