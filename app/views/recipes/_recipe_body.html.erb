@@ -39,23 +39,20 @@
       <% end %>
     </ul>
 
-    <div style="display: flex; flex-wrap: wrap;">
+    <div class="d-block d-md-flex" style="flex-wrap: wrap;">
       <% val = recipe.main_ingredient ? recipe.main_ingredient.raw : '' %>
       <div style="margin-top: 4px;">
         <%= text_field_tag :quantity, pretty_ingredient_qty(recipe.main_ingredient), class: "form-control", style: "width: 9rem; display: inline; text-align: right;", "data-quantity": val, id: "ingredient-qty-input-field" %>
         <%= collection_select :foo, :input_ingredient, recipe.ingredients, :id, :name, {selected: recipe.main_ingredient_id}, class: "form-select", id: "input-ingredients", style: "display: inline-block; width: auto;" %>
       </div>
-      <div style="display: flex; justify-content: space-between; flex-grow: 1;">
-        <div></div>
-        <div style="flex-grow: 1;"></div>
-        <%= image_tag icon_path("right_arrow.svg"), style: "width: 1.5rem; margin-top: 4px;" %>
-        <div style="flex-grow: 1;"></div>
-        <div style="margin-top: 4px;">
-          <%= image_tag(icon_path("minus-square.svg"), style: "cursor: pointer; width: 1.5rem;", id: "less-servings-button") %>
-          <%= text_field_tag :servings, recipe.servings, style: "width: 9rem; display: inline; text-align: right;", class: "form-control", id: "servings-input-field", "data-initial": recipe.servings %>
-          <%= image_tag(icon_path("plus-square.svg"), style: "cursor: pointer; width: 1.5rem;", id: "more-servings-button") %>
-        </div>
-      </div>
+      <div style="flex-grow: 1;"></div>
+      <%= image_tag icon_path("right_arrow.svg"), style: "width: 1.5rem; margin-top: 4px;" %>
+      <div class="d-none d-md-block" style="flex-grow: 1;"></div>
+      <span style="margin-top: 4px;">
+        <%= image_tag(icon_path("minus-square.svg"), style: "cursor: pointer; width: 1.5rem;", id: "less-servings-button") %>
+        <%= text_field_tag :servings, recipe.servings, style: "width: 9rem; display: inline; text-align: right;", class: "form-control", id: "servings-input-field", "data-initial": recipe.servings %>
+        <%= image_tag(icon_path("plus-square.svg"), style: "cursor: pointer; width: 1.5rem;", id: "more-servings-button") %>
+      </span>
     </div>
   </div>
 
