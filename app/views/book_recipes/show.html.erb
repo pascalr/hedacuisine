@@ -9,7 +9,7 @@
   <meta property="og:description" content="<%= description %>">
 <% end %>
 
-<div style="display: flex;">
+<div class="d-flex">
   <div>
     <%= render partial: "books/sidebar", locals: {book: @book} %>
   </div>
@@ -20,7 +20,7 @@
     
     <%= render partial: "recipes/recipe_description_with_image", locals: {recipe: @recipe} %>
     
-    <div class="responsive-sm-above" style="gap: 30px;">
+    <div class="d-block d-md-flex gap-30">
       <div>
         <%= render partial: "recipes/recipe_body", locals: {recipe: @recipe, hide_header: true} %>
       </div>

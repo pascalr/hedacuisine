@@ -519,6 +519,7 @@ ul.dash > li:before {
   display: flex;
 }
 
+/* deprecated, use d-block d-md-flex instead */
 .responsive-sm-above {
   display: flex;
 }
@@ -703,4 +704,7 @@ input[type="radio"] {
 /* gap in flex does not work on my old smartphone */
 .gap-20 > * + * {
   margin-left: 20px;
+}
+.gap-30 > * + * {
+  margin-left: 30px;
 }
