@@ -21,9 +21,6 @@ import { combineOrderedListWithHeaders } from '../lib'
 
 import {EditRecipeImageModal} from '../modals'
 
-function updateIngQuantityCallback() {
-}
-
 const InstructionsShortcuts = props => (
   <>
     <button type="button" className="btn btn-small dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#show-shortcuts">
@@ -196,7 +193,7 @@ const EditableIngredient = ({ingredient}) => {
   return (
     <Row alignItems="center" gap="5px">
       <span style={{padding: "0 10px 0 0"}}><b>{ingredient.item_nb}.</b></span>
-      <input onBlur={updateIngQuantityCallback} type="text" size="8" defaultValue={ingredient.raw} style={{border: "none", borderBottom: "1px dashed #444"}} />
+      <TextField model={ingredient} field="raw" size="8" className="editable-input" />
       de{/*" de " ou bien " - " si la quantité n'a pas d'unité => _1_____ - oeuf*/}
       {ingredient.food ? <a href={ingredient.food.url}>{ingredient.food.name}</a> : <div>{ingredient.name}</div>}
       <EditableIngredientComment ingUrl={ingredient.url} commentJson={ingredient.comment_json} />
