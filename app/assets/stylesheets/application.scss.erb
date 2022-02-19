@@ -711,4 +711,15 @@ input[type="radio"] {
 .gap-30 > * {margin-right: 30px;} .gap-30:last-child {margin-right: 0px;}
 /*.gap-20 > * + * {
   margin-left: 20px;
-}*/
+  }*/
+
+/* PATCHES */
+.tns-autowidth {
+  display: block;
+}
+
+/* Relative keeps the position of the element in the page, but it takes up space. */
+/* Absolute takes no space, but it needs to have a parent which is positioned. */
+/* By combining those two, it works. */
+.position-limbo {position: relative;}
+.position-limbo > * {position: absolute;}
