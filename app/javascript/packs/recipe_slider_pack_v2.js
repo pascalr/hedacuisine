@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
        //    items: 5
        //  }
        //},
-       fixedWidth: 280,
+       fixedWidth: 275,
        //slideBy: 'page',
        //gutter: 50,
        nav: false,
