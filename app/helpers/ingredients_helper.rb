@@ -168,7 +168,9 @@ module IngredientsHelper
     actual_quantity = Quantity.new(ing.food).set_from_grams(ing.quantity.grams)
     #actual_quantity = Quantity.new(ing.food).set_from_value_and_unit(ing.quantity, ing.unit)
     substitution_quantity = Quantity.new(ing.food).set_from_raw(substitution.food_raw_qty_for(ing.food))
-    ratio = actual_quantity.grams.to_f / substitution_quantity.grams.to_f
+    gs = substitution_quantity.grams.to_f
+    return nil if gs.blank? || gs == 0.0 # It may happen when the food density or the food unit weigth is missing)
+    ratio = actual_quantity.grams.to_f / gs
     
     food = substitution.substitute_for(ing.food)
     sub_qty = Quantity.new(food).set_from_raw(substitution.food_raw_qty_for(food))
@@ -223,6 +225,7 @@ module IngredientsHelper
 
       without_unit = (!qty.unit || qty.unit.is_unitary)
       name = (without_unit && qty.total && qty.total >= 2 && ing.food) ? ing.food.plural_in(current_language) : ing.name
+      name = ing.name if name.blank? # If the plural is missing
       unless result.blank?
         result += " #{without_unit ? "" : pretty_preposition(ing.food)}"
       end
