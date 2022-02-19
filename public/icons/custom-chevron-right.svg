@@ -7,15 +7,15 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="16"
+   width="8"
    height="16"
-   fill="currentColor"
    class="bi bi-chevron-compact-right"
-   viewBox="0 0 16 16"
+   viewBox="0 0 8 16"
    version="1.1"
    id="svg4"
    sodipodi:docname="custom-chevron-right.svg"
-   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)">
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
+   style="fill:currentColor">
   <metadata
      id="metadata10">
     <rdf:RDF>
@@ -44,14 +44,14 @@
      id="namedview6"
      showgrid="false"
      inkscape:zoom="45.254834"
-     inkscape:cx="7.4006238"
-     inkscape:cy="7.6956973"
+     inkscape:cx="3.7104103"
+     inkscape:cy="8.5795808"
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg4" />
   <path
-     d="m 6.5400585,1.553 a 0.56858,0.5 0 0 1 0.7630344,0.223 l 3.4114801,6 a 0.56858,0.5 0 0 1 0,0.448 l -3.4114801,6 A 0.56858,0.5 0 1 1 6.2864718,13.776 L 9.5694527,8 6.2864718,2.224 A 0.56858,0.5 0 0 1 6.5400585,1.553 Z"
+     d="m 2.0101557,1.6855825 a 0.56858,0.5 0 0 1 0.7630344,0.223 l 3.4114801,6 a 0.56858,0.5 0 0 1 0,0.448 L 2.7731901,14.356583 a 0.56858,0.5 0 1 1 -1.0166211,-0.448 l 3.2829809,-5.7760005 -3.2829809,-5.776 a 0.56858,0.5 0 0 1 0.2535867,-0.671 z"
      id="path2"
      style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#121633;stroke-width:0.31991312;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      inkscape:connector-curvature="0" />
