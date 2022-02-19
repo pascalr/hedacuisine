@@ -145,7 +145,8 @@ namespace :website do
   task build_book_recipes: [:environment, :url_helpers] do
     LOCALES.each do |locale|
       Book.all_public.each do |book|
-        book.book_recipes.includes(:recipe).where(recipe: {is_public: true}).each do |book_recipe|
+        #book.book_recipes.includes(:recipe).where(recipe: {is_public: true}).each do |book_recipe|
+        book.book_recipes.each do |book_recipe|
           add_download(book_book_recipe_path(book_slug: book.to_param, locale: locale, slug: book_recipe.to_param))
         end
       end
