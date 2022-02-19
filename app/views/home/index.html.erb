@@ -3,13 +3,7 @@
 
 <h2>Livres en vedettes</h2>
 
-<div class="d-flex gap-20">
-  <% @books.each do |book| %>
-    <%= link_to book do %>
-      <%= render partial: "books/title_page", locals: {book: book, max_axis: :height} %>
-    <% end %>
-  <% end %>
-</div>
+<%= render partial: "books/carrousel", locals: {key: 'book-1', list: @books} %>
 
 <br>
 <h2>Catégories</h2>
@@ -21,3 +15,4 @@
 <% end %>
 
 <%= javascript_pack_tag "recipe_slider_pack_v2" %>
+<%= javascript_pack_tag "book_carrousel" %>
