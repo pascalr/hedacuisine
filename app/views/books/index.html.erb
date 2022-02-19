@@ -3,7 +3,7 @@
 
 <h1>Livres</h1>
 
-<div class="d-flex gap-20">
+<div class="d-flex gap-20 flex-wrap">
   <% @books.each do |book| %>
     <%= link_to book do %>
       <%= render partial: "books/title_page", locals: {book: book, max_axis: :height} %>
