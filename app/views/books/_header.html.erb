@@ -1,5 +1,20 @@
-<div class="d-lg-none">
-  <br>
-  <%= render partial: "books/title_page", locals: {book: book} %>
+<div>
+  <br><br>
+  <div class="d-block d-sm-flex gap-20 text-center">
+    <% if controller_name == "books" and action_name == "show" %>
+      <%= render partial: "books/title_page", locals: {book: book} %>
+    <% else %>
+      <%= link_to book do %>
+        <%= render partial: "books/title_page", locals: {book: book} %>
+      <% end %>
+    <% end %>
+    <div>
+      <h2><%= book.name %></h2>
+      <p>
+        Un recueil de toutes mes recettes personelles.
+      </p>
+      <button class="btn btn-outline-primary d-lg-none">Voir la liste des recettes</button>
+    </div>
+  </div>
   <br><br>
 </div>

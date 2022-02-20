@@ -1,18 +1,11 @@
 <style>
-#sidebarCollapsable {
-  width: 200px;
-}
 .book-sidebar {
   color: black;
   background-color: #f6f6f6;
   margin-right: 5px;
   padding: 10px;
   height: 100%;
-}
-.book-sidebar .book-author {
-  font-size: 1.1em;
-  text-align: center;
-  margin-bottom: 1em;
+  width: 200px;
 }
 .book-sidebar a {
   color: black;
@@ -20,14 +13,16 @@
 </style>
 
 <div class="d-none d-lg-block book-sidebar">
-  <% if controller_name == "books" and action_name == "show" %>
-    <%= render partial: "books/title_page", locals: {book: book} %>
-  <% else %>
-    <%= link_to book do %>
-      <%= render partial: "books/title_page", locals: {book: book} %>
-    <% end %>
-  <% end %>
-  <div><%# image_tag icon_path("book.svg") %> <b>Table des matières</b></div>
+  <%# if controller_name == "books" and action_name == "show" %>
+    <%# render partial: "books/title_page", locals: {book: book} %>
+  <%# else %>
+    <%# link_to book do %>
+      <%# render partial: "books/title_page", locals: {book: book} %>
+    <%# end %>
+  <%# end %>
+  <!--<div><%# image_tag icon_path("book.svg") %> <b>Index</b></div>-->
+  <div style="font-size: 1.25em;"><b><%= book.name %></b></div>
+  <hr style="margin: 0;">
   <ul style="list-style-type: none; padding-left: 0.5em;">
     <% book.book_recipes.each do |book_recipe| %>
       <% book.book_sections.select {|s| s.before_recipe_at == book_recipe.position}.each do |section| %>

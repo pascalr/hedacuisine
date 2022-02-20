@@ -22,7 +22,7 @@ class Book < ApplicationRecord
     return "#{id}" if name.nil?
     #return "#{id}-#{name.downcase.gsub(' ', '_')}"# if version_name.blank?
     p = "#{id}-#{name.gsub(' ', '-')}"
-    p += "-de-#{author.gsub(' ', '-')}" unless author.blank?
+    #p += "-de-#{author.gsub(' ', '-')}" unless author.blank?
     p
   end
   
