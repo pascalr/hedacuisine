@@ -1,5 +1,5 @@
 <% book_recipe = nil unless local_assigns[:book_recipe] %>
-<% path = book_recipe ? [@book, book_recipe] : recipe %>
+<% path = book_recipe ? book_book_recipe_path(book_slug: @book, slug: book_recipe, anchor: "main") : recipe %>
 
 <div class="row" style="margin-top: 10px;">
   <div class="col-sm-auto">

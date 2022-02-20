@@ -17,6 +17,17 @@ module ApplicationHelper
     url_for({locale: current_region.locale}.merge(args))
   end
 
+  def link_to_if(cond, *args, &block)
+    content = capture(&block)
+    if cond
+      link_to args do
+        content
+      end
+    else
+      content
+    end
+  end
+
   # Probablement inutile... Attendre pour voir.
   def recipe_in_category_path(recipe_kind, args={})
     if args[:recipe_id]

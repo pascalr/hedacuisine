@@ -12,23 +12,16 @@
 <div style="width: fit-content; margin: auto;">
   <%= render partial: "books/header", locals: {book: @book} %>
 </div>
-<hr style="margin-bottom: 0px;">
-<div class="d-flex">
+<hr id="main" style="margin-bottom: 0px;">
+<%= render partial: "recipes/recipe_description_with_image", locals: {recipe: @recipe} %>
+
+<div class="d-block d-md-flex gap-30">
   <div>
-    <%= render partial: "books/sidebar", locals: {book: @book} %>
+    <%= render partial: "recipes/recipe_body", locals: {recipe: @recipe, hide_header: true} %>
   </div>
-  <div>
-    <%= render partial: "recipes/recipe_description_with_image", locals: {recipe: @recipe} %>
-    
-    <div class="d-block d-md-flex gap-30">
-      <div>
-        <%= render partial: "recipes/recipe_body", locals: {recipe: @recipe, hide_header: true} %>
-      </div>
-      <% if @recipe.recipe_kind %>
-        <%= render partial: "recipe_kinds/bubble", locals: {recipe: @recipe, recipe_kind: @recipe.recipe_kind} %>
-      <% end %>
-    </div>
-  </div>
+  <% if @recipe.recipe_kind %>
+    <%= render partial: "recipe_kinds/bubble", locals: {recipe: @recipe, recipe_kind: @recipe.recipe_kind} %>
+  <% end %>
 </div>
 
 <%= javascript_pack_tag "toggle_link" %>

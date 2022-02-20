@@ -1,21 +1,16 @@
-<div style="display: flex;">
-  <div>
-    <%= render partial: "books/sidebar", locals: {book: @book} %>
+<div style="max-width: 900px; margin: auto;">
+  <div style="width: fit-content; margin: auto;">
+    <%= render partial: "books/header", locals: {book: @book} %>
   </div>
-  <div>
-    <div style="width: fit-content; margin: auto;">
-      <%= render partial: "books/header", locals: {book: @book} %>
-    </div>
-    <% c = @book.book_recipes.select {|r| r.recipe.is_public || @book.user_id == current_user_id }.size %>
-    <h1>Liste des recettes</h1>
-    <hr>
-    <% @book.book_recipes.each do |book_recipe| %>
-      <% @book.book_sections.select {|s| s.before_recipe_at == book_recipe.position}.each do |section| %>
-        <h2><%= section.name %></h2>
-      <% end %>
-      <%= render partial: "recipes/recipe", locals: {recipe: book_recipe.recipe, book: @book, book_recipe: book_recipe} %>
+  <% c = @book.book_recipes.select {|r| r.recipe.is_public || @book.user_id == current_user_id }.size %>
+  <h1>Liste des recettes</h1>
+  <hr>
+  <% @book.book_recipes.each do |book_recipe| %>
+    <% @book.book_sections.select {|s| s.before_recipe_at == book_recipe.position}.each do |section| %>
+      <h2><%= section.name %></h2>
     <% end %>
-  </div>
+    <%= render partial: "recipes/recipe", locals: {recipe: book_recipe.recipe, book: @book, book_recipe: book_recipe} %>
+  <% end %>
 </div>
 
 <style>
