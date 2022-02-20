@@ -32,14 +32,6 @@ json.on_index_change_book_path on_index_change_book_path(@book)
 
 json.index_items @book.book_sections.map(&:order)+@book.book_recipes.map(&:order)
 
-json.book_sections @book.book_sections do |book_section|
-  json.id book_section.id
-  json.class_name "book_section"
-  json.position book_section.position
-  json.name book_section.name
-  json.url book_book_section_path(@book, book_section)
-end
-
 json.book_recipes @book.book_recipes do |book_recipe|
   json.id book_recipe.id
   json.class_name "book_recipe"
