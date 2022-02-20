@@ -6,8 +6,10 @@
         <%= render partial: "books/title_page", locals: {book: @book} %>
         <div>
           <div class="d-flex">
+            <div class="flex-grow-1"></div>
             <h2 class="text-black"><%= @book.name %></h2>
             <%= render partial: "books/edit_menu", locals: {book: @book} %>
+            <div class="flex-grow-1"></div>
           </div>
           <div style="max-width: 600px">
             <%= my_sanitize(@book.description_html) %>
