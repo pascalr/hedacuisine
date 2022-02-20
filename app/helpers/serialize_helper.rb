@@ -28,8 +28,9 @@ module SerializeHelper
   def book_to_obj(book)
     obj = extract_attributes(book, :name, :author, :description_json)
     obj[:url] = book_path(book)
-    obj[:new_book_section_url] = book_book_sections_path(@book)
-    obj[:new_book_recipe_url] = move_book_recipe_book_path(@book)
+    obj[:new_book_section_url] = book_book_sections_path(book)
+    obj[:new_book_recipe_url] = move_book_recipe_book_path(book)
+    obj[:front_page_image] = to_obj(book.front_page_image)
     obj[:url] = book_path(book)
     obj
   end

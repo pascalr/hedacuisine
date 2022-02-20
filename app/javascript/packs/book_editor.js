@@ -11,6 +11,8 @@ import { combineOrderedListWithHeaders } from '../lib'
 
 import { DescriptionTiptap, ModificationsHandler } from 'tiptap'
 
+import {UploadableImage} from '../modals/uploadable_image'
+
 //
 import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from 'jsxstyle'
 //
@@ -216,12 +218,17 @@ class BookEditor extends React.Component {
     //    <button>Rechercher</button>
     //  </div>
     
+    const onImageDelete = () => {
+      asyncUpdateModel(book, {front_page_image_id: null})
+    }
+    
     return (<>
       <div style={{maxWidth: "900px", margin: "auto"}}>
         <div style={{width: "fit-content", margin: "auto"}}>
           <div>
             <br/><br/>
             <div className="d-block d-sm-flex gap-20 text-center">
+              <UploadableImage image={book.front_page_image} onDelete={onImageDelete} />
               <div>
                 <div className="d-flex">
                   <h2 className="text-black">
