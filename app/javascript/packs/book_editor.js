@@ -20,7 +20,7 @@ import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from '
 //import Quantity from 'models/quantity'
 //import { Ingredient, Utils } from "recipe_utils"
 
-import {EditableField, TextField, ToggleField, CollectionSelect} from '../form'
+import {updateRecord, asyncUpdateModel, EditableField, TextField, ToggleField, CollectionSelect} from '../form'
 
 const RecipeKindFinder = ({onRecipeKindFound}) => {
   const [value, setValue] = useState('')
@@ -77,7 +77,13 @@ class BookEditor extends React.Component {
       book_recipes: gon.book_recipes,
       book_sections: gon.book_sections,
     };
-    this.state.book.onUpdate = (book) => this.setState({book})
+    this.state.book.image.onServerUpdate = (image) => {
+      this.setState({book: updateRecord(this.state.book, {}, {image: image})})
+    }
+    this.state.book.onServerUpdate = (book) => {
+      this.setState({book: updateRecord(this.state.book, book, {image: {}})})
+    }
+    //this.state.book.onUpdate = (book) => this.setState({book})
 
     this.addRecipe = this.addRecipe.bind(this)
     this.appendSection = this.appendSection.bind(this)
@@ -228,7 +234,7 @@ class BookEditor extends React.Component {
           <div>
             <br/><br/>
             <div className="d-block d-sm-flex gap-20 text-center">
-              <UploadableImage image={book.front_page_image} onDelete={onImageDelete} variant="small_book" width="235" />
+              <UploadableImage image={book.image} onDelete={onImageDelete} variant="small_book" width="235" />
               <div>
                 <div className="d-flex">
                   <h2 className="text-black">

@@ -45,7 +45,7 @@ const ImageModal = ({onDelete, image, show, handleClose, variant, width, height}
             <div style={{height: "0.5em"}}/>
             <RadioField model={image} field="is_user_author" value={false} label="L'image est publique sous une license qui permet son usage" />
             <div style={{height: "0.5em"}}/>
-            <div className={image.is_user_author ? 'disabled' : undefined} style={{paddingLeft: "2em"}}>
+            <div className={image && image.is_user_author ? 'disabled' : undefined} style={{paddingLeft: "2em"}}>
               <label htmlFor="author">Author</label>
               <TextField model={image} field="author" id="author"/>
               <div style={{height: "0.5em"}}/>

@@ -13,6 +13,14 @@ class Book < ApplicationRecord
 
   belongs_to :book_format, optional: true # FIXME: Temporarily optional for db migration
   belongs_to :front_page_image, class_name: "Image", optional: true
+  
+  def image
+    if self.front_page_image.blank?
+      self.create_front_page_image!
+      self.save!
+    end
+    self.front_page_image
+  end
 
   def name_with_author
     "#{self.name} — #{user.name}"

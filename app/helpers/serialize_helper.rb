@@ -30,7 +30,7 @@ module SerializeHelper
     obj[:url] = book_path(book)
     obj[:new_book_section_url] = book_book_sections_path(book)
     obj[:new_book_recipe_url] = move_book_recipe_book_path(book)
-    obj[:front_page_image] = to_obj(book.front_page_image)
+    obj[:image] = to_obj(book.image)
     obj[:url] = book_path(book)
     obj
   end
