@@ -253,6 +253,33 @@ class BookEditor extends React.Component {
         <hr/>
         <div ref={this.recipeFindRef} />
         <ul>
+          <DragDropContext onDragEnd={(droppedItem) => this.handleSectionDrop(droppedItem)}>
+            <Droppable droppableId="sections-container">
+              {(provided) => (
+                <div className="sections-container" {...provided.droppableProps} ref={provided.innerRef}>
+                  {this.state.book_sections.map((section, index) => (
+                    <Draggable key={`drag-section-${index}`} draggableId={`drag-section-${section.id.toString()}`} index={index}>
+                      {(provided) => (
+                        <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
+                          <li className="section">
+                            <h3 key={section.id} style={{margin: "0", padding: "0.5em 0 0.2em 0"}}>
+                              <TextField model={section} field="name" className="plain-input" />
+                              <span style={{margin: "0 0.2em"}}>
+                                <DeleteConfirmButton id={`del-book-section-${index}`} onDeleteConfirm={() => this.removeBookSection(section)} message="Je veux enlever ce titre?" />
+                              </span>
+                            </h3>
+                          </li>
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+        </ul>
+        <ul>
           <DragDropContext onDragEnd={(droppedItem) => this.handleIndexDrop(indexItems, droppedItem)}>
             <Droppable droppableId="list-container">
               {(provided) => (
