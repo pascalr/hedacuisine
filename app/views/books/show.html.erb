@@ -9,9 +9,9 @@
             <h2 class="text-black"><%= @book.name %></h2>
             <%= render partial: "books/edit_menu", locals: {book: @book} %>
           </div>
-          <p>
-            Un recueil de toutes mes recettes personelles.
-          </p>
+          <div style="max-width: 600px">
+            <%= my_sanitize(@book.description_html) %>
+          </div>
           <button class="btn btn-outline-primary text-primary"><%= image_tag icon_path("book-blue.svg"), size: "20x20" %></button>
         </div>
       </div>

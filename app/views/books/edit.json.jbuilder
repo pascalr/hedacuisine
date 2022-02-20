@@ -1,16 +1,3 @@
-json.book do
-  json.class_name "book"
-  json.url book_path(@book)
-  json.id @book.id
-  json.name @book.name
-  json.author @book.author
-  json.theme_id @book.theme_id
-  json.json @book.json
-  json.html @book.html
-  json.new_book_section_url book_book_sections_path(@book)
-  json.move_book_recipe_url move_book_recipe_book_path(@book)
-end
-
 json.pages @book.pages, :id, :page_nb
 
 json.book_pages_path book_pages_path(@book)

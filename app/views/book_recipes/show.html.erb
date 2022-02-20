@@ -20,9 +20,9 @@
         <%= link_to @book do %>
           <h2 class="text-black"><%= @book.name %></h2>
         <% end %>
-        <p>
-          Un recueil de toutes mes recettes personelles.
-        </p>
+        <div style="max-width: 600px">
+          <%= my_sanitize(@book.description_html) %>
+        </div>
         <%= link_to @book do %>
           <button class="btn btn-outline-primary">Voir les recettes</button>
         <% end %>

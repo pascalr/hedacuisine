@@ -24,6 +24,7 @@ class BooksController < ApplicationController
   end
   
   def edit
+    gon.book = to_obj(@book)
     gon.jbuilder
   end
 
@@ -57,7 +58,10 @@ class BooksController < ApplicationController
 
   def update
     @book.update!(book_params)
-    redirect_to @book
+    respond_to do |format|
+      format.json {render json: to_obj(@book)}
+      format.html {redirect_to @book}
+    end
   end
 
   def destroy
