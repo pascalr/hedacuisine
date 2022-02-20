@@ -238,9 +238,6 @@ class BookEditor extends React.Component {
                 <div style={{maxWidth: "600px", width: "100%", height: "400px"}}>
                   <DescriptionTiptap content={JSON.parse(book.description_json)} model="book" json_field="description_json" html_field="description_html" url={book.url}/>
                 </div>
-                <p>
-                  Un recueil de toutes mes recettes personelles.
-                </p>
               </div>
             </div>
             <br/><br/>
