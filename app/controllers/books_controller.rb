@@ -20,7 +20,7 @@ class BooksController < ApplicationController
   end
 
   def show
-    @book = Book.find(params[:slug].split('-')[0])
+    @book = Book.includes([{book_recipes: :recipe}, :book_sections]).find(params[:slug].split('-')[0])
   end
   
   def edit
@@ -71,6 +71,6 @@ class BooksController < ApplicationController
     end
 
     def book_params
-      params.require(:book).permit(:name, :theme_id, :is_public, :json, :html, :book_format_id, :front_page_image_id, :front_page_text_color, :hide_front_page_text, :background_color)
+      params.require(:book).permit(:name, :theme_id, :is_public, :json, :html, :book_format_id, :front_page_image_id, :front_page_text_color, :hide_front_page_text, :background_color, :description_json, :description_html)
     end
 end

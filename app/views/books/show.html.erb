@@ -1,8 +1,23 @@
 <div style="max-width: 900px; margin: auto;">
   <div style="width: fit-content; margin: auto;">
-    <%= render partial: "books/header", locals: {book: @book} %>
+    <div>
+      <br><br>
+      <div class="d-block d-sm-flex gap-20 text-center">
+        <%= render partial: "books/title_page", locals: {book: @book} %>
+        <div>
+          <div class="d-flex">
+            <h2 class="text-black"><%= @book.name %></h2>
+            <%= render partial: "books/edit_menu", locals: {book: @book} %>
+          </div>
+          <p>
+            Un recueil de toutes mes recettes personelles.
+          </p>
+          <button class="btn btn-outline-primary text-primary"><%= image_tag icon_path("book-blue.svg"), size: "20x20" %></button>
+        </div>
+      </div>
+      <br><br>
+    </div>
   </div>
-  <% c = @book.book_recipes.select {|r| r.recipe.is_public || @book.user_id == current_user_id }.size %>
   <h1>Liste des recettes</h1>
   <hr>
   <% @book.book_recipes.each do |book_recipe| %>

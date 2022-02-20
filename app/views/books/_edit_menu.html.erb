@@ -1,0 +1,8 @@
+<% if book.owned_by?(current_user) %>
+  <span class="dropdown" style="padding: 0 1rem;">
+    <%= image_tag icon_path("list.svg"), "data-bs-toggle": "dropdown", style: "cursor: pointer;" %>
+    <div class="dropdown-menu">
+      <%= link_to 'Modifier', edit_book_path(book), class: "dropdown-item" %>
+    </div>
+  </span>
+<% end %>
