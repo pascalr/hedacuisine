@@ -46,7 +46,7 @@ class RecipeKindEditor extends React.Component {
     return (<>
       <div style={{height: "1em"}}></div>
       <div className="responsive-sm-above" style={{gap: "20px"}}>
-        <UploadableImage image={recipe_kind.image} onDelete={onImageDelete} />
+        <UploadableImage image={recipe_kind.image} onDelete={onImageDelete} width="452" height="304" variant="medium" />
         <div style={{width: "100%"}}>
           <h1 className="recipe-title">
             <TextField model={recipe_kind} field="name" className="plain-input"/>

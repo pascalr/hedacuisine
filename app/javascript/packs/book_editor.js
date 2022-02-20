@@ -228,14 +228,14 @@ class BookEditor extends React.Component {
           <div>
             <br/><br/>
             <div className="d-block d-sm-flex gap-20 text-center">
-              <UploadableImage image={book.front_page_image} onDelete={onImageDelete} />
+              <UploadableImage image={book.front_page_image} onDelete={onImageDelete} variant="small_book" width="235" />
               <div>
                 <div className="d-flex">
                   <h2 className="text-black">
                     <EditableField model={book} field="name" className="plain-input"/>
                   </h2>
                 </div>
-                <div style={{maxWidth: "600px", width: "100%", height: "400px"}}>
+                <div style={{maxWidth: "600px", width: "100%", height: "300px"}}>
                   <DescriptionTiptap content={JSON.parse(book.description_json)} model="book" json_field="description_json" html_field="description_html" url={book.url}/>
                 </div>
               </div>
@@ -246,55 +246,51 @@ class BookEditor extends React.Component {
         <h1>Liste des recettes</h1>
         <hr/>
         <div ref={this.recipeFindRef} />
-        <div className={`book`}>
-          <div className="page index-page">
-            <ul>
-              <DragDropContext onDragEnd={(droppedItem) => this.handleIndexDrop(indexItems, droppedItem)}>
-                <Droppable droppableId="list-container">
-                  {(provided) => (
-                    <div className="list-container" {...provided.droppableProps} ref={provided.innerRef}>
-                      {indexItems.map((item, index) => {
-                        let is_section = item.class_name == "book_section"
-                        let key = is_section ? `section-${item.id}` : `book-recipe-${item.id}`
-                        let listItemClassName = is_section ? "section" : ''
-                        return <Draggable key={key} draggableId={key.toString()} index={index}>
-                          {(provided) => (
-                            <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
-                              <li className={listItemClassName}>
-                                {is_section
-                                  ?
-                                  <h3 style={{margin: "0", padding: "0.5em 0 0.2em 0"}}>
-                                    <TextField model={item} field="name" className="plain-input" />
-                                    <span style={{margin: "0 0.2em"}}>
-                                      <DeleteConfirmButton id={`del-${key}`} onDeleteConfirm={() => this.removeBookSection(item)} message="Je veux enlever ce titre?" />
-                                    </span>
-                                  </h3>
-                                  :
-                                  <>
-                                    <span>{item.recipe.name}</span>
-                                    <DeleteConfirmButton id={`del-${key}`} onDeleteConfirm={() => this.removeBookRecipe(item)} message="Je veux vraiment enlever?"/>
-                                  </>
-                                }
-                              </li>
-                            </div>
-                          )}
-                        </Draggable>
-                      })}
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-              </DragDropContext>
-              <li key="0">
-                <input type="text" id="new-book-recipe-recipe-id" placeholder="Numéro de recette..." ref={this.newBookRecipeRecipeIdRef}/>
-                <button type="button" onClick={this.addRecipe} >Ajouter recette</button>
-              </li>
-              <li key="-1">
-                <button type="button" onClick={this.appendSection} >Ajouter section</button>
-              </li>
-            </ul>
-          </div>
-        </div>
+        <ul>
+          <DragDropContext onDragEnd={(droppedItem) => this.handleIndexDrop(indexItems, droppedItem)}>
+            <Droppable droppableId="list-container">
+              {(provided) => (
+                <div className="list-container" {...provided.droppableProps} ref={provided.innerRef}>
+                  {indexItems.map((item, index) => {
+                    let is_section = item.class_name == "book_section"
+                    let key = is_section ? `section-${item.id}` : `book-recipe-${item.id}`
+                    let listItemClassName = is_section ? "section" : ''
+                    return <Draggable key={key} draggableId={key.toString()} index={index}>
+                      {(provided) => (
+                        <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
+                          <li className={listItemClassName}>
+                            {is_section
+                              ?
+                              <h3 style={{margin: "0", padding: "0.5em 0 0.2em 0"}}>
+                                <TextField model={item} field="name" className="plain-input" />
+                                <span style={{margin: "0 0.2em"}}>
+                                  <DeleteConfirmButton id={`del-${key}`} onDeleteConfirm={() => this.removeBookSection(item)} message="Je veux enlever ce titre?" />
+                                </span>
+                              </h3>
+                              :
+                              <>
+                                <span>{item.recipe.name}</span>
+                                <DeleteConfirmButton id={`del-${key}`} onDeleteConfirm={() => this.removeBookRecipe(item)} message="Je veux vraiment enlever?"/>
+                              </>
+                            }
+                          </li>
+                        </div>
+                      )}
+                    </Draggable>
+                  })}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+          <li key="0">
+            <input type="text" id="new-book-recipe-recipe-id" placeholder="Numéro de recette..." ref={this.newBookRecipeRecipeIdRef}/>
+            <button type="button" onClick={this.addRecipe} >Ajouter recette</button>
+          </li>
+          <li key="-1">
+            <button type="button" onClick={this.appendSection} >Ajouter section</button>
+          </li>
+        </ul>
       </div>
     </>)
   }

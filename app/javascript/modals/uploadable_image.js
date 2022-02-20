@@ -5,14 +5,15 @@ import Button from 'react-bootstrap/Button'
 
 import {asyncUpdateModel, TextField, FileField, RadioField} from 'form'
 
-export const UploadableImage = ({onDelete, image}) => {
+export const UploadableImage = ({onDelete, image, width, height, variant}) => {
+  let path = image ? image.variants[variant] : ''
   // add imagePlaceholder??? width??? height???
   const [showModal, setShowModal] = useState(false)
   return (<>
     <div className="over-container">
-      <ImageModal show={showModal} handleClose={() => setShowModal(false)} image={image} onDelete={onDelete} />
+      <ImageModal show={showModal} handleClose={() => setShowModal(false)} {...{image, onDelete, width, height, variant}} />
       <div style={{cursor: "pointer"}} onClick={() => setShowModal(true)}>
-        <img style={{maxWidth: "100vh", height: "auto"}} src={image ? image.path : ''} width="452" height="304"/>
+        <img style={{maxWidth: "100vh", height: "auto"}} src={path} {...{width, height}} />
         <div className="bottom-right" style={{color: 'white', fontSize: '2em'}}>
           <img src="/icons/pencil-circle.svg" style={{width: "5rem", padding: "0.5rem"}}/>
         </div>
@@ -21,7 +22,8 @@ export const UploadableImage = ({onDelete, image}) => {
   </>)
 }
 
-const ImageModal = ({onDelete, image, show, handleClose}) => {
+const ImageModal = ({onDelete, image, show, handleClose, variant, width, height}) => {
+  let path = image ? image.variants[variant] : ''
 
   return (<>
     <Modal show={show} onHide={handleClose}>
@@ -31,7 +33,7 @@ const ImageModal = ({onDelete, image, show, handleClose}) => {
           <h5 className="modal-title">Aperçu</h5>
           <div>
             <div style={{width: "fit-content"}}>
-              <img style={{maxWidth: "100vh", height: "auto"}} src={image ? image.path : ''} width="255" height="171"/>
+              <img style={{maxWidth: "100vh", height: "auto"}} src={path} width={width} height={height} />
             </div>
           </div>
           <hr/>

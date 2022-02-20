@@ -60,6 +60,7 @@ module SerializeHelper
         portrait_thumb: image_variant_path(image, :portrait_thumb),
         small: image_variant_path(image, :small),
         medium: image_variant_path(image, :medium),
+        small_book: image_variant_path(image, :small_book),
       },
       path: image_variant_path(image, :medium), # DEPRECATED, use variants
       is_user_author: !!image.is_user_author
