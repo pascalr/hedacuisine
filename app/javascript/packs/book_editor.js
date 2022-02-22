@@ -90,6 +90,7 @@ class BookEditor extends React.Component {
     this.removeBookRecipe = this.removeBookRecipe.bind(this)
     this.removeBookSection = this.removeBookSection.bind(this)
     this.handleIndexDrop = this.handleIndexDrop.bind(this)
+    this.handleDrop = this.handleDrop.bind(this)
   }
 
   appendSection() {
@@ -143,6 +144,32 @@ class BookEditor extends React.Component {
       const indexItems = [...this.state.indexItems].filter(r => r.id != item.id || r.class_name != item.class_name)
       this.setState({indexItems})
     }})
+  }
+
+  handleDrop({source, destination, type, draggableId}) {
+    if (!destination) return; // Ignore drop outside droppable container
+    
+    //console.log('drop', droppedItem)
+    
+    if (type == "RECIPE") {
+      let recipe_id = draggableId.substr(12) // removes "drag-recipe-"
+      let section_id = destination.droppableId.substr(13) // removes "drop-section-"
+
+      let book_recipes = [...this.state.book_recipes].map(recipe => {
+        if (recipe.id == recipe_id) {
+          recipe.book_section_id = section_id
+          //let data = new FormData()
+          //// TODO: Set position too...
+          ////data.append('position', destination+1)
+          //data.append('book_section_id', section_id)
+          //ajax({url: recipe.url, type: 'PATCH', data: data})
+        }
+        return recipe
+      })
+      this.setState({book_recipes})
+    } else {
+      let section_id = draggableId.substr(13) // removes "drag-section-"
+    }
   }
 
   handleIndexDrop(items, droppedItem) {
@@ -252,11 +279,11 @@ class BookEditor extends React.Component {
         <h1>Liste des recettes</h1>
         <hr/>
         <div ref={this.recipeFindRef} />
-        <ul style={{backgroundColor: "#ffff99"}}>
-          <DragDropContext onDragEnd={(droppedItem) => this.handleSectionDrop(droppedItem)}>
-            <Droppable droppableId="sections-container">
+        <ul>
+          <DragDropContext onDragEnd={(droppedItem) => this.handleDrop(droppedItem)}>
+            <Droppable droppableId="sections-container" type="SECTION">
               {(provided) => (<>
-                <div className="sections-container" {...provided.droppableProps} ref={provided.innerRef}>
+                <div className="sections-container" {...provided.droppableProps} ref={provided.innerRef} style={{backgroundColor: "#ffff99"}}>
                   {this.state.book_sections.map((section, index) => (
                     <Draggable key={`drag-section-${index}`} draggableId={`drag-section-${section.id.toString()}`} index={index}>
                       {(provided) => (<>
@@ -270,9 +297,22 @@ class BookEditor extends React.Component {
                             </h3>
                           </li>
                         </div>
-                        <Droppable droppableId={`drop-section-${section.id}`}>
+                        <Droppable droppableId={`drop-section-${section.id}`} type="RECIPE">
                           {(provided) => (
                             <div {...provided.droppableProps} ref={provided.innerRef} style={{backgroundColor: "#ff99ff", paddingBottom: "1.5em"}}>
+                              {this.state.book_recipes.map((book_recipe, index) => {
+                                if (book_recipe.book_section_id != section.id) {return ''}
+                                return <Draggable key={`drag-recipe-${book_recipe.id}`} draggableId={`drag-recipe-${book_recipe.id.toString()}`} index={index}>
+                                  {(provided) => (<>
+                                    <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
+                                      <li>
+                                        <span>{book_recipe.recipe.name}</span>
+                                        <DeleteConfirmButton id={`del-book-section-${book_recipe.id}`} onDeleteConfirm={() => this.removeBookRecipe(book_recipe)} message="Je veux vraiment enlever?"/>
+                                      </li>
+                                    </div>
+                                  </>)}
+                                </Draggable>
+                              })}
                               {provided.placeholder}
                             </div>
                           )}
@@ -282,9 +322,29 @@ class BookEditor extends React.Component {
                   ))}
                   {provided.placeholder}
                 </div>
-                <h3 style={{margin: "0", padding: "0.5em 0 0.2em 0"}}>
-                  Recettes non catégorisées
-                </h3>
+              </>)}
+            </Droppable>
+            <Droppable droppableId="recipes-container" type="RECIPE">
+              {(provided) => (<>
+                <div {...provided.droppableProps} ref={provided.innerRef} style={{backgroundColor: "#99ffff"}}>
+                  <h3 style={{margin: "0", padding: "0.5em 0 0.2em 0"}}>
+                    Recettes non catégorisées
+                  </h3>
+                  {this.state.book_recipes.map((book_recipe, index) => {
+                    if (!!book_recipe.book_section_id) {return ''}
+                    return <Draggable key={`drag-recipe-${book_recipe.id}`} draggableId={`drag-recipe-${book_recipe.id.toString()}`} index={index}>
+                      {(provided) => (<>
+                        <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
+                          <li>
+                            <span>{book_recipe.recipe.name}</span>
+                            <DeleteConfirmButton id={`del-book-section-${book_recipe.id}`} onDeleteConfirm={() => this.removeBookRecipe(book_recipe)} message="Je veux vraiment enlever?"/>
+                          </li>
+                        </div>
+                      </>)}
+                    </Draggable>
+                  })}
+                  {provided.placeholder}
+                </div>
               </>)}
             </Droppable>
           </DragDropContext>

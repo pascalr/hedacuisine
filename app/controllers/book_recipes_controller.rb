@@ -45,6 +45,6 @@ class BookRecipesController < ApplicationController
     end
 
     def book_recipe_params
-      params.require(:book_recipe).permit(:recipe_id)
+      params.require(:book_recipe).permit(:recipe_id, :book_section_id)
     end
 end
