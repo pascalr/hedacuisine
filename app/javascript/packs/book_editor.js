@@ -6,7 +6,7 @@ import { DeleteConfirmButton } from 'components/delete_confirm_button'
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Autosuggest from 'react-autosuggest'
 
-import { ajax } from "../utils"
+import { ajax, sortBy } from "../utils"
 import { combineOrderedListWithHeaders } from '../lib'
 
 import { DescriptionTiptap, ModificationsHandler } from 'tiptap'
@@ -154,21 +154,64 @@ class BookEditor extends React.Component {
     if (type == "RECIPE") {
       let recipe_id = draggableId.substr(12) // removes "drag-recipe-"
       let section_id = destination.droppableId.substr(13) // removes "drop-section-"
+    
+      console.log('destination', destination)
 
       let book_recipes = [...this.state.book_recipes].map(recipe => {
         if (recipe.id == recipe_id) {
           recipe.book_section_id = section_id
+          recipe.position = destination.index+1
+
+          ////var updatedList = [...this.state.book_recipes.filter(r => r.book_section_id == section_id)];
+          ////const [reorderedItem] = updatedList.splice(source.index, 1);
+          ////updatedList.splice(destination.index, 0, reorderedItem);
+          
           //let data = new FormData()
           //// TODO: Set position too...
           ////data.append('position', destination+1)
           //data.append('book_section_id', section_id)
           //ajax({url: recipe.url, type: 'PATCH', data: data})
+        } else if (recipe.book_section_id == section_id) {
+          recipe.position = recipe.position + (recipe.position <= destination.index+1 ? 0 : 1)
         }
         return recipe
       })
       this.setState({book_recipes})
     } else {
       let section_id = draggableId.substr(13) // removes "drag-section-"
+
+      console.log("source", source)
+      console.log("destination", destination)
+
+      //let source = getClosestItemNb(droppedItem.source.index)-1
+      //let destination = getClosestItemNb(droppedItem.destination.index)-1
+      //let droppedRecord = items[droppedItem.source.index]
+      //if (droppedRecord.class_name == "book_recipe") {
+      var updatedList = [...this.state.book_sections];
+      const [reorderedItem] = updatedList.splice(source.index, 1);
+      updatedList.splice(destination.index, 0, reorderedItem);
+
+      //  let data = new FormData()
+      //  data.append('moved_id', droppedRecord.id)
+      //  data.append('position', destination+1)
+      //  ajax({url: gon.book.move_book_recipe_url, type: 'PATCH', data: data})
+      //  for (let i = 0; i < updatedList.length; i++) {
+      //    updatedList[i].position = i+1
+      //  }
+      this.setState({book_sections: updatedList})
+
+      //let book_sections = [...this.state.book_sections].map(section => {
+      //  if (section.id == section_id) {
+      //    section.position = section_id
+      //    //let data = new FormData()
+      //    //// TODO: Set position too...
+      //    ////data.append('position', destination+1)
+      //    //data.append('book_section_id', section_id)
+      //    //ajax({url: recipe.url, type: 'PATCH', data: data})
+      //  }
+      //  return recipe
+      //})
+      //this.setState({book_recipes})
     }
   }
 
@@ -285,14 +328,14 @@ class BookEditor extends React.Component {
               {(provided) => (<>
                 <div className="sections-container" {...provided.droppableProps} ref={provided.innerRef} style={{backgroundColor: "#ffff99"}}>
                   {this.state.book_sections.map((section, index) => (
-                    <Draggable key={`drag-section-${index}`} draggableId={`drag-section-${section.id.toString()}`} index={index}>
+                    <Draggable key={`drag-section-${section.id}`} draggableId={`drag-section-${section.id.toString()}`} index={index}>
                       {(provided) => (<>
                         <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
                           <li className="section">
                             <h3 key={section.id} style={{margin: "0", padding: "0.5em 0 0.2em 0"}}>
                               <TextField model={section} field="name" className="plain-input" />
                               <span style={{margin: "0 0.2em"}}>
-                                <DeleteConfirmButton id={`del-book-section-${index}`} onDeleteConfirm={() => this.removeBookSection(section)} message="Je veux enlever ce titre?" />
+                                <DeleteConfirmButton id={`del-book-section-${section.id}`} onDeleteConfirm={() => this.removeBookSection(section)} message="Je veux enlever ce titre?" />
                               </span>
                             </h3>
                           </li>
@@ -300,7 +343,7 @@ class BookEditor extends React.Component {
                         <Droppable droppableId={`drop-section-${section.id}`} type="RECIPE">
                           {(provided) => (
                             <div {...provided.droppableProps} ref={provided.innerRef} style={{backgroundColor: "#ff99ff", paddingBottom: "1.5em"}}>
-                              {this.state.book_recipes.map((book_recipe, index) => {
+                              {/*FIXME: terribly inneficient, going to bed*/sortBy(this.state.book_recipes, 'position').map((book_recipe, index) => {
                                 if (book_recipe.book_section_id != section.id) {return ''}
                                 return <Draggable key={`drag-recipe-${book_recipe.id}`} draggableId={`drag-recipe-${book_recipe.id.toString()}`} index={index}>
                                   {(provided) => (<>
