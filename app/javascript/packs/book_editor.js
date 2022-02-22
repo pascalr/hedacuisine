@@ -89,7 +89,6 @@ class BookEditor extends React.Component {
     this.appendSection = this.appendSection.bind(this)
     this.removeBookRecipe = this.removeBookRecipe.bind(this)
     this.removeBookSection = this.removeBookSection.bind(this)
-    this.handleIndexDrop = this.handleIndexDrop.bind(this)
     this.handleDrop = this.handleDrop.bind(this)
   }
 
@@ -149,28 +148,14 @@ class BookEditor extends React.Component {
   handleDrop({source, destination, type, draggableId}) {
     if (!destination) return; // Ignore drop outside droppable container
     
-    //console.log('drop', droppedItem)
-    
     if (type == "RECIPE") {
       let recipe_id = draggableId.substr(12) // removes "drag-recipe-"
       let section_id = destination.droppableId == "recipes-container" ? null : destination.droppableId.substr(13) // removes "drop-section-"
     
-      console.log('destination', destination)
-
       let book_recipes = [...this.state.book_recipes].map(recipe => {
         if (recipe.id == recipe_id) {
           recipe.book_section_id = section_id
           recipe.position = destination.index+1
-
-          ////var updatedList = [...this.state.book_recipes.filter(r => r.book_section_id == section_id)];
-          ////const [reorderedItem] = updatedList.splice(source.index, 1);
-          ////updatedList.splice(destination.index, 0, reorderedItem);
-          
-          //let data = new FormData()
-          //// TODO: Set position too...
-          ////data.append('position', destination+1)
-          //data.append('book_section_id', section_id)
-          //ajax({url: recipe.url, type: 'PATCH', data: data})
         } else if (recipe.book_section_id == section_id) {
           recipe.position = recipe.position + (recipe.position <= destination.index ? 0 : 1)
         }
@@ -185,102 +170,17 @@ class BookEditor extends React.Component {
     } else {
       let section_id = draggableId.substr(13) // removes "drag-section-"
 
-      console.log("source", source)
-      console.log("destination", destination)
-
-      //let source = getClosestItemNb(droppedItem.source.index)-1
-      //let destination = getClosestItemNb(droppedItem.destination.index)-1
-      //let droppedRecord = items[droppedItem.source.index]
-      //if (droppedRecord.class_name == "book_recipe") {
       var updatedList = [...this.state.book_sections];
       const [reorderedItem] = updatedList.splice(source.index, 1);
       updatedList.splice(destination.index, 0, reorderedItem);
 
-      //  let data = new FormData()
-      //  data.append('moved_id', droppedRecord.id)
-      //  data.append('position', destination+1)
-      //  ajax({url: gon.book.move_book_recipe_url, type: 'PATCH', data: data})
-      //  for (let i = 0; i < updatedList.length; i++) {
-      //    updatedList[i].position = i+1
-      //  }
       let data = new FormData()
       data.append('moved_id', section_id)
       data.append('position', destination.index+1)
       ajax({url: gon.move_book_section_url, type: 'PATCH', data: data})
       this.setState({book_sections: updatedList})
-
-      //let book_sections = [...this.state.book_sections].map(section => {
-      //  if (section.id == section_id) {
-      //    section.position = section_id
-      //    //let data = new FormData()
-      //    //// TODO: Set position too...
-      //    ////data.append('position', destination+1)
-      //    //data.append('book_section_id', section_id)
-      //    //ajax({url: recipe.url, type: 'PATCH', data: data})
-      //  }
-      //  return recipe
-      //})
-      //this.setState({book_recipes})
     }
   }
-
-  handleIndexDrop(items, droppedItem) {
-
-    const getClosestItemNb = (index) => {
-      for (let i = index; i < items.length; i++) {
-        if (items[i].class_name == "book_recipe") {
-          return items[i].position
-        }
-      }
-      return this.state.book_recipes.length
-    }
-
-    // Ignore drop outside droppable container
-    if (!droppedItem.destination) return;
-    let source = getClosestItemNb(droppedItem.source.index)-1
-    let destination = getClosestItemNb(droppedItem.destination.index)-1
-    let droppedRecord = items[droppedItem.source.index]
-    if (droppedRecord.class_name == "book_recipe") {
-      var updatedList = [...this.state.book_recipes];
-      const [reorderedItem] = updatedList.splice(source, 1);
-      updatedList.splice(destination, 0, reorderedItem);
-
-      let data = new FormData()
-      data.append('moved_id', droppedRecord.id)
-      data.append('position', destination+1)
-      ajax({url: gon.book.move_book_recipe_url, type: 'PATCH', data: data})
-      for (let i = 0; i < updatedList.length; i++) {
-        updatedList[i].position = i+1
-      }
-      this.setState({book_recipes: updatedList})
-    } else {
-      var others = [...this.state.book_sections].filter(i => i.id != droppedRecord.id);
-      droppedRecord.before_recipe_at = droppedItem.source.index < droppedItem.destination.index ? destination+2 : destination+1
-      let data = new FormData()
-      data.append('book_section[before_recipe_at]', droppedRecord.before_recipe_at)
-      ajax({url: droppedRecord.url, type: 'PATCH', data: data})
-      this.setState({book_sections: [...others, droppedRecord]})
-    }
-  }
-  //handleIndexDrop(droppedItem) {
-  //  console.log('Handle index drop')
-  //  // Ignore drop outside droppable container
-  //  if (!droppedItem.destination) return;
-  //  var updatedList = [...this.state.indexItems];
-  //  //// Remove dragged item
-  //  const [reorderedItem] = updatedList.splice(droppedItem.source.index, 1);
-  //  //// Add dropped item
-  //  updatedList.splice(droppedItem.destination.index, 0, reorderedItem);
-  //  this.setState({indexItems: updatedList})
-
-  //  let data = new FormData()
-  //  data.append('source_index', droppedItem.source.index)
-  //  data.append('destination_index', droppedItem.destination.index)
-  //  //data.append('draggable_id', droppedItem.draggableId)
-  //  //data.append('draggable_type', droppedItem.draggableType)
-  //  //data.append('position', droppedItem.destination.index+1)
-  //  ajax({url: gon.on_index_change_book_path , type: 'PATCH', data: data})
-  //}
 
   render() {
 
@@ -400,51 +300,13 @@ class BookEditor extends React.Component {
             </Droppable>
           </DragDropContext>
         </ul>
-        <ul>
-          <DragDropContext onDragEnd={(droppedItem) => this.handleIndexDrop(indexItems, droppedItem)}>
-            <Droppable droppableId="list-container">
-              {(provided) => (
-                <div className="list-container" {...provided.droppableProps} ref={provided.innerRef}>
-                  {indexItems.map((item, index) => {
-                    let is_section = item.class_name == "book_section"
-                    let key = is_section ? `section-${item.id}` : `book-recipe-${item.id}`
-                    let listItemClassName = is_section ? "section" : ''
-                    return <Draggable key={key} draggableId={key.toString()} index={index}>
-                      {(provided) => (
-                        <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
-                          <li className={listItemClassName}>
-                            {is_section
-                              ?
-                              <h3 style={{margin: "0", padding: "0.5em 0 0.2em 0"}}>
-                                <TextField model={item} field="name" className="plain-input" />
-                                <span style={{margin: "0 0.2em"}}>
-                                  <DeleteConfirmButton id={`del-${key}`} onDeleteConfirm={() => this.removeBookSection(item)} message="Je veux enlever ce titre?" />
-                                </span>
-                              </h3>
-                              :
-                              <>
-                                <span>{item.recipe.name}</span>
-                                <DeleteConfirmButton id={`del-${key}`} onDeleteConfirm={() => this.removeBookRecipe(item)} message="Je veux vraiment enlever?"/>
-                              </>
-                            }
-                          </li>
-                        </div>
-                      )}
-                    </Draggable>
-                  })}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
-          <li key="0">
-            <input type="text" id="new-book-recipe-recipe-id" placeholder="Numéro de recette..." ref={this.newBookRecipeRecipeIdRef}/>
-            <button type="button" onClick={this.addRecipe} >Ajouter recette</button>
-          </li>
-          <li key="-1">
-            <button type="button" onClick={this.appendSection} >Ajouter section</button>
-          </li>
-        </ul>
+        <div>
+          <input type="text" id="new-book-recipe-recipe-id" placeholder="Numéro de recette..." ref={this.newBookRecipeRecipeIdRef}/>
+          <button type="button" onClick={this.addRecipe} >Ajouter recette</button>
+        </div>
+        <div>
+          <button type="button" onClick={this.appendSection} >Ajouter section</button>
+        </div>
       </div>
     </>)
   }
