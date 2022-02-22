@@ -172,7 +172,7 @@ class BookEditor extends React.Component {
           //data.append('book_section_id', section_id)
           //ajax({url: recipe.url, type: 'PATCH', data: data})
         } else if (recipe.book_section_id == section_id) {
-          recipe.position = recipe.position + (recipe.position <= destination.index+1 ? 0 : 1)
+          recipe.position = recipe.position + (recipe.position <= destination.index ? 0 : 1)
         }
         return recipe
       })
@@ -297,6 +297,7 @@ class BookEditor extends React.Component {
     const onImageDelete = () => {
       asyncUpdateModel(book, {front_page_image_id: null})
     }
+    let sortedRecipes = sortBy(this.state.book_recipes, 'position')
     
     return (<>
       <div style={{maxWidth: "900px", margin: "auto"}}>
@@ -343,9 +344,8 @@ class BookEditor extends React.Component {
                         <Droppable droppableId={`drop-section-${section.id}`} type="RECIPE">
                           {(provided) => (
                             <div {...provided.droppableProps} ref={provided.innerRef} style={{backgroundColor: "#ff99ff", paddingBottom: "1.5em"}}>
-                              {/*FIXME: terribly inneficient, going to bed*/sortBy(this.state.book_recipes, 'position').map((book_recipe, index) => {
-                                if (book_recipe.book_section_id != section.id) {return ''}
-                                return <Draggable key={`drag-recipe-${book_recipe.id}`} draggableId={`drag-recipe-${book_recipe.id.toString()}`} index={index}>
+                              {sortedRecipes.filter(r => r.book_section_id == section.id).map((book_recipe, index) => {
+                                return <Draggable key={`drag-recipe-${book_recipe.id}`} draggableId={`drag-recipe-${book_recipe.id.toString()}`} index={book_recipe.position-1}>
                                   {(provided) => (<>
                                     <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
                                       <li>
@@ -373,8 +373,7 @@ class BookEditor extends React.Component {
                   <h3 style={{margin: "0", padding: "0.5em 0 0.2em 0"}}>
                     Recettes non catégorisées
                   </h3>
-                  {this.state.book_recipes.map((book_recipe, index) => {
-                    if (!!book_recipe.book_section_id) {return ''}
+                  {this.state.book_recipes.filter(r => !r.book_section_id).map((book_recipe, index) => {
                     return <Draggable key={`drag-recipe-${book_recipe.id}`} draggableId={`drag-recipe-${book_recipe.id.toString()}`} index={index}>
                       {(provided) => (<>
                         <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
