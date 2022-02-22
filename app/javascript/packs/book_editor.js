@@ -153,7 +153,7 @@ class BookEditor extends React.Component {
     
     if (type == "RECIPE") {
       let recipe_id = draggableId.substr(12) // removes "drag-recipe-"
-      let section_id = destination.droppableId.substr(13) // removes "drop-section-"
+      let section_id = destination.droppableId == "recipes-container" ? null : destination.droppableId.substr(13) // removes "drop-section-"
     
       console.log('destination', destination)
 
@@ -176,6 +176,11 @@ class BookEditor extends React.Component {
         }
         return recipe
       })
+      let data = new FormData()
+      data.append('moved_id', recipe_id)
+      data.append('section_id', section_id)
+      data.append('position', destination.index+1)
+      ajax({url: gon.move_book_recipe_url, type: 'PATCH', data: data})
       this.setState({book_recipes})
     } else {
       let section_id = draggableId.substr(13) // removes "drag-section-"

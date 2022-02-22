@@ -15,7 +15,14 @@ class BooksController < ApplicationController
 
   def move_book_recipe
     book_recipe = @book.book_recipes.find(params[:moved_id])
+    book_section = params[:section_id].blank? ? nil : @book.book_sections.find(params[:section_id])
+    if book_recipe.book_section != book_section
+      book_recipe.update! book_section_id: (book_section ? book_section.id : nil)
+      book_recipe.remove_from_list
+    end
     book_recipe.insert_at(params[:position].to_i)
+    #list = book_recipe.book_section ? book_recipe.book_section.book_recipes : @book.book_recipes
+    #insert_sorted_at(list, book_recipe, params[:position].to_i)
     head :ok
   end
 
@@ -27,6 +34,7 @@ class BooksController < ApplicationController
     gon.book = to_obj(@book)
     gon.book_sections = to_obj(@book.book_sections.to_a)
     gon.book_recipes = to_obj(@book.book_recipes.to_a)
+    gon.move_book_recipe_url = move_book_recipe_book_path(@book)
     gon.jbuilder
   end
 
