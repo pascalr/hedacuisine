@@ -13,6 +13,7 @@ module SerializeHelper
 
   def to_obj(record)
     return nil if record.nil?
+    return record.map {|r| to_obj(r) } if record.is_a? Array
     return recipe_to_obj(record) if record.is_a? Recipe
     return image_to_obj(record) if record.is_a? Image
     return food_to_obj(record) if record.is_a? Food
@@ -23,6 +24,7 @@ module SerializeHelper
     return book_section_to_obj(record) if record.is_a? BookSection
     return book_recipe_to_obj(record) if record.is_a? BookRecipe
     return book_to_obj(record) if record.is_a? Book
+    raise "Can't convert to_obj. Unkown type for record #{record}"
   end
 
   def book_to_obj(book)
@@ -36,7 +38,7 @@ module SerializeHelper
   end
 
   def book_recipe_to_obj(book_recipe)
-    obj = extract_attributes(book_recipe, :position)
+    obj = extract_attributes(book_recipe, :position, :book_section_id)
     obj[:url] = book_book_recipe_path(book_recipe.book, book_recipe)
     obj[:recipe] = {
       id: book_recipe.recipe.id,
@@ -46,7 +48,7 @@ module SerializeHelper
   end
 
   def book_section_to_obj(book_section)
-    obj = extract_attributes(book_section, :name, :before_recipe_at)
+    obj = extract_attributes(book_section, :name, :before_recipe_at, :position)
     obj[:url] = book_book_section_path(book_section.book, book_section)
     obj
   end

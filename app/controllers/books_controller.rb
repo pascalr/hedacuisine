@@ -25,6 +25,8 @@ class BooksController < ApplicationController
   
   def edit
     gon.book = to_obj(@book)
+    gon.book_sections = to_obj(@book.book_sections.to_a)
+    gon.book_recipes = to_obj(@book.book_recipes.to_a)
     gon.jbuilder
   end
 

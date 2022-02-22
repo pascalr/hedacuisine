@@ -252,14 +252,14 @@ class BookEditor extends React.Component {
         <h1>Liste des recettes</h1>
         <hr/>
         <div ref={this.recipeFindRef} />
-        <ul>
+        <ul style={{backgroundColor: "#ffff99"}}>
           <DragDropContext onDragEnd={(droppedItem) => this.handleSectionDrop(droppedItem)}>
             <Droppable droppableId="sections-container">
-              {(provided) => (
+              {(provided) => (<>
                 <div className="sections-container" {...provided.droppableProps} ref={provided.innerRef}>
                   {this.state.book_sections.map((section, index) => (
                     <Draggable key={`drag-section-${index}`} draggableId={`drag-section-${section.id.toString()}`} index={index}>
-                      {(provided) => (
+                      {(provided) => (<>
                         <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
                           <li className="section">
                             <h3 key={section.id} style={{margin: "0", padding: "0.5em 0 0.2em 0"}}>
@@ -270,12 +270,22 @@ class BookEditor extends React.Component {
                             </h3>
                           </li>
                         </div>
-                      )}
+                        <Droppable droppableId={`drop-section-${section.id}`}>
+                          {(provided) => (
+                            <div {...provided.droppableProps} ref={provided.innerRef} style={{backgroundColor: "#ff99ff", paddingBottom: "1.5em"}}>
+                              {provided.placeholder}
+                            </div>
+                          )}
+                        </Droppable>
+                      </>)}
                     </Draggable>
                   ))}
                   {provided.placeholder}
                 </div>
-              )}
+                <h3 style={{margin: "0", padding: "0.5em 0 0.2em 0"}}>
+                  Recettes non catégorisées
+                </h3>
+              </>)}
             </Droppable>
           </DragDropContext>
         </ul>
