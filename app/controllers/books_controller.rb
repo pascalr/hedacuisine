@@ -1,5 +1,5 @@
 class BooksController < ApplicationController
-  before_action :set_book, only: %i[ edit update destroy on_index_change edit_appearance move_book_recipe]
+  before_action :set_book, only: %i[ edit update destroy on_index_change edit_appearance move_book_recipe move_book_section]
   skip_before_action :authenticate_user!, only: [:index, :show]
   skip_before_action :only_admin!, only: [:index, :show]
 
@@ -25,6 +25,12 @@ class BooksController < ApplicationController
     #insert_sorted_at(list, book_recipe, params[:position].to_i)
     head :ok
   end
+  
+  def move_book_section
+    book_section = @book.book_sections.find(params[:moved_id])
+    book_section.insert_at(params[:position].to_i)
+    head :ok
+  end
 
   def show
     @book = Book.includes([{book_recipes: :recipe}, :book_sections]).find(params[:slug].split('-')[0])
@@ -35,6 +41,7 @@ class BooksController < ApplicationController
     gon.book_sections = to_obj(@book.book_sections.to_a)
     gon.book_recipes = to_obj(@book.book_recipes.to_a)
     gon.move_book_recipe_url = move_book_recipe_book_path(@book)
+    gon.move_book_section_url = move_book_section_book_path(@book)
     gon.jbuilder
   end
 

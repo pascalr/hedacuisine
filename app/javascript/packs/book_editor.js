@@ -203,6 +203,10 @@ class BookEditor extends React.Component {
       //  for (let i = 0; i < updatedList.length; i++) {
       //    updatedList[i].position = i+1
       //  }
+      let data = new FormData()
+      data.append('moved_id', section_id)
+      data.append('position', destination.index+1)
+      ajax({url: gon.move_book_section_url, type: 'PATCH', data: data})
       this.setState({book_sections: updatedList})
 
       //let book_sections = [...this.state.book_sections].map(section => {
