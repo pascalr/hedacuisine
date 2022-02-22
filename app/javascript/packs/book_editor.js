@@ -327,7 +327,7 @@ class BookEditor extends React.Component {
           <DragDropContext onDragEnd={(droppedItem) => this.handleDrop(droppedItem)}>
             <Droppable droppableId="sections-container" type="SECTION">
               {(provided) => (<>
-                <div className="sections-container" {...provided.droppableProps} ref={provided.innerRef} style={{backgroundColor: "#ffff99"}}>
+                <div className="sections-container" {...provided.droppableProps} ref={provided.innerRef}>
                   {this.state.book_sections.map((section, index) => (
                     <Draggable key={`drag-section-${section.id}`} draggableId={`drag-section-${section.id.toString()}`} index={index}>
                       {(provided) => (<>
@@ -343,9 +343,9 @@ class BookEditor extends React.Component {
                         </div>
                         <Droppable droppableId={`drop-section-${section.id}`} type="RECIPE">
                           {(provided) => (
-                            <div {...provided.droppableProps} ref={provided.innerRef} style={{backgroundColor: "#ff99ff", paddingBottom: "1.5em"}}>
+                            <div {...provided.droppableProps} ref={provided.innerRef} style={{paddingBottom: "1.5em"}}>
                               {sortedRecipes.filter(r => r.book_section_id == section.id).map((book_recipe, index) => {
-                                return <Draggable key={`drag-recipe-${book_recipe.id}`} draggableId={`drag-recipe-${book_recipe.id.toString()}`} index={book_recipe.position-1}>
+                                return <Draggable key={`drag-recipe-${book_recipe.id}`} draggableId={`drag-recipe-${book_recipe.id.toString()}`} index={index}>
                                   {(provided) => (<>
                                     <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
                                       <li>
@@ -369,7 +369,7 @@ class BookEditor extends React.Component {
             </Droppable>
             <Droppable droppableId="recipes-container" type="RECIPE">
               {(provided) => (<>
-                <div {...provided.droppableProps} ref={provided.innerRef} style={{backgroundColor: "#99ffff"}}>
+                <div {...provided.droppableProps} ref={provided.innerRef}>
                   <h3 style={{margin: "0", padding: "0.5em 0 0.2em 0"}}>
                     Recettes non catégorisées
                   </h3>
