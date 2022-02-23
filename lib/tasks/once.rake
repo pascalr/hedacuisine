@@ -10,7 +10,12 @@ namespace :once do
 
   task update_book_recipes_position: :environment do
     Book.all.each do |book|
-      book.book_recipes.order(:position).each_with_index do |book_recipe, i|
+      book.book_sections.each do |book_section|
+        book_section.book_recipes.order(:position).each_with_index do |book_recipe, i|
+          book_recipe.update! position: i+1
+        end
+      end 
+      book.book_recipes.where(book_section_id: nil).order(:position).each_with_index do |book_recipe, i|
         book_recipe.update! position: i+1
       end
     end

@@ -110,38 +110,12 @@ class BookEditor extends React.Component {
     }})
   }
     
-  //addSection() {
-  //  ajax({url: gon.recipe.new_ingredient_section_url, type: 'POST', data: {}, success: (section) => {
-  //    this.setState({ingredient_sections: [...this.state.ingredient_sections, section]})
-  //  }})
-  //  const sectionName = this.newBookSectionNameRef.current.value
-  //  let data = new FormData()
-  //  data.append("book_section[name]", sectionName)
-  //  ajax({url: gon.book_book_sections_path, type: 'POST', data: data, success: (raw) => {
-  //    const response = JSON.parse(raw)
-  //    const book_section = response.book_section
-  //    console.log(response)
-  //    const indexItems = [...this.state.indexItems, book_section]
-  //    this.setState({indexItems})
-  //  }, error: (errors) => {
-  //    console.error(errors)
-  //    //toastr.error("<ul>"+Object.values(JSON.parse(errors)).map(e => ("<li>"+e+"</li>"))+"</ul>", 'Error updating')
-  //  }})
-  //}
-    
   addRecipe() {
     const recipeId = this.newBookRecipeRecipeIdRef.current.value
     let data = new FormData()
     data.append("book_recipe[recipe_id]", recipeId)
     ajax({url: gon.book_book_recipes_path, type: 'POST', data: data, success: (book_recipe) => {
       this.setState({book_recipes: [...this.state.book_recipes, book_recipe]})
-    }})
-  }
-
-  removeIndexItem(item) {
-    ajax({url: item.url, type: 'DELETE', success: (raw) => {
-      const indexItems = [...this.state.indexItems].filter(r => r.id != item.id || r.class_name != item.class_name)
-      this.setState({indexItems})
     }})
   }
 
@@ -157,7 +131,11 @@ class BookEditor extends React.Component {
           recipe.book_section_id = section_id
           recipe.position = destination.index+1
         } else if (recipe.book_section_id == section_id) {
-          recipe.position = recipe.position + (recipe.position <= destination.index ? 0 : 1)
+          if (recipe.position <= source.index && recipe.position >= destination.index+1) { // If the recipe moved was not before and now is
+            recipe.position += 1
+          } else if (recipe.position >= source.index && recipe.position <= destination.index+1) { // If the recipe moved was before and now is not
+            recipe.position -= 1
+          }
         }
         return recipe
       })
@@ -183,8 +161,6 @@ class BookEditor extends React.Component {
   }
 
   render() {
-
-    const indexItems = combineOrderedListWithHeaders(this.state.book_recipes, this.state.book_sections, header => header.before_recipe_at)
 
     const onRecipeKindFound = (recipeKindId) => {
       console.log('RecipeKindFound', recipeKindId)
@@ -259,6 +235,7 @@ class BookEditor extends React.Component {
                                     <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
                                       <li>
                                         <span>{book_recipe.recipe.name}</span>
+                                        <span>({book_recipe.position})</span>
                                         <DeleteConfirmButton id={`del-book-section-${book_recipe.id}`} onDeleteConfirm={() => this.removeBookRecipe(book_recipe)} message="Je veux vraiment enlever?"/>
                                       </li>
                                     </div>
