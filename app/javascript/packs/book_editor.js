@@ -125,16 +125,42 @@ class BookEditor extends React.Component {
     if (type == "RECIPE") {
       let recipe_id = draggableId.substr(12) // removes "drag-recipe-"
       let section_id = destination.droppableId == "recipes-container" ? null : destination.droppableId.substr(13) // removes "drop-section-"
-    
+
+      //const insertInList = (list, item) => {
+      //  return [...list].map(el => {
+      //    if (el.position >= item.position) { el.position = el.position+1 }
+      //    return el
+      //  })
+      //}
+      //const removeFromList = (list, item) => {
+      //  return [...list].map(el => {
+      //    if (el.position > item.position) { el.position = el.position-1 }
+      //    return el
+      //  })
+      //}
+
+      //let recipe = {...this.state.book_recipes.find(r => r.id == recipe_id)}
+      //let previousList = this.state.book_recipes.filter(r => r.book_section_id == recipe.book_section_id)
+      //let currentList = this.state.book_recipes.filter(r => r.book_section_id == section_id)
+
+      //removeFromList(previousList, recipe)
+      //recipe.book_section_id = section_id
+      //recipe.position = destination.index+1
+      //insertInList(currentList, recipe)
+      
+      let moved = {...this.state.book_recipes.find(r => r.id == recipe_id)}
+
       let book_recipes = [...this.state.book_recipes].map(recipe => {
         if (recipe.id == recipe_id) {
           recipe.book_section_id = section_id
           recipe.position = destination.index+1
-        } else if (recipe.book_section_id == section_id) {
-          if (recipe.position <= source.index && recipe.position >= destination.index+1) { // If the recipe moved was not before and now is
-            recipe.position += 1
-          } else if (recipe.position >= source.index && recipe.position <= destination.index+1) { // If the recipe moved was before and now is not
-            recipe.position -= 1
+        } else {
+          let pos = recipe.position
+          if (recipe.book_section_id == section_id && pos > destination.index+1) {
+            recipe.position += 1 // If the recipe is now after the moved one.
+          }
+          if (recipe.book_section_id == moved.book_section_id && pos >= moved.position) {
+            recipe.position -= 1 // If the recipe is above where the moved one previously was.
           }
         }
         return recipe
