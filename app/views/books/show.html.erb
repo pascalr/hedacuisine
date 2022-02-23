@@ -22,11 +22,14 @@
   </div>
   <h1>Liste des recettes</h1>
   <hr>
-  <% @book.book_recipes.each do |book_recipe| %>
-    <% @book.book_sections.select {|s| s.before_recipe_at == book_recipe.position}.each do |section| %>
-      <h2><%= section.name %></h2>
-    <% end %>
+  <% @book.book_recipes.where(book_section_id: nil).order(:position).each do |book_recipe| %>
     <%= render partial: "recipes/recipe", locals: {recipe: book_recipe.recipe, book: @book, book_recipe: book_recipe} %>
+  <% end %>
+  <% @book.book_sections.order(:position).each do |book_section| %>
+    <h2><%= book_section.name %></h2>
+    <% book_section.book_recipes.order(:position).each do |book_recipe| %>
+      <%= render partial: "recipes/recipe", locals: {recipe: book_recipe.recipe, book: @book, book_recipe: book_recipe} %>
+    <% end %>
   <% end %>
 </div>
 
