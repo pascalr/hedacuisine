@@ -155,12 +155,12 @@ class BookEditor extends React.Component {
           recipe.book_section_id = section_id
           recipe.position = destination.index+1
         } else {
-          let pos = recipe.position
-          if (recipe.book_section_id == section_id && pos > destination.index+1) {
-            recipe.position += 1 // If the recipe is now after the moved one.
-          }
-          if (recipe.book_section_id == moved.book_section_id && pos >= moved.position) {
+          if (recipe.book_section_id == moved.book_section_id && recipe.position >= moved.position) {
             recipe.position -= 1 // If the recipe is above where the moved one previously was.
+          }
+          // I don't understand how it works, but it works. This recipe.position must be after.
+          if (recipe.book_section_id == section_id && recipe.position >= destination.index+1) {
+            recipe.position += 1 // If the recipe is now after the moved one.
           }
         }
         return recipe
