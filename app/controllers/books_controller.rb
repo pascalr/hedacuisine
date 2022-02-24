@@ -34,6 +34,10 @@ class BooksController < ApplicationController
 
   def show
     @book = Book.includes([{book_recipes: :recipe}, :book_sections]).find(params[:slug].split('-')[0])
+    
+    gon.recipes_by_section = @book.book_recipes.all.inject({}) {|acc, record| acc[record.book_section_id || 0] = (acc[record.book_section_id || 0]||[])+[to_obj(record)]; acc}
+    gon.book_sections = to_obj(@book.book_sections.order(:position).to_a)
+    #gon.book_recipes = to_obj(@book.book_recipes.order(:position).to_a)
   end
   
   def edit

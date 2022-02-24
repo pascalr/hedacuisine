@@ -8,7 +8,7 @@ module SerializeHelper
   end
 
   def collection_by_id(records, &block)
-    records.inject({}) {|objs_by_id, record| objs_by_id[record.id] = yield(record); objs_by_id}
+    records.inject({}) {|objs_by_id, record| objs_by_id[record.id] = (block_given? ? yield(record) : to_obj(record)); objs_by_id}
   end
 
   def to_obj(record)
@@ -24,6 +24,7 @@ module SerializeHelper
     return book_section_to_obj(record) if record.is_a? BookSection
     return book_recipe_to_obj(record) if record.is_a? BookRecipe
     return book_to_obj(record) if record.is_a? Book
+    return tool_to_obj(record) if tool.is_a? Tool
     raise "Can't convert to_obj. Unkown type for record #{record}"
   end
 
@@ -92,14 +93,14 @@ module SerializeHelper
       move_ing_url: move_ing_recipe_path(recipe),
       use_personalised_image: !!recipe.use_personalised_image,
       notes: collection_by_id(recipe.notes.order(:item_nb)) { |note|
-        recipe_note_to_obj(note)
+        recipe_note_to_obj(note) # OPTIMIZE: I believe this block is not necessary anymore. Default is to_obj and should work.
       },
       ingredients: recipe.ingredients.order(:item_nb).map {|s| recipe_ingredient_to_obj(s)},
       #ingredients: collection_by_id(recipe.ingredients.order(:item_nb)) { |note|
       #  recipe_ingredient_to_obj(recipe, note)
       #},
       tools: collection_by_id(recipe.tools) { |tool|
-        tool_to_obj(tool)
+        tool_to_obj(tool) # OPTIMIZE: I believe this block is not necessary anymore. Default is to_obj and should work.
       },
       ingredient_sections: recipe.ingredient_sections.map {|s| ingredient_section_to_obj(s)},
     })

@@ -1,38 +1,42 @@
-<div style="max-width: 900px; margin: auto;">
-  <div style="width: fit-content; margin: auto;">
-    <div>
-      <br><br>
-      <div class="d-block d-sm-flex gap-20 text-center text-sm-left">
-        <%= render partial: "books/title_page", locals: {book: @book} %>
-        <div>
-          <div class="d-flex">
-            <div class="flex-grow-1"></div>
-            <h2 class="text-black"><%= @book.name %></h2>
-            <%= render partial: "books/edit_menu", locals: {book: @book} %>
-            <div class="flex-grow-1"></div>
-          </div>
-          <div style="max-width: 600px">
-            <%= my_sanitize(@book.description_html) %>
-          </div>
-          <button class="btn btn-outline-primary text-primary"><%= image_tag icon_path("book-blue.svg"), size: "20x20" %></button>
-        </div>
-      </div>
-      <br><br>
-    </div>
+<div class="d-flex">
+  <div id="book-sidebar">
   </div>
-  <h1>Liste des recettes</h1>
-  <hr>
-  <% @book.book_recipes.where(book_section_id: nil).order(:position).each do |book_recipe| %>
-    <%= render partial: "recipes/recipe", locals: {recipe: book_recipe.recipe, book: @book, book_recipe: book_recipe} %>
-  <% end %>
-  <% @book.book_sections.order(:position).each do |book_section| %>
-    <h2><%= book_section.name %></h2>
-    <% book_section.book_recipes.order(:position).each do |book_recipe| %>
+  <div style="max-width: 900px; margin: auto;">
+    <div style="width: fit-content; margin: auto;">
+      <div>
+        <br><br>
+        <div class="d-block d-sm-flex gap-20 text-center text-sm-left">
+          <%= render partial: "books/title_page", locals: {book: @book} %>
+          <div>
+            <div class="d-flex">
+              <div class="flex-grow-1"></div>
+              <h2 class="text-black"><%= @book.name %></h2>
+              <%= render partial: "books/edit_menu", locals: {book: @book} %>
+              <div class="flex-grow-1"></div>
+            </div>
+            <div style="max-width: 600px">
+              <%= my_sanitize(@book.description_html) %>
+            </div>
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#search-book"><%= image_tag icon_path("search_blue.svg"), size: "20x20" %></button>
+          </div>
+        </div>
+        <br><br>
+      </div>
+    </div>
+    <h1>Liste des recettes</h1>
+    <hr>
+    <% @book.book_recipes.where(book_section_id: nil).order(:position).each do |book_recipe| %>
       <%= render partial: "recipes/recipe", locals: {recipe: book_recipe.recipe, book: @book, book_recipe: book_recipe} %>
     <% end %>
-  <% end %>
+    <% @book.book_sections.order(:position).each do |book_section| %>
+      <h2><%= book_section.name %></h2>
+      <% book_section.book_recipes.order(:position).each do |book_recipe| %>
+        <%= render partial: "recipes/recipe", locals: {recipe: book_recipe.recipe, book: @book, book_recipe: book_recipe} %>
+      <% end %>
+    <% end %>
+  </div>
 </div>
-
+  
 <style>
 @media screen and (max-width: 576px) {
   .recipe-details-small {
@@ -41,3 +45,4 @@
 }
 </style>
 
+<%= javascript_pack_tag "book_sidebar" %>
