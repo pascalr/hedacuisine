@@ -47,14 +47,13 @@ const BookSidebar = () => {
   //inputField.current.showEmptyAutocomplete()
  
   let term = normalizeSearchText(search)
-  let filtered = {}
+  let filtered = []
   if (data) {
-    filtered = data.book_sections.reduce(function(result, book_section) {
-      result[book_section.id] = data.recipes_by_section[book_section.id].filter(r => (
+    data.book_sections.forEach((book_section) => {
+      filtered = filtered.concat(data.recipes_by_section[book_section.id].filter(r => (
         r.recipe.name && ~normalizeSearchText(r.recipe.name).indexOf(term)
-      ))
-      return result
-    }, {})
+      )))
+    })
   }
 
   let select = (pos) => {
@@ -63,39 +62,33 @@ const BookSidebar = () => {
   }
 
   let onKeyDown = ({key}) => {
-    //let countRecipes = () => (Object.values(filtered).reduce((total, a) => total+a.length), 0)
-    let countRecipes = () => (Object.values(filtered).map(a => a.length).reduce((total, n)=>total+n))
-    console.log('count', countRecipes())
-    console.log('filtered', Object.values(filtered))
-    if (key == "ArrowDown") {select(selected >= countRecipes()-1 ? -1 : selected+1)}
-    if (key == "ArrowUp") {select(selected < 0 ? countRecipes()-1 : selected-1)}
-    if (key == "Enter") {window.location.href = Object.values(filtered).flat()[selected].url}
+    if (key == "ArrowDown") {select(selected >= filtered.length-1 ? -1 : selected+1)}
+    if (key == "ArrowUp") {select(selected < 0 ? filtered.length-1 : selected-1)}
+    if (key == "Enter") {window.location.href = filtered[selected].url+"#main"}
           
   }
+  console.log('filtered', filtered)
   console.log('selected', selected)
 
-  let current = -1 // current recipe, compared to selected
+  let sectionPrinted = {}
+
   return (<>
     <div id="search-book" ref={collapseElem} className="collapse collapse-horizontal" style={{border: "1px solid black", padding: "0.5em", height: "100%"}}>
       <div style={{width: "300px", height: "100%"}}>
         <input id="book-filter" type="search" placeholder="Filtrer..." onChange={(e) => setSearch(e.target.value)} autoComplete="off" style={{width: "100%"}} onKeyDown={onKeyDown}/>
-        {!data ? '' : (() => {
-          return data.book_sections.map(book_section => {
-
-            let book_recipes = filtered[book_section.id]
-            if (isBlank(book_recipes)) {return ''}
-
-            return (
-              <div key={book_section.id}>
-                <h3>{book_section.name}</h3>
-                {book_recipes.map(book_recipe => {
-                  current += 1
-                  return <a className={current == selected ? "selected" : undefined} key={book_recipe.id} href={book_recipe.url}>{book_recipe.recipe.name}</a>
-                })}
-              </div>
-            )
-          })
-        })()}
+        {filtered.map((book_recipe, current) => {
+          let printSection = (section_id) => {
+            if (sectionPrinted[section_id]) {return ''}
+            sectionPrinted[section_id] = true
+            return <h3>{data.book_sections.find(b => b.id == section_id).name}</h3>
+          }
+          return (
+            <div key={book_recipe.id}>
+              {printSection(book_recipe.book_section_id)}
+              <a className={current == selected ? "selected" : undefined} href={book_recipe.url+"#main"}>{book_recipe.recipe.name}</a>
+            </div>
+          )
+        })}
       </div>
     </div>
   </>)
