@@ -75,6 +75,7 @@ const BookSidebar = () => {
   return (<>
     <div id="search-book" ref={collapseElem} className="collapse collapse-horizontal" style={{border: "1px solid black", padding: "0.5em", height: "100%"}}>
       <div style={{width: "300px", height: "100%"}}>
+        <h2 style={{fontSize: "1.5em"}}>{data ? data.book_name : ''}</h2>
         <input id="book-filter" type="search" placeholder="Filtrer..." onChange={(e) => setSearch(e.target.value)} autoComplete="off" style={{width: "100%"}} onKeyDown={onKeyDown}/>
         {filtered.map((book_recipe, current) => {
           let printSection = (section_id) => {
