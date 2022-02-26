@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 
-import autocomplete from 'js-autocomplete';
+import autocomplete from 'external/js-autocomplete/auto-complete';
+import 'external/js-autocomplete/auto-complete.css';
+//import autocomplete from 'js-autocomplete';
 
 //import { DeleteConfirmButton } from 'components/delete_confirm_button'
 //
@@ -40,21 +42,23 @@ const BookSidebar = () => {
         source: function(term, suggest){
           term = normalizeSearchText(term)
           const matches = [];
-          gon.book_sections.map(book_section => {
-            let label = book_section.name
-            if (label && ~normalizeSearchText(label).indexOf(term)) {
-              matches.push(book_section)
+          gon.book_sections.forEach(book_section => {
+            let recipes = gon.recipes_by_section[book_section.id].filter(r => (
+              r.recipe.name && ~normalizeSearchText(r.recipe.name).indexOf(term)
+            ))
+            if (!isBlank(recipes)) {
+              matches.push({section: book_section, recipe: recipes[0]})
+              recipes.slice(1).forEach(recipe => matches.push({recipe}))
             }
           })
           suggest(matches);
         },
-        renderItem: function (item, search){
+        renderItem: function ({section, recipe}, search){
           search = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
           var re = new RegExp("(" + search.split(' ').join('|') + ")", "gi");
-          if (item.class_name == "book_section") {
-            return `<h3>${item.name}</h3>`
-            //return '<a class="autocomplete-suggestion" href="'+item.url+'"><b>' + item.name + '</b></a>';
-          }
+          let r = ""
+          if (section) {r += `<h3>${section.name}</h3>`}
+          return r+'<a class="autocomplete-suggestion" data-val="'+recipe.recipe.name+'" href="'+recipe.url+'"><b>' + recipe.recipe.name + '</b></a>'
         }//,
         //onSelect: function(e, term, item){
         //  TODO: Use the url from the href of the link
