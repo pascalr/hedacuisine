@@ -66,6 +66,7 @@ const BookSidebar = () => {
         //  window.location.href = choices[item.dataset.id].url
         //}
       })
+      inputField.current.showEmptyAutocomplete()
     }
     collapseElem.current.addEventListener("shown.bs.collapse", doFocus)
     return () => {

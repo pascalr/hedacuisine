@@ -126,6 +126,10 @@ var autoComplete = (function(){
                 else
                     that.sc.style.display = 'none';
             }
+            
+            that.showEmptyAutocomplete = function() {
+              o.source('', suggest)
+            }
 
             var previousAutocompleteSuggestion = function(sibling) {
               if (!sibling) {return null}

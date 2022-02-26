@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       new autocomplete({
         selector: elem,
         minChars: 1,
+        menuClass: "top-search-suggestions",
         source: function(term, suggest){
           term = normalizeSearchText(term)
           const matches = [];
