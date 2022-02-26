@@ -60,11 +60,10 @@ const BookSidebar = () => {
           let r = ""
           if (section) {r += `<h3>${section.name}</h3>`}
           return r+'<a class="autocomplete-suggestion" data-val="'+recipe.recipe.name+'" href="'+recipe.url+'"><b>' + recipe.recipe.name + '</b></a>'
-        }//,
-        //onSelect: function(e, term, item){
-        //  TODO: Use the url from the href of the link
-        //  window.location.href = choices[item.dataset.id].url
-        //}
+        },
+        onSelect: function(e, term, item){
+          window.location.href = item.href
+        }
       })
       inputField.current.showEmptyAutocomplete()
     }

@@ -32,16 +32,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
           search = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
           var re = new RegExp("(" + search.split(' ').join('|') + ")", "gi");
           if (item.author) {
-            return '<a class="autocomplete-suggestion book_search_thumb" data-id="' + choiceId + '" data-val="'+item.label+'" href="'+item.url+'"><img src="'+item.image+'"></img><div><b>' + item.label + '</b><div>de '+item.author+'</div></div></a>';
+            return '<a class="autocomplete-suggestion book_search_thumb" data-val="'+item.label+'" href="'+item.url+'"><img src="'+item.image+'"></img><div><b>' + item.label + '</b><div>de '+item.author+'</div></div></a>';
           } else if (item.recipe_count) {
-            return '<a class="autocomplete-suggestion" data-id="' + choiceId + '" data-val="'+item.label+'" href="'+item.url+'"><img src="'+item.image+'"></img>' + item.label.replace(re, "<b>$1</b>") + ' ' + item.recipe_count + '</a>';
+            return '<a class="autocomplete-suggestion" data-val="'+item.label+'" href="'+item.url+'"><img src="'+item.image+'"></img>' + item.label.replace(re, "<b>$1</b>") + ' ' + item.recipe_count + '</a>';
           } else {
-            return '<a class="autocomplete-suggestion" data-id="' + choiceId + '" data-val="'+item.label+'" href="'+item.url+'"><img src="'+item.image+'"></img>' + item.label.replace(re, "<b>$1</b>") + '</a>';
+            return '<a class="autocomplete-suggestion" data-val="'+item.label+'" href="'+item.url+'"><img src="'+item.image+'"></img>' + item.label.replace(re, "<b>$1</b>") + '</a>';
           }
         },
         onSelect: function(e, term, item){
-          // TODO: Use the url from the href of the link, instead of passing id
-          window.location.href = choices[item.dataset.id].url
+          window.location.href = item.href
         }
       })
 
