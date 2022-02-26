@@ -127,17 +127,29 @@ var autoComplete = (function(){
                     that.sc.style.display = 'none';
             }
 
+            var previousAutocompleteSuggestion = function(sibling) {
+              if (!sibling) {return null}
+              if (sibling.className.indexOf("autocomplete-suggestion") != -1) {return sibling}
+              return previousAutocompleteSuggestion(sibling.previousSibling)
+            }
+
+            var nextAutocompleteSuggestion = function(sibling) {
+              if (!sibling) {return null}
+              if (sibling.className.indexOf("autocomplete-suggestion") != -1) {return sibling}
+              return previousAutocompleteSuggestion(sibling.nextSibling)
+            }
+
             that.keydownHandler = function(e){
                 var key = window.event ? e.keyCode : e.which;
                 // down (40), up (38)
                 if ((key == 40 || key == 38) && that.sc.innerHTML) {
                     var next, sel = that.sc.querySelector('.autocomplete-suggestion.selected');
                     if (!sel) {
-                        next = (key == 40) ? that.sc.querySelector('.autocomplete-suggestion') : that.sc.childNodes[that.sc.childNodes.length - 1]; // first : last
+                        next = (key == 40) ? that.sc.querySelector('.autocomplete-suggestion') : previousAutocompleteSuggestion(that.sc.childNodes[that.sc.childNodes.length - 1]); // first : last
                         next.className += ' selected';
                         that.value = next.getAttribute('data-val');
                     } else {
-                        next = (key == 40) ? sel.nextSibling : sel.previousSibling;
+                        next = (key == 40) ? nextAutocompleteSuggestion(sel.nextSibling) : previousAutocompleteSuggestion(sel.previousSibling);
                         if (next) {
                             sel.className = sel.className.replace('selected', '');
                             next.className += ' selected';

@@ -38,6 +38,7 @@ const BookSidebar = () => {
       inputField.current.focus()
       var autoComplete = new autocomplete({
         selector: inputField.current,
+        menuClass: "book-search-suggestions",
         minChars: 0,
         source: function(term, suggest){
           term = normalizeSearchText(term)
