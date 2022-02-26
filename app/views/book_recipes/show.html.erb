@@ -9,43 +9,49 @@
   <meta property="og:description" content="<%= description %>">
 <% end %>
 
-<div style="width: fit-content; margin: auto;">
+<div class="d-flex">
+  <div id="book-sidebar">
+  </div>
   <div>
-    <br><br>
-    <div class="d-block d-sm-flex gap-20 text-center">
-      <%= link_to @book do %>
-        <%= render partial: "books/title_page", locals: {book: @book} %>
-      <% end %>
+    <div style="width: fit-content; margin: auto;">
       <div>
-        <%= link_to @book do %>
-          <h2 class="text-black"><%= @book.name %></h2>
-        <% end %>
-        <div style="max-width: 600px">
-          <%= my_sanitize(@book.description_html) %>
+        <br><br>
+        <div class="d-block d-sm-flex gap-20 text-center">
+          <%= link_to @book do %>
+            <%= render partial: "books/title_page", locals: {book: @book} %>
+          <% end %>
+          <div>
+            <%= link_to @book do %>
+              <h2 class="text-black"><%= @book.name %></h2>
+            <% end %>
+            <div style="max-width: 600px">
+              <%= my_sanitize(@book.description_html) %>
+            </div>
+            <%= link_to @book do %>
+              <button class="btn btn-outline-primary">Voir les recettes</button>
+            <% end %>
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#search-book"><%= image_tag icon_path("search_blue.svg"), size: "20x20" %></button>
+          </div>
         </div>
-        <%= link_to @book do %>
-          <button class="btn btn-outline-primary">Voir les recettes</button>
-        <% end %>
-        <button class="btn btn-outline-primary text-primary"><%= image_tag icon_path("book-blue.svg"), size: "20x20" %></button>
-          
+        <br><br>
       </div>
     </div>
-    <br><br>
+    <hr id="main" style="margin-bottom: 0px;">
+    <%= render partial: "recipes/recipe_description_with_image", locals: {recipe: @recipe} %>
+    
+    <div class="d-block d-md-flex gap-30">
+      <div>
+        <%= render partial: "recipes/recipe_body", locals: {recipe: @recipe, hide_header: true} %>
+      </div>
+      <% if @recipe.recipe_kind %>
+        <%= render partial: "recipe_kinds/bubble", locals: {recipe: @recipe, recipe_kind: @recipe.recipe_kind} %>
+      <% end %>
+    </div>
   </div>
 </div>
-<hr id="main" style="margin-bottom: 0px;">
-<%= render partial: "recipes/recipe_description_with_image", locals: {recipe: @recipe} %>
-
-<div class="d-block d-md-flex gap-30">
-  <div>
-    <%= render partial: "recipes/recipe_body", locals: {recipe: @recipe, hide_header: true} %>
-  </div>
-  <% if @recipe.recipe_kind %>
-    <%= render partial: "recipe_kinds/bubble", locals: {recipe: @recipe, recipe_kind: @recipe.recipe_kind} %>
-  <% end %>
-</div>
-
+  
 <%= javascript_pack_tag "toggle_link" %>
 <%= javascript_pack_tag "dropdown_submenu" %>
 <%= javascript_pack_tag current_user ? "recipe_rating" : "recipe_rating_read_only" %>
 <%= javascript_pack_tag "recipes_show" %>
+<%= javascript_pack_tag "book_sidebar" %>
