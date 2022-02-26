@@ -29,7 +29,7 @@
       <%= render partial: "recipes/recipe", locals: {recipe: book_recipe.recipe, book: @book, book_recipe: book_recipe} %>
     <% end %>
     <% @book.book_sections.order(:position).each do |book_section| %>
-      <h2><%= book_section.name %></h2>
+      <h2 style="margin-top: 1em;"><%= book_section.name %></h2>
       <% book_section.book_recipes.order(:position).each do |book_recipe| %>
         <%= render partial: "recipes/recipe", locals: {recipe: book_recipe.recipe, book: @book, book_recipe: book_recipe} %>
       <% end %>
