@@ -34,8 +34,8 @@ class BooksController < ApplicationController
   end
 
   def show
-    gon.recipes_by_section = @book.book_recipes.all.inject({}) {|acc, record| acc[record.book_section_id || 0] = (acc[record.book_section_id || 0]||[])+[to_obj(record)]; acc}
-    gon.book_sections = to_obj(@book.book_sections.order(:position).to_a)
+    #gon.recipes_by_section = @book.book_recipes.all.inject({}) {|acc, record| acc[record.book_section_id || 0] = (acc[record.book_section_id || 0]||[])+[to_obj(record)]; acc}
+    #gon.book_sections = to_obj(@book.book_sections.order(:position).to_a)
     #gon.book_recipes = to_obj(@book.book_recipes.order(:position).to_a)
   end
 
@@ -45,6 +45,7 @@ class BooksController < ApplicationController
         data = {}
         data[:recipes_by_section] = @book.book_recipes.all.inject({}) {|acc, record| acc[record.book_section_id || 0] = (acc[record.book_section_id || 0]||[])+[to_obj(record)]; acc}
         data[:book_sections] = to_obj(@book.book_sections.order(:position).to_a)
+        data[:book_name] = @book.name
         render json: data
       }
     end

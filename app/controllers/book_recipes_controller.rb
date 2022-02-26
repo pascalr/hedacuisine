@@ -16,8 +16,8 @@ class BookRecipesController < ApplicationController
     @book = Book.where(is_public: true).find(params[:book_slug].split('-')[0])
     @book_recipe = @book.book_recipes.find(params[:slug].split('-')[0])
     @recipe = @book_recipe.recipe
-    gon.recipes_by_section = @book.book_recipes.all.inject({}) {|acc, record| acc[record.book_section_id || 0] = (acc[record.book_section_id || 0]||[])+[to_obj(record)]; acc}
-    gon.book_sections = to_obj(@book.book_sections.order(:position).to_a)
+    #gon.recipes_by_section = @book.book_recipes.all.inject({}) {|acc, record| acc[record.book_section_id || 0] = (acc[record.book_section_id || 0]||[])+[to_obj(record)]; acc}
+    #gon.book_sections = to_obj(@book.book_sections.order(:position).to_a)
   end
 
   def update
