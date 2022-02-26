@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
           }
         },
         onSelect: function(e, term, item){
+          // TODO: Use the url from the href of the link, instead of passing id
           window.location.href = choices[item.dataset.id].url
         }
       })
