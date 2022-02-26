@@ -1,5 +1,6 @@
 class BooksController < ApplicationController
   before_action :set_book, only: %i[ edit update destroy on_index_change edit_appearance move_book_recipe move_book_section]
+  before_action :set_public_book, only: %i[ show search_data ]
   skip_before_action :authenticate_user!, only: [:index, :show]
   skip_before_action :only_admin!, only: [:index, :show]
 
@@ -33,11 +34,20 @@ class BooksController < ApplicationController
   end
 
   def show
-    @book = Book.includes([{book_recipes: :recipe}, :book_sections]).find(params[:slug].split('-')[0])
-    
     gon.recipes_by_section = @book.book_recipes.all.inject({}) {|acc, record| acc[record.book_section_id || 0] = (acc[record.book_section_id || 0]||[])+[to_obj(record)]; acc}
     gon.book_sections = to_obj(@book.book_sections.order(:position).to_a)
     #gon.book_recipes = to_obj(@book.book_recipes.order(:position).to_a)
+  end
+
+  def search_data
+    respond_to do |format|
+      format.json {
+        data = {}
+        data[:recipes_by_section] = @book.book_recipes.all.inject({}) {|acc, record| acc[record.book_section_id || 0] = (acc[record.book_section_id || 0]||[])+[to_obj(record)]; acc}
+        data[:book_sections] = to_obj(@book.book_sections.order(:position).to_a)
+        render json: data
+      }
+    end
   end
   
   def edit
@@ -93,6 +103,13 @@ class BooksController < ApplicationController
   private
     def set_book
       @book = current_user.books.find(params[:slug].split('-')[0])
+    end
+    def set_public_book
+      @book = Book.includes([{book_recipes: :recipe}, :book_sections]).find(params[:slug].split('-')[0])
+      raise "Not allowed" unless @book.is_public || @book.user_id == current_user_id
+      #base = Book.includes([{book_recipes: :recipe}, :book_sections])
+      #query = base.where(is_public: true).or(base.where(user_id: current_user_id))
+      #@book = query.find(params[:slug].split('-')[0])
     end
 
     def book_params

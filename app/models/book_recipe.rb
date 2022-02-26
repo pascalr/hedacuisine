@@ -4,6 +4,8 @@ class BookRecipe < ApplicationRecord
   belongs_to :book_section, optional: true
   #has_one :order, as: :orderable
 
+  default_scope { includes(:recipe).order('position ASC') }
+
   acts_as_list scope: [:book_id, :book_section_id] # from gem acts_as_list
   #acts_as_list column: "position", scope: :book
 

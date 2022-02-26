@@ -32,41 +32,51 @@ const BookSidebar = () => {
   
   const collapseElem = useRef(null);
   const inputField = useRef(null);
+  const [init, setInit] = useState(false)
   
   useEffect(() => {
-    const doFocus = () => {
-      inputField.current.focus()
-      var autoComplete = new autocomplete({
-        selector: inputField.current,
-        menuClass: "book-search-suggestions",
-        minChars: 0,
-        source: function(term, suggest){
-          term = normalizeSearchText(term)
-          const matches = [];
-          gon.book_sections.forEach(book_section => {
-            let recipes = gon.recipes_by_section[book_section.id].filter(r => (
-              r.recipe.name && ~normalizeSearchText(r.recipe.name).indexOf(term)
-            ))
-            if (!isBlank(recipes)) {
-              matches.push({section: book_section, recipe: recipes[0]})
-              recipes.slice(1).forEach(recipe => matches.push({recipe}))
-            }
-          })
-          suggest(matches);
-        },
-        renderItem: function ({section, recipe}, search){
-          search = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-          var re = new RegExp("(" + search.split(' ').join('|') + ")", "gi");
-          let r = ""
-          if (section) {r += `<h3>${section.name}</h3>`}
-          return r+'<a class="autocomplete-suggestion" data-val="'+recipe.recipe.name+'" href="'+recipe.url+'"><b>' + recipe.recipe.name + '</b></a>'
-        },
-        onSelect: function(e, term, item){
-          window.location.href = item.href
-        }
+    if (init) {
+      $.get(collapseElem.current.parentNode.dataset.url, function(data) {
+        var autoComplete = new autocomplete({
+          selector: inputField.current,
+          menuClass: "book-search-suggestions",
+          minChars: 0,
+          source: function(term, suggest){
+            term = normalizeSearchText(term)
+            const matches = [];
+            data.book_sections.forEach(book_section => {
+              let recipes = data.recipes_by_section[book_section.id].filter(r => (
+                r.recipe.name && ~normalizeSearchText(r.recipe.name).indexOf(term)
+              ))
+              if (!isBlank(recipes)) {
+                matches.push({section: book_section, recipe: recipes[0]})
+                recipes.slice(1).forEach(recipe => matches.push({recipe}))
+              }
+            })
+            suggest(matches);
+          },
+          renderItem: function ({section, recipe}, search){
+            search = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+            var re = new RegExp("(" + search.split(' ').join('|') + ")", "gi");
+            let r = ""
+            if (section) {r += `<h3>${section.name}</h3>`}
+            return r+'<a class="autocomplete-suggestion" data-val="'+recipe.recipe.name+'" href="'+recipe.url+'"><b>' + recipe.recipe.name + '</b></a>'
+          },
+          onSelect: function(e, term, item){
+            window.location.href = item.href
+          }
+        })
+        inputField.current.showEmptyAutocomplete()
       })
-      inputField.current.showEmptyAutocomplete()
     }
+  }, [init]);
+
+  const doFocus = () => {
+    inputField.current.focus()
+    if (!init) {setInit(true)}
+  }
+  
+  useEffect(() => {
     collapseElem.current.addEventListener("shown.bs.collapse", doFocus)
     return () => {
       collapseElem.current.removeEventListener("", doFocus)

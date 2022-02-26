@@ -163,6 +163,7 @@ Rails.application.routes.draw do
         patch 'set_is_featured'
         patch 'move_book_recipe', param: 'slug'
         patch 'move_book_section', param: 'slug'
+        get 'search_data'
       end
       resources :book_recipes, only: [:create, :update, :destroy, :show], path: 'recipes', param: 'slug'
       resources :book_sections, only: [:create, :update, :destroy]
