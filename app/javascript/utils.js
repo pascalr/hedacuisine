@@ -1,3 +1,7 @@
+export function isBlank(array) {
+  return !array || array.length == 0
+}
+
 export function colorToHexString(color) {
   return '#' + Number(color).toString(16)
 }
