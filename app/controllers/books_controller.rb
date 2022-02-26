@@ -1,8 +1,8 @@
 class BooksController < ApplicationController
   before_action :set_book, only: %i[ edit update destroy on_index_change edit_appearance move_book_recipe move_book_section]
   before_action :set_public_book, only: %i[ show search_data ]
-  skip_before_action :authenticate_user!, only: [:index, :show]
-  skip_before_action :only_admin!, only: [:index, :show]
+  skip_before_action :authenticate_user!, only: [:index, :show, :search_data]
+  skip_before_action :only_admin!, only: [:index, :show, :search_data]
 
   def on_index_change
     items = (@book.book_sections+@book.book_recipes).sort_by(&:position)

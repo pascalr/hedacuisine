@@ -14,6 +14,7 @@ RAILS_ENV=local rails db:migrate
 sleep 10 
 
 RAILS_ENV=local rake website:build
+#RAILS_ENV=local rake website:build_books_search
 rm -R "../static-heda/docs"
 cp -R "tmp/localhost:3001" ../static-heda/docs
 cp -R ../static-heda/keep/* ../static-heda/docs

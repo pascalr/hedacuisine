@@ -83,7 +83,7 @@ namespace :website do
     execute_download
   end
 
-  task build: [:environment, :clear, :build_main, :build_image_thumbnails, :build_book_recipes] do
+  task build: [:environment, :clear, :build_main, :build_image_thumbnails, :build_book_recipes, :build_books_search] do
   end
 
   task :url_helpers do
@@ -132,13 +132,21 @@ namespace :website do
 
       Book.all_public.each do |book|
         add_download(book_path(book, locale: locale))
-        add_download(search_data_book_path(locale: locale, format: :json))
       end
 
       #Article.all.each do |article|
       #  add_download(article_path(article, locale: locale))
       #end
 
+    end
+    execute_download
+  end
+  
+  task build_books_search: [:environment, :url_helpers] do
+    LOCALES.each do |locale|
+      Book.all_public.each do |book|
+        add_download(search_data_book_path(book, locale: locale, format: :json))
+      end
     end
     execute_download
   end
