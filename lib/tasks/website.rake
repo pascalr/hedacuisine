@@ -132,6 +132,7 @@ namespace :website do
 
       Book.all_public.each do |book|
         add_download(book_path(book, locale: locale))
+        add_download(search_data_book_path(locale: locale, format: :json))
       end
 
       #Article.all.each do |article|
