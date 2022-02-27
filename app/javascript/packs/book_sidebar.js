@@ -69,7 +69,7 @@ const BookSidebar = () => {
     <div className={visible ? "visible" : undefined} id="search-book">
       <div></div>
       <Hammer onSwipe={handleSwipe}>
-        <div>
+        <div style={{width: (visible ? "100%" : "0")}}>
           <button type="button" className="plain-btn" onClick={() => setVisible(false)} style={{float: "right"}}>
             <img src="/icons/x-lg.svg"/>
           </button>
