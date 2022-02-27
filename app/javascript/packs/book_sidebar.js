@@ -2,27 +2,20 @@ import React, { useState, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 
 import { isBlank, normalizeSearchText } from "../utils"
+import { useFetch } from "../lib"
 
 import Hammer from "react-hammerjs"
 
 const BookSidebar = () => {
   
-  const collapseElem = useRef(null);
   const inputField = useRef(null);
   const [init, setInit] = useState(false)
-  const [data, setData] = useState(null)
+  //const [data, setData] = useState(null)
   const [search, setSearch] = useState('')
   const [selected, setSelected] = useState(-1)
   const [visible, setVisible] = useState(false)
- 
-  // TODO: Use useFetch instead of this const data = (init) ? useFetch(...) : null
-  useEffect(() => {
-    if (init) {
-      $.get(collapseElem.current.parentNode.dataset.url, function(data) {
-        setData(data)
-      })
-    }
-  }, [init]);
+  const data = useFetch(window.book_sidebar.dataset.url, {waitFor: init})
+  console.log('data', data)
 
   const doInit = () => {
     //inputField.current.focus()
@@ -33,16 +26,14 @@ const BookSidebar = () => {
     let elems = document.querySelectorAll('[data-book-search-toggle]')
     for (let i = 0; i < elems.length; i++) {
       let elem = elems[i]
-      elem.handleToggle = () => {setVisible(true)} // FIXME: This does not work: setVisible(!visible)
+      elem.handleToggle = () => {setVisible(true); doInit()} // FIXME: This does not work: setVisible(!visible)
       elem.addEventListener("click", elem.handleToggle)
     }
-    collapseElem.current.addEventListener("shown.bs.collapse", doInit)
     return () => {
       let elems = document.querySelectorAll('[data-book-search-toggle]')
       for (let i = 0; i < elems.length; i++) {
         elem.removeEventListener("click", elem.handleToggle)
       }
-      collapseElem.current.removeEventListener("", doInit)
     }
   }, []);
  
@@ -75,7 +66,7 @@ const BookSidebar = () => {
 
   let sectionPrinted = {}
   return (<>
-    <div id="search-book" ref={collapseElem} style={{height: "100%", position: "relative", left: (visible ? "0px" : "-300px"), transition: "transform .5s ease-out"}}>
+    <div id="search-book" style={{height: "100%", position: "relative", left: (visible ? "0px" : "-300px"), transition: "all .5s ease-out"}}>
       <Hammer onSwipe={handleSwipe}>
         <div style={{border: "1px solid black", padding: "0.5em", width: "300px", height: "100%"}}>
           <h2 style={{fontSize: "1.5em"}}>{data ? data.book_name : ''}</h2>
@@ -102,5 +93,6 @@ const BookSidebar = () => {
 document.addEventListener('DOMContentLoaded', () => {
 
   const root = document.getElementById('book-sidebar')
+  window.book_sidebar = root
   if (root) {ReactDOM.render(<BookSidebar/>, root)}
 })
