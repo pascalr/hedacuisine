@@ -67,9 +67,8 @@ const BookSidebar = () => {
   let sectionPrinted = {}
   return (<>
     <div className={visible ? "visible" : undefined} id="search-book">
-      <div></div>
       <Hammer onSwipe={handleSwipe}>
-        <div style={{width: (visible ? "100%" : "0")}}>
+        <div>
           <button type="button" className="plain-btn" onClick={() => setVisible(false)} style={{float: "right"}}>
             <img src="/icons/x-lg.svg"/>
           </button>
