@@ -33,10 +33,10 @@
             <button type="button" class="btn btn-outline-primary" data-book-search-toggle="true"><%= image_tag icon_path("search_blue.svg"), size: "20x20" %></button>
           </div>
         </div>
-        <br><br>
+        <br>
       </div>
     </div>
-    <hr id="main" style="margin-bottom: 0px;">
+    <hr id="main" style="width: 80%; margin-left: 10%; margin-right: 10%; margin-bottom: 2.5em;">
     <%= render partial: "recipes/recipe_description_with_image", locals: {recipe: @recipe} %>
     
     <div class="d-block d-md-flex gap-30">
