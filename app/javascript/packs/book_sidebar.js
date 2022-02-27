@@ -41,7 +41,11 @@ const BookSidebar = () => {
   let filtered = []
   if (data) {
     data.book_sections.forEach((book_section) => {
-      filtered = filtered.concat(data.recipes_by_section[book_section.id].filter(r => (
+      // 0 means no section
+      filtered = filtered.concat((data.recipes_by_section[0]||[]).filter(r => (
+        r.recipe.name && ~normalizeSearchText(r.recipe.name).indexOf(term)
+      )))
+      filtered = filtered.concat((data.recipes_by_section[book_section.id]||[]).filter(r => (
         r.recipe.name && ~normalizeSearchText(r.recipe.name).indexOf(term)
       )))
     })
@@ -78,7 +82,8 @@ const BookSidebar = () => {
             let printSection = (section_id) => {
               if (sectionPrinted[section_id]) {return ''}
               sectionPrinted[section_id] = true
-              return <h3>{data.book_sections.find(b => b.id == section_id).name}</h3>
+              let section = data.book_sections.find(b => b.id == section_id)
+              return section ? <h3>{section.name}</h3> : ''
             }
             return (
               <div key={book_recipe.id}>
