@@ -66,9 +66,13 @@ const BookSidebar = () => {
 
   let sectionPrinted = {}
   return (<>
-    <div id="search-book" style={{height: "100%", position: "relative", left: (visible ? "0px" : "-300px"), transition: "all .5s ease-out"}}>
+    <div className={visible ? "visible" : undefined} id="search-book" style={{height: "100%", position: "relative"}}>
+      <div></div>
       <Hammer onSwipe={handleSwipe}>
-        <div style={{border: "1px solid black", padding: "0.5em", width: "300px", height: "100%"}}>
+        <div style={{border: "1px solid black", marginRight: "10px", padding: "0.5em", width: "100%", height: "100%", position: "absolute", transition: "all .5s ease-out"}}>
+          <button type="button" className="plain-btn" onClick={() => setVisible(false)} style={{float: "right"}}>
+            <img src="/icons/x-lg.svg"/>
+          </button>
           <h2 style={{fontSize: "1.5em"}}>{data ? data.book_name : ''}</h2>
           <input id="book-filter" type="search" placeholder="Filtrer..." onChange={(e) => setSearch(e.target.value)} autoComplete="off" style={{width: "100%"}} onKeyDown={onKeyDown}/>
           {filtered.map((book_recipe, current) => {

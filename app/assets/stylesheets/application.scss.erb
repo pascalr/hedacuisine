@@ -696,12 +696,39 @@ li.section {
 .autocomplete-suggestions.top-search-suggestions {
   max-height: 60vh !important;
 }
+#search-book {
+  margin-right: 10px;
+}
 #search-book * {
   color: black;
   display: block;
 }
 #search-book .selected {
   background-color: #eee;
+}
+#search-book div:first-child {
+  transition: width .5s ease-out;
+  width: 0px;
+}
+#search-book.visible div:first-child {
+  width: 310px;
+}
+#search-book.visible div:nth-of-type(2) {
+  left: 0px;
+}
+#search-book div:nth-of-type(2) {
+  left: -300px;
+}
+@media screen and (max-width: 576px) { // sm
+  #search-book {
+    margin-right: 0px;
+  }
+  #search-book.visible div:first-child {
+    width: 100vw;
+  }
+  #search-book div:nth-of-type(2) {
+    left: -100vw;
+  }
 }
 
 .category-bubble {
