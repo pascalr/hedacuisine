@@ -66,10 +66,10 @@ const BookSidebar = () => {
 
   let sectionPrinted = {}
   return (<>
-    <div className={visible ? "visible" : undefined} id="search-book" style={{height: "100%", position: "relative"}}>
+    <div className={visible ? "visible" : undefined} id="search-book">
       <div></div>
       <Hammer onSwipe={handleSwipe}>
-        <div style={{border: "1px solid black", marginRight: "10px", padding: "0.5em", width: "100%", height: "100%", position: "absolute", transition: "all .5s ease-out"}}>
+        <div>
           <button type="button" className="plain-btn" onClick={() => setVisible(false)} style={{float: "right"}}>
             <img src="/icons/x-lg.svg"/>
           </button>
