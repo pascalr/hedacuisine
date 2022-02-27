@@ -698,7 +698,10 @@ li.section {
 }
 #search-book {
   height: 100%;
-  margin-right: 10px;
+  width: 0;
+  transform: translateX(-300px);
+  border: 1px solid black;
+  transition: all .5s ease-out;
 }
 #search-book * {
   color: black;
@@ -707,27 +710,20 @@ li.section {
 #search-book .selected {
   background-color: #eee;
 }
-#search-book.visible > * {
+#search-book.visible {
   transform: translateX(0px);
   width: 310px;
-}
-#search-book > * {
-  width: 0;
-  transform: translateX(-300px);
-  border: 1px solid black;
   margin-right: 10px;
   padding: 0.5em;
-  height: 100%;
-  transition: all .5s ease-out;
 }
 @media screen and (max-width: 576px) { // sm
-  #search-book {
+  #search-book.visible {
     margin-right: 0px;
   }
-  #search-book > * {
+  #search-book {
     transform: translateX(-100vw);
   }
-  #search-book.visible > * {
+  #search-book.visible {
     width: 100vw;
   }
 }
