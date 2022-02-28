@@ -214,12 +214,13 @@ namespace :website do
 
     image_data = {}
     Image.order(id: :desc).all.each do |im|
-      image_data[im.id] = {key: im.original.key, filename: im.original.filename}
+      image_data[im.id] = {key: im.original.key, filename: im.original.filename} if im.original.attached?
     end
     ActiveRecord::Base.connection.execute("DELETE FROM active_storage_variant_records;")
     ActiveRecord::Base.connection.execute("DELETE FROM active_storage_attachments;")
     ActiveRecord::Base.connection.execute("DELETE FROM active_storage_blobs;")
     Image.all.each do |i|
+      next unless image_data[i.id]
       data = image_data[i.id]
       path = get_sync_folder.join(data[:key])
       #if File.exist?(path)

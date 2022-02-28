@@ -47,21 +47,26 @@ class Image < ApplicationRecord
     end
   end
   def small_book_width
+    return nil unless original.attached?
     (VARIANTS[:small_book][:height].to_f * self.aspect_ratio.to_f).to_i
   end
   def small_book_height
+    return nil unless original.attached?
     (VARIANTS[:small_book][:width].to_f / self.aspect_ratio.to_f).to_i
   end
 
   def width
+    return nil unless original.attached?
     original.analyze unless original.analyzed?
     original.metadata[:width]
   end
   def height
+    return nil unless original.attached?
     original.analyze unless original.analyzed?
     original.metadata[:height]
   end
   def aspect_ratio
+    return nil unless original.attached?
     self.width.to_f / self.height.to_f
   end
 
