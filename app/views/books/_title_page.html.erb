@@ -1,5 +1,5 @@
 <% max_axis = :width unless local_assigns[:max_axis] %>
-<% if book.front_page_image %>
+<% if book.front_page_image && book.front_page_image.original.attached? %>
   <% if max_axis == :width %>
     <%= image_tag image_variant_path(book.front_page_image, :small_book), width: Image::VARIANTS[:small_book][:width], height: book.front_page_image.small_book_height %>
   <% else %>
