@@ -8,15 +8,18 @@ Créée le Friday 28 January 2022
 1ère priorité: Site read only
 2e priorité: Site modifiable
 
-Dans l'éditeur de livre, voir la liste de toutes les recettes qui appartient à l'utilisateur. Il peut ainsi en drag&drop dans son livre. Il peut en créer aussi. Pour recherche je ne sais pas comment faire.
-
-Book#show est beauuuuuucoup trop lent... Paginate?
-
 Pouvoir scanner une photo d'une recette. Garder mes images de scans de recettes et commencer à me monter une dataset.
+
+Faire une page web qui explique comment fabriquer l'armoire de cuisine que j'ai conçue.
+
+Faire une page web qui explique comment concevoir ma version actuelle du robot. Rendre la simulation sur github publique.
+
+Ajouter un field AKA dans les recettes? Pâte brisée. AKA pâte à tarte, abaisse de tarte
 
 ===== Site statique =====
 
 [ ] 1
+[ ] Il y a écrit MISSING dans la description de pâte brisée.
 [*] Esc should exit book search. Book search include title of book? Add X top right corner of book search. Au lieu d'un X, que ce soit un truc que tu peux swiper pour fermer. Ou quand même un X aussi pour desktop. Au lieu d'un collapse peut-être autre chose. Le plus important est de pouvoir swiper.
 [*] Au lieu d'un livre, une loupe, dans Book#show. Et là dérouler le sidebar de gauche, afficher la liste de toutes les recettes comme normal, et focus sur un input field en haut. Quand tu écris, ça filtre.
 [*] Books should link to heda cuisine
@@ -62,7 +65,7 @@ Pouvoir scanner une photo d'une recette. Garder mes images de scans de recettes 
 [ ] Utiliser le clavier pour sélectionner un aliment lors de l'ajout d'un ingrédient à une recette fait disparaître le texte de la recherche.
 [ ] La dermière phrase de ma recette n'a pas été sauvegardé (voir au moins le statut de la sauvegarde quelque part...
 [ ] Je supprimé un ingrédient et le chiffre de celui après n'était plus bon.
-[ ] Books#show est super lent. Il load beaucoup trop d'affaires...
+[ ] Books#show est super lent. Il load beaucoup trop d'affaires... Paginate?
 [ ] Signin avec le mauvais mot de passe doit afficher un message d'erreur explicit au lieu de lancer une exception en ruby.
 [ ] Ajouter des metrics au site dynamique, surtout pour voir quand le monde ont des 4xx ou 5xx erreurs.
 [ ] require login for all the pages in aqueous-fortress?

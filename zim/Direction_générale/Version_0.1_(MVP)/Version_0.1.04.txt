@@ -11,4 +11,5 @@ DESCRIPTION: Features supplémentaires
 [ ] Imprimer une recette en pdf
 [ ] Un truc intelligent pour la température du four? Tu cliques dessus et là tu insères soit degrés C ou degrés F. Les conversions se font automatiquement et sont traduites dans les autres locales.
 [ ] Pour un petit écran, ça pourrait être cool de center l'image dans un carrousel au lieu de le garder à gauche.
+[ ] Dans l'éditeur de livre, voir la liste de toutes les recettes qui appartient à l'utilisateur. Il peut ainsi en drag&drop dans son livre. Il peut en créer aussi. Pour recherche je ne sais pas comment faire.
 

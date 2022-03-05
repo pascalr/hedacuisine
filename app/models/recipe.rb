@@ -131,7 +131,10 @@ class Recipe < ApplicationRecord
   
   def name
     # FIXME: Make sure base_recipe cannot be self.
-    base_recipe ? base_recipe.name : self[:name]
+    # FIXME: This is shit. Simply copy the name when basing on another recipe, and always use name...
+    return self[:name] if self[:name]
+    return base_recipe.name if base_recipe
+    nil
   end
   def description
     base_recipe ? base_recipe.description : self[:description]
