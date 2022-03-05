@@ -1,5 +1,5 @@
 class RecipesController < ApplicationController
-  before_action :set_recipe, only: [:do_process, :edit, :update, :destroy, :rate, :cheat, :view_body, :move_ing, :old_edit, :page]
+  before_action :set_recipe, only: [:do_process, :edit, :update, :destroy, :rate, :cheat, :view_body, :move_ing, :old_edit, :page, :paste_ingredients]
   skip_before_action :authenticate_user!, only: [:show, :index]
   skip_before_action :only_admin!, only: [:show, :index]
 
@@ -13,6 +13,44 @@ class RecipesController < ApplicationController
     #@tags = Tag.order(priority: :desc)
     #@recipes = Recipe.order(:name).all
     #@items = Item.order(:name).all
+  end
+
+  def __extract_qty(line)
+    started = false
+    result = ''
+    line.length.times do |i|
+      c = line[i]
+      # FIXME: Do a smarter parsing than that. I feel that I have implemented a parsing many times like that, but I don't know where. Inside Quantity?
+      is_digit = (c <= '9' && c >= '0' || c == ',' || c == '.' || c == '/' || c == ' ')
+      return result.strip, line[i..-1].strip if started && !is_digit
+      started = true if is_digit
+      result += c if started
+    end
+    return result.blank? ? [nil, line] : [result.strip, nil]
+  end
+  def __extract_unit(line)
+    #units = current_region.units
+    units = Unit.all
+    strs = units.map(&:name)
+    strs.sort_by(&:length).reverse.each do |unit_name|
+      if line.start_with?(unit_name)
+        return unit_name, line[unit_name.length..-1].strip
+      end
+    end
+    return nil, line
+  end
+  def paste_ingredients
+    text = params[:pasted]
+    text.each_line do |raw_line|
+      line = raw_line.strip
+      qty, rest = __extract_qty(line)
+      unit, raw_food = __extract_unit(rest)
+      raw = qty.to_s + (qty.blank? || unit.blank? ? '' : ' ') + unit.to_s
+      @recipe.recipe_ingredients.create!(raw: raw, raw_food: raw_food)
+    end
+    respond_to do |format|
+      format.json { render json: {ingredients: (@recipe.recipe_ingredients.map {|r| to_obj(r)})} }
+    end
   end
 
   def my_recipes

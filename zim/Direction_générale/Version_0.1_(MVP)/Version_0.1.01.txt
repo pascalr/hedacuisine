@@ -16,6 +16,8 @@ Faire une page web qui explique comment concevoir ma version actuelle du robot. 
 
 Ajouter un field AKA dans les recettes? Pâte brisée. AKA pâte à tarte, abaisse de tarte
 
+Gérer les alias. Les alias de unit entre autre. 't.' == 't'. A unit has many name. A recipe kind has many name. A food has many name. Don't work on this yet...
+
 ===== Site statique =====
 
 [ ] 1

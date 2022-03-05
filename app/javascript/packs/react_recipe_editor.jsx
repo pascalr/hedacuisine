@@ -20,6 +20,9 @@ import {AutocompleteInput, updateRecord, TextField, CollectionSelect} from '../f
 import { combineOrderedListWithHeaders } from '../lib'
 
 import {EditRecipeImageModal} from '../modals'
+import {PasteIngredientsButton} from '../modals/paste_ingredients'
+
+import {paste_ingredients_recipes_path } from '../routes'
 
 const InstructionsShortcuts = props => (
   <>
@@ -258,6 +261,7 @@ class RecipeEditor extends React.Component {
     this.removeIng = this.removeIng.bind(this)
     this.removeIngSection = this.removeIngSection.bind(this)
     this.appendNote = this.appendNote.bind(this)
+    this.pasteIngredients = this.pasteIngredients.bind(this)
   }
 
   //swapIng(dragIndex, dropIndex) {
@@ -279,6 +283,13 @@ class RecipeEditor extends React.Component {
   appendIngredientSection() {
     ajax({url: gon.recipe.new_ingredient_section_url, type: 'POST', data: {}, success: (section) => {
       this.setState({ingredient_sections: [...this.state.ingredient_sections, section]})
+    }})
+  }
+
+  pasteIngredients(text) {
+    ajax({url: paste_ingredients_recipes_path(this.state.recipe), type: 'PATCH',
+          data: {pasted: text}, success: ({ingredients}) => {
+      this.setState({ingredients})
     }})
   }
 
@@ -388,13 +399,16 @@ class RecipeEditor extends React.Component {
             )}
           </Droppable>
         </DragDropContext>
-        <Toggleable style={{float: "left"}}>
-          <li key={99999} className="list-group-item" style={{height: "37.2px"}}>
-            <NewIngInputField/>
-          </li>
-          <img src="/icons/plus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}}/>
-          <img src="/icons/minus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}}/>
-        </Toggleable>
+        <Row>
+          <Toggleable style={{float: "left"}}>
+            <li key={99999} className="list-group-item" style={{height: "37.2px"}}>
+              <NewIngInputField/>
+            </li>
+            <img src="/icons/plus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}}/>
+            <img src="/icons/minus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}}/>
+          </Toggleable>
+          <PasteIngredientsButton handleSubmit={this.pasteIngredients} />
+        </Row>
       </ul>
 
     const NoteList = this.state.noteIds.map(id => {

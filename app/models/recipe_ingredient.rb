@@ -19,6 +19,10 @@ class RecipeIngredient < ApplicationRecord
   def name
     self.food ? self.food.name : self.raw_food
   end
+  def raw_food=(raw_food)
+    super(raw_food)
+    self.food = Food.find_by(name: raw_food)
+  end
 
   def volume
     quantity_model.ml
@@ -29,7 +33,7 @@ class RecipeIngredient < ApplicationRecord
       self.weight = nil
     else
       q = Quantity.new(self.food).set_from_raw(self.raw)
-      self.weight = q.grams
+      self.weight = q.nil? ? nil : q.grams
     end
   end
 

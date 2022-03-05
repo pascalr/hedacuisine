@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import ReactDOM from 'react-dom'
 import Modal from 'react-bootstrap/Modal'
-import Button from 'react-bootstrap/Button'
 
 import {asyncUpdateModel, TextField, FileField, RadioField} from 'form'
 

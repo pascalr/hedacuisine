@@ -143,6 +143,7 @@ Rails.application.routes.draw do
       member do
         get 'page'
         get 'old_edit'
+        patch 'paste_ingredients', param: 'slug'
         patch 'do_process', param: 'slug'
         patch 'cheat', param: 'slug'
         get 'validate'#, param: 'slug'
