@@ -1,0 +1,11 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2022-01-30T10:03:12-05:00
+
+====== Rant ======
+Créée le Sunday 30 January 2022
+
+===== JBuilder =====
+Je n'aime pas JBuilder parce que ça bug. Je n'ai pas accès aux helpers sans faire un petit tour de passe passe. (J'ai souvent besoin des path helpers).
+Je ne sais même pas si JBuilder accepte les commentaires. Parfois ça bug et ça utilise la ligne en commentaire qui commence avec un #.
+On ne peut pas mettre un if à la fin du statement.

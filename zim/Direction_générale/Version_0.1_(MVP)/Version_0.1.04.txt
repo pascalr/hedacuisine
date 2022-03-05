@@ -1,0 +1,14 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2022-01-31T17:59:39-05:00
+
+====== Version 0.1.04 ======
+Créée le Monday 31 January 2022
+
+DESCRIPTION: Features supplémentaires
+
+[ ] 1
+[ ] Imprimer une recette en pdf
+[ ] Un truc intelligent pour la température du four? Tu cliques dessus et là tu insères soit degrés C ou degrés F. Les conversions se font automatiquement et sont traduites dans les autres locales.
+[ ] Pour un petit écran, ça pourrait être cool de center l'image dans un carrousel au lieu de le garder à gauche.
+

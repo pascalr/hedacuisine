@@ -10,8 +10,8 @@ module SerializeHelper
   def collection_by_id(records, &block)
     records.inject({}) {|objs_by_id, record| objs_by_id[record.id] = (block_given? ? yield(record) : to_obj(record)); objs_by_id}
   end
-
-  def to_obj(record)
+  
+  def __to_obj(record)
     return nil if record.nil?
     return record.map {|r| to_obj(r) } if record.is_a? Array
     return recipe_to_obj(record) if record.is_a? Recipe
@@ -26,6 +26,18 @@ module SerializeHelper
     return book_to_obj(record) if record.is_a? Book
     return tool_to_obj(record) if tool.is_a? Tool
     raise "Can't convert to_obj. Unkown type for record #{record}"
+  end
+
+  # You can pass to_obj(record, includes: :nested). Only this form is supported for now until I need more
+  def to_obj(record, params={})
+    obj = __to_obj(record)
+    if params[:includes]
+      # TODO: Handle more cases (hash for nested, list for many, ...)
+      # TODO: Make sure the association exists and avoid send?
+      assoc = params[:includes].to_sym
+      obj[assoc] = to_obj(record.send(assoc))
+    end
+    obj
   end
 
   def book_to_obj(book)

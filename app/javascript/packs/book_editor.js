@@ -6,7 +6,7 @@ import { DeleteConfirmButton } from 'components/delete_confirm_button'
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Autosuggest from 'react-autosuggest'
 
-import { ajax, sortBy } from "../utils"
+import { ajax, sortBy, isBlank } from "../utils"
 import { combineOrderedListWithHeaders } from '../lib'
 
 import { DescriptionTiptap, ModificationsHandler } from 'tiptap'
@@ -63,6 +63,20 @@ const RecipeKindFinder = ({onRecipeKindFound}) => {
       inputProps={inputFieldProps}
     />
   )
+}
+
+const PercentageCompleted = ({recipe}) => {
+
+  let percent = 0
+  if (!isBlank(recipe.ingredients)) {percent += 30}
+  if (!isBlank(recipe.json)) {percent += 30}
+  if (recipe.cooking_time || recipe.preparation_time || recipe.total_time) {percent += 15}
+  if (recipe.raw_servings) {percent += 15}
+  if (recipe.main_ingredient_id) {percent += 10}
+
+  return (<>
+    <span>{percent}%</span>
+  </>)
 }
 
 class BookEditor extends React.Component {
@@ -261,7 +275,7 @@ class BookEditor extends React.Component {
                                     <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
                                       <li>
                                         <span>{book_recipe.recipe.name}</span>
-                                        <span>({book_recipe.position})</span>
+                                        <span>&nbsp;(<PercentageCompleted recipe={book_recipe.recipe}/>)</span>
                                         <DeleteConfirmButton id={`del-book-section-${book_recipe.id}`} onDeleteConfirm={() => this.removeBookRecipe(book_recipe)} message="Je veux vraiment enlever?"/>
                                       </li>
                                     </div>

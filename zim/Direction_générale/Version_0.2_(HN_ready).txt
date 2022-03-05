@@ -1,0 +1,9 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2022-01-28T17:26:55-05:00
+
+====== Version 0.2 (HN ready) ======
+Créée le Friday 28 January 2022
+
+[ ] 1
+[ ] Ajouter un bouton paste dans le RecipeEditor, qui essaie de parser ce qui a été copié et de créer des ingrédients en conséquences.

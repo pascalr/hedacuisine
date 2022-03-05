@@ -1,0 +1,91 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2022-01-28T17:25:24-05:00
+
+====== Version 0.1.01 ======
+Créée le Friday 28 January 2022
+
+1ère priorité: Site read only
+2e priorité: Site modifiable
+
+Dans l'éditeur de livre, voir la liste de toutes les recettes qui appartient à l'utilisateur. Il peut ainsi en drag&drop dans son livre. Il peut en créer aussi. Pour recherche je ne sais pas comment faire.
+
+Book#show est beauuuuuucoup trop lent... Paginate?
+
+Pouvoir scanner une photo d'une recette. Garder mes images de scans de recettes et commencer à me monter une dataset.
+
+===== Site statique =====
+
+[ ] 1
+[*] Esc should exit book search. Book search include title of book? Add X top right corner of book search. Au lieu d'un X, que ce soit un truc que tu peux swiper pour fermer. Ou quand même un X aussi pour desktop. Au lieu d'un collapse peut-être autre chose. Le plus important est de pouvoir swiper.
+[*] Au lieu d'un livre, une loupe, dans Book#show. Et là dérouler le sidebar de gauche, afficher la liste de toutes les recettes comme normal, et focus sur un input field en haut. Quand tu écris, ça filtre.
+[*] Books should link to heda cuisine
+[*] Enlever le <de> et seulement garder le nom du livre. La personne peut rajouter le de dans le nom du livre si elle veut.
+[*] Tasser la flèche un peu pour qu'elle soit plus sur les bords.
+[*] Cacher la flèche de gauche lorsque le carrousel à au début. ( hide or gray out when aria-disabled="true" )
+[*] La page d'acceuil est plus grande que 100%, à cause des livres? Faire un carrousel pour les livres
+[*] Fix les books sections...
+[*] Les images dans les carrousels sont collés tant que le JS n'a pas fini de loader...
+[>] DATA, ajouter toutes les recettes que j'ai déjà ajouter les instructions. Je veux y avoir accès en tout temps sur HedaCuisine. (Pâte à pizza, ...) À travers un livre. Parce qu'ils n'ont pas d'image, je n'y aurai pas accès en recherche en haut.
+[*] Mettre les flèches du carrousel sur le carrousel directement
+[ ] Pouvoir naviguer d'une recette à l'autre dans une catégorie sur le site d'hedacuisine.
+[ ] Sans javascript le carrousel de livre n'est pas side by side sur mobile
+[*] Afficher le livre en haut dans RecipeBook#show
+[*] Ajouter une description aux livres
+[*] Descendre haut bas ne dois pas faire bouger le carrousel sur le mobile
+[*] Spacing énorme sur le mobile Recipe#show
+[ ] Add favicon to website.
+[ ] Faire un logo pour le site. Un petit logo. Et un grand logo. **Heda**Cuisine**.com**
+[ ] Rechercher Pascal dans la barre de recherche. Un livre publique sans image ne s'affiche pas le thumbnail qui devrait.
+[ ] Rechercher par mots clés au lieu de par exact search. Par exemple, soupe nouilles devrait ressortir soupe aux nouilles.
+[ ] Share, Download, Print
+[ ] Assurance qualité: Trouver tous les liens dans le site statique et s'assurer qu'ils sont valide
+[ ] Assurance qualité: Quand je compile le site statique, avoir un compte rendu. Voir si jamais il y a des 4xx ou des 5xx code d'erreurs.
+[ ] Assurance qualité: La largeur ne devrait jamais dépasser 100% (never horizontal scrolling)
+[ ] Assurance qualité: Tester en disable javascript
+[ ] Quand un lien vers une recette d'un livre n'est plus valide, rediriger vers la recette ailleurs si elle est encore existante.
+
+===== Bugs site dynamique (des trucs qui m'empêchent de l'utiliser) =====
+
+[ ] 1
+[ ] J'ai ajouter une recette et elle n'avait pas de position, je ne peux plus lire mon livre maintenant. Refactorer tout ça c'est affreux. Faire comment les sections des ingrédients.
+[ ] J'ai ajouter des recettes à mon livre et des sections, je l'ai ait déplacé, je rechargé la page et l'ordre n'était pas bon... Remplacer la logique par la même que pour les sections des ingrédients dans les recettes? Elle fonctionne mieux et est plus simple.
+[ ] Modifier l'éditeur de livre pour qu'il soit beau.
+[ ] Pouvoir modifier le nom d'une section dans l'éditeur de livre.
+
+===== Site dynamique =====
+
+[ ] 1
+[ ] Faire plus à 24 muffins fait 34 muffins... Peut-être que + et - pourrait faire x2, x3, x4 et ainsi de suite... (/2) et (x2) => (=) et (x3) => (x2) et (x4) => (/3) et (=) => (/4) et (/3)
+[ ] Recipe editor. Écrire le nom de l'ingrédient sans sélectionner le food, devrait quand même trouver le food si exact match.
+[ ] L'autocomplete des aliments ne se fait pas avec les aliments nouvellement créer. Il faut rechargez la page.
+[ ] Utiliser le clavier pour sélectionner un aliment lors de l'ajout d'un ingrédient à une recette fait disparaître le texte de la recherche.
+[ ] La dermière phrase de ma recette n'a pas été sauvegardé (voir au moins le statut de la sauvegarde quelque part...
+[ ] Je supprimé un ingrédient et le chiffre de celui après n'était plus bon.
+[ ] Books#show est super lent. Il load beaucoup trop d'affaires...
+[ ] Signin avec le mauvais mot de passe doit afficher un message d'erreur explicit au lieu de lancer une exception en ruby.
+[ ] Ajouter des metrics au site dynamique, surtout pour voir quand le monde ont des 4xx ou 5xx erreurs.
+[ ] require login for all the pages in aqueous-fortress?
+[*] new Autocomplete only once, and delete. check how to do new and delete inside React hooks
+[*] Trouver un moyen que onUpdate et onServerUpdate sois toujours présent. Quand je le reçoit de onUpdate le setter?
+[*] Ou bien version=323 au lieu de recipe_id? http://localhost:3000/qc/cat%C3%A9gories/51-biscuits_aux_brisures_de_chocolat?recipe_id=323
+[ ] Déplacer un ingrédient ne doit pas fucker les instructions. Les instructions doivent suivrent.
+[ ] Faire un UI pour ajouter ou modifier une liste d'ingrédients dans l'éditeur.
+[*] Déplacer les ingrédients doit changer le numéro à côté
+[*] Quand un ingrédient se déplace, editer le JSON pour mettre à jour le numéro des ingrédients
+[*] Le faire avec http://localhost:3000/qc/sortes_de_recette/46-tarte_au_sucre?recipe_id=567 en premier.
+[*] Des catégories dans les ingrédients d'une recette?
+[*] Pouvoir créer un nouveau RecipeKind.
+[*] Pouvoir supprimer l'image du RecipeKind
+[*] Quand j'ajoute une nouvelle image d'un RecipeKind, le voir tout de suite.
+[*] Handle delete image. Simplement setter image_id à nil pour la recette. Pour supprimer définitivement les images, je vais faire une purge de temps en temps avec les images orphelines.
+[*] Afficher le nom du fichier quand il y en a un dans le FileField avec un X pour l'enlever, comme pour le livre.
+[*] Update image_id=nil pour toutes les recettes.
+[ ] UI pour recipe main ingredient (comme dans show? afficher avec la conversion comme dans show? et là tu peux choisir dans le menu déroulant et ça va être lui par défault?)
+[ ] Maximum image size du côté de Rails aussi
+
+Pour tester le site:
+https://ready.mobi/#2072291-8gbd
+
+[>] Remove justify-content, gap... (not supported on Samsumg Internet 5.4)
+

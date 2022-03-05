@@ -1,0 +1,665 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2022-01-27T04:11:00-05:00
+
+====== Direction générale ======
+Créée le Thursday 27 January 2022
+
+===== Routine =====
+
+1. Vendredi: Backup Admin, Hedacuisine, IMAGES TOO!
+
+===== IMAGES =====
+
+Accumuler les photos sur IStock et payer pour 750 photos pour 400$ (Avoir 20% off à travers unsplash ou autre?)
+Avant de passer trop de temps dessus, lire le User Agreement: https://www.istockphoto.com/legal/license-agreement
+https://www.istockphoto.com/photo/freshness-pumpkin-soup-gm859053324-141898373?utm_source=unsplash&utm_medium=affiliate&utm_campaign=srp_photos_top&utm_content=https%3A%2F%2Funsplash.com%2Fs%2Fphotos%2Fpumpkin-soup&utm_term=pumpkin%20soup%3A%3Asearch-aggressive-affiliates-v1%3Aa
+
+Prendre une image de petits pains. Même recette que les grands pains.
+Après ma première paie, magasiner des images!
+
+Images belle, mais à essayer les recettes je ne sais pas si c'est bon:
+1. https://www.pexels.com/photo/a-close-up-shot-of-cooked-potatoes-and-asparagus-on-a-metal-tray-7059460/
+2. https://www.pexels.com/photo/basil-leaves-and-avocado-on-sliced-bread-on-white-ceramic-plate-1351238/
+3. https://www.istockphoto.com/photo/freshly-prepared-egg-salad-sandwich-gm471412597-20447331?utm_source=unsplash&utm_medium=affiliate&utm_campaign=srp_photos_top&utm_content=https%3A%2F%2Funsplash.com%2Fs%2Fphotos%2Fegg-salad-sandwhich&utm_term=egg%20salad%20sandwhich%3A%3Asearch-aggressive-affiliates-v1%3Ab
+4. https://www.istockphoto.com/photo/healthy-wholegrain-bread-sandwich-gm886186166-246115135?utm_source=pixabay&utm_medium=affiliate&utm_campaign=SRP_image_noresults&referrer_url=http%3A%2F%2Fpixabay.com%2Fimages%2Fsearch%2Ftuna%2520salad%2520sandwhich%2F&utm_term=tuna%20salad%20sandwhich
+5. Ajouter le lien des images IStock aux recettes.
+
+===== DATA =====
+
+1. Soupe aux nouilles et brocoli 
+2. La courge poivrée, linker à des recettes de soupe, de courge farcies et de graines.
+3. Sandwhich au thon. Tuna salad sandwhich
+4. Sandwhich aux oeufs. Egg salade sandwhich
+5. Soupe aux nouilles et brocoli
+6. Purée de courge poivrée
+7. Pour avoir du contenu facilement, prendre des recettes en anglais et les traduire en français?
+8. Faire un pain et le peser. 650g?
+9. Une recette de tarte au sucre sans oeuf.
+10. Ajouter la recette d'abaisse de tarte précuite (juste copier coller ce que j'ai écrit pour tarte au sucre)
+https://www.ricardocuisine.com/recettes/4817-pate-brisee-de-base
+1. Ajouter les versions de tofu poulet au beurre et de boulette de pois chiches...
+2. Plein de conversions: https://www.recettesquebecoises.com/conversionsdet
+3. Pâte feuilleté et pâte sablé. Link les recettes de pâtes entres elles.
+Densités:
+https://www.aqua-calc.com/page/density-table/substance/cornstarch-coma-and-blank-upc-column--blank-039978015839
+1. https://www.bbc.co.uk/food/ingredients/a-z/a/1#featured-content
+2. https://www.homebaking.org/glossary/
+3. Traduire les recettes de Cookie&Kate en français.
+
+https://www.alexa.com/siteinfo/coupdepouce.com
+https://www.alexa.com/siteinfo/cookieandkate.com
+
+https://www.bakeinfo.co.nz/facts/bread/science-of-bread-making
+
+===== ARTICLES =====
+
+1. Écrire un article à quel point c'est n'importe quoi les unités... voir: https://en.wikipedia.org/wiki/Cup_(unit)
+1 metric cup: 250 mL. 1 US cup: 236.5 mL. 1 US legal cup: 240 mL.
+Ajouter units/index.html?
+1 australian tablespoon == 20 mL
+1 dessertspoon == 10 mL
+1 old Canadian cup == 227 mL
+1 japanese cup == 200 mL
+
+1. Créer un article qui explique que les recettes publiques seront toujours disponibles. Même si le site n'existe plus, il est possible de télécharger le site et de le rouler localement. Donner le lien github. Et donner même comment le rouler. Dans le README du lien github, expliquer comment rouler le site localement.
+
+1. Peaufiner l'article de pois chiches. Remettre les images que j'avais. Link la recette de boulettes de pois chiches à l'article de pois chiches.
+
+
+
+# Mission
+
+Encourager les gens à manger de manière plus éco-responsable.
+
+- Un site de recette avec des recettes éco-responsables.
+- Un armoire de cuisine intelligente qui évite le gaspillage alimentaire
+- Suggestions de recettes avec des aliments du garde-manger qui sont plus écologiques
+- Transformation d'aliments primaires à la maison pour sauver de l'argent
+
+# Vision (6 mois)
+
+Commencer à vendre des armoires. Distribuer le plan sur internet pour que le monde puisse déjà commencer à fabriquer leur propres armoires. Avoir un design fonctionnel qui confirme les dimensions de l'armoire. La simulation doit être capable d'aller chercher et d'aller porter tous les pots. Avoir un design semblant fonctionnel de bras robotique en vrai. Travailler sur la pince surtout... Commencer à faire de la publicité peu à peu. Idéalement, avoir démarré la compagnie par actions. Avoir un site en ligne et publier une recette par semaine.
+
+
+
+# Recettes
+Substitutions: http://www.foodsubs.com/Garlic.html
+https://www.passionrecettes.com/voirRecette-equivalence-pour-1-gousse-d-ail-17653.html
+https://recipes.fandom.com/wiki/Recipes_Wiki
+https://www.lacuisinedejeanphilippe.com/recettes/
+https://en.wikibooks.org/wiki/Cookbook:Sauces
+https://en.wikibooks.org/wiki/Cookbook:Recipes
+https://foodgawker.com/page/2/
+https://www.findingvegan.com/
+http://www.tastespotting.com/
+https://www.recettesquebecoises.com/conversionsdet
+https://chefcuisto.com/cuisine/recettes-quebecoises/
+https://www.recettes.qc.ca/
+https://www.zeste.ca/sections/recettes/styles-culinaires/cuisine-quebecoise
+http://qc.allrecipes.ca/recettes/quebecoise-recettes.aspx
+https://www.coupdepouce.com/cuisine/idees-repas/dossier/recettes-quebecoises
+http://recettes-quebecoises.qc.ca/
+https://www.troisfoisparjour.com/fr/chroniques/top-10-des-recettes-quebecoises/
+https://www.ricardocuisine.com/
+https://www.alimentsduquebec.com/fr/blogue/recette-100-quebec
+https://www.boblechef.com/fiches-recettes
+https://www.loouniecuisine.com/fr/recettes/plats-principaux/tofu-magique/
+http://www.quebecuisine.ca/
+http://www.lesgourmandisesdisa.com/
+https://listedeblogs.blogspot.com/    (une centaine de blogs)
+https://www.restaurantalma.com/
+
+## Recettes écologique
+1. Hamburger avec n'importe quelle boulette végé
+2. Hotdog avec n'importe quelle boulette végé
+3. Pâté chinois végé (hâchis parmentier végé) (prmentier végé)
+4. Chili végé
+5. Riz avec truc végé plus sauce (tofu poulet au beurre)
+6. Pâte avec boulettes de pois chiches ou autres végé
+7. Salade
+8. Salade de pâte
+9. Boulangerie
+10. Dessert
+11. Pantry recipes
+12. Gruau
+13. Chickpea recipes, red-kidney beans recipe
+14. Soupe aux patates!!!
+15. Crèmes (crème de champignon, crème de poireau)
+16. Soupes
+17. Potages
+18. Ragouts
+19. Riz sauvage
+20. Crêpes
+21. Pain de viande végane
+22. Pâté style tourtière végé
+23. Saucisses véganes
+24. Simuler n'importe quelle viande de manière végane
+
+# Financement
+1. Shuttleworth fondation: https://shuttleworthfoundation.org/apply/form/
+150 000$-350 000$
+1. Soutien au projet d'innovation - Investissement Québec - https://www.economie.gouv.qc.ca/bibliotheques/programmes/aide-financiere/programme-innovation/soutien-aux-projets-dinnovation/
+30% à 50%
+1. **Programme d'aide à la recherche industrielle (PARI)** CONTRIBUTIONS NON REMBOURSABLES - https://nrc.canada.ca/fr/soutien-linnovation-technologique/soutien-financier-linnovation-technologique-pari-cnrc
+2. Si vous collaborez avec plusieurs partenaires pour la réalisation de projets tels que la robotique de pointe, l'apprentissage automatique, l'impression 3D et l'Internet des objets, vous pourriez bénéficier d'un remboursement pouvant aller jusqu'à 44,4 % des coûts admissibles de projets dont la valeur se situe entre un million $ et 20 millions $. https://www.ngen.ca/fr/
+
+# Business model
+
+1. Même business model que Farm Bot. Open source. Vendre des kits et des composantes.
+2. Faire de l'argent sur les commandes automatiques d'épiceries. (L'épicerie nous paie 1% pour qu'on fasse affaire avec eux) (approcher les épiceries du Québec)
+
+## Armoire
+
+J'ai 22.375" de pronfond de disponible. La porte en prend 3.5+0.25=3.75. Il reste 18.75". On enlève 12", il reste 6.75"
+
+Pin sélect 1"X4"X (6' ou 8' ou 10' ou 12') (72", 96", 120", 144")
+4 X 54"
+10 X 14"
+
+**4X 6'**: 56,14 = 70 vs 72" => PARFAIT!
+**1X 8'**: 14,14,14,14,14,14 = 84 vs 96" => PAS SI PIRE!
+
+14,28,42,56,70,84,98,112,126
+
+## Contrepoids
+
+Le contrepoids pourrait utilisé un eyebolt, mais les filets doivent se rendrent tout en haut pour pouvoir serrer le poids de chaque côté. Je ne sais pas si ça existe... Souvent, seulement la moitié est en filet.
+
+## Étau
+1. Essayer de fabriquer le vise pour qu'il soit indépendant. Pas de trous dans le plywood (sauf peut-être les fils électriques. Ça serait pas mal plus clean. C'est pas grave si ça prends beaucoup de place. De toute façon le robot a besoin d'un espace pour déposer les couvercles. Donc simplement mettre le moteur vers le mur. Et le robot déposera sur le couvercle qui cache le moteur.
+
+## Version à vendre
+
+1. 6" de large au lieu de 7"
+2. Arbre T 5/8" au lieu de 1/2"
+3. Bearings pour l'axe vertical
+4. Bushings pour où qu'il ne peut pas y avoir de bearing comme 3 sur le gripper
+
+## Homing
+
+J'aimerais que le homing se fasse sans limit switch. Simplement en le déplaçant manuellement à sa maison et avec la caméra pour axe B.
+
+## Câbles électriques
+
+Pour les LEDs, voir le petit papier avec lequel ça venait.
+Du 22 solid serait donc probablement correct.
+
+Ce que j'ai besoin:
+- Câble moteur 2.8A pour axe B et axe X.
+- Câble moteur 1A pour axe R.
+- Câble moteur 1.7A pour axe A et axe T.
+- Câble moteur 4.0A pour axe Y.
+- Câble shielded pour encodeur du gripper mobile
+- Câble shielded pour encodeur du gripper fixe
+
+Ce que j'ai présentemment:
+
+- 8 brins AWG 22 stranded
+
+Ce que je voudrais:
+
+La charte que j'ai trouvé est très, très conservatrice. Elle suggère 5.9A pour AWG 14, et dans une maison c'est 15A... Pour mon AWG 22, elle suggère 0.92A. Donc 15/5.9 * 0.92 == 2.34A. C'est suffisant pour les axes A et T, mais ce n'est pas l'idéal pour les NEMA 23, surtout Y. Pour du AWG 18, c'est 2.3A. 15/5.9*2.3 == 5.85A. C'est amplement suffisant pour tout. Pour vendre la machine, j'utiliserais quand même un plus gros conducteur pour axe Y. Ça me prendrait du AWG 16 pour être safe à 3.7A. AWG 15 donne 4.7A.
+
+J'aimerais des 4 conducteurs pour les moteurs.
+
+https://electrical-engineering-portal.com/motor-wiring-guidelines
+
+Avec shield ou sans shield?
+Les gens semblent dire avec shield. 
+Toutefois, un shield doit être branché au deux extrémités sinon c'est inutile.
+Je le branche sur quoi sur le moteur?
+https://en.wikipedia.org/wiki/Talk%3AShielded_cable#Grounding_at_both_ends
+
+Stranded Wire 4C/18 AWG - CSA - FT4 - 600V - Grey - Sold by meter
+Appeler Addisson électronique au cas où ils n'ont pas en stock et seulement à Montréal.
+
+
+Multi-Stranded Wire Cable - 4C/18AWG - Shielded - FT4 - Gray - Sold by Meter
+SKU: 162409  | # MOD: 92248-21
+vs
+SKU: 162773  | # MOD: 74-319 
+
+Fuck off, pas shielded. Shielded de quoi? Ça servirait à quoi?
+Je ne veux même pas de limit switch de toute façon.
+
+SKU: 600846
+MOD: 73-134
+Deca cables, stranded wire - 4 conductors - 18 AWG - shielded - FT4, GREY - SOLD BY METER
+
+Pour l'axe R je pourrais utiliser un câble électrique plus petit à 2 conducteur, en fait idéalement à 6 conducteurs?
+
+Longeurs:
+AWG 22 4 conducteurs multi-brins: (R, J(fixe))
+AWG 18 4 conducteurs multi-brins: (B, X, Y, A, T)
+
+**Ça me prend à peu près 3.5m par axe pour être safe, donc pour X, Y, T, A, B acheter 17.5m, ben 20m de 4 conducteurs 18 AWG stranded**
+
+**Utiliser le conducteur shielded que j'ai déjà pour l'encodeur, 5m**
+
+**Acheter AWG 22 à AWG 18 2 conducteurs pour gripper mobile et fixe, 5m**
+
+Il y a l'air d'y avoir beaucoup de conducteur pour le capteur du moteur. Attendre de voir.
+
+## Détails et progrès des grandes lignes
+
+#### Installation mouvement horizontal:
+
+1. Installer la partie supérieure avec les deux plaques de métal et les deux essieus avec les roues.
+2. Installer le support à cable track
+3. Préinstaller le moteur
+4. Déposer le chariot sur la track horizontal
+5. Installer l'arbre 1/2" (1 bearing, **puis poulie et courroie**, puis 1 autre bearing)
+6. Ajuster la tension de la courroie avec la position du moteur.
+7. Insérer la partie inférieure sur le bearing
+8. Insérér les deux essieus à travers les roues. (Il faudrait des washers de l'autre côté de la roue et non des nuts sinon ça va être chiant...)
+
+### Mouvement vertical
+
+**Attente Poulie HTD 3M 16T et poulie HTD 3M 72 dents et courroie**
+
+80"/2.625"/3.1416 ~= 10. 1 tour de plus pour que ça tienne == 11.
+
+### Bras
+
+Le moteur que j'ai acheté doit prendre obligatoirement une autre poulie pour tendre la courroie parce que les trous dans le gearbox sont trop près du centre...
+
+On veut idéalement un ratio de 20, niveau vitesse, ça semble avoir ben de l'allure. Le gearbox vient avec un ratio de 5.18. Il manque ~= 3.8. 16 dents à 48 dents serait acceptable je crois.
+
+Pulley petite: HTD 3M: 16 dents
+Pulley grande: HTD 3M: 48 dents (45.08mm)? Essayer un peu plus si possible...
+
+htd 3m pulley 48t:
+https://www.aliexpress.com/item/33045886787.html?spm=a2g0o.productlist.0.0.65ab6e146jUH8H&algo_pvid=bb5671f6-42f3-49ef-a7cd-521b62574e76&algo_expid=bb5671f6-42f3-49ef-a7cd-521b62574e76-1&btsid=0b0a555f16195533225846334efdc5&ws_ab_test=searchweb0_0,searchweb201602_,searchweb201603_
+
+#### Poignet
+
+Qu'est-ce que je veux changer de mon poignet présentement?
+
+- La manière que c'est attaché à l'humérus.
+- La vitesse du moteur. (Utiliser un moteur Nema 23.)
+- Le recouvrir pour que ce soit beau
+- Possibilité d'utiliser seulement de l'aluminium au lieu du plastique pour pouvoir utiliser un four un jour.
+- Il y a du matériel inutile en bas il me semble
+- Il est quand même long...
+- Les pinces ne sont pas belles, trop épaisses... (aluminium, bushings...)
+- Le bruit de la worm gear (essayer avec de la lubrification?
+- La worm gear devrait être idéalement être dans un bain d'huile dans un truc hermétique
+- Les gears de la pinces en nylon
+- Je trouve que c'est trop connecté présentement... J'aimerais séparé la pince du reste
+
+Un moteur Nema 17 plus long pour l'axe B ou un moteur nema 23?
+
+Comment faire pour que le moteur soit bien situé?
+
+Il y a plusieurs manières possibles de rattacher le skelette dans le poignet:
+- Un Y (souder un U à une tige droite)
+- Une plate soudée à la tige vissée au bearing hub
+- Comme présentemment
+- Plier la tige 1/2" et mettre les bearings dans l'humérus (mais idéalement non parce qu'on veut que l'humérus soit le plus mince possible pour passer en dessous.
+
+#### Installation
+
+1. Attacher la poulie au top du poignet
+2. Insérer la poulie et le top du poignet au dessus de shaft avant les bearings
+3. Insérer les bearings sur le shaft
+4. Glisser le support à bearings sur les bearings.
+5. Attacher le support à bearings au top du poignet
+6. Attacher le tube carré et le shaft bêta au support à bearings
+7. Attacher le couvercle au support à bearings
+
+#### Axe A
+
+Calcul de l'angle minimal:
+
+Poignet: 1.875"
+Humérus: 6.25"
+Main jusqu'au milieu de la pince pour prendre: 6.25"
+Main jusqu'à la fin de la pince pour prendre: 7"
+Donc, présentement, 14.375" de reach pour prendre des pots
+
+À 90 degré, la distance la plus grand est de 6.25" en Z pour l'humérus plus 3" en Z pour la largeur de la pince. Aussi, 1.875" pour le poignet en X et 7" en X pour la main jusqu'à la fin de la pince.
+Z: 9.25", X: 8.875", pythagore: 12.82", 1.55" (14.375 - 12.82), ce n'est pas assez
+
+À 60 degré,
+Poignet doit mesurer 3.125". Calcul avec thêta à 120 degré pour que ce soit plus simple.
+Reach == 6.25" + 3.125" + 6.25" == 15.625"
+-3.125" en Z pour l'humérus (sin(30)*6.25") plus 3.125" pour le poignet et 7" pour la main jusqu'à la fin == 7" en Z.
+6.25" * cos(30) == 5.41" en X + 3" en X pour la largeur de la pince
+Z: 7", X: 8.41", pythagore: 10.94"; 15.625" - 10.94" == 4.69", c'est suffisant! Mes plus gros pots mesure 4.375"
+
+#### Axe B
+
+Quel devrait être le ratio? Présentemment c'est super lent. Idéalement 2 fois plus rapide.
+Présentemment c'est 1:60. Acheter 1:30. Ou bien 1:40? 1:40 pour être safe, je ferai plus plus tard au pire. Je veux être sûr que ça fonctionne...
+
+Acheter rod 12mm, je crois que je ne suis pas capable de percer les gears que je veux acheter... Mais ça va me prendre un ou deux bearings 12mm aussi... maudit...
+
+Pour ce qui est de la worm gear, je crois acheter 6mm et je vais sabler 0.35mm du shaft nema 23...
+
+### Gripper
+
+Essayer avec le moteur 12V que j'ai présentemment avant d'en acheter un autre. Sur amazon ça l'air d'être disponible. Mais bon, ça m'en prend un quand même plus fort que celui présentement je crois...
+
+Un moteur avec DC avec gearbox à worm gear pour être par en haut et pour être plus sécuritaire (irréversible)
+
+Le moteur actuel makeblock DC motor 37mm possède un ratio de 90. Cela correspond à un RPM de 50. Avec un torque de 4.5 Kg.cm à 40 RPM avec charge.
+
+Utiliser des ressorts pour maintenir une pression sur les pots même en perte de courant?
+
+Le moteur force pour ouvrir les pinces. Le moteur utilise un gearbox à worm gear pour être irréversible.
+
+Parce que je vais staller les moteurs, utiliser un moteur et gearbox surpuissant et le rouler à 50% de la capacité?
+
+Possiblement utiliser une clutch?
+
+Pas de spring, la force varie et il n'y a pas assez d'espace pour contenir le ressort non étiré...
+
+Un câble d'acier avec un bowden?
+
+Je pense ce que j'aimerais, c'est simplement que le matériel de la pince soit élastique. Ainsi, tu sers et entre le contact initial et la fin, la base de la pince avance encore de quelques millimètres et il se développe un tension. Le moteur cesse de tourner lorsqu'il cesse de tourner haha. Il pourrait détecter qu'il ralentit et ainsi éviter de staller. À voir.
+
+Peut-être acheter 2 moteurs? Comme ça si je brule le premier en le stallant ben faire plus attention avec le second!
+
+Ça me prends des gears plus solides aussi...
+
+DUAL SHAFT POUR POUVOIR LIRE LA VITESSE QUE ÇA TOURNE EN ARRIERE!!!
+
+Bon je prends un moteur plus fort et je le ferai rouler à plus petite capacité. Mais là prendre un RPM plus élevé que 40 RPM parce qu'il va tourner moins vite parce que je vais lui donner moins de courant?
+
+Gears en nylon?!
+
+Acheter le 80 RPM pour être plus safe?
+
+Shaft 15mm ou 33mm? Idéalement ça serait genre 20-22mm
+
+WOW!!! Il existe des encodeurs qui sont genre tenus en étant soudé au connecteur du moteur! Intelligent!
+
+https://www.amazon.ca/-/fr/engrenage-bo%C3%AEtier-r%C3%A9duction-encodeur-autobloquant/dp/B073S5GM6Q/ref=sr_1_9?__mk_fr_CA=%C3%85M%C3%85%C5%BD%C3%95%C3%91&dchild=1&keywords=dc+motor+worm+gear&qid=1620399857&sr=8-9
+
+#### Autre
+
+**TODO: Fabriquer le skelette et valider que la déflection est de moins de 2mm pour la charge maximale**
+
+Est-ce que je dois rajouter de la tension dans les bearings pour qu'il y ait moins de jeu comme Dan Gelbart disait? (preloader les bearings?)
+
+**Waiting skeleton validation**  Le design actuel est présentement un peu trop grand (14"). J'ai déjà enlevé 0.75" inutile au bout (pots plus petit maximal). Je peux enlever un peu plus sur l'humérus. Ça risque juste d'être plus difficile faire stage multiple pour une poulie...
+
+J'utilise un nema 17 pour T et A. Au pire j'achèterai des Nema 17 plus long, plus fort 0.6 N.m au lieu de 0.4 N.m. Pour B je ne sais pas. Il y a même des 0.71 N.m!
+
+L'axe du mouvement T doit etre centré en Z pour pouvoir tourner le bras pour éviter qu'il accroche quoi que ce soit. Toutefois, il n'est pas obligé d'etre centré en X.
+
+C'est correct de ne pas être centré, mais le problème c'est que je dois avoir suffisament d'espace pour le diamètre de la grande poulie...
+
+Vue d'ensemble:
+1. Conception d'un squelette
+2. Conception de moteur et de réducteur
+3. Conception d'un boitier et d'un système pour les câbles
+
+Mon problème principal présentemment est le manque de rigidité. Je dois mettre un arbre plus grand pour l'arbre. (https://www.engineering.com/calculators/beams.htm)
+2 kg à 12" ~= 4.5 lbs à 12"
+mais il y a aussi le poids du bras. Disons 10 lbs à 12" pour être safe.
+0.5" au lieu de 0.375" est **3.16 fois** plus rigide
+Le tube de 0.706" est **5 fois** plus rigide que 0.375"
+0.625" est **7.72 fois** plus rigide que 0.375"
+
+0.625" it is! Je ne serai pas capable de le percer par contre...
+
+C'est quoi les problèmes que j'essaie de résoudre:
+1. Dans un vrai bon design il faudrait que je moule des composantes en aluminium (Fondrémy)
+2. L'humérus n'est pas assez rigide (souder???)
+3. L'avant bras n'est pas dans le même axe que le bras (c'est un problème?)
+4. Où passer les fils?
+5. Ne pas tourner le moteur autour de l'engrenage, tourner l'engrenage
+6. Je veux pouvoir tourner plus avec l'axe A, aller en-dessous du bras avec l'avant-bras
+7. Diminuer la hauteur du bras (humérus) (la courroie en haut au lieu d'en bas? Les fils électriques eux.
+
+Améliorer le design actuel pour avoir plus de rigidité. Avec le nouveau design de l'armoire, j'ai moins de restriction en hauteur. Donc mettre le mouvement T au dessus des autres mouvements.
+
+#### Une idée
+
+Rendre le garde du haut optionnel et non structurel, il y aurait 2 pillow block de chaque coté et un grand tube qui lui sert de structure entre les cotés. A la limite le garde serait optionnel et servirait seulement de faire beau et de cacher le moteur. Le moteur serait accrocher d'un des cotés (cotés opposé au cable track pour que ses fils puissent descendre en bas)
+
+### Simulation et bras robotique aller chercher les ingrédients pour des muffins (3 semaines)
+
+### Simulation et bras robotique verser des aliments grossiers (riz, macaroni, légumineuses, ...) (3 semaines)
+
+## TODO list de petits trucs du quotidien
+
+1. Quel moteur pour le mouvement T et A? Nema 23 ou Nema 17? Nema 17 avec gearbox probablement
+2. Faire le mouvement T avant de trop faire le mouvement horizontal
+3. Calculer quelle courroie qui est nécessaire pour mon moteur nema 23.
+4. Acheter timing belt et timing pulley axe horizontal
+5. Un minimum de 1 mm a l'intérieur de l'objet pour que ce soit consideré une collision
+6. Rajouter une bordure en sur les cotés pour s'assurer que les pots ne soit jamais inaccessible pour le robot.
+
+## Focus
+
+TODO: Quand je rentre trop dans les détails, par exemple quand je fais trop de programmation et je veux tout améliorer en programmation, prendre du recul et faire autre chose. Revenir dessus la semaine d'apres au pire. Keep it simple, stupid.
+
+J'ai beacoup divagué. J'aime bien ce que j'avais marquer il y a longtemps sur mon vieux site internet de cuisine avant de divaguer et de vouloir tout faire:
+
+### Robot
+
+Ce site internet n'est pas seulement un site de référence pour trouver des recettes. C'est aussi la bibliothèque officielle de base du robot qui cuisine Heda.
+
+##### Fonctionnalités
+- Range la nourriture en rentrant de l'épicerie.
+- Fais l'inventaire des quantités d'ingrédients restants.
+- Avertit à propos des dates de péremptions des ingrédients.
+- Sors tous les ingrédients nécessaires à une recette.
+- Fais des mélanges en versant les quantités nécessaires.
+- Range les pots une fois la recette terminé.
+
+##### Comment ça marche?
+
+Heda utilise des pots sur lesquels ont été apposée une étiquette sur le couvercle pour les identifier.
+
+
+Idées
+--------------------
+
+### Présentation web des recettes
+
+Faire un index des recettes avec une vue similaire a Netflix: Des catégories avec carroussel d'image de recettes. Je postpone faire ca parce que les images ca coute cher en bande passante. Faire ca pour les themes (grande catégories) sur hedacuisine.com.
+
+### Idées non classées
+
+Ce que j'aimerais, c'est vendre 50\$ aux clients pour leur donner la
+chance de réserver leur place pour acheter la machine. C'est un petit
+montant qui n'engage pas trop à quelque chose et encourage mon projet.
+De plus, pour aller voir des investisseurs après c'est génial d'avoir
+une liste de client déjà intéressé. Je pourrais même faire une mini
+campagne kick-starter qui offre seulement d'être sur la liste et
+peut-être d'autres petits trucs:
+
+-   plans d'armoire, mais ça idéalement j'aimerais les donner
+
+J'énumère tout ce que le produit final va avoir, à quel prix, et je dis
+que si jamais les caractéristiques changent, nous communiquerons avec
+vous et nous vous rembourserons le montant investit si vous n'êtes pas
+satisfait des changements.
+
+La campagne servirait surtout à confirmer le marché au lieu de demander
+du financement parce que le produit va nécessité encore plusieurs années
+avant d'être à point et nous n'osons pas vendre tout de suite .
+Probablement qu'une autre campagne de financement suivra.
+
+L'objectif est simplement de 20 clients, donc 1000\$.
+
+Le prix de vente à 10 000\$ (armoire de cuisine exclut) est un prix de
+vente pessimiste que l'on sait que l'on peut respecter en fabricant et
+vendant les appareils en petite quantité. Il se peut que nous vous
+offrons l'appareil à un prix de vente plus faible selon l'intérêt et la
+capacité de production.
+
+En tant que nos premiers clients, vous nous aidez grandement et nous
+souhaitons vous récompenser\*.
+
+Hiérarchie
+--------------------
+
+Je serais CEO, mais je déléguerais beaucoup de chose au COO. Je pourrais
+passer du temps dans l'atelier à faire ce qui me rend heureux.
+
+TODO: Établir ce que la hiérarchie de l'entreprise serait.
+
+Ce que j'aimerais c'est une hiérarchie le plus plat possible.
+Idéalement, que des responsables. Et le titre que tu as dépends de ton
+ancienneté. Un peu comme dans l'armée. Responsable =&gt; Chef d'équipe
+=&gt; ... =&gt; Directeur =&gt; ...
+
+## Hauteur de l'armoire du prototype.
+
+Axe vertical de 5' seulement?
+
+**Avantages**
+
+- Plus économique
+- J'ai déja les tiges pour le contrepoids
+- Plus facile d'acces
+- Pas tres difficile a changer (simplement remplacer le tube et les deux tiges)
+- Moins encombrant
+- Mon prototype risque d'encore changer
+- Je ne sais pas encore a quelle taille le couper présentemment
+- Je n'ai pas besoin de plus pour faire mes muffins
+
+**Désavantages**
+
+- Cela ne teste pas le jeu maximal (ca plirait 50% de plus, mais au pire on agrandit le tuyau)
+- Cela est moins bon et se montre moins bien.
+
+## Un jour
+
+- Checker pour imprimer en 3d du nylon (enclosure et hotend température élevé ou nylon qui s'imprime a plus faible température)
+- Essayer de chauffer la surface du TPU pour le lisser.
+- Retaining ring pour le bearing de la main. Nécessite un tour pour faire deux encoches sur le shaft. Il ne devrait pas se déplacer, le bearing est rentré press-fit, mais bon, ça serait mieux.
+- Exosquelette au lieu de squelette
+1. Mettre les bearings dans l'humérus au lieu de les mettre dans le poignet, nécessite un exosquelette pour soutenir les bearings, ça serait simple de passer les fils électrique dans l'humérus, ah fuck off pour l'instant ça marche mon affaire de toute façon j'ai fini mon design et même presque tout imprimé... à faire avec la prochaine version en aluminium. Je ne sais même pas si c'est une bonne idée. Si tu regardes les robots SCARA normal, leur humérus est vraiment mince. Tu veux que l'humérus soit mince parce que l'avant bras passe un peu en dessous.
+- As you might guess, the rated ampacities are just a rule of thumb. In careful engineering the voltage drop, insulation temperature limit, thickness, thermal conductivity, and air convection and temperature should all be taken into account.
+
+## Utopie
+
+Acheter:
+- Scie a métal a ruban horizontale
+- Un tour a métal
+- Une plieuse de tole
+- Une imprimante 3D avec enclosure, hotbed en vitre et hotend tout en métal pour etre capable d'imprimer du nylon a haute température
+
+Au lieu d'un gros montant à vendre, offrir une location, comme ça ça n'engage à rien et c'est un montant bien moins élevé pour le client. 200$ par mois. Au lieu d'un employé, c'est rien! Ou 400$-500$ par mois au début et ça inclut le support technique pour que l'appareil fonctionne 24h/24, 7jours/7. Fuck vouloir tout faire moi-même, avoir un seul client donnerait énormément de crédibilité à la compagnie. Et oui ne pas vendre la machine, seulement la louer, comme ça ça me fait un revenu tout le temps. Je dois supporter le coût initial de la machine par contre... Ne pas charger au client les moments où l'appareil est en panne au début.
+
+
+
+ La différence entre le 17HS4401 et le 17HS4401S est que la couleur du boîtier est différente, d'autres paramètres sont les mêmes. 
+ 
+ J'aimerais ça y aller petit à petit et vendre juste quelques petits trucs au lieu de trop gros au début et d'attirer la compétition... C'est moins ALL-IN aussi...
+ 
+ **EST-CE QUE MA PINCE EST CAPABLE DE PRENDRE LES POTS DANS LES COINS?!?!?!**
+Au pire faire un accotoire pour empêcher les pots d'aller sur le côté?
+
+Essayer de faire une armoire étanche pour le bruit. Ça serait cool pour le blender aussi. Pour ce qui est de l'humidité de l'évier de ma mère, ben intégrer un déshumidificateur plus tard avec l'évier.
+
+## Thank you
+
+Thank you to all the recipes websites I took inspiration from!
+Thank you for everyone who ever contributed to linux!
+Thank you to everyone who made a programming library free and open source!
+Thank you for the design of a pretty pantry!
+https://www.youtube.com/watch?v=bZO3Vk5jI5k
+https://howtomechatronics.com/projects/scara-robot-how-to-build-your-own-arduino-based-robot/
+Thank you to so many others who helped me in one way or another!
+Thank you to the speed run community who thought me that by keep working really hard on something I can achieve what I want. It also thought me that progressions are slow. So I was not discouraged at first at every improvement which I thought was still missing a lot because in my book, I was taking 0.01 second of a record and I was proud. We can always do better we just once we know where the bar is. (example de sauter le plus haut possible de mon prof aussi, aussi moins de 3h le marathon)
+
+
+
+
+Avantages et inconvénient d'avoir un compétiteur:
+Avantages:
+Donne de la crédibilité au projet
+Demande de financement plus facile?
+
+Désavantages:
+Perte d'une part de marché
+Perte d'être la première marque mise sur le marché
+
+Au lieu de Heda, possiblement, bâtir la marque autour de Robot garde-manger, Pantry robot.
+
+I would not mind if there were competitors, but what would be my competitive advantage?
+
+Patents? - I don't want that... Fuck lawyers...
+First to market? I am sick of hiding and being alone, I want to show what I am doing to the world!
+Armoire de cuisine?
+
+Hey ça serait cool que je protège le nom Heda comme compagnie, et que l'armoire s'appelle ensuite une armoire de cuisine de type ou de style Heda. Une armoire Heda. Laisser tout le monde appeler ça comme ça. N'importe qui aurait le droit même d'en fabriquer et d'en vendre sous le nom générique une armoire Heda. Ça créerait de la publicité autour du nom Heda.
+
+Simulation robotique? Sure, j'aurais de l'avance dans la simulation. Je voudrais quand même peut-être avoir un blog d'articles qui parle de faire de la robotique avec Godot pour me faire de la publicité en même temps. Idéalement, le faire sur une page github d'un plugin de robotique que j'ai créé.
+
+Les recettes? Vraiment pas...
+
+Design mécanique? Ouin pas tant parce que le produit final devra être beaucoup plus travaillé. En plus, idéalement je voudrais que ce soit du open-hardware. Je voudrais simplement vendre des kits...<
+
+**On ne veut pas garder tout le temps les même pots pour les mêmes ingrédients. Parce que cela impliquerait que tu as besoin de 2 pots par ingrédients, ou bien d'attendre qu'il soit vide avant de pouvoir le remplir. Aussi, c'est pas l'idéal pour quand tu dois le remplir.**
+
+1. Au lieu de voir la vise comme une grande main qui tient un pot, voir ça comme deux petit bras qui serre le pot.
+
+
+# Blog
+Non je ne veux pas être une personallité publique... Je ne tolère pas assez la critique.
+1. Faire un screenshot de plusieurs language de programmation et faire voter le monde lequel est le plus beau ESTHÉTIQUEMENT seulement. Personnellement quand j'entends parler sur Hacker News d'un nouveau language de programmation, la première chose que je regarde c'est est-ce qu'il est beau ou pas? Ensuite si je le trouve beau j'en apprends davantage. Peut-être rendre le code dans une autre langue pour que ce soit du guiberish pour que les gens n'ait pas tendance à vouloir voter selon l'efficacité du language de programmation. Juste un mini sample. Par exemple:
+class Zazoo
+  @foo = 10
+  @sdf = 20
+end
+...
+
+
+Hi,
+
+I believe I would be an ideal candidate because I have experience developing products working on the backend and frontend in early-stage startups.
+
+I am a quick learner and autonomous so you can trust me to get the job done without constant supervision.
+
+I am looking for a short term full time job or long term part time job so I can continue working on a startup of my own. The 2 months contract you mentionned would be perfect for me.
+
+If you have any questions, please don't hesitate to contact me by email or phone as written in my CV.
+
+Thank you!
+
+Pascal
+
+
+
+Madame, Monsieur,
+
+J'ai vu sur le site de Jobillico que vous cherchiez un candidat en enseignement pour le programme d'électromécanique. Je pense que je serais un bon candidat parce que j'ai de l'expérience dans le métier et je suis particulièrement doué au niveau académique.
+
+J'ai eu la chance d'acquérir diverses expériences dans l'industrie. J'ai travaillé dans un atelier de réparation, dans une usine de meuble et j'ai travaillé en équipe sur la route. Je pourrais bien former les élèves pour les préparer à entrer sur le marché du travail parce que je connais toutes les facettes du métier d'électromécanicien.
+
+Du point de vue académique, j'adore apprendre la théorie et j'adore partager mes connaissances avec les autres. Je travaillerais fort pour rendre mes cours accessibles à tous. Aussi, j'ai obtenu mon propre diplôme en électromécanique en 2016. Je suis donc encore à jour avec le matériel du cours à donner.
+
+J'aimerais beaucoup avoir la chance d'être dans la banque de candidats même si vous n'avez pas beaucoup de disponibilités pour l'instant. Je suis flexible et très ouvert à faire du remplacement sur demande.
+
+Je suis disponible pour retourner aux études pour pouvoir obtenir cet emploi. J'avais commencé un baccalauréat en génie mécanique que j'aimais bien. Malheureusement, après mon premier stage, j'ai découvert que ce n'était pas un métier pour moi. Mais je retournerais aux études sans hésiter pour obtenir cet emploi d'enseignant dont j'ai toujours rêvé.
+
+Je vous prie de recevoir mes sincères salutations,
+Pascal
+
+
+
+
+
+ comme main d'oeuvre supplémentaire pour des petites et grandes entreprises
+  La théorie est mon point fort. J'ai beaucoup de chance d'avoir de la facilité à l'école.
+  
+  
+  
+  Quel problème est-ce que j'essaie de résoudre?
+Éviter le code dupliquer en rails et en js. Tout faire en js. En js je pourrait compiler l'HTML et le POST et le sauvegarder dans la db? Overkill, mais pourrait fonctionner.
+
+BON, faire que js soit requis pour utiliser le site pour l'instant. Un jour, rendre cela non nécessaire. C'est simplement compliqué de télécharger une page du site avec le js loader. Je me complique beaucoup trop la vie pour l'instant à vouloir supporter ceux qui n'utilise pas javascript...
+
+Pourquoi le site requiert javascript:
+- Pour éviter le duplicat d'une recette pour tous les locales, les livres, les recipe kinds...
+- Pour afficher une recette avec l'éditeur en mode read-only. Idéalement une version statique serait téléchargé, mais c'est compliqué je ne sais pas comment faire pour l'instant.
+
+Est-ce qu'il est possible d'utiliser Jekyll pour éviter la duplication du layout pour chaque fichier?

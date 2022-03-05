@@ -1,0 +1,13 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2022-01-30T09:19:24-05:00
+
+====== Version 0.1.02 ======
+Créée le Sunday 30 January 2022
+
+DESCRIPTION: La sécurité
+
+[ ] 1
+[ ] Fix tout les FIXME de sécurité.
+[ ] Rechercher tous les find et where et s'assurer que cela passe par le current_user. Par exemple, current_user.recipes.find au lieu de Recipe.find.
+[ ] Le find ou le where doit throw une exception dans le controller si jamais il ne trouve pas, parce que ça veut dire qu'elle n'appartient pas à l'utilisateur. La requette doit cesser.

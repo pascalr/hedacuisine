@@ -1,0 +1,54 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2022-01-28T17:22:23-05:00
+
+====== Version 0.1 (MVP) ======
+Créée le Friday 28 January 2022
+
+Description: Le strict minimum.
+
+NOTE: Dans mes TODO list. Dire le problème que je dois résoudre et non la solution pour le faire.
+
+[ ] Utiliser onChange au lieu d onBlur? (Problématique pour color picker par contre, il fait onChange pour chaque chaque couleur dans chromium surtout...) Souvent le changement se fait avec un délais à cause du onBlur.
+[ ] d' pour les h aspirés? huile surtout...
+[ ] Le pluriel des unités lb/lbs, tasse/tasses.
+
+# Pour rerelease le static:
+
+2. Bonne densité des ingrédients
+# Pas prioritaire
+1. Sign in should remember what page
+2. Modification d'une recette (duplication)
+3. Enlever une recette du calendrier ajoutée par erreur.
+4. Quoi faire quand les ingrédients n'ont pas d'unités? Mettre du sel. Mettre de l'oignon. Mettre de la coriande. Mettre des cubes de boeufs au goûts. Mettre du thym. Trop compliqué, le faire manuellement en texte...
+5. Add show_ fraction to RecipeIngredients (quand raw_ quantity détecte une fraction, setter le flag automatiquement)
+6. TODO: Faire des test pour les pretty... que ça rajoute les préposition correctement dans toutes les langues. Il y a beaucoup de cas. C'est le genre de truc parfait pour des tests.
+7. Allow user to create recipes.
+8. Be able to create a recipe with a food not in the database
+9. Pouvoir ajouter des commentaires aux recettes. / au début pour que ce soit en italique!
+10. Un éditeur WYSIWIG pour les recettes.
+11. Rajouter masculin et féminin pour les noms ou bien laisser les mettres manuellement?
+12. FoodName food:references language:references value aspire:boolean feminine:boolean
+13. Comment gérer les versions des recettes? RecipeGroup comme avant? Un UserRecipe refère à une Recipe et/ou à un RecipeGroup?
+14. Enlever le truc de c'est quoi qu'il y a des différent à l'intérieur, et offrir la version simplement avec un chiffre. Ou bien un nom d'utilisateur. Dans la barre de recherche, tu sélectionnes le groupe et ensuite tu sélectionnes sur le côté (un peu comme un menu normal d'un UI d'application d'ordinateur) la version que tu veux. Poulet au beurre (Ricardo). Mais fuck poulet au beurre (Condiments en poudre). À la place, quand c'est une recette du site et non une recette d'un utilisateur ou d'un site d'ailleurs, indiqué (ver 2). Pas de version quand il n'y en a juste une. Donc pour poulet au beurre, on a: Poulet au beurre, Poulet au beurre (Ricardo), Poulet au beurre (ver 2). N'importe qui peut créer sa recette! Mais l'image reste la même, celle du groupe. Le groupe sert surtout à avoir une image et lier les recettes du même truc entre eux. Ne pas marqué Poulet au beurre (Ricardo). Marqué un nom entre parathèse seulement quand la recette viens d'un utilisateur.
+15. Units by language, wait no because I want to be able to convert c. à table to table spoons...
+16. Mes recettes favorites ou Ajouter à ma liste.
+17. Mes amis (voir le menu de mes amis)
+18. Rajouter une note aux RecipeIngredient? (pelées et coupées en cube), ... (broyées)
+19. FoodGroups. Huile. Bouillon. Lait. Pain.
+20. Handle generic Foods which are supersets of other foods. Bouillon can be Bouillon de légume, Bouillon de poulet, etc... Huile... Huile neutre...
+21. Dans la recherche et les listes, seulement montrer la version de recette la plus populaire.
+22. Comment gérer les options d'ingrédients dans la recette??? (Commentaire à côté des ingrédients?)
+23. You can pin an item in the grocery list so it is always there even if you clear (for example fruits&vegetables, eggs and milk)
+24. Pouvoir hierarchisé dans un arbre les recettes.
+25. Acheter un backdrop pour les photos
+26. Trouver un format de bouteille liquide
+27. Pagination des recettes sur le site internet
+28. Ajuster le site internet pour les téléphones mobiles. Mettre la barre de recherche en dessous du menu.
+29. Rajouter les trous borgnes à l'armoire et faire des screenshots pour le manuel d'assemblage. Couleur différente pour chaque type de morceau? Mettre dans les screenshots les mesures.
+30. Un jour remplacer les bushings ou mettre des bearings à la place pour le mouvement vertical.
+31. Trouver shipping mondial kits de robot
+32. Faire une soumission chez une firme de génie conseil pour un produit final qui peut se vendre sur kickstarter
+33. Ajouter toutes les valeurs nutritives des ingrédients.
+34. Démarrer l'entreprise officiellement. Puis contacter des médias et essayer de faire parler de l'entreprise
+35. Faire un article qui parle de mes cables drums. C'est cool et de toute façon un compétiteur bien antit ne ferait pas pareil. Ça serait probablement coulé en alu à la place ou avec des chaînes.

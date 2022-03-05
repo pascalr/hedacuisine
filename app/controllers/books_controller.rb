@@ -54,7 +54,8 @@ class BooksController < ApplicationController
   def edit
     gon.book = to_obj(@book)
     gon.book_sections = to_obj(@book.book_sections.order(:position).to_a)
-    gon.book_recipes = to_obj(@book.book_recipes.order(:position).to_a)
+    gon.book_recipes = @book.book_recipes.order(:position).map {|br| to_obj(br, includes: :recipe) }
+    #gon.book_recipes = to_obj(@book.book_recipes.order(:position).to_a)
     gon.move_book_recipe_url = move_book_recipe_book_path(@book)
     gon.move_book_section_url = move_book_section_book_path(@book)
     gon.jbuilder

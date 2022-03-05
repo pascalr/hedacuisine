@@ -1,0 +1,19 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2022-01-30T20:53:20-05:00
+
+====== Version 0.1.03 ======
+Créée le Sunday 30 January 2022
+
+DESCRIPTION: L'efficacité
+
+[ ] 1
+[ ] Use css content for every content in the application layout.
+[ ] Arrêter de passer des url au javascript. Écrire tous les paths en javascript. import {recipe_path, book_recipe_book_path} from 'routes'
+[ ] Au lieu d'avoir image_id dans la database, store image_slug, qui joint l'id avec l'extension, parce que j'ai besoin de l'extension et je ne veux pas avoir à loader l'image pour ça. ("1.jpg") Changer le path pour que ce soit [[/images/thumb/1.jpg]] et non [[/images/1/thumb.jpg]]
+[ ] Quand Image_id change, updater image_slug. Tout gérer cette logique dans les models. Garder la colonne image_id aussi pour ne pas se faire chier.
+[ ] Pour toutes les vues s'assurer de faire le moins de call possible à la base de donnée. Include everywhere
+[ ] 25 individual images are used on this page. Using CSS Image Sprites is recommended.
+[ ] Image tags in markup should have descriptive alt tags or they should be left empty for unimporant design elements
+[ ] USE VARIABLES IN CSS!!!
+[ ] Optimiser tiny-slider en spécifiant des settings avec responsive. Lazyload tiny slider.

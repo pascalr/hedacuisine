@@ -1,0 +1,848 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2022-01-28T17:23:14-05:00
+
+====== Version 0.x ======
+Créée le Friday 28 January 2022
+
+[ ] Ajouter une recette de base pour les recipe kinds?
+[ ] Upgrade to Rails 7
+[ ] Quand le nom d'une recette change, revalider si la recette appartient encore à cette catégorie.
+[ ] Regarder comment I18n fait pour loader les traductions en mémoire et faire de quoi de similaire. Il faudrait que j'aie un hash en mémoire pour les traductions. FR_TO_EN, FR_TO_ES, ...
+
+[ ] Quand je crée une recette, demander dans quelle catégorie la recette appartient? L'utilisateur doit écrire la catégorie, il y a un autocomplete pour les catégories qui existe déja.
+[ ] RecipeEditor: Contenteditable au lieu de text field EditableField? Pour le nom de la recette surtout...
+[ ] RecipeEditor: Pouvoir ajouter ou modifier une image
+[ ] RecipeEditor: Pouvoir modifier la catégorie
+[ ] RecipeEditor: Écrire l'ingrédient au complet? Pour les nouveaux ingrédients, idéalement un text area. Le text area a seulement une ligne, mais si tu copie colle du texte, alors il a plusieurs ligne et tu dois écrire un ingrédient par ligne. Mais ça serait compliquer... Le mettre en bêta? Parce qu'il doit séparer la quantité du nom du commentaire. Le best serait comme un excel a trois colonnes? Il y aurait même un jour le mode image, tu prends une image et ça lit les ingrédients.
+
+[ ] BookEditor devrait être la même chose que l'apperçu à gauche, mais en plus gros avec des boutons de plus.
+
+WAAAAAAAAAAIIIIIIIIIITTTTTTTTTT, comment gérer les images des recettes qui diffèrent?
+C'était mieux de linker aux recettes, Recipe#show au lieu de RecipeKind#show, parce que si jamais la recette change de catégorie? Tu veux quand même y avoir accès...
+Essayer de faire comme avant, mes que ça marche.
+Recipe#show?book=10-Livre de Pascal
+
+Il y a juste les fous qui ne changent pas d'idée...
+
+[ ] Les recettes sur le statique statique serait seulement en JSON, sauf la recette principale d'une recipe kind.
+
+Est-ce que je suis capable d'avoir des paramètres avec pages??? Oui je peux.
+
+1. Régler pages.
+
+1. Il devrait toujours y avoir un recipe_id pour un recipe_kind path. Modifier recipe_kind_path pour toujours donner un recipe_id quand il y en a un. Faire as: nil pour être sur que ça utilise le mien.
+
+1. Est-ce que <%= content_for :render_async %> est encore utilisé???
+
+1. Javascript requis pour voir les recettes dans les livres?
+2. OUI, javascript requis pour les livres. Javascript requis pour changer de pages.
+
+Les livres ne sont pas sur google. Le homepage des livres oui. C'est quoi le homepage des livres? La liste de recette.
+
+Faire un avertissement pour noscript.
+Ce site est statique. Il requiert que javascript soit activé pour bien fonctionner.
+
+
+1. Changer l'URL dans le site statique pour avoir recipe_id pour les sortes de recettes
+
+1. BookRecipe in static website! Il y a un cadenas.......
+2. Ne pas afficher les recettes privés dans l'index du livre.
+
+http://localhost:3000/qc/sortes_de_recette/46-tarte_au_sucre?recipe_id=567
+1. Pages ne fonctionne plus... Faire fonctionner avec le site static aussi...
+
+1. New recipe, ça fait pitié...
+
+1. Kind -> /groupes, RecipeKind => /catégories/10-Hello
+2. Kind -> /catégories-g
+3. Kind -> /categories-g, RecipeKind => /category/10-hello
+
+1. Positioner les flèches du carrousel en ligne avec les éléments.
+
+1. Écrire livre virtuel un peu partout? Ou encore livre électronique?
+
+1. Dans Recipes#Index, afficher les catégories les plus grandes (par exemple déssert)
+
+1. Dans l'URL dans RecipeKind#Show, mettre en paramètre (recipe_id=35), comme ça, si quelqu'un copie le lien, alors la personne qui le reçoit voit la même recette.
+
+1. Print. Share. Download.
+
+1. Est-ce que Recipe#Show est encore utile? Seulement BookRecipe#Show et RecipeKind#Show non??? Oui c'est encore utile parce qu'une recette n'appartient pas nécessairement à un livre. Toutefois, je pense que pour que la recette soit publique, elle doit être associé à un livre. Dans le site public, on peut seulement voir RecipeKind#Show et BookRecipe#Show.
+
+1. Dans pages, afficher l'auteur à côté du nom de la recette, et afficher les étoiles comme il le faut, comme avant.
+
+1. Le truc à droite l'afficher en bas quand l'écran est petit.
+
+1. Mettre un cadenas à côté des recettes privé dans le sidebar du livre.
+
+1. RecipeKind n'affiche pas les pages? Il affiche tout le temps qu'il n'y a pas de recettes??? Fix le bouton Voir les recettes similaire...
+
+1. Dans la barre de recherche, voir des livres, des catégories (RecipeKind) et les recettes de l'utilisateur courrant. Quand il y a un utilisateur courrant, linker à sa recette du RecipeKind dans le show du RecipeKind.
+
+# LATER
+
+1. Dans la futur application sur téléphone, pouvoir seulement regarder, et aussi pouvoir prendre en photo vos recettes. Après tu peux aller sur l'ordinateur et les rentrer. Idéalement un algorithme qui essaie de détecter le texte sur la photo aussi...
+
+1. Category au lieu de RecipeKind partout? /categories...
+
+1. Ajouter un calendrier? Version précédente (était dans Recipes#show):
+<% if user_signed_in? %>
+  <% machine = current_user.machines.first_or_create %>
+  <div class="collapse" id="calendar">
+	<%= render partial: "meals/calendar", locals: {recipe: @recipe, machine: machine, meals: machine.meals.includes(:recipe) } %>
+	<div style="height: 10px;"></div>
+  </div>
+<% end %>
+
+# END LATER
+
+1. Un encadré Recette de la catégorie:
+			  Boulette de pois chiche (23 recettes)
+			  Les boulettes de pois chiches sont une recette
+			  végétarienne à base de pois chiches, chapelure,
+			  œufs et assaisonnements. En savoir plus...
+1. Un encadré Tiré du livre...
+
+1. Au lieu de faire un éditeur pour la page couverture du livre, rédiger un article qui explique comment faire une page couverture avec un logiciel de dessin très simple en ligne.
+
+1. Une application sur le téléphone pour visionner nos recettes.
+
+Mettre les images de livre à la même auteur. Les largeurs peuvent varier. Dans le sidebar, la hauteur varie. Quand côte à côte, la largeur varie.
+
+Books use AJAX.
+
+Montrer à Céline.
+
+Ajouter un truc rechercher à mes recettes.
+
+Recettes devrait afficher le carrousel de recette. Le menu d'acceuil, devrait afficher un carrousel de livre, puis le carrousel de recettes.
+
+Book show pourrait être un recipe carrousel? Ça serait mieux que le gros plan sur la page couverture...
+
+Quand est-ce que je veux aller sur un livre vs quand est-ce que je veux voir des catégories et comparer?
+
+Si j'ai la recette dans mon livre, je veux aller sur la recette de mon livre.
+Si je vais sur un livre d'un ami, un livre featured ou un livre quelquonque, je suis sur le livre.
+Si je cliques n'importes où d'autre et fais quoique ce soit d'autres, je ne veux rien à faire avec les livres.
+
+Je veux que les livres soient plus un truc perso, une liste perso, que tu peux partager avec tes amis.
+
+Si user vient d'un lien => Livre
+Si user vient d'un moteur de recherche => Catégories
+
+Ouin, mais j'aimerais quand même ça voir d'où est-ce que ça vient? À propos de l'auteur.. si j'aime une recette, je suis tenter d'aller voir les autres recettes simillaires...
+
+Quand je clique sur une recette, si j'ai cette recette dans un de mes livres, aller sur la recette dans mon livre. Sinon, si la recette vient d'un livre d'ailleur, aller sur la recette dans lequel le livre viens. Si la recette ne vient pas d'un livre? 
+
+Books require JS.
+
+To users: Add a description to the recipe (image and small text):
+Find existing description. Create new description.
+
+Openeats: https://github.com/qgriffith-zz/OpenEats???
+
+- Add registerEditor inside a useEffect(() => {}, []) Wait a little to make sure it works, then remove all the previous shit.
+
+- Ajouter un encadré qui dit d'où ce que la recette vient. Aussi trouvé dans le livre... Le user doit être l'auteur du livre et de la recette?
+
+- Ajouter les livres en vedettes dans la page d'acceuil.
+<h2>Livres en vedettes</h2>
+<h2>Recettes publics</h2>
+
+- Change data-step to first in Step. Fix the JSON...
+
+!!!!!!!UTILISER DES PARTIALS POUR RENDER LE JS DES MODELS... BEAUCOUP DE DUPLICAT, QUAND JE RAJOUTE DES FIELS CA FUCK TOUT!!!!!!!!!
+
+Renommer Book theme à Book layout. Quand c'est des BookLayout de heda cuisine, appeler ça des templates.
+
+Ne pas partager les images des utilisateurs (sauf si l'utiliseur donne le droit)
+Ne pas pargager les BookLayout. Un utilisateur ne peux pas cloner un layout d'un autre. De toute façon, on veut que ce soit original et différent les layout!
+
+Planification 8-9 janvier:
+- Ajouter plusieurs formats aux livres.
+- Deprecate all fields not used anymore because using JSON now.
+- Add recipe_id attribute to ingredients. Or no. There was a way to share attributes. Find out how to pass attributes from the parent (recipe) down to the children...
+C'est affreux d'avoir à faire gon.recipe = recipe...
+OU ENCORE MIEUX! Est-ce que le children est capable d'aller chercher ses parents? Et là il pourrait trouver l'attribut qu'il requiert. Il monte jusqu'à temps qu'il trouve de type 'recipe-body'.
+- Les images dans la recherche font beaucoup trop de call à la database. Inline dans json...
+- Plus important: images.
+- DELETE AWS S3!!!
+- Images de recette dans les livres. (Image fullscreen vertical, Image halfscreen horizontal)
+- Images de page couverture des livres
+- Un compte utilisateur devrait pouvoir uploader une image par recette. Il devrait aussi pouvoir uploader plusieurs images pour le livre.
+- Un compte admin devrait pouvoir uploader UNE ou plusieurs images par RecipeKind.
+- https://github.com/biola/punching_bag/blob/master/lib/punching_bag/acts_as_punchable.rb (med.increment!(:screener_viewed) https://dev.to/evanrpavone/view-counter-rails-6-3amh)
+- Tiptap should not read anything from gon. Or it should be done in another way...
+
+Truc à travailler plus tard:
+- Page d'erreur
+- Subdomain for heroku (il faut que je paie par contre pour avoir https si je me souviens bien...)
+- Alias pour les food (Gérer par équivalence. Parce que idéalement, seulement le data de 1 oignon, oignon hâché, émincé, en poudre et autre sont des équivalents. alias est un équivalent 1 pour 1)
+- Food data
+- Fr/CA, Fr/FR
+- Bilingue
+- Gérer les unicodes tel que ½ et œ
+- Commentaires aux recettes
+
+Securité:
+- Enlever html des attributes qui peuvent être mass assigned pour tout. (Seulement un admin peut l'assigner?) (Idéalement rouler le code javascript sur le serveur, mais il faudrait que je ne suis pas trop bon là dedans. Idéalement un truc node.js qui lit dans la database et qui update les html selon les json.
+
+Avec javascript, pouvoir dérouler page par page d'un livre a l'infini (loader lorsqu'on arrive sur la page). Sans javascript, lire page par page.
+
+2022-01-07T01:10:33.401175+00:00 app[web.1]: #<Fog::Errors::Error: B2 credentials are required, please use b2_account_id and b2_account_token or b2_key_id and b2_key_token>
+
+<link rel="stylesheet" media="all" href="/themes/<%= @book.theme.id%>/stylesheet" />
+
+1. Je devrais être capable facilement de convertir les recettes française que Céline m'envoit en recette québécoise.
+
+1. Pour que le HTML soit plus similaire au JSON, faire <div data-type='link-model'></div> pour chaque type. (En remplaçant 'link-model' par le type) Ça serait plus facile à parser et cela me permettrais d'avoir les même attributs en HTML qu'en JSON (au lieu de faire data-... que je ne veux pas avoir en JSON...)
+
+1. Le site est dédié pour les chefs amateurs et non les chefs professionels. Le site ne supporte pas les livres privés pour l'instant en tout cas.
+
+1. Sur la page d'acceuil, tout en haut, il pourrait y avoir un décompte un jour. Nombre de recettes: Nombre de livres: 
+
+1. Metaprogramming in ruby (je ne me rapelle plus du use case, mais je voulais faire ça à un moment donné): https://www.bigbinary.com/learn-rubyonrails-book/rails-macros-and-metaprogramming
+
+1. Dans un menu pour admin, ajouter un bouton qui execute une fonction javascript. La fonction prend une liste de toute les recettes. Une par une, elle télécharge les recettes, les insérère dans l'éditeur et sauvegarde le texte lorsque c'est différent. Devrait se faire lorsqu'il y a des modifications dans le code ou bien dans le data (des foods qui sont créer (des liens))
+2. TRÈS TRÈS DANGEREUX LA MANIÈRE QUE LE TEXTE DES RECETTES SONT HANDLE POUR L'EDIT. FAIRE DES TESTS PARCE QUE JE POURRAIS TOUT PERDRE. S'ASSURER D'AVOIR DES BACKUPS AUSSI.
+3. UPDATE TOUT LES TEXTES DES RECETTES. Mais je n'aime pas trop ça c'est dangereux. Quand je fais ça, être très très sûr que je n'affecte rien. Il va falloir que je fasse des tests pour ça. Aussi, obligé un backup avant de updater tous les textes.
+
+1. Le site statique pourrait ajouter l'information nécessaire pour la user navbar en js. Ouin, mais ça appelerait le site dynamique à chaque fois pour voir si l'utilisateur est connecté...
+(Garder dans des cookies l'information du compte et partager les cookies avec le site statique???)
+1. Simplement appeler le lien à droite Mon compte, lorsque l'utilisateur est sur le site statique?
+
+1. Mettre le thumbnail des images inline dans le json des recettes pour la recherche?
+
+1. Quand l'écran est petit, affiché un icone de personne au lieu de l'addresse email de l'utilisateur.
+
+1. Remove the Image index view. Well keep as is, but a user should not need it.
+
+1. As seen in the book...
+
+1. Ajouter un boolean aux RecipeKinds. Featured. Seulement les recettes qui sont featured sont dans le home page. Et seulement celles là sont sauvegardées. Les autres images sont sure Cloudfare images?
+(Cloudfare pages max fize count == 20 000)... J'aimerais avoir tout les thumbs sur git aussi au moins... pour la barre de recherche en haut... Ça va être long avant que j'aie 10 000 recipe kind de toute façon... À 12K en moyenne, c'est 120Mb, c'est rien...
+/images/thumbs/...
+/images/featured/
+Toutes les autres sur Cloudfare images.
+
+1. Pouvoir ajouter des ingrédients qui ne sont pas dans la liste!!!
+
+1. Pouvoir créer une nouvelle recette à partir du livre.
+
+1. Ajouter une liste (wishlist). UserRecipeWish
+
+1. ENLEVER FUCKING AWS...
+
+1. TODO: Add links color to themes.
+
+1. TODO: <Recipe> en js qui fait comme _recipe_body avec Rails
+
+1. Drag and drop les recettes pour les placer dans un certain ordre.
+
+1. Set Title font size as %? This way I can scale easy?
+
+1. JS forms. Pass a record. model should be a record. Inside the record, add class_name. If you modify the record, does it modify gon? Yes it does so this works!
+
+1. Pouvoir rajouter des catégories aux livres. Par exemple, Gâteaux, Biscuits, Muffins...
+
+1. Dessiner ce que je veux pour les livres.
+
+1. Par défault, créer deux livres de bases par utilisateurs. Mes favoris. Et mes envies.
+
+1. When books works, remove user recipes. I believe they are deprecated.
+
+1. Toujours afficher (1 de 3) en premier, et non (3 de 3).
+
+1. Ne pas garder les variantes d'images sur AWS, juste l'original.
+
+1. TODO: A path builder in js. Path.recipe_kinds_path. Qui reproduit ce qui est fait en rails. Le générer dynamiquement selon les routes pourrait être nice!
+
+1. Remove unnecessary fields. For recipe especially. I am confused. Text is used.
+
+1. REPUBLIER SUR HEDA CUISINE. COMME CA M'ASSURER QUE JE N'AI PAS FAIT DE BETISE AVEC GON PAR EXEMPLE.
+
+1. Idéalement, renommer RecipeKind to Recipe. Et Recipe to RecipeVersion. Peut-être ne pas faire cette modification dans le back-end, parce que je n'ai pas envie, mais la faire dans le front end. Ce que j'ai dit serait ce que c'est pour l'utilisateur. OU PAS. Un utilisateur crée une recette. Il s'en fout que se soit une version ou pas...
+
+1. It's very dangerous. If I make a mistake that erase something in the recipe (a <span> of some sort) I lose the info...
+
+1. Link to recipe kinds.
+
+1. Pouvoir ajouter des liens vers des aliments.
+
+1. Fuck off. Pas de descriptions inutiles. Des biscuits à l'avoine sont des biscuits à l'avoine... Ou pas je peux au moins linker à la nourriture...
+
+1. Sur Github pour proposer des sortes de recettes?
+
+1. Ajouter KindIngredient aux kinds? Comme ça quand on cliques sur un ingrédient on voit les kinds?
+
+1. Si l'apparence d'une recette ou la composition d'une recette est unique, elle a droit à son RecipeKind. Mais il faut une photo!
+
+1. Link to food inside descriptions.
+
+1. Pouvoir choisir le type de la recette dans le edit et voir le changement live
+
+1. Quand je suis dans une grande catégorie, pour voir les pages, afficher l'image dans la recette, avec préparation et cuisson à côté, comme avant. Peut-être afficher le petit format au lieu du gros.
+
+1. Quoi faire avec les images de recettes qui ne sont pas une catégorie en tant que telle?
+
+1. Soupe nouilles et brocolis n'est pas une RecipeKind en tant que telle, todo: delete
+
+1. Québec vs France. Granola. Barre tendre vs barre de céréale. Dans l'éditeur, pouvoir ajouter des traductions: {fr-CA: barre tendre; fr-FR: barre de céréale}
+
+1. Use CDN to serve images?
+
+1. TODO: Show recipe_kind_path => Show recipe kind when there are no recipe. Otherwise, show the most popular recipe of the kind first.
+
+1. Ajouter un score aux recettes? +1, -1?
+
+1. https://www.bakeinfo.co.nz/facts/bread/science-of-bread-making
+
+1. Ce qui pourrait être intéressant, c'est que les gens modifies comme ils veulent tout. Et un algorithme avec un peu de hand-curated content prend le meilleur de tout et combine ça en quelque chose d'uniforme pour tout le monde.
+
+1. Article Comment faire un gâteau?
+2. Article Lexique.
+
+1. Ajouter des notes et ajouter des références d'une belle manière.
+
+1. Rendre mon compte utilisitateur pas admin.
+
+1. Un éditeur pour les articles aussi. Celui là le faire purement en ProseMirror.
+
+1. Faire des images d'outils. Des images de bols, de cuisinière, ...
+
+1. Remove Tiptap and only use ProseMirror
+2. Keyboard shortcut to see bubble toolbar. Enter? (Do this after having removed Tiptap?)
+
+1. https://www.comparecuisine.com
+2. Focuser sur la comparaison de recettes. Faire une recettes de 5 manières différentes et écrire mes commentaires.
+3. Dans les commentaires, quand quelqu'un n'aime pas une recette, montrer c'est quel recette que eux autres ils préfèrent.
+
+1. Offrir un forfait à 2$ par mois pour ne pas avoir de publicité. Ceux qui ne payent pas. Pas de publicité non plus. Tu paies pour ne pas donner de publicité à tout le monde. Merci!
+
+1. Faire des comparaisons de recettes. Trouver 5 recettes différent par exemple de muffin aux bleuets et les évaluer.
+
+1. Drag and drop change le recipe item nb dans les instructions.
+
+1. add food-id to food links in order to be able to add a popup with a description when hovering the ingredient
+2. Mouse over food shows image and short description of food.
+
+1. Don't recalculate getHTML() every 5 seconds.
+
+1. Limit recipe text size. All sizes for that matter.
+
+1. Un format simplifié avec seulement les instructions. Possibilité du format détaillé aussi avec des images.
+
+1. Un tableau pour les paramètres des recettes.
+
+
+
+1. <ol start="5">
+https://stackoverflow.com/questions/4615500/how-to-start-a-new-list-continuing-the-numbering-from-the-previous-list
+
+1. Offrir de télécharger les recettes au format JSON.
+
+1. Ne pas mettre name et locale dans le content parce que c'est un must et ça ferait laid...
+
+https://cooklang.org
+https://news.ycombinator.com/item?id=28997309
+
+1. Open database of recipes.
+
+1. Un interface pour éditer les recettes graphique. Et un interface pour éditer les recettes version texte.
+
+// This is a comment
+{locale: fr}
+{cookingTime: 10} // Cooking time in minutes
+{cookingTime: 1hour} // Cooking time in english
+{cookingTime: 1heure} // Cooking time in english
+{note: 1} // Replace: Show something
+{linkNote: 1}
+{1} // Ingredient 1
+{(1 c. à table)} // A quantity
+{(2)} eggs // A quantity
+{1,2}
+{1,3-5}
+{1,2,(1/2 t de farine)}
+- 1 t de farine // Tous valide
+- 1 t, farine // Tous valide
+- 1 t farine // Tous valide
+- 1, oeuf
+/ Paragraph in italic
+$ Title
+$$ Subtitle
+$$$ Sub-subtitle
+
+
+1. L'aide pour les instructions serait un Modal. Comme ça j'aurais amplement de place pour donner toute mon information. Est-ce qu'on peut scroller un modal?
+
+1. Faire le live preview comme du monde. Parse le texte et générer un arbre.
+
+<IconButton aria-label="delete">
+  <DeleteIcon />
+</IconButton>
+
+1. Status bar at the bottom.
+
+1. Avec styled components de react rajouter un style à field pour qu'il soit un tout petit peu séparer.
+
+1. Cacher les conversions tant qu'elles ne sont pas parfaites... Les mettres nul si ce n'est pas bon, et quand c'est nul ne pas utiliser.
+2. Courge poivrée n'a pas le bon poids...
+
+1. JS. Quantity
+
+1. Transition sur le width quand tu appuis sur ajouter un commentaire.
+
+1. Change le drag and drop pour être avec mon custom react.
+
+1. Pouvoir créer un ingrédient même si le food n'existe pas. Ajouter raw_food.
+
+1. Une fonctionnalité pour pouvoir copier coller une liste d'ingrédient.
+
+1. Un logo
+
+1. Les images les prendres en haute définition peut-être pour pouvoir faire des livre de recettes? Faire une belle mise en page. En même temps une belle mise en page pour imprimer des recettes.
+
+1. J'aimerais que quand le monde l'utilise, le feeling soit que c'est genre une application à toi et que tu as full de control. As peut-être pouvoir customiser l'interface?
+
+1. Est-ce que ça serait possible genre une belle one page application et tout ce fait en wysiwig avec ton livre de recette?
+
+1. Mon livre de recette. Le monde créerait leur propre livre de recette dans le fond. Il y aurait un page au début avec l'index des recettes. P. 1, P. 2. Vendre des skins, des designs de livres de recettes.
+
+1. Scaleway au lieu de Heroku?
+Contre: Backup db. More work. Less full scale ready.
+https://www.scaleway.com/en/stardust-instances/ 
+
+1. Kind devrait être Category. Et Kind devrait être la description générale d'une recette.
+2. Je crée une recette. J'inscris le nom de la recette. Ça me propose des kinds de recette. J'inscris celle qui est la plus proche. Ehh ça doit être un exact match sinon ça ne fonctionne pas? Oui ça peux fonctionner. Modifier un peu encore mon affaire. En revenir un peu plus à comme avant? Je suis pas mal en train de revenir à comme avant là...
+
+1. Bon pas mal comme maintenant, mais rajouter un model RecipeKind. Kind c'est AbstractKind. Les utilisateurs ne peuvent pas créer de RecipeKind. Si elle n'existe pas, elle n'existe pas c'est tout, elle ne pourra pas être publique. Moi je vais voir ensuite les recettes qui n'ont pas de RecipeKind, et je vais peut-être être capable de les regrouper.
+
+1. OSTI QUE C'EST COMPLIQUÉ... Ah mettons que je vais une tarte fraises et bleuts. Qu'est-ce que je veux qui se passent? Ah, elle peut être pour plusieurs peut-être? Tarte aux fraises et tartes aux bleuets?
+
+1. FUCK OFF. Le RecipeKind doit être un EXACT MATCH (ou bien un synonyme, donc un RecipeKind aurait plusieurs noms possibles). Donc tarte aux fraises et bleuets n'apparait pas dans les versions de tartes aux fraises.
+
+1. Mais oui je veux que tartes aux fraises et bleuets apparaissent dans tartes aux fraises et dans tartes aux bleuets.
+2. Mais son image ne sera ni celle de tarte aux fraises, ni celle de tarte aux bleuets. Elle n'aura pas d'image tant qu'elle n'aura pas une image spécifique à elle. Une image de tarte aux fraises et aux bleuets.
+
+1. Maintenant Purée de patates et épinard.
+
+1. Ah, peut-être qu'il y a des main RecipeKind. Par exemple, Tarte aux fraises. Tartes aux bleuets. Ensuite, il y a des RecipeVersions. Tarte aux fraises et bleuts. Et il y a des Recipe.
+2. Une Recipe belongs_to a RecipeVersion.
+3. A RecipeVersion has_and_belongs_to_many RecipeKind.
+4. A RecipeKind belongs to a RecipeCategory and has_many RecipeVersion.
+
+1. À quoi sert RecipeVersion?
+2. À rien.
+
+DONT CHANGE ANYTHING UNTIL I AM SURE. KEEP RECIPES AS IS!!!
+
+1. Ok, si une recette n'est pas un exact match avec un RecipeKind synonyme, alors l'interface de présentation va être différent.
+2. On va te demander, cette recette là est-elle une sous catégorie d'une catégorie?
+3. Oui, tarte aux fraises et bleuets est une sous-catégorie de tarte aux fraises.
+4. Quel sera l'interface. Dans le fond, on veut voir la recette en bas comme normale. Et en haut, on vera, Cette recette est une sous-recette
+de tartes aux fraises et de tartes aux bleuets.
+Tartes aux fraises et aux bleuets
+
+Catégories:
+
+Tarte aux fraises | Tarte aux bleuts (Voir les images avec le nom de la catégorie en dessous)
+
+1. Demander à mom la recette de gaufres.
+
+1. Pouvoir supprimer les références.
+
+1. Ajouter une description dans les recettes. Placeholder: Qu'est-ce qui démarque cette recette des autres versions? (optionel)
+
+1. Le pluriel est un cas très rare. Seulement utile pour faire pluralize. L'enlever des traductions et les mettres dans une une table à part peut-être. Analyser ça...
+
+1. Changer les versions sans reloader la page.
+
+1. Mes recettes favorites. Une seule liste puis drag and drop. Modifier directement dans l'interface! Rajouter avec js des handle et enable de drag and drop. Ajouter un field pour ajouter des recettes.
+
+1. Modifier la recette en WYSIWYG?
+
+1. Right now, it is easier to have both the dev website and the static website. At some point though, serve everything on the static website client side. The dev website would only be a database.
+2. By loading a single script on the static site, am I able to handle devise login?
+3. TANT QUE MON SITE N'EST PAS TRÈS AVANCÉ ET BIEN TESTÉ, SÉPARER LA VERSION DEV ET STATIQUE. COMME ÇA MA VERSION STATIQUE EST BONNE. JE PEUX LA VALIDER CORRECTEMENT.
+
+1. People can login into the BETA beta.hedacuisine.com in order to create recipes. edit.hedacuisine.com
+
+1. Laisser au monde la possibilité de créer des recettes
+
+1. Pas de pluriel à 1.001
+
+1. Pouvoir changer la région entre France et Québec. Ajouter la région US avec des tasses à 236 mL ou bien 240 mL?
+
+1. Description boulette de pois chiches et trempette chaudes aux artichauts.
+
+1. Ajouter mes propres commentaires dans les recettes.
+
+Ah, le pain... si simple, mais si bon! Pas surprenant que c'est l'aliment le plus consommé au monde! Faire son pain à la maison, c'est encore meilleur. L'odeur et le goût d'un pain tout juste sorti du four sont difficiles à battre!
+
+C'est une délicieuse recette végétarienne qui n'a rien à envié aux boulettes de viande. Un très bon aliment à manger avec des pâtes, des sous-marins ou des pains pitas. Un moyen simple et gourmand de rajouter des protéines à vos pâtes alimentaires!
+
+Lorsqu'on est invité chez des gens, c'est notre valeur sûre! C'est rapide à faire, tellement bon et parfait pour être partager! Simplement servir avec du pain ou des pitas.
+
+1. Faire 1 heure de contenue. Mettre de la musique. Écrire de belles descriptions pour les recettes déjà sur le site. Jusqu'à 11:34.
+
+1. Être sur google
+2. Trouver des endroits pour faire de la publicité pour mon site.
+3. Demander l'opinion des gens, ce qu'ils en pensent
+
+1. Écrire de belles descriptions pour toutes les recettes visibles, avec sources. Développer un guide.
+
+1. Utiliser le lin
+
+1. Spell checker.
+
+--------------------
+
+1. Un jour peut-être. Ajouters des images pour les outils. Mettre les contenants, la cuisinière et le four aussi dans les outils. Ça pourrait être beau je crois.
+
+1. Ajouter un hashtag aux sections, #description, et c'est ainsi que les sections sont référencées. article: ###; section: description
+
+1. Des références correct. Par exemple celle ci: http://gdt.oqlf.gouv.qc.ca/ficheOqlf.aspx?Id_Fiche=8361931, pour la farine.
+
+1. Add extension to images in the database. ext: ".json"
+
+1. TODO: Cache recipes.json
+
+1. Only have variants for images that are recipe images. Add a boolean to images to know if they can be used for a recipe.
+
+L'avantage des sections des articles et des séparer les articles en plus petits morceaux. Cela facilite la traduction et le référencement.
+
+1. Pouvoir recompiler une seule page.
+
+1. Quand je compile, regarder toutes les recettes publiques et m'écrire les warnings.
+
+1. Quand je focus le search, cacher le menu, changer la largeur de l'input (avec une transition comme ça ça fait une belle animation), remplace la loupe par X pour enlever le texte.
+
+1. Pouvoir mettre des images verticales?
+
+1. Utiliser un vrai truc d'autocomplete pour le search en haut...
+
+1. Faire du beau css. Utiliser des variables en scss. Faire ça clean mon truc de search.
+
+1. Enlever les 2 trucs différents pour la navbar, c'est mauvais comme design.
+
+1. Garder juste 2 chiffre significatif. Voir la longeur du chiffre. Regarder le chiffre suivant. Arrondir .1, .2 et .3 à 0, .4, .5 et .6 à .5, .7, .8, .9 à 1
+
+1. TODO: Handle les alias de nom de recettes. Pâtes à tarte, croûte à tarte...
+
+1. dropbox sync images
+
+1. amandes n'est pas au singulier...
+
+1. en
+
+1. Ne pas modifier le nom des recettes en expressions pour l'instant. S'assurer que ça fonctionne bien pour les foods en premiers.
+
+1. Remove FoodRecipe. Remove Tasks.
+
+1. Ajouter about aux images
+
+1. Ajouter four dans les outils. C'est pratique parce que ainsi tu peux filtrer les recettes qui ne nécessitent pas le four. Mais ça fait bizarre de marque four. Marquer cuisinière aussi? Je ne sais pas...
+
+1. Search autocomplete use JSON file.
+
+1. Ajouter une section Détails entre Instructions et Commentaires? Et là marquer le lien vers la recette originale? Ça me prendrait plus de détails à inscrire que seulement la source originale... Ah peut-être par qui aussi que ça été modifié? Quel utilisateur a ajouté la recette? La date de création. La date de dernière modification.
+
+1. Des outils facultatifs (par exemple un coupe-pâte dans la recette de tarte au sucre version 3.
+
+1. Pouvoir naviguer la barre de recherche avec le clavier.
+
+1. Ajouter au règle de bonne recette: Inscrire toutes les étapes dans la recettes, incluant de couper les ingrédients.
+
+1. Imprimer
+
+1. Different font in dev than in prod. Dev seems to be the problem because if I comment out the url in application.scss, it is the same.
+
+1. Hey pour les contents creators ça pourrait être cool: On traduit automatiquement vos recettes pour 10 pays! (Québec, France, ...) Ça serait hot!
+
+1. J'aimerais arrondir le 3e chiffre significatif au demi près. 120, 125 et 130. 1.2, 1.25, 1.3.
+
+1. Un espace insécable entre la quantité et l'unité.
+
+1. Clean HTML. Minimize layout HTML.
+
+1. Trouver un autre nom de domaine qui focus entièrement sur les recettes.
+
+Quoi faire avec mes paies: Rembourser dettes, acheter 750 images, heroku toujours up (7$ par mois)
+
+Je veux que les versions soient permanentes. Comme ça tu te rappelles que tu manges de la lasagne (ver 21)
+Je veux que tu puisses remplacer le nom de ta versions plus tard. Par exemple (selon Pascal). OUIN JE NE SAIS PAS...
+Quand tu crées une nouvelle recette, si le nom de la version est vide, son (ver nb) est calculé.
+Si (original) et (selon Pascal) existe déjà, quel devrait être le numéro de la version?
+Si une recettes est une version d'un autre, et tu décides de l'enlever et de la mettre une recette à part entière avec un nouveau nom, tu fais quoi de la version?
+
+Image 	The URL of the image for your object. It should be at least 600×315 pixels, but 1200×630 or larger is preferred (up to 5MB). Stay close to a 1.91:1 aspect ratio to avoid cropping.
+
+Plus tard:
+edit.hedacuisine.com -> aqueous-fortress, ça me prends SSL par contre, 7$/mois pour heroku
+Que les utilisateurs peuvent modifier les recettes par eux même. 7$/mois pour heroku
+
+1. Comment planifier une recette:
+Questions:
+1. Choisir une date pour cuisiner.
+2. Une de vos recettes ou découvrir une nouvelle recette?
+3. Idéalement afficher un circularie avec les ingrédients en rabais.
+4. Quel ingrédient dans la recette?
+5. C'est pour manger de quand à quand la recette? Le jour même? Pour plusieurs jours? Pour congeler? Pour le lendemain?
+6. Suggestions de recette.
+7. J'aime ou je n'aime pas (swipe à droite ou swipe à gauche)
+
+1. Add to my recipes. Quand une version est dans tes recettes. Afficher cette version en premier. Écrire un avertissement. Vous avez été redirigé de ... parce que cet version est dans vos recettes. Voir la l'autre version.
+
+
+https://developers.google.com/search/docs/beginner/seo-starter-guide
+https://developers.google.com/search/docs/advanced/structured-data/recipe
+https://developers.google.com/search/docs/advanced/structured-data/breadcrumb
+
+1. https://news.ycombinator.com/item?id=28879461
+mongol
+Yes I know what you mean. I think there should be a site that realizes that there are many variants of well known dishes, and they should be categorized as that. Very rarely is there an original, true recipe that is the pristine source for the dish. So when I search bearnaise sauce, I should not get a recipe, I should get a general description, kind of like a Wikipedia page. And then below that, all the different recipes, that can be contributed like on a wiki. Each recipe should have a feedback mechanism so the best ones gets upvoted.
+EXACTLY WHAT I WANT TO DO!
+
+1. Recettes similaires en bas des recettes.
+
+1. On every post on hacker news about recipes. Comment about my own website!
+
+1. Trouver des recettes sur google qui sont là en anglais, mais qu'il y a rien ou presque rien en français!
+
+1. Images ALT
+
+1. Make sure all of the pages on your site are reachable through links, and that they don't require an internal search functionality to be found.
+
+1. Users will occasionally come to a page that doesn't exist on your site, either by following a broken link or typing in the wrong URL. Having a custom 404 page that kindly guides users back to a working page on your site can greatly improve a user's experience. Consider including a link back to your root page and providing links to popular or related content on your site. You can use Google Search Console to find the sources of URLs causing "not found" errors. 
+
+1. Sitemap, une fois que parfait et SEO est là
+2. 404
+
+1. Plusieurs servings possible. Pain (650 g),  Petit pain (65 g). Offrir un dropdown avec les possibilités.
+
+1. Outils pour planifier des repas. En haut voir le calendrier, en bas, voir les recettes, avec le search. Voir les rabais les la semaine et browse par catégories selon les rabais de la semaine. Par exemple, chou fleur, ou tofu, etc.
+
+1. https://linkchecker.github.io/linkchecker/
+
+1. Ajouter un boolean. Densité validé? ou bien enlever la densité de tous les trucs que ce n'est pas encore fait.
+
+1. Faire ta propre chapelure assaisonnée à l'italienne 
+
+1. Essayer avec d'autres browsers.
+
+1. Plusieurs photos par recettes. Boulettes de pois chiches. Dans pâtes, dans soumarins, etc.
+
+1. Arrondir les valeurs à 1% près.
+
+1. Alias de food. Sucre devrait être un alias pour sucre granulé.
+2. L'huile fait référence à huilde de soja, parce que c'est l'huile la plus commune après l'huile de palm, donc c'est l'huile la plus utilisé par Mr et Mme tout le monde. Un alias pour huile de soja?
+3. Sel == sel de table
+4. Poivre, poivre noir, poivre noir moulu, poivre moulu
+
+1. Application pour t'aider à déterminer quoi manger. Il y a une liste de catégories, tu cliques dessus, puis tu fais gauche droite pour les recettes. Chou-fleur, gauche droite, ... Tu sélectionnes et tu ajoutes à ton calendrier.
+
+1. DNS: Quand le DNS redirigeait vers heroku, dans Namecheap, j'avais Redirect domain: Source URL: Wildcard redirect; Destination URL: https://aqueous-fortress-30634.herokuapp.com/
+
+1. Enter goes to recipe.
+
+1. Dont show raw ingredients. Otherwise it does not work for scaling. Only figure out what exactly the raw ingredient was (unit, volume or weight?)
+
+1. Ingrédient principal aux recettes.
+2. Français & anglais
+3. Valeurs nutritives des aliments
+
+1. Ajouter tofu dans la recette de tofu poulet au beurre.
+
+1. Don't allow unitary foods in database to not have a unit weight
+
+1. AUTOCOMPLETE ID!!!!!
+
+1. TODO: Photo sur AWS, rajouter le lien vers l'origine de la photo si sur internet. Rajouter l'auteur de la photo pour le créditer si possible.
+
+1. Dans le edit, quand une recette est une variante, barré tout les choses qui sont pris de la recette de base et que ce soit claire que ça ne peut pas être modifié. Mais avoir un bouton et pouvoir faire: Make this recipe independent. Et là ça va te demander un nom unique, une image, ...
+
+1. Variantes: Heda, Ricardo, ...
+
+1. Peut-être en revenenir à recipe group? Ça serait le fun de voir par exemple Pain à hamburger, et là pouvoir changer les versions. Ou juste pain. Et là voir les versions avec les ingrédients.
+
+RecipeGroup. Has many recipes. L'affaire c'est qu'on dirait qu'il existe 2 types de modifications. Il y a des recettes qu'on veut qui soit à part entière. On veut aussi des recettes qui ne sont que des légères modifications. Tu enlève un ingrédient, tu en remplaces un et tu en ajoutes un autre.
+
+Un RecipeGroup serait un autre type. C'est un type abstrait qui regroupe d'autres recettes. Par exemple, tu as:
+
+- Pain
+  - Pain à hamburger
+	- Pain à hamburger
+	- Pain brun à hamburger
+  - Pain blanc
+  - Pain brun
+  - Pain de grains entiers
+
+RecipeGroup: Name, et liste de recipes. That's it.
+
+A recipe can belong to one and only one RecipeGroup?
+
+Ok pour végétarien tu fais quoi?
+
+breadcrumbs
+
+Pain > Pain blanc
+
+OK NON. Pas de recipe group. Des tags peut-êtres. Et là des articles. Des articles pour le pain, pain à hamburger, pain à hotdog. Et dans l'article, avoir une list de recette que je peux naviguer
+comme je veux faire présentement.
+
+_recipe_list_full.html.erb
+
+5 recettes de pains à hamburger (20 variantes)
+
+1. Ok. Quoi faire pour les recettes?
+Instruction #1 / Instruction #2 / Instruction #3 / Créer ma version
+Il pourrait y avoir plein de types d'instructions différent. Avec Heda. À la main. À la machine à pain. Au four. À la cuisinière. Avec un thermomix...
+Au lieu d'instruction est-ce que ça pourrait être version? Directement là? Et là ça affecte les ingrédients en haut? Ça serait le fun que ce soit des recettes complètement différente?
+
+Au lieu de faire RecipeGroup, avec des recettes. Simplement faire. RecipeVariation. Et là ça référence une recette, mais avec des petites modifications de plus. Je pense que ça fait plus de sens niveau base de données.
+
+RecipeVariation: instructions:text, ingredients??? how???...
+
+1. Plusieurs instructions possibles par recette. Pour le pain: À la main, à la machine à pain. Cuire quelque chose: Au four, Sur la cuisinière, Au four à micro-onde. ET SANS OUBLIER. Avec Heda
+NOOOONNNN PAS PLUSIEURS INSTRUCTIONS... JUSTE POUVOIR RAJOUTER DES TABS DANS LE TEXTE DE RECETTE.
+
+1. Pouvoir incorporer un article dans la page d'une recette? Par exemple l'article du pain dans la recette du pain? Juste après et une table des matières juste avant pour montrer qu'il y a de quoi plus bas? Nahhhh, probablement juste une référence. Dire une phrase qui pique l'intérêt, puis dire voir l'article sur le pain pour plus de détails. Et tout au long rajouter des références. Par exemple, pétrir la pâte pointe vers la section pétrir la pâte.
+
+1. Mettre le site en ligne cette semaine (est-ce que c'est mauvais pour le SEO de changer une page, est-ce que mon SEO sera recalculée?)
+2. Simulation contrôle le bras robotique
+3. Simulation voit la caméra
+4. Pétrir la pâte!!!
+5. Faire un sitemap
+6. EN
+7. Des articles et des previous d'articles.
+8. Des images dans les articles.
+9. Images on Firebase???
+10. Static site on firebase???
+
+Pour ou contre site static:
+
+Pour:
+1. Site très rapide.
+2. Site pourrait déjà fonctionner et être disponible rapidement (pas de délais de heroku).
+3. Si je fuck production par accident, ça n'affecte pas le site static.
+4. Coûte beaucoup moins cher.
+5. Pouvoir releaser toute de suite une recette à la fois. Commencer à voir du traffic! Je pourrais envoyer une query à hedacuisine pour voir le nombre de page vue.
+
+Contre:
+1. Quoi faire avec la fonctionnalité de search??? (Juste pas de search pour l'instant?) (Tant que le site est petit, je pourrais tout loader déjà dans la page de search et simplement cacher ce qui ne correspond pas)
+2. Devoir constamment build le site static.
+3. Devoir constamment vérifier que le site static est correct (quoique je devrais le faire constamment encore plus pour le site de production (à chaque push))
+4. Ça serait le fun si les utilisateurs pourrait déjà contribuer... (FAIRE UNE SIGNUP PAGE QUI DIT QUE LE SITE N'EST PAS ENCORE PRÊT ET PRENDRE LES ADDRESSES COURRIELS DES GENS POUR LEUR DIRE QUAND LE SITE SERA PRÊT???) Oui commencer avec ça... Si il y a beaucoup d'intérêt, alors peut-être rendre le site publique avec data publique. Peut-être aussi acheter hedacuisinebeta.com? Ou bien myheda.com? Ouin mes rendus là les gens veulent partager les recettes...
+
+1. Recipe substitutions
+
+1. Commencer avec une recette parfait en ligne sur github pages. Boulette de pois chiches.
+2. Substitution fromage parmesan avec levure alimentaire.
+3. Substitutions substitutions... FoodSubstitution(explicit: boolean)
+4. Pour les ingrédients qui ont des recettes, ajouter l'option: Voir la recette.
+
+1. FIXME: Conversions between g and kg will not work! I am not taking into factor the unit_value of the unit in my ratio in food.implicit_conversions. FIX Quantity.ratio()...
+
+1. 1 recette par 2 semaines parfaite avec références aux articles pour plus de détails.
+
+1. Combine image editor with hedacuisine.
+
+1. Essayer d'utiliser Amazon S3...
+
+1. Un quart et un huigtième nécessite un déterminant... Ajouter 1 tomate. OK. Ajouter 1/2 tomate. OK. Ajouter 1/4 de tomate! Ajouter 1/8 de tomate! Ajouter 1/4 d'une tomate? Ajouter 1/8 d'une tomate?
+
+1. Au lieu de multiplier la recette par un nombre, y aller avec le nombre de portions. Par exemple 12 muffins. Et là mettre un slider que tu te déplaces dessus. Tu peux choisir.
+
+1. Imprimer les cables drums plus large. Calculer la bonne longueur. S'assurer qu'il reste bien de chaque côté.
+
+1. SUBSTITUTION: "1" / tête d'ail / "8" gousse d'ail...... original_quantity...... substitute_quantity, les deux sont en version 1... ou 2 c. à table...
+Prendre la valeur du substituer (ici tête d'ail) et le multiplier par la valeur calculé du ratio entre la vrai quantité et la quantité du truc substitué.
+
+1. Food are either basic, which requires a lot of information, or they are substitute to something. Or maybe add a FoodData?
+
+1. Upgrade bootstrap to bootstrap 5
+
+1. Email notifications pour le calendrier repas du lendemain
+
+1. Un boolean pour les substitutions pour savoir si c'est une substitution exact ou pas. Par exemple, lait de soja n'est pas une substitution exact avec lait d'avoine. Mais gousse d'ail est une substitution exacte pour ail hâché.
+
+1. [image#1] link
+2. [image#1,"what to show???"] link
+3. [=image#1] show this image
+4. [section#1] link to this section
+5. [=section#1] show the title of this section with a link to the section
+6. [article#1] link to this article
+7. Link les ingrédients aux articles sur le site internet.
+8. Vegan, végétarien, Gluten-free
+9. Gluten-free logo
+10. TODO: Handle un ingrédient utiliser à plusieurs endroit. 4 c. à table d'huile. {(1 c. à table,1),3-5}
+11. {(1)},{(1 t)},{(1 L,1)}
+12. Lien vers tremper les pois chiches.
+13. TODO: Offrir la possibilité de spécifier le poids de ta courge butternut.
+14. Dans le fond, le site internet, développer une plateforme pour des recettes. Idéalement des bloggeurs pourrait l'utiliser pour leur propre recette? Le problème c'est que j'aimerais que les recettes du site respecte un format en particulier... Les règles par contres doivent être respecté.
+15. Des FoodSubstitution food:references substitute:references ratio:float et des IngredientSubstitution. Pareil comme FoodSubstitution, mais recipe specific.
+16. Laisser l'utilisateur choisir le nom d'ingrédient qu'il préfère quand il y en a plusieurs.
+17. Pouvoir substituer les ingrédients en cliquant sur le crayon avec un carré autour. Le faire avec ail. Gousse d'ail, Tête d'ail, Ail écrasé, Ail émincé, Ail hâché, Poudre d'ail. Dans le dropdown faire une flèche sur le côté avec les substitutions possibles. Les instructions de la recettes ne seront pas modifié, mais ce n'est pas grave. Offrir à l'utilisateur la possibilité de changer les instructions. Dans le fond, lorsque l'utilisateur clique sur une substitution, ce qui se passe est qu'une recette est créer pour l'utilisateur si elle n'existe pas déjà (2e modification). Et cette recette est enregistrer selon les modification. Dans le fond, la recette est dupliqué et les changements se font sur la recette dupliqué.
+18. Pour montrer que c'est possible de substituer des ingrédients, ajouter une flèche rouge qui pointe vers le truc pour pouvoir modifier les ingrédients.
+19. Compiler le site internet statique. Les utilisateurs connectés utilisent le site internet en ligne. Les utilisateurs non connectés regardent la version statique compilé. Pour compiler, télécharger la base de donnée. Rouler le site localement en mode production. Crawler mon propre site internet.
+20. Si jamais les utilisateurs peuvent créer du contenu, faire très attention à la sécurité. Par exemple, éviter html_safe. Sanitize properly.
+21. Valider recette de pain à la main
+22. Faire des liens vers les notes.
+23. Un calendrier sans machine?
+24. Une image du numéro de version à rajouter par dessus les images des recettes. Peut-être une étoile en rouge avec une écriture jaune? Ver 2, Ver 3, ...
+25. Au lieu de Appareils dans la barre en haut, mettre un dropdown avec les machines de l'utilisateur actuel. Quoi mettre lorsque l'utilisateur n'en a pas? Comment atteindre le calendrier?
+
+1. Image editor garder correctement toutes les images actuelles (rsync? dropbox) En fait je pense enlever image-editor et l'intégrer à hedacuisine serait le best. je ne sais pas comment faire par contre pour hoster les images.
+
+1. Enlever la colle du gripper au millieu. Juste à gauche et à droite. Même pas en haut et en bas.
+
+1. Application pour ne plus avoir à réfléchir sur quoi faire pour soupe? What's for supper? Qu'est-ce qu'on soupe?
+
+1. Sabler la tablette
+2. Switch pour détecter la porte est bien fermée.
+
+1. Ajouter des références aux articles. Par exemple, pourquoi faire tremper les pois chiches de 8 à 24h [*...pois_chiches#Trempage des pois chiches]
+
+{} == substitution
+{1} un chiffre == nom de l'ingrédient
+{1.0} un float == une quantitée
+{-1-8} une liste avec les ingrédients (lorsque c'est la première choses d'une phrase et/ou lorsque que le truc commencent par un tiret
+{d1} déterminant plus le nom de l'ingrédient
+{_1} == juste le nom de l'ingrédient, pas la quantité
+fuck les déterminants lorsqu'il n'y a pas d'unité? ça devient compliqué pour les traductions et ça n'apporte strictement rien.
+c'est ben plus simple de simplement marqué le nom de l'ingrédient dans la recette. au pire utiliser {_1}, mais ça pourrait être cool si on veut que ce soit un lien. Mais pour un lien idéalement utiliser []
+% pour substitution peut-être aussi
+= add(10) => fonction comme dans excel
+/ Hello => paragraphe en italic
+
+1. Dans le truc de recherche rajouter le logo, sans gluten, végane, végétarien, à la droite des versions...
+
+
+1. Un thème récurrant. Les ingrédients en version fraîche ou bien en version déshydratés. Offrir les 2 recettes? Soupe aux patates. Soupe aux patates express. Quand il est inscrit express ça veut dire qu'au moins 1 des ingrédients est déshydraté. Dans les instructions de la recette: _Voir aussi la version rapide: Soupe aux patates express_ ou bien _Voir aussi la version avec des ingrédients frais: Soupe aux patates_ Dans la version express mettre les haricots cuits?
+2. Rajouter version:integer à une recette. Validate uniqueness name AND version
+
+1. Cable 25"+2X(56")+2X(2"[pour la boucle]) == 141" (moins 2" parce que ça adonne de même) == 139"! FIXME: 2 tours au lieu de 1...
+2. Tenir le cable tray vertical en place.
+3. Lumières dans l'armoire (https://www.amazon.ca/Govee-Upgraded-Dimmable-Daylight-Flexible/dp/B07V46H7YL/ref=sr_1_4?dchild=1&keywords=white+led+strip+lights&qid=1630604006&s=hi&sr=1-4)
+4. Vider l'armoire et la remplir de pots pour pouvoir prendre des photos et des vidéos.
+5. Gripper
+6. LES MAUDITS CÂBLES ÉLECTRIQUES... (Thêta de -120 à 120 et alpha de -170 à 170?)
+7. Grant application
+8. Faire la partie du bas que je veux faire pour mettre l'ordinateur et le vise. Comme ça cela va pouvoir être caché. Finir de câblé pour pouvoir remmener des boites de trucs chez mes parents.
+9. Prendre de belles photos de ma machine (en fds avec le gros soleil en plein jour)
+10. Simuler avoir été à l'épicerie. Mettre sur le comptoir par batch les pots qui était dans la liste d'épicerie.
+11. Faire une belle page web de fabrication de l'armoire de cuisine avec le modèle 3D, un peu comme celui de Shanty 2 Chic.
+12. Tous les mouvements fonctionnels (refaire les roues verticales, plus de jeu horizontal, vrais gear pour axe T, plus de jeu B)
+13. App login into website
+14. Ne pas passer à travers les tablettes
+15. Des câbles électriques plus flexible
+16. Beau boitier électrique (protocase), bien câblé, bouton power et lumière power.
+17. Page d'acceuil de vente (pour chaque section, rajouter un Pour en savoir plus >, une page qui montre les calculs derrière ce qui est dit ou en parle d'avantages)
+18. Axe B: Addosser le gear box du moteur correctement dans la boite. (Creuser un petit peu vis à vis les trous qui dépassent)
+19. Caméra
+20. Vendre à 1 client. Vendre des locations, parce que le produit risque de changer. (Boulangerie, Prêt-à-cuisiner, petite boutique de nourriture, ...)
+21. Être capable de reach partout (2/4 coins de chaque tablette)
+22. Un moyen de fixer la machine à l'armoire en haut
+23. Homing system
+24. Continuer la simulation du bras robotique pour pouvoir le programmer, aller chercher les ingrédients, puis verser des aliments grossiers, puis faire des muffins.
