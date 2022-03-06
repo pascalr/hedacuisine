@@ -15,6 +15,13 @@ class RecipesController < ApplicationController
     #@items = Item.order(:name).all
   end
 
+  def __trim_between_unit_and_food(line)
+    line = line.strip
+    line = line[1..-1].lstrip if line.start_with? '.'
+    line = line[2..-1].lstrip if line.start_with? 'de'
+    line
+    
+  end
   def __extract_qty(line)
     started = false
     result = ''
@@ -45,11 +52,12 @@ class RecipesController < ApplicationController
       line = raw_line.strip
       qty, rest = __extract_qty(line)
       unit, raw_food = __extract_unit(rest)
+      trimmed_food = __trim_between_unit_and_food(raw_food)
       raw = qty.to_s + (qty.blank? || unit.blank? ? '' : ' ') + unit.to_s
-      @recipe.recipe_ingredients.create!(raw: raw, raw_food: raw_food)
+      @recipe.recipe_ingredients.create!(raw: raw, raw_food: trimmed_food)
     end
     respond_to do |format|
-      format.json { render json: {ingredients: (@recipe.recipe_ingredients.map {|r| to_obj(r)})} }
+      format.json { render json: {ingredients: (@recipe.recipe_ingredients.order(:item_nb).map {|r| to_obj(r)})} }
     end
   end
 
