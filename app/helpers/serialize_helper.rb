@@ -120,7 +120,7 @@ module SerializeHelper
   end
 
   def ingredient_section_to_obj(section)
-    obj = extract_attributes(section, :name, :before_ing_nb)
+    obj = section.to_obj
     obj.merge!({
       url: recipe_ingredient_section_path(section.recipe, section)
     })
@@ -141,7 +141,7 @@ module SerializeHelper
   end
 
   def recipe_ingredient_to_obj(ing)
-    obj = extract_attributes(ing, :name, :item_nb, :raw, :comment_json)
+    obj = ing.to_obj
     obj.merge!({
       url: recipe_recipe_ingredient_path(ing.recipe, ing)
     })
@@ -152,7 +152,7 @@ module SerializeHelper
   end
 
   def food_to_obj(food)
-    obj = extract_attributes(food, :name)
+    obj = food.to_obj
     obj[:url] = food_path(food)
     obj
   end
