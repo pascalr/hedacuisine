@@ -15,6 +15,7 @@ class RecipesController < ApplicationController
     #@items = Item.order(:name).all
   end
 
+  # TODO: Move all these functions elsewhere, inside lib? Inside RecipeIngredient?
   def __trim_between_unit_and_food(line)
     line = line.strip
     line = line[1..-1].lstrip if line.start_with? '.'
@@ -46,15 +47,24 @@ class RecipesController < ApplicationController
     end
     return nil, line
   end
+  # TODO: Move all these functions elsewhere, inside lib? Inside RecipeIngredient?
   def paste_ingredients
-    text = params[:pasted]
-    text.each_line do |raw_line|
-      line = raw_line.strip
-      qty, rest = __extract_qty(line)
-      unit, raw_food = __extract_unit(rest)
-      trimmed_food = __trim_between_unit_and_food(raw_food)
-      raw = qty.to_s + (qty.blank? || unit.blank? ? '' : ' ') + unit.to_s
-      @recipe.recipe_ingredients.create!(raw: raw, raw_food: trimmed_food)
+    ActiveRecord::Base.transaction do
+      @recipe.recipe_ingredients.destroy_all
+      text = params[:pasted]
+      text.each_line do |raw_line|
+        line = raw_line.strip
+        if line.include? ";"
+          s = line.split(";", 2)
+          @recipe.recipe_ingredients.create!(raw: s[0].rstrip, raw_food: s[1].lstrip)
+        else
+          qty, rest = __extract_qty(line)
+          unit, raw_food = __extract_unit(rest)
+          trimmed_food = __trim_between_unit_and_food(raw_food)
+          raw = qty.to_s + (qty.blank? || unit.blank? ? '' : ' ') + unit.to_s
+          @recipe.recipe_ingredients.create!(raw: raw, raw_food: trimmed_food)
+        end
+      end
     end
     respond_to do |format|
       format.json { render json: {ingredients: (@recipe.recipe_ingredients.order(:item_nb).map {|r| to_obj(r)})} }

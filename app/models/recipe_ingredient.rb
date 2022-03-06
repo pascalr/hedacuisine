@@ -78,6 +78,6 @@ class RecipeIngredient < ApplicationRecord
   #end
   
   def to_obj(params={})
-    extract_attributes(params, :name, :item_nb, :raw, :comment_json, :food_id)
+    extract_attributes(params, :name, :item_nb, :raw, :comment_json, :food_id, :raw_food)
   end
 end

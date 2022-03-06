@@ -407,7 +407,7 @@ class RecipeEditor extends React.Component {
             <img src="/icons/plus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}}/>
             <img src="/icons/minus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}}/>
           </Toggleable>
-          <PasteIngredientsButton handleSubmit={this.pasteIngredients} />
+          <PasteIngredientsButton ingredients={this.state.ingredients} handleSubmit={this.pasteIngredients} />
         </Row>
       </ul>
 
