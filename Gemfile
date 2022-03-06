@@ -5,6 +5,7 @@ ruby '3.0.2'
 
 # -------- MINE --------------
 gem 'figaro' # For environment variables
+gem 'sqlite3'
 gem 'activestorage-backblaze' # For storing images on backblaze
 gem 'react-rails' # For using react
 gem 'gon' # For passing data from rails to js
