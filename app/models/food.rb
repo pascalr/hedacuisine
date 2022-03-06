@@ -102,4 +102,8 @@ class Food < ApplicationRecord
     end
     list
   end
+
+  def to_obj(params={})
+    extract_attributes(params, :name)
+  end
 end

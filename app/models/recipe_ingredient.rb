@@ -76,4 +76,8 @@ class RecipeIngredient < ApplicationRecord
   #def nb_units
   #  weight / food.unit_weight
   #end
+  
+  def to_obj(params={})
+    extract_attributes(params, :name, :item_nb, :raw, :comment_json, :food_id)
+  end
 end

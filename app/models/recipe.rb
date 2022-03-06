@@ -292,6 +292,10 @@ class Recipe < ApplicationRecord
     nil
   end
 
+  def to_obj(params={})
+    extract_attributes(params, :name, :recipe_kind_id, :main_ingredient_id, :preparation_time, :cooking_time, :total_time, :raw_servings, :json)
+  end
+
 private
 
   def update_mods_unpublished
