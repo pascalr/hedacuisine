@@ -30,12 +30,6 @@ private
     if assoc.is_a? Hash
       assoc.each do |assoc_name, nested_association|
         obj = extract_assoc(obj, record, assoc_name, nested_association)
-        #nested = record.send(assoc_name)
-        #if nested.is_a?(Enumerable) # has_many association
-        #  nested.each {|n| obj = extract_assoc(obj, n, nested_association)}
-        #else # has_one or belongs_to association
-        #  obj = extract_assoc(obj, nested, nested_association)
-        #end
       end
       return obj
     end
@@ -43,9 +37,9 @@ private
     assoc = assoc.to_sym
     val = record.send(assoc)
     if val.is_a?(Enumerable) # has_many association
-      obj[assoc] = val.map {|v| v ? v.to_obj(params.blank? ? nil : {includes: :params}) : nil}
+      obj[assoc] = val.map {|v| v ? v.to_obj(params.blank? ? nil : {includes: params}) : nil}
     else # has_one or belongs_to association
-      obj[assoc] = val ? val.to_obj(params.blank? ? nil : {includes: :params}) : nil
+      obj[assoc] = val ? val.to_obj(params.blank? ? nil : {includes: params}) : nil
     end
     obj
   end
