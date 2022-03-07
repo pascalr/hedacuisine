@@ -5,6 +5,11 @@ $download_list ||= []
 LOCALES = ["fr-CA"]
 #LOCALES = ["fr", "en"]
 
+def heroku_config(config_name)
+  raw = `heroku config | grep #{config_name}`
+  raw[config_name.length+1..-1].strip
+end
+
 def add_download(path)
   puts "Adding path to download: #{path}"
   $download_list << "http://localhost:3001#{path}"
@@ -164,19 +169,19 @@ namespace :website do
   end
 
   task sync_from_local_to_b2: :environment do
-    bucket_name = ENV['BACKBLAZE_BUCKET_NAME']
-    #bucket_id = ENV['BACKBLAZE_BUCKET_ID']
-    key_id = ENV['BACKBLAZE_KEY_ID']
-    key_token = ENV['BACKBLAZE_KEY_TOKEN']
+    bucket_name = heroku_config 'BACKBLAZE_BUCKET_NAME'
+    #bucket_id = heroku_config 'BACKBLAZE_BUCKET_ID'
+    key_id = heroku_config 'BACKBLAZE_KEY_ID'
+    key_token = heroku_config 'BACKBLAZE_KEY_TOKEN'
 
     system("B2_APPLICATION_KEY_ID=#{key_id} B2_APPLICATION_KEY=#{key_token} ~/Downloads/b2-linux sync #{get_sync_folder} b2://#{bucket_name}/")
   end
   
   task sync_from_b2_to_local: :environment do
-    bucket_name = ENV['BACKBLAZE_BUCKET_NAME']
-    #bucket_id = ENV['BACKBLAZE_BUCKET_ID']
-    key_id = ENV['BACKBLAZE_KEY_ID']
-    key_token = ENV['BACKBLAZE_KEY_TOKEN']
+    bucket_name = heroku_config 'BACKBLAZE_BUCKET_NAME'
+    #bucket_id = heroku_config 'BACKBLAZE_BUCKET_ID'
+    key_id = heroku_config 'BACKBLAZE_KEY_ID'
+    key_token = heroku_config 'BACKBLAZE_KEY_TOKEN'
 
     system("B2_APPLICATION_KEY_ID=#{key_id} B2_APPLICATION_KEY=#{key_token} ~/Downloads/b2-linux sync b2://#{bucket_name}/ #{get_sync_folder}")
   end

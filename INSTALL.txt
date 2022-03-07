@@ -35,3 +35,5 @@ heroku git:remote -a aqueous-fortress-30634
 # In ~/.bashrc:
 # eval "$(rbenv init -)"
 # rbenv shell 3.0.2
+
+# Ou bien installer avec rvm? Je ne sais plus. Sur mon chromebook j'avais installé avec rvm.
