@@ -13,4 +13,9 @@ $ heroku login -i
 $ sudo apt install ruby-sequel
 $ gem install sequel
 
+# Installer node.js
+$ wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+$ source ~/.bashrc
+$ nvm install 16.14
+
 https://www.backblaze.com/b2/docs/quick_command_line.html # Télécharger le command line et le mettre dans le ~/Downloads/b2-linux
