@@ -37,6 +37,7 @@
     "react-dom": "^17.0.2",
     "react-hammerjs": "^1.0.1",
     "react_ujs": "^2.6.1",
+    "sass": "^1.49.9",
     "sortablejs": "^1.14.0",
     "stimulus": "^2.0.0",
     "styled-components": "^5.3.3",
@@ -54,6 +55,7 @@
     "node": "16.14"
   },
   "scripts": {
-    "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds"
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds",
+    "build:css": "sass ./app/assets/stylesheets/application.sass.scss ./app/assets/builds/application.css --no-source-map --load-path=node_modules"
   }
 }

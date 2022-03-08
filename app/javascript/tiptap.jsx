@@ -28,7 +28,7 @@ import Subscript from '@tiptap/extension-subscript'
 import Superscript from '@tiptap/extension-superscript'
 import { Node, mergeAttributes, nodeInputRule, textblockTypeInputRule } from '@tiptap/core'
 
-import {ImageButton, HelpButton, StepButton, IngredientButton, AddNoteButton, MeasuringButton, CharButton, BoldButton, ItalicButton, MoreButton, StrikeButton, LinkButton, SubscriptButton, SuperscriptButton} from 'buttons'
+import {ImageButton, HelpButton, StepButton, IngredientButton, AddNoteButton, MeasuringButton, CharButton, BoldButton, ItalicButton, MoreButton, StrikeButton, LinkButton, SubscriptButton, SuperscriptButton} from './buttons'
 
 // https://stackoverflow.com/questions/59769774/prosemirror-using-holes-contentdom-when-returning-dom-nodes-from-todom
 // https://stackoverflow.com/questions/3066427/native-way-to-copy-all-child-nodes-to-an-other-element
@@ -49,9 +49,9 @@ function elementFromJSX(value) {
 }
 
 // MINE
-import Quantity from 'models/quantity'
-import { Ingredient, Utils } from "recipe_utils"
-import { ajax } from "utils"
+import Quantity from './models/quantity'
+import { Ingredient, Utils } from "./recipe_utils"
+import { ajax } from "./utils"
 
 const PageComponent = () => {
   //<span className="label" contentEditable={false}>React Component</span>

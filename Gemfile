@@ -27,7 +27,7 @@ gem "acts_as_list", "~> 1.0"
 gem 'chartkick'
 #gem 'importmap-rails' # For javascript, not using yet because import maps are not supported by my old smartphone
 gem 'jsbundling-rails' # For javascript
-gem 'cssbundling-rails' # For automatically detecting changes to css. Not sure if I will use this...
+gem 'cssbundling-rails' # For automatically detecting changes to css.
 gem "sprockets-rails" # I don't know...
 gem 'foreman' # In order to use bin/dev
 # ----------------------------
