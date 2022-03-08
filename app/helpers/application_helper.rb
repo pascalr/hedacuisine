@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+  def css_import_tag(name)
+    stylesheet_link_tag 'autocomplete_search'
+  end
+
   def js_import_tag(name)
     javascript_include_tag(name)
     #javascript_import_module_tag(name) # For import maps if I ever convert
