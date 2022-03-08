@@ -25,7 +25,7 @@
     <%= include_gon %>
     <%# javascript_importmap_tags %>
     <%# javascript_include_tag "application", defer: true %>
-    <%# js_import_tag 'application' %>
+    <%= js_import_tag 'application' %>
     <%= js_import_tag "autocomplete_search" %>
     <%= yield(:import_js) %>
     <%= stylesheet_link_tag "application" %>

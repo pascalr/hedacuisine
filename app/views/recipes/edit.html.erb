@@ -17,5 +17,7 @@
   <div style="height: 5em;"></div>
 </div>
 
-<%= javascript_pack_tag 'react_recipe_editor' %>
-<%= stylesheet_pack_tag 'react_recipe_editor' %>
+<% content_for :import_js do %>
+  <%= js_import_tag 'recipe_editor' %>
+  <%= stylesheet_include_tag 'recipe_editor' %>
+<% end %>
