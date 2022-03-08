@@ -24,8 +24,10 @@
     <%= yield(:og_tags) %>
     <%= include_gon %>
     <%# javascript_importmap_tags %>
-    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
-    <%= yield(:head_js) %>
+    <%# javascript_include_tag "application", defer: true %>
+    <%# js_import_tag 'application' %>
+    <%= js_import_tag "autocomplete_search" %>
+    <%= yield(:import_js) %>
   </head>
   <body>
     <div id="top-search">
@@ -57,9 +59,6 @@
         <small style="margin-left: 1rem;">&copy; Copyright <%= Date.current.year%>, Pascal Rainville</small>
       </footer>        
     </div>
-
-    <%# js_import_tag 'application' %>
-    <%= js_import_tag "autocomplete_search" %>
 
     <script async src="//static.getclicky.com/101337754.js"></script>
     <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101337754ns.gif" /></p></noscript>

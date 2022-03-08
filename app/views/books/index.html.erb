@@ -5,6 +5,6 @@
 
 <%= render partial: "books/carrousel", locals: {key: 'book-1', list: @books} %>
 
-<% content_for :head_js do %>
+<% content_for :import_js do %>
   <%= js_import_tag "book_carrousel" %>
 <% end %>
