@@ -22,9 +22,6 @@ class ImagesController < ApplicationController
     redirect_to @image.medium_variant
   end
   def portrait_thumb
-    x = 10
-    debugger
-    y = 20
     redirect_to @image.portrait_thumb_variant
   end
   def small_book
