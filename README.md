@@ -21,3 +21,6 @@ $ source ~/.bashrc
 $ nvm install 16.14
 
 https://www.backblaze.com/b2/docs/quick_command_line.html # Télécharger le command line et le mettre dans le ~/Downloads/b2-linux
+
+# Installer foreman pour pouvoir utiliser bin/dev
+sudo apt install ruby-foreman

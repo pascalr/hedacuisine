@@ -29,6 +29,7 @@ gem 'chartkick'
 gem 'jsbundling-rails' # For javascript
 gem 'cssbundling-rails' # For automatically detecting changes to css. Not sure if I will use this...
 gem "sprockets-rails" # I don't know...
+gem 'foreman' # In order to use bin/dev
 # ----------------------------
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

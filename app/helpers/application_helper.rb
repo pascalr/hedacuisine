@@ -5,7 +5,7 @@ module ApplicationHelper
   end
 
   def js_import_tag(name)
-    javascript_include_tag(name)
+    javascript_include_tag(name, defer: true)
     #javascript_import_module_tag(name) # For import maps if I ever convert
   end
 

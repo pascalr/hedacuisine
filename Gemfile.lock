@@ -136,6 +136,7 @@ GEM
       excon (~> 0.71)
       formatador (~> 0.2)
       mime-types
+    foreman (0.87.2)
     formatador (0.3.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
@@ -330,6 +331,7 @@ DEPENDENCIES
   devise
   devise-i18n
   figaro
+  foreman
   gon
   image_processing
   jbuilder (~> 2.7)

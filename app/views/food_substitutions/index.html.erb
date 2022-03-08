@@ -42,4 +42,6 @@
   </tbody>
 </table>
 
-<%= javascript_pack_tag "autocomplete_field" %>
+<% content_for :import_js do %>
+  <%= js_import_tag "autocomplete_field" %>
+<% end %>
