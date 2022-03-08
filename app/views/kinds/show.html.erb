@@ -20,4 +20,6 @@
   <%# link_to translated(recipe.name).capitalize, recipe %>
 <% end %>
 
-<%= javascript_pack_tag "recipe_slider_pack_v2" %>
+<% content_for :import_js do %>
+  <%= js_import_tag "recipe_carrousel" %>
+<% end %>
