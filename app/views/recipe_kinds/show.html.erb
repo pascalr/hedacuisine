@@ -20,3 +20,6 @@
 <% end %>
     
 <%# link_to "Ajouter une recette", public_editor_url(my_recipes_path), class: "btn btn-outline-primary" %>
+<% content_for :import_js do %>
+  <%= js_import_tag "paginator" %>
+<% end %>

@@ -24,7 +24,7 @@
   <% end %>
 </div>
 
-<%= javascript_pack_tag "toggle_link" %>
-<%= javascript_pack_tag "dropdown_submenu" %>
-<%= javascript_pack_tag current_user ? "recipe_rating" : "recipe_rating_read_only" %>
-<%= javascript_pack_tag "recipes_show" %>
+<%# javascript_pack_tag current_user ? "recipe_rating" : "recipe_rating_read_only" %>
+<% content_for :import_js do %>
+  <%= js_import_tag "recipes_show" %>
+<% end %>
