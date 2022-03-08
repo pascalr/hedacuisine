@@ -10,7 +10,7 @@
     <%= csp_meta_tag %>
     <meta charset="utf-8"/>
     <%= stylesheet_link_tag 'application', media: 'all' %>
-    <%= stylesheet_pack_tag 'autocomplete_search' %>
+    <%# stylesheet_pack_tag 'autocomplete_search' %>
     <link href='https://fonts.googleapis.com/css?family=Caveat' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <% description = yield(:description) %>
@@ -23,6 +23,9 @@
     <% end %>
     <%= yield(:og_tags) %>
     <%= include_gon %>
+    <%# javascript_importmap_tags %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+    <%= yield(:head_js) %>
   </head>
   <body>
     <div id="top-search">
@@ -55,8 +58,8 @@
       </footer>        
     </div>
 
-    <%= javascript_pack_tag 'application' %>
-    <%= javascript_pack_tag "autocomplete_search" %>
+    <%# js_import_tag 'application' %>
+    <%= js_import_tag "autocomplete_search" %>
 
     <script async src="//static.getclicky.com/101337754.js"></script>
     <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101337754ns.gif" /></p></noscript>

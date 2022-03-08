@@ -15,7 +15,7 @@
 
 /data
 
-/db/migrated.sqlite3
+/db/*.sqlite3
 
 /design
 
@@ -54,3 +54,6 @@ yarn-debug.log*
 
 # Ignore application configuration
 /config/application.yml
+
+/app/assets/builds/*
+!/app/assets/builds/.keep

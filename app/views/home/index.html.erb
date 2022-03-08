@@ -14,5 +14,7 @@
   </div>
 <% end %>
 
-<%= javascript_pack_tag "recipe_slider_pack_v2" %>
-<%= javascript_pack_tag "book_carrousel" %>
+<% content_for :head_js do %>
+  <%= js_import_tag "recipe_carrousel" %>
+  <%= js_import_tag "book_carrousel" %>
+<% end %>

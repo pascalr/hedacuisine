@@ -1,5 +1,10 @@
 module ApplicationHelper
 
+  def js_import_tag(name)
+    javascript_include_tag(name)
+    #javascript_import_module_tag(name) # For import maps if I ever convert
+  end
+
   def current_user_id
     current_user ? current_user.id : nil
   end

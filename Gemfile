@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.0.2'
 
 # -------- MINE --------------
-#gem 'figaro' # For environment variables # Deprecated. Use `heroku config` instead
+gem 'figaro' # For environment variables # Deprecated. Use `heroku config` instead
 gem 'sqlite3'
 gem 'activestorage-backblaze' # For storing images on backblaze
 gem 'react-rails' # For using react
@@ -19,25 +19,27 @@ gem 'devise-i18n' # For authentication in all languages
 #gem 'mittsu' # For simulation and collision detection
 #gem 'nokogiri', '1.10.10'
 gem "simple_calendar", "~> 2.0" # For a calendar
-gem 'rails-i18n', '~> 6.0.0' # For locale (languages by region)
+gem 'rails-i18n', '>= 6.0.0' # For locale (languages by region)
 gem 'mini_magick' # to analyze image widths
 gem 'piet' # to reduce file size
 gem "aws-sdk-s3", require: false # For AWS
 gem "acts_as_list", "~> 1.0"
 gem 'chartkick'
+#gem 'importmap-rails' # For javascript, not using yet because import maps are not supported by my old smartphone
+gem 'jsbundling-rails' # For javascript
+gem 'cssbundling-rails' # For automatically detecting changes to css. Not sure if I will use this...
+gem "sprockets-rails" # I don't know...
 # ----------------------------
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 #gem 'rails', '~> 6.0.3', '>= 6.0.3.4'
-gem 'rails'
+gem 'rails', '~> 7.0.2'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
 gem 'puma', '~> 4.1'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6'
-# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem 'webpacker', '~> 4.0'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder

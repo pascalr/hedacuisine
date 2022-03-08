@@ -9,6 +9,8 @@ $ heroku login -i
 
 ## Installation
 
+Prendre les valeurs de heroku et les mettre pour figaro.
+
 # Installer sequel pour pouvoir copier la database de postgresql to sqlite3.
 $ sudo apt install ruby-sequel
 $ gem install sequel

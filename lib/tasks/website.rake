@@ -233,6 +233,10 @@ namespace :website do
       #else
       #  puts "File missing: Image(id: #{im.id}, key: #{im.original.key})"
       #end
+      if !File.file?(path)
+        puts "FIXME: Skipping missing path #{path}"
+        next
+      end
       i.original.attach(io: File.open(path), filename: data[:filename])
     end
     
