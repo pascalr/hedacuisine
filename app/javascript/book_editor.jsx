@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 
-import { DeleteConfirmButton } from 'components/delete_confirm_button'
+import { DeleteConfirmButton } from './components/delete_confirm_button'
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Autosuggest from 'react-autosuggest'
 
-import { ajax, sortBy, isBlank } from "../utils"
-import { combineOrderedListWithHeaders } from '../lib'
+import { ajax, sortBy, isBlank } from "./utils"
+import { combineOrderedListWithHeaders } from './lib'
 
-import { DescriptionTiptap, ModificationsHandler } from 'tiptap'
+import { DescriptionTiptap, ModificationsHandler } from './tiptap'
 
-import {UploadableImage} from '../modals/uploadable_image'
+import {UploadableImage} from './modals/uploadable_image'
 
 //
 import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from 'jsxstyle'
@@ -20,7 +20,7 @@ import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from '
 //import Quantity from 'models/quantity'
 //import { Ingredient, Utils } from "recipe_utils"
 
-import {updateRecord, asyncUpdateModel, EditableField, TextField, ToggleField, CollectionSelect} from '../form'
+import {updateRecord, asyncUpdateModel, EditableField, TextField, ToggleField, CollectionSelect} from './form'
 
 const RecipeKindFinder = ({onRecipeKindFound}) => {
   const [value, setValue] = useState('')

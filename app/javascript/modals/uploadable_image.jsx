@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Modal from 'react-bootstrap/Modal'
 
-import {asyncUpdateModel, TextField, FileField, RadioField} from 'form'
+import {asyncUpdateModel, TextField, FileField, RadioField} from '../form'
 
 export const UploadableImage = ({onDelete, image, width, height, variant}) => {
   let path = image ? image.variants[variant] : ''

@@ -2,6 +2,6 @@
 
 <div id="root"></div>
 
-<%= javascript_pack_tag "recipe_kind_editor" %>
-<%# stylesheet_pack_tag "react_recipe_editor" %>
-<%# javascript_pack_tag "edit" %>
+<% content_for :import_js do %>
+  <%= js_import_tag "recipe_kind_editor" %>
+<% end %>

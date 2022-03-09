@@ -11,5 +11,6 @@
 <h2>Références</h2>
 
 <%# javascript_pack_tag "edit" %>
-<%= javascript_pack_tag "article_editor" %>
-<%= stylesheet_pack_tag "react_recipe_editor" %>
+<% content_for :import_js do %>
+  <%= js_import_tag "article_editor" %>
+<% end %>

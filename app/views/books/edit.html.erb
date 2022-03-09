@@ -3,4 +3,6 @@
 
 <div id="root"></div>
 
-<%= javascript_pack_tag "book_editor" %>
+<% content_for :import_js do %>
+  <%= js_import_tag "book_editor" %>
+<% end %>

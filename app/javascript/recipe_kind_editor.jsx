@@ -3,15 +3,14 @@ import ReactDOM from 'react-dom'
 
 import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from 'jsxstyle'
 
-import {UploadableImage} from '../modals/uploadable_image'
+import {UploadableImage} from './modals/uploadable_image'
 
-import {updateRecord, asyncUpdateModel, TextField} from '../form'
+import {updateRecord, asyncUpdateModel, TextField} from './form'
 
 //import Quantity from 'models/quantity'
 //import { Ingredient, Utils } from "recipe_utils"
 
-import { DescriptionTiptap, ModificationsHandler } from 'tiptap'
-import '../styles/prose_mirror.scss'
+import { DescriptionTiptap, ModificationsHandler } from './tiptap'
 
 class RecipeKindEditor extends React.Component {
 
