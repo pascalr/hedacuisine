@@ -5,7 +5,6 @@ ruby '3.0.2'
 
 # -------- MINE --------------
 gem 'figaro' # For environment variables # Deprecated. Use `heroku config` instead
-gem 'sqlite3'
 gem 'activestorage-backblaze' # For storing images on backblaze
 gem 'react-rails' # For using react
 gem 'gon' # For passing data from rails to js
@@ -55,6 +54,10 @@ gem 'image_processing'#, '~> 1.2'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
+
+group :development, :test, :local do
+  gem 'sqlite3'
+end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
