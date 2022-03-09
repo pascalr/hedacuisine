@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 
-import {clearRecord, asyncUpdateModel, TextField, FileField, RadioField} from 'form'
+import {clearRecord, asyncUpdateModel, TextField, FileField, RadioField} from '../form'
 
 export const EditRecipeImageModal = ({recipe, recipeImage, recipeKindImage, show, handleClose}) => {
 

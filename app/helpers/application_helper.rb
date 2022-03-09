@@ -1,7 +1,7 @@
 module ApplicationHelper
 
-  def css_import_tag(name)
-    stylesheet_link_tag 'autocomplete_search'
+  def css_import_tag(name, params={})
+    stylesheet_link_tag(name, params)
   end
 
   def js_import_tag(name)

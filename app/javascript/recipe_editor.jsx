@@ -6,23 +6,22 @@ import Autosuggest from 'react-autosuggest'
 
 import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from 'jsxstyle'
 
-import Quantity from 'models/quantity'
-import { Ingredient, Utils } from "recipe_utils"
-import { ajax } from "../utils"
+import Quantity from './models/quantity'
+import { Ingredient, Utils } from "./recipe_utils"
+import { ajax } from "./utils"
 
-import { DeleteConfirmButton } from 'components/delete_confirm_button'
+import { DeleteConfirmButton } from './components/delete_confirm_button'
 
-import { Tiptap, BubbleTiptap, ModificationsHandler } from 'tiptap'
-import '../styles/prose_mirror.scss'
+import { Tiptap, BubbleTiptap, ModificationsHandler } from './tiptap'
 
-import {AutocompleteInput, updateRecord, TextField, CollectionSelect} from '../form'
+import {AutocompleteInput, updateRecord, TextField, CollectionSelect} from './form'
 
-import { combineOrderedListWithHeaders } from '../lib'
+import { combineOrderedListWithHeaders } from './lib'
 
-import {EditRecipeImageModal} from '../modals'
-import {PasteIngredientsButton} from '../modals/paste_ingredients'
+import {EditRecipeImageModal} from './modals/recipe_image'
+import {PasteIngredientsButton} from './modals/paste_ingredients'
 
-import {paste_ingredients_recipes_path } from '../routes'
+import {paste_ingredients_recipes_path } from './routes'
 
 const InstructionsShortcuts = props => (
   <>
