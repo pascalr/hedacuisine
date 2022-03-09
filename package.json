@@ -2,10 +2,6 @@
   "name": "hedacuisine",
   "private": true,
   "dependencies": {
-    "@emotion/react": "^11.5.0",
-    "@emotion/styled": "^11.3.0",
-    "@mui/material": "^5.1.0",
-    "@mui/styled-engine-sc": "^5.1.0",
     "@popperjs/core": "^2.10.1",
     "@tiptap/extension-bubble-menu": "^2.0.0-beta.50",
     "@tiptap/extension-link": "^2.0.0-beta.28",
@@ -15,15 +11,11 @@
     "@tiptap/starter-kit": "^2.0.0-beta.140",
     "@tiptap/suggestion": "^2.0.0-beta.82",
     "bootstrap": "5.1.1",
-    "chart.js": "^3.5.0",
-    "chartkick": "^4.0.5",
     "esbuild": "^0.14.25",
     "jquery": "^3.5.1",
     "js-autocomplete": "^1.0.4",
     "jsxstyle": "^2.5.1",
     "popper.js": "^1.16.1",
-    "prop-types": "^15.7.2",
-    "rails-erb-loader": "^5.5.2",
     "react": "^17.0.2",
     "react-autosuggest": "^10.1.0",
     "react-beautiful-dnd": "^13.1.0",
@@ -32,16 +24,10 @@
     "react-hammerjs": "^1.0.1",
     "react_ujs": "^2.6.1",
     "sass": "^1.49.9",
-    "sortablejs": "^1.14.0",
-    "styled-components": "^5.3.3",
-    "svgexport": "^0.4.1",
     "tiny-slider": "^2.9.3",
     "toastr": "^2.1.4"
   },
   "version": "0.1.0",
-  "devDependencies": {
-    "webpack-dev-server": "^3.11.2"
-  },
   "engines": {
     "node": "16.14"
   },

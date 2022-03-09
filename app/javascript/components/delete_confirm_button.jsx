@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-import Popover from '@mui/material/Popover';
-import Typography from '@mui/material/Typography';
+//import Popover from '@mui/material/Popover';
+//import Typography from '@mui/material/Typography';
 
 export const DeleteConfirmButton = ({id, onDeleteConfirm, message}) => {
 
@@ -9,21 +9,22 @@ export const DeleteConfirmButton = ({id, onDeleteConfirm, message}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   return (<>
-    <button type="button" aria-describedby={`delete-popover-${id}`} className="plain-btn" onClick={(evt) => setAnchorEl(evt.currentTarget)}>
-      <img src="/icons/x-lg.svg"/>
-    </button>
-    <Popover
-      id={`delete-popover-${id}`}
-      open={anchorEl != null}
-      anchorEl={anchorEl}
-      onClose={() => setAnchorEl(null)}
-      anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
-      transformOrigin={{vertical: 'bottom', horizontal: 'right'}}
-    >
-      <Typography sx={{ p: 2 }}>
-        {message}
-        <button type="button" className="btn btn-primary" style={{marginLeft: "10px"}} onClick={(e) => {onDeleteConfirm(e); setAnchorEl(null)}}>Oui</button>
-      </Typography>
-    </Popover>
+    <span>FIXME: Do custom popover</span>
   </>)
 }
+//    <button type="button" aria-describedby={`delete-popover-${id}`} className="plain-btn" onClick={(evt) => setAnchorEl(evt.currentTarget)}>
+//      <img src="/icons/x-lg.svg"/>
+//    </button>
+//    <Popover
+//      id={`delete-popover-${id}`}
+//      open={anchorEl != null}
+//      anchorEl={anchorEl}
+//      onClose={() => setAnchorEl(null)}
+//      anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
+//      transformOrigin={{vertical: 'bottom', horizontal: 'right'}}
+//    >
+//      <Typography sx={{ p: 2 }}>
+//        {message}
+//        <button type="button" className="btn btn-primary" style={{marginLeft: "10px"}} onClick={(e) => {onDeleteConfirm(e); setAnchorEl(null)}}>Oui</button>
+//      </Typography>
+//    </Popover>
