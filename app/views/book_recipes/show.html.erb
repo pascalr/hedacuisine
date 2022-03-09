@@ -51,5 +51,7 @@
 </div>
   
 <%= javascript_pack_tag current_user ? "recipe_rating" : "recipe_rating_read_only" %>
-<%= javascript_pack_tag "recipes_show" %>
-<%= javascript_pack_tag "book_sidebar" %>
+<% content_for :import_js do %>
+  <%= js_import_tag "recipes_show" %>
+  <%= js_import_tag "book_sidebar" %>
+<% end %>

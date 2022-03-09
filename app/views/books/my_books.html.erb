@@ -15,4 +15,6 @@
 
 <p>Aucun livre favori pour l'instant.</p>
 
-<%= javascript_pack_tag "book_carrousel" %>
+<% content_for :import_js do %>
+  <%= js_import_tag "book_carrousel" %>
+<% end %>
