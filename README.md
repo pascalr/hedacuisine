@@ -25,4 +25,9 @@ https://www.backblaze.com/b2/docs/quick_command_line.html # Télécharger le com
 # Installer foreman pour pouvoir utiliser bin/dev
 sudo apt install ruby-foreman
 
-## Installation troobleshooting
+### Installation troobleshooting
+
+#### Too many symbolic links encountered on chromebook
+error An unexpected error occure: "ELOOP": too many symbolic links encountered, chmod '/path/to/file'
+
+Solution: Move the folder out of the Downloads directory.
