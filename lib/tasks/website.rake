@@ -203,48 +203,23 @@ namespace :website do
   desc "Move the files from the sync directory into the storage directory in the proper format"
   task convert_sync_to_local: :environment do
 
-    # OPTIMIZE: Be smart and not erase everything everytime...
-    # Maybe try this:
-    # sync the sync folder with the remote data
-    # move the files from the root folder to subfolders like local storage does
-    # take all the blobs and update service name to "local"
-
     storage_folder = Rails.root.join('storage')
     FileUtils.rm_rf(storage_folder.to_s + '/*')
-
-    image_data = {}
-    Image.order(id: :desc).all.each do |im|
-      image_data[im.id] = {key: im.original.key, filename: im.original.filename} if im.original.attached?
-    end
-    ActiveRecord::Base.connection.execute("DELETE FROM active_storage_variant_records;")
-    ActiveRecord::Base.connection.execute("DELETE FROM active_storage_attachments;")
-    ActiveRecord::Base.connection.execute("DELETE FROM active_storage_blobs;")
-    Image.all.each do |i|
-      next unless image_data[i.id]
-      data = image_data[i.id]
-      path = get_sync_folder.join(data[:key])
-      #if File.exist?(path)
-      ####  im.original.attach(io: File.open(path), filename: im.original.filename)
-      #else
-      #  puts "File missing: Image(id: #{im.id}, key: #{im.original.key})"
-      #end
-      if !File.file?(path)
-        puts "FIXME: Skipping missing path #{path}"
-        next
-      end
-      i.original.attach(io: File.open(path), filename: data[:filename])
-    end
     
-    #images.each do |path_name|
+    sync_folder = Rails.root.join('sync')
+    Dir.glob("sync/*") do |path| # path looks like "sync/123asdf123asdf123asdf"
+      next unless File.file?(path) # skip directories
+      dir, basename = path.split '/'
+      file_name = basename.to_s
+      sub_folder = sync_folder.join(file_name[0..1], file_name[2..3])
+      sub_folder.mkpath # Create the subfolder used by active_record
+      #path_name.rename(dir + sub_folders + basename) # Renames file to be moved into subfolder
+      FileUtils.cp(path, storage_folder.join(sub_folder))
+    end
 
-    #  dir, basename = path_name.split
-    #  file_name = basename.to_s
-    #  sub_folder = storage_folder.join(file_name[0..1], file_name[2..3])
-    #  sub_folder.mkpath # Create the subfolder used by active_record
-    #  #path_name.rename(dir + sub_folders + basename) # Renames file to be moved into subfolder
-    #  FileUtils.cp(path_name, storage_folder.join(sub_folder))
-    #end
-
+    ActiveStorage::Blob.all.each do |b|
+      b.update! service_name: "local"
+    end
   end
 
 end
