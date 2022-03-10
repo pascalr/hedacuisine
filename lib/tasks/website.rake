@@ -206,12 +206,11 @@ namespace :website do
     storage_folder = Rails.root.join('storage')
     FileUtils.rm_rf(storage_folder.to_s + '/*')
     
-    sync_folder = Rails.root.join('sync')
     Dir.glob("sync/*") do |path| # path looks like "sync/123asdf123asdf123asdf"
       next unless File.file?(path) # skip directories
       dir, basename = path.split '/'
       file_name = basename.to_s
-      sub_folder = sync_folder.join(file_name[0..1], file_name[2..3])
+      sub_folder = storage_folder.join(file_name[0..1], file_name[2..3])
       sub_folder.mkpath # Create the subfolder used by active_record
       #path_name.rename(dir + sub_folders + basename) # Renames file to be moved into subfolder
       FileUtils.cp(path, storage_folder.join(sub_folder))
