@@ -9,6 +9,8 @@ $ heroku login -i
 
 ## Installation
 
+bin/update_env_variables
+
 Prendre les valeurs de heroku et les mettre pour figaro.
 
 # Installer sequel pour pouvoir copier la database de postgresql to sqlite3.
