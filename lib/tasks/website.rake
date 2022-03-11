@@ -178,7 +178,7 @@ namespace :website do
     key_id = ENV['BACKBLAZE_KEY_ID']
     key_token = ENV['BACKBLAZE_KEY_TOKEN']
 
-    system("B2_APPLICATION_KEY_ID=#{key_id} B2_APPLICATION_KEY=#{key_token} ~/Downloads/b2-linux sync b2://#{bucket_name}/ #{get_sync_folder}")
+    system("B2_APPLICATION_KEY_ID=#{key_id} B2_APPLICATION_KEY=#{key_token} ~/Downloads/b2-linux sync --excludeRegex '^\/?variants\/.*' b2://#{bucket_name}/ #{get_sync_folder}")
   end
 
   task fix_s3: :environment do
