@@ -13,19 +13,22 @@ bin/update_env_variables
 
 Prendre les valeurs de heroku et les mettre pour figaro.
 
-# Installer sequel pour pouvoir copier la database de postgresql to sqlite3.
+### Installer sequel pour pouvoir copier la database de postgresql to sqlite3.
 $ sudo apt install ruby-sequel
 $ gem install sequel
 
-# Installer node.js
+### Installer node.js
 $ wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 $ source ~/.bashrc
 $ nvm install 16.14
 
 https://www.backblaze.com/b2/docs/quick_command_line.html # Télécharger le command line et le mettre dans le ~/Downloads/b2-linux
 
-# Installer foreman pour pouvoir utiliser bin/dev
+### Installer foreman pour pouvoir utiliser bin/dev
 sudo apt install ruby-foreman
+
+### Install ImageMagick
+sudo apt install imagemagick
 
 ### Installation troobleshooting
 
