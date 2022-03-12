@@ -184,7 +184,9 @@ class Recipe < ApplicationRecord
   end
   
   def ingredients_ordered_by_weight
-    recipe_ingredients.order(RecipeIngredient.arel_table[:weight].desc.nulls_last)
+    #recipe_ingredients.order(RecipeIngredient.arel_table[:weight].desc.nulls_last)
+    # NULLS_LAST is only supported in SQLite 3.30 and I have 3.11 installed.
+    recipe_ingredients.sort_by {|i| i.weight.nil? ? -1 : i.weight}.reverse
   end
 
   def ingredient_list
