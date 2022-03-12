@@ -1,7 +1,7 @@
-OPTIMIZE: Au lieu de gon, loader avec javascript le data.
-
 1ère priorité: Site read only
 2e priorité: Site modifiable
+
+OPTIMIZE: Au lieu de gon, loader avec javascript le data.
 
 Pouvoir scanner une photo d'une recette. Garder mes images de scans de recettes et commencer à me monter une dataset.
 
