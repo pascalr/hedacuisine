@@ -46,6 +46,9 @@ end
 
 namespace :website do
 
+  task test: :environment do
+  end
+
   task publish_modifications: :environment do
     Recipe.all_public.where(mods_unpublished: true).each do |recipe|
     end
@@ -181,24 +184,24 @@ namespace :website do
     system("B2_APPLICATION_KEY_ID=#{key_id} B2_APPLICATION_KEY=#{key_token} ~/Downloads/b2-linux sync --excludeRegex '^\/?variants\/.*' b2://#{bucket_name}/ #{get_sync_folder}")
   end
 
-  task fix_s3: :environment do
+  #task fix_s3: :environment do
 
-    s3_bucket = "heda-bucket-production"
-    access_key_id = Rails.application.credentials.dig(:aws, :access_key_id)
-    secret_access_key = Rails.application.credentials.dig(:aws, :secret_access_key)
+  #  s3_bucket = "heda-bucket-production"
+  #  access_key_id = Rails.application.credentials.dig(:aws, :access_key_id)
+  #  secret_access_key = Rails.application.credentials.dig(:aws, :secret_access_key)
 
-    system("AWS_ACCESS_KEY_ID=#{access_key_id} AWS_SECRET_ACCESS_KEY=#{secret_access_key} aws s3 sync #{get_sync_folder} s3://#{s3_bucket}")
-  end
+  #  system("AWS_ACCESS_KEY_ID=#{access_key_id} AWS_SECRET_ACCESS_KEY=#{secret_access_key} aws s3 sync #{get_sync_folder} s3://#{s3_bucket}")
+  #end
 
-  desc "Sync the s3 bucket with the sync directory"
-  task sync_s3: :environment do
+  #desc "Sync the s3 bucket with the sync directory"
+  #task sync_s3: :environment do
 
-    s3_bucket = "heda-bucket-production"
-    access_key_id = Rails.application.credentials.dig(:aws, :access_key_id)
-    secret_access_key = Rails.application.credentials.dig(:aws, :secret_access_key)
+  #  s3_bucket = "heda-bucket-production"
+  #  access_key_id = Rails.application.credentials.dig(:aws, :access_key_id)
+  #  secret_access_key = Rails.application.credentials.dig(:aws, :secret_access_key)
 
-    system("AWS_ACCESS_KEY_ID=#{access_key_id} AWS_SECRET_ACCESS_KEY=#{secret_access_key} aws s3 sync s3://#{s3_bucket} #{get_sync_folder}")
-  end
+  #  system("AWS_ACCESS_KEY_ID=#{access_key_id} AWS_SECRET_ACCESS_KEY=#{secret_access_key} aws s3 sync s3://#{s3_bucket} #{get_sync_folder}")
+  #end
   
   desc "Move the files from the sync directory into the storage directory in the proper format"
   task convert_sync_to_local: :environment do
