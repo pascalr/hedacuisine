@@ -2,6 +2,7 @@
 2e priorité: Site modifiable
 
 OPTIMIZE: Au lieu de gon, loader avec javascript le data.
+OPTIMIZE: Cache /search/data.json
 
 Pouvoir scanner une photo d'une recette. Garder mes images de scans de recettes et commencer à me monter une dataset.
 
