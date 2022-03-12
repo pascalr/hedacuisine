@@ -30,6 +30,11 @@ sudo apt install ruby-foreman
 ### Install ImageMagick
 sudo apt install imagemagick
 
+### Autre
+
+cd ..
+git clone https://github.com/pascalr/static-heda.git
+
 ### Installation troobleshooting
 
 #### Too many symbolic links encountered on chromebook
@@ -52,3 +57,5 @@ call plug#begin('~/.vim/plugged')
 Plug 'yuezk/vim-js'
 Plug 'maxmellon/vim-jsx-pretty'
 call plug#end()
+
+
