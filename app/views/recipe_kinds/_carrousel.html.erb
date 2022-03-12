@@ -11,7 +11,7 @@
   </div>
 
   <div id="recipe-carrousel-<%= carrousel_id %>" class="recipe-carrousel d-flex gap-20">
-    <% recipe_kinds.select(&:image).each do |recipe_kind| %>
+    <% recipe_kinds.sort_by {|r| r.recipes.blank? ? -1 : r.recipes.size}.reverse.select(&:image).each do |recipe_kind| %>
       <div>
         <%= link_to recipe_kind do %>
           <%= image_tag small_image_path(recipe_kind.image), width: 255, height: 171 %>
