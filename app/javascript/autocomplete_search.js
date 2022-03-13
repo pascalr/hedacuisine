@@ -16,15 +16,18 @@ document.addEventListener("DOMContentLoaded", function(event) {
         minChars: 3,
         menuClass: "top-search-suggestions",
         source: function(term, suggest){
-          term = normalizeSearchText(term)
+          let tokens = normalizeSearchText(term).split(' ')
           const matches = [];
+          const tokenMatch = (token, item) => {
+            if (item.label && ~normalizeSearchText(item.label).indexOf(term)) {
+              return true
+            } else if (item.author && ~normalizeSearchText(item.author).indexOf(term)) {
+              return true
+            }
+          }
           for (const choiceId in choices) {
             let item = choices[choiceId]
-            if (item.label && ~normalizeSearchText(item.label).indexOf(term)) {
-              matches.push(choiceId);
-            } else if (item.author && ~normalizeSearchText(item.author).indexOf(term)) {
-              matches.push(choiceId);
-            }
+            if (tokens.every(token => tokenMatch(token, item))) {matches.push(choiceId)}
           }
           suggest(matches);
         },

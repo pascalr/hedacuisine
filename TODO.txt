@@ -19,7 +19,6 @@ Gérer les alias. Les alias de unit entre autre. 't.' == 't'. A unit has many na
 ===== Site statique =====
 
 [ ] 1
-[ ] Écrire tof dans la barre de recherche ne fonctionne pas. Les résultats affichés sont pour 'to'.
 [*] Il y a écrit MISSING dans la description de pâte brisée.
 [*] Esc should exit book search. Book search include title of book? Add X top right corner of book search. Au lieu d'un X, que ce soit un truc que tu peux swiper pour fermer. Ou quand même un X aussi pour desktop. Au lieu d'un collapse peut-être autre chose. Le plus important est de pouvoir swiper.
 [*] Au lieu d'un livre, une loupe, dans Book#show. Et là dérouler le sidebar de gauche, afficher la liste de toutes les recettes comme normal, et focus sur un input field en haut. Quand tu écris, ça filtre.
@@ -40,7 +39,7 @@ Gérer les alias. Les alias de unit entre autre. 't.' == 't'. A unit has many na
 [*] Spacing énorme sur le mobile Recipe#show
 [ ] Add favicon to website.
 [ ] Faire un logo pour le site. Un petit logo. Et un grand logo. **Heda**Cuisine**.com**
-[ ] Rechercher Pascal dans la barre de recherche. Un livre publique sans image ne s'affiche pas le thumbnail qui devrait.
+[*] Rechercher Pascal dans la barre de recherche. Un livre publique sans image ne s'affiche pas le thumbnail qui devrait.
 [ ] Rechercher par mots clés au lieu de par exact search. Par exemple, soupe nouilles devrait ressortir soupe aux nouilles.
 [ ] Share, Download, Print
 [ ] Assurance qualité: Trouver tous les liens dans le site statique et s'assurer qu'ils sont valide
@@ -93,3 +92,26 @@ https://ready.mobi/#2072291-8gbd
 
 [>] Remove justify-content, gap... (not supported on Samsumg Internet 5.4)
 
+
+
+11:49:56 web.1  | 2022-03-13 11:49:56 -0400: Rack app error handling request { GET /images/97/portrait_thumb.jpg }
+11:49:56 web.1  | #<TypeError: nil can't be coerced into Float>
+11:49:56 web.1  | /home/pascalr/.rvm/gems/ruby-3.0.2/gems/activesupport-7.0.2.2/lib/active_support/notifications/instrumenter.rb:133:in `-'
+11:49:56 web.1  | /home/pascalr/.rvm/gems/ruby-3.0.2/gems/activesupport-7.0.2.2/lib/active_support/notifications/instrumenter.rb:133:in `duration'
+11:49:56 web.1  | /home/pascalr/.rvm/gems/ruby-3.0.2/gems/activesupport-7.0.2.2/lib/active_support/core_ext/enumerable.rb:61:in `map'
+11:49:56 web.1  | /home/pascalr/.rvm/gems/ruby-3.0.2/gems/activesupport-7.0.2.2/lib/active_support/core_ext/enumerable.rb:61:in `sum'
+11:49:56 web.1  | /home/pascalr/.rvm/gems/ruby-3.0.2/gems/activesupport-7.0.2.2/lib/active_support/core_ext/enumerable.rb:298:in `sum'
+11:49:56 web.1  | /home/pascalr/.rvm/gems/ruby-3.0.2/gems/actionpack-7.0.2.2/lib/action_dispatch/middleware/server_timing.rb:26:in `block in call'
+11:49:56 web.1  | /home/pascalr/.rvm/gems/ruby-3.0.2/gems/actionpack-7.0.2.2/lib/action_dispatch/middleware/server_timing.rb:25:in `each'
+11:49:56 web.1  | /home/pascalr/.rvm/gems/ruby-3.0.2/gems/actionpack-7.0.2.2/lib/action_dispatch/middleware/server_timing.rb:25:in `map'
+11:49:56 web.1  | /home/pascalr/.rvm/gems/ruby-3.0.2/gems/actionpack-7.0.2.2/lib/action_dispatch/middleware/server_timing.rb:25:in `call'
+11:49:56 web.1  | /home/pascalr/.rvm/gems/ruby-3.0.2/gems/actionpack-7.0.2.2/lib/action_dispatch/middleware/executor.rb:14:in `call'
+11:49:56 web.1  | /home/pascalr/.rvm/gems/ruby-3.0.2/gems/actionpack-7.0.2.2/lib/action_dispatch/middleware/static.rb:23:in `call'
+11:49:56 web.1  | /home/pascalr/.rvm/gems/ruby-3.0.2/gems/rack-2.2.3/lib/rack/sendfile.rb:110:in `call'
+11:49:56 web.1  | /home/pascalr/.rvm/gems/ruby-3.0.2/gems/actionpack-7.0.2.2/lib/action_dispatch/middleware/host_authorization.rb:137:in `call'
+11:49:56 web.1  | /home/pascalr/.rvm/gems/ruby-3.0.2/gems/railties-7.0.2.2/lib/rails/engine.rb:530:in `call'
+11:49:56 web.1  | /home/pascalr/.rvm/gems/ruby-3.0.2/gems/puma-4.3.11/lib/puma/configuration.rb:228:in `call'
+11:49:56 web.1  | /home/pascalr/.rvm/gems/ruby-3.0.2/gems/puma-4.3.11/lib/puma/server.rb:718:in `handle_request'
+11:49:56 web.1  | /home/pascalr/.rvm/gems/ruby-3.0.2/gems/puma-4.3.11/lib/puma/server.rb:472:in `process_client'
+11:49:56 web.1  | /home/pascalr/.rvm/gems/ruby-3.0.2/gems/puma-4.3.11/lib/puma/server.rb:328:in `block in run'
+11:49:56 web.1  | /home/pascalr/.rvm/gems/ruby-3.0.2/gems/puma-4.3.11/lib/puma/thread_pool.rb:134:in `block in spawn_thread'
