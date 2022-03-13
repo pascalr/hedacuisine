@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
       new autocomplete({
         selector: elem,
-        minChars: 1,
+        minChars: 3,
         menuClass: "top-search-suggestions",
         source: function(term, suggest){
           term = normalizeSearchText(term)
@@ -33,11 +33,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
           search = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
           var re = new RegExp("(" + search.split(' ').join('|') + ")", "gi");
           if (item.author) {
-            return '<a class="autocomplete-suggestion book_search_thumb" data-val="'+item.label+'" href="'+item.url+'"><img src="'+item.image+'"></img><div><b>' + item.label + '</b><div>de '+item.author+'</div></div></a>';
+            let src = item.image ? item.image : '/books/default01_thumb.jpg'
+            return '<a class="autocomplete-suggestion book_search_thumb" data-val="'+item.label+'" href="'+item.url+'"><img src="'+src+'"></img><div><b>' + item.label + '</b><div>de '+item.author+'</div></div></a>';
           } else if (item.recipe_count) {
-            return '<a class="autocomplete-suggestion" data-val="'+item.label+'" href="'+item.url+'"><img src="'+item.image+'"></img>' + item.label.replace(re, "<b>$1</b>") + ' ' + item.recipe_count + '</a>';
+            let src = item.image ? item.image : '/default_recipe_01_thumb.png'
+            return '<a class="autocomplete-suggestion" data-val="'+item.label+'" href="'+item.url+'"><img src="'+src+'"></img>' + item.label.replace(re, "<b>$1</b>") + ' ' + item.recipe_count + '</a>';
           } else {
-            return '<a class="autocomplete-suggestion" data-val="'+item.label+'" href="'+item.url+'"><img src="'+item.image+'"></img>' + item.label.replace(re, "<b>$1</b>") + '</a>';
+            let src = item.image ? item.image : '/default_recipe_01_thumb.png'
+            return '<a class="autocomplete-suggestion" data-val="'+item.label+'" href="'+item.url+'"><img src="'+src+'"></img>' + item.label.replace(re, "<b>$1</b>") + '</a>';
           }
         },
         onSelect: function(e, term, item){

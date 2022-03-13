@@ -1,8 +1,13 @@
 class Image < ApplicationRecord
-  has_one_attached :original
 
   has_many :recipes
   has_many :recipe_kinds
+
+  has_one_attached :original
+
+  def self.exist?(im)
+    return im && im.original.attached?
+  end
 
   def original=(file)
     super(file == '' ? nil : file)

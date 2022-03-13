@@ -1,8 +1,9 @@
-Force avant-bras. Sandales. Bijoux. Mouthpiece. Lunette de soleil. Laptop. Chargeur laptop.
+Force avant-bras. Sandales. Bijoux. Mouthpiece. Lunette de soleil. Laptop. Chargeur laptop. Passeport.
 
 1ère priorité: Site read only
 2e priorité: Site modifiable
 
+OPTIMIZE: Je pense que c'est redondant d'avoir Attachement et Image. Un seul des deux devrait être suffisant.
 OPTIMIZE: Au lieu de gon, loader avec javascript le data.
 OPTIMIZE: Cache /search/data.json
 FEATURE: Pouvoir scanner une photo d'une recette. Garder mes images de scans de recettes et commencer à me monter une dataset.
@@ -18,6 +19,7 @@ Gérer les alias. Les alias de unit entre autre. 't.' == 't'. A unit has many na
 ===== Site statique =====
 
 [ ] 1
+[ ] Écrire tof dans la barre de recherche ne fonctionne pas. Les résultats affichés sont pour 'to'.
 [*] Il y a écrit MISSING dans la description de pâte brisée.
 [*] Esc should exit book search. Book search include title of book? Add X top right corner of book search. Au lieu d'un X, que ce soit un truc que tu peux swiper pour fermer. Ou quand même un X aussi pour desktop. Au lieu d'un collapse peut-être autre chose. Le plus important est de pouvoir swiper.
 [*] Au lieu d'un livre, une loupe, dans Book#show. Et là dérouler le sidebar de gauche, afficher la liste de toutes les recettes comme normal, et focus sur un input field en haut. Quand tu écris, ça filtre.

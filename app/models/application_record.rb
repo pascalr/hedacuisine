@@ -1,6 +1,8 @@
 class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
+  scope :with_image, ->(image_field_name) { includes(Hash[image_field_name, original_attachment: :blob]) }
+
   def owned_by?(user)
     return false unless user
     self.user_id == user.id
