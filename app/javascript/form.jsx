@@ -103,7 +103,7 @@ const updateModelField = (model, field, value, successCallback=null) => {
     let data = new FormData()
     data.append(model.class_name+"["+field+"]", value)
     console.log('PATCH', model.url)
-    Rails.ajax({url: model.url, type: 'PATCH', data: data, success: () => {
+    ajax({url: model.url, type: 'PATCH', data: data, success: () => {
       console.log(`Updating model ${model.class_name} field ${field} from ${model[field]} to ${value}.`)
       model[field] = value
       if (successCallback) {successCallback()}
