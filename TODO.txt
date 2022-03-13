@@ -19,28 +19,10 @@ Gérer les alias. Les alias de unit entre autre. 't.' == 't'. A unit has many na
 ===== Site statique =====
 
 [ ] 1
-[*] Il y a écrit MISSING dans la description de pâte brisée.
-[*] Esc should exit book search. Book search include title of book? Add X top right corner of book search. Au lieu d'un X, que ce soit un truc que tu peux swiper pour fermer. Ou quand même un X aussi pour desktop. Au lieu d'un collapse peut-être autre chose. Le plus important est de pouvoir swiper.
-[*] Au lieu d'un livre, une loupe, dans Book#show. Et là dérouler le sidebar de gauche, afficher la liste de toutes les recettes comme normal, et focus sur un input field en haut. Quand tu écris, ça filtre.
-[*] Books should link to heda cuisine
-[*] Enlever le <de> et seulement garder le nom du livre. La personne peut rajouter le de dans le nom du livre si elle veut.
-[*] Tasser la flèche un peu pour qu'elle soit plus sur les bords.
-[*] Cacher la flèche de gauche lorsque le carrousel à au début. ( hide or gray out when aria-disabled="true" )
-[*] La page d'acceuil est plus grande que 100%, à cause des livres? Faire un carrousel pour les livres
-[*] Fix les books sections...
-[*] Les images dans les carrousels sont collés tant que le JS n'a pas fini de loader...
 [>] DATA, ajouter toutes les recettes que j'ai déjà ajouter les instructions. Je veux y avoir accès en tout temps sur HedaCuisine. (Pâte à pizza, ...) À travers un livre. Parce qu'ils n'ont pas d'image, je n'y aurai pas accès en recherche en haut.
-[*] Mettre les flèches du carrousel sur le carrousel directement
 [ ] Pouvoir naviguer d'une recette à l'autre dans une catégorie sur le site d'hedacuisine.
-[*] Sans javascript le carrousel de livre n'est pas side by side sur mon vieux téléphone
-[*] Afficher le livre en haut dans RecipeBook#show
-[*] Ajouter une description aux livres
-[*] Descendre haut bas ne dois pas faire bouger le carrousel sur le mobile
-[*] Spacing énorme sur le mobile Recipe#show
 [ ] Add favicon to website.
 [ ] Faire un logo pour le site. Un petit logo. Et un grand logo. **Heda**Cuisine**.com**
-[*] Rechercher Pascal dans la barre de recherche. Un livre publique sans image ne s'affiche pas le thumbnail qui devrait.
-[ ] Rechercher par mots clés au lieu de par exact search. Par exemple, soupe nouilles devrait ressortir soupe aux nouilles.
 [ ] Share, Download, Print
 [ ] Assurance qualité: Trouver tous les liens dans le site statique et s'assurer qu'ils sont valide
 [ ] Assurance qualité: Quand je compile le site statique, avoir un compte rendu. Voir si jamais il y a des 4xx ou des 5xx code d'erreurs.
