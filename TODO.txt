@@ -18,7 +18,7 @@ Gérer les alias. Les alias de unit entre autre. 't.' == 't'. A unit has many na
 ===== Site statique =====
 
 [ ] 1
-[ ] Il y a écrit MISSING dans la description de pâte brisée.
+[*] Il y a écrit MISSING dans la description de pâte brisée.
 [*] Esc should exit book search. Book search include title of book? Add X top right corner of book search. Au lieu d'un X, que ce soit un truc que tu peux swiper pour fermer. Ou quand même un X aussi pour desktop. Au lieu d'un collapse peut-être autre chose. Le plus important est de pouvoir swiper.
 [*] Au lieu d'un livre, une loupe, dans Book#show. Et là dérouler le sidebar de gauche, afficher la liste de toutes les recettes comme normal, et focus sur un input field en haut. Quand tu écris, ça filtre.
 [*] Books should link to heda cuisine
@@ -31,7 +31,7 @@ Gérer les alias. Les alias de unit entre autre. 't.' == 't'. A unit has many na
 [>] DATA, ajouter toutes les recettes que j'ai déjà ajouter les instructions. Je veux y avoir accès en tout temps sur HedaCuisine. (Pâte à pizza, ...) À travers un livre. Parce qu'ils n'ont pas d'image, je n'y aurai pas accès en recherche en haut.
 [*] Mettre les flèches du carrousel sur le carrousel directement
 [ ] Pouvoir naviguer d'une recette à l'autre dans une catégorie sur le site d'hedacuisine.
-[ ] Sans javascript le carrousel de livre n'est pas side by side sur mobile
+[*] Sans javascript le carrousel de livre n'est pas side by side sur mon vieux téléphone
 [*] Afficher le livre en haut dans RecipeBook#show
 [*] Ajouter une description aux livres
 [*] Descendre haut bas ne dois pas faire bouger le carrousel sur le mobile
