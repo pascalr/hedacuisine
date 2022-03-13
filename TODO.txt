@@ -1,10 +1,11 @@
+Force avant-bras. Sandales. Bijoux. Mouthpiece. Lunette de soleil. Laptop. Chargeur laptop.
+
 1ère priorité: Site read only
 2e priorité: Site modifiable
 
 OPTIMIZE: Au lieu de gon, loader avec javascript le data.
 OPTIMIZE: Cache /search/data.json
-
-Pouvoir scanner une photo d'une recette. Garder mes images de scans de recettes et commencer à me monter une dataset.
+FEATURE: Pouvoir scanner une photo d'une recette. Garder mes images de scans de recettes et commencer à me monter une dataset.
 
 Faire une page web qui explique comment fabriquer l'armoire de cuisine que j'ai conçue.
 

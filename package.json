@@ -3,6 +3,7 @@
   "private": true,
   "dependencies": {
     "@popperjs/core": "^2.10.1",
+    "@rails/ujs": "^6.1.5",
     "@tiptap/extension-bubble-menu": "^2.0.0-beta.50",
     "@tiptap/extension-link": "^2.0.0-beta.28",
     "@tiptap/extension-subscript": "^2.0.0-beta.9",

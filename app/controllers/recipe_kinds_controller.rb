@@ -27,7 +27,7 @@ class RecipeKindsController < ApplicationController
   end
 
   def edit
-    gon.foodList Food.all.map {|food| {id: food.id, name: food.name.downcase, url: food_path(food)}}
+    gon.foodList = Food.all.map {|food| {id: food.id, name: food.name.downcase, url: food_path(food)}}
     gon.recipe_kind = to_obj(@recipe_kind)
   end
 

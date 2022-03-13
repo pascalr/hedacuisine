@@ -1,3 +1,5 @@
+import Rails from '@rails/ujs'
+
 export function isBlank(array) {
   return !array || array.length == 0
 }
