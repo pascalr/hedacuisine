@@ -1,5 +1,8 @@
 Force avant-bras. Sandales. Bijoux. Mouthpiece. Lunette de soleil. Laptop. Chargeur laptop. Passeport.
 
+Utiliser direct dans config/routes au lieu de créer des helper dans application helper.
+https://guides.rubyonrails.org/routing.html#direct-routes
+
 1ère priorité: Site read only
 2e priorité: Site modifiable
 

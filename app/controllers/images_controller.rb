@@ -1,4 +1,8 @@
 class ImagesController < ApplicationController
+
+  #include ActiveStorage::SetCurrent # For images path. (thumb, small, medium, original, ...)
+  include ActiveStorage::FileServer # For serve_file method
+
   #skip_before_action :authenticate_user!, only: [:show]
   #skip_before_action :only_admin!, only: [ :show]
   before_action :set_image, only: [:show, :update, :destroy, :edit, :process_image, :small, :medium, :thumb, :original, :portrait_thumb, :small_book]
@@ -9,23 +13,34 @@ class ImagesController < ApplicationController
     @images = Image.order(id: :desc).all
   end
 
+  def send_image(variant)
+    #render 'active_storage/representations/redirect#show'
+    #render rails_blob_path(variant)
+    #redirect_to variant.url
+
+    named_disk_service = ActiveStorage::Blob.services.fetch(variant.blob.service_name) do
+      ActiveStorage::Blob.service
+    end
+
+    serve_file named_disk_service.path_for(variant.key), content_type: variant.content_type, disposition: "attachment"
+  end
   def original
-    redirect_to @image.original
+    send_image @image.original
   end
   def thumb
-    redirect_to @image.thumb_variant
+    send_image @image.thumb_variant
   end
   def small
-    redirect_to @image.small_variant
+    send_image @image.small_variant
   end
   def medium
-    redirect_to @image.medium_variant
+    send_image @image.medium_variant
   end
   def portrait_thumb
-    redirect_to @image.portrait_thumb_variant
+    send_image @image.portrait_thumb_variant
   end
   def small_book
-    redirect_to @image.small_book_variant
+    send_image @image.small_book_variant
   end
 
   def show
@@ -88,7 +103,7 @@ private
   end
   
   def set_image
-    @image = Image.find(params[:id])
+    @image = Image.includes(original_attachment: :blob).find(params[:id])
   end
     
   def image_params
