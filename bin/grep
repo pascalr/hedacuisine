@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# TODO: handle specify directory as second argument
+# TODO: make sure at least one argument is given
+
+#grep -R . --exclude-dir app/assets --exclude-dir tmp --exclude-dir node_modules --exclude-dir log
+
+grep --exclude="*.swp" --color=auto -r $1 app/ config/ lib/
