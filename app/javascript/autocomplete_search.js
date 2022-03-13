@@ -19,11 +19,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
           let tokens = normalizeSearchText(term).split(' ')
           const matches = [];
           const tokenMatch = (token, item) => {
-            if (item.label && ~normalizeSearchText(item.label).indexOf(term)) {
+            if (item.label && ~normalizeSearchText(item.label).indexOf(token)) {
               return true
-            } else if (item.author && ~normalizeSearchText(item.author).indexOf(term)) {
+            } else if (item.author && ~normalizeSearchText(item.author).indexOf(token)) {
               return true
             }
+            return false
           }
           for (const choiceId in choices) {
             let item = choices[choiceId]
