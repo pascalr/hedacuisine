@@ -8,12 +8,13 @@ import Hammer from "react-hammerjs"
 
 const BookSidebar = () => {
   
+  const isWideScreen = window.innerWidth >= 992
   const inputField = useRef(null);
-  const [init, setInit] = useState(false)
+  const [init, setInit] = useState(isWideScreen)
   //const [data, setData] = useState(null)
   const [search, setSearch] = useState('')
   const [selected, setSelected] = useState(-1)
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(isWideScreen)
   const data = useFetch(window.book_sidebar.dataset.url, {waitFor: init})
 
   const doInit = () => {
