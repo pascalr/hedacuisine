@@ -21,3 +21,4 @@ export const DeleteConfirmButton = ({id, onDeleteConfirm, message}) => {
       </span>
     }
   </>)
+}
