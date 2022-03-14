@@ -14,15 +14,15 @@ class ImagesController < ApplicationController
   end
 
   def send_image(variant)
-    #redirect_to variant
+    redirect_to variant
 
-    current_service = ActiveStorage::Blob.service.name
-    #named_disk_service = ActiveStorage::Blob.services.fetch(variant.blob.service_name) do
-    named_disk_service = ActiveStorage::Blob.services.fetch(current_service) do
-      ActiveStorage::Blob.service
-    end
-    variant.processed # Make sure the variant exists
-    serve_file named_disk_service.path_for(variant.key), content_type: variant.content_type, disposition: "attachment"
+    #current_service = ActiveStorage::Blob.service.name
+    ##named_disk_service = ActiveStorage::Blob.services.fetch(variant.blob.service_name) do
+    #named_disk_service = ActiveStorage::Blob.services.fetch(current_service) do
+    #  ActiveStorage::Blob.service
+    #end
+    #variant.processed # Make sure the variant exists
+    #serve_file named_disk_service.path_for(variant.key), content_type: variant.content_type, disposition: "attachment"
   end
   def original
     send_image @image.original
