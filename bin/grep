@@ -5,4 +5,4 @@
 
 #grep -R . --exclude-dir app/assets --exclude-dir tmp --exclude-dir node_modules --exclude-dir log
 
-grep --exclude="*.swp" --color=auto -r $1 app/ config/ lib/
+grep --exclude="*.swp" --exclude-dir=assets --color=auto -r $1 app/ config/ lib/
