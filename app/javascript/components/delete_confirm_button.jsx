@@ -1,30 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-//import Popover from '@mui/material/Popover';
-//import Typography from '@mui/material/Typography';
-
 export const DeleteConfirmButton = ({id, onDeleteConfirm, message}) => {
 
-  // For popover. See https://mui.com/components/popover/
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [visible, setVisible] = React.useState(false);
 
   return (<>
-    <span>FIXME: Do custom popover</span>
+    <button type="button" className="plain-btn" onClick={(evt) => setVisible(true)}>
+      <img src="/icons/x-lg.svg"/>
+    </button>
+    {!visible ? '' :
+      <span className="position-limbo">
+        <span style={{transform: "translate(-50%, -30%)", zIndex: 10, padding: "0.5em", backgroundColor: '#fff', border: '1px solid black', borderRadius: '4px'}}>
+          <div className="d-flex">
+            <button type="button" className="btn btn-primary" style={{marginLeft: "10px"}} onClick={(e) => {onDeleteConfirm(e); setVisible(false)}}>Supprimer</button>
+            <button type="button" className="plain-btn" onClick={(evt) => setVisible(false)} style={{paddingBottom: "1em", paddingLeft: "1.5em"}}>
+              <img src="/icons/x-lg.svg"/>
+            </button>
+          </div>
+        </span>
+      </span>
+    }
   </>)
-}
-//    <button type="button" aria-describedby={`delete-popover-${id}`} className="plain-btn" onClick={(evt) => setAnchorEl(evt.currentTarget)}>
-//      <img src="/icons/x-lg.svg"/>
-//    </button>
-//    <Popover
-//      id={`delete-popover-${id}`}
-//      open={anchorEl != null}
-//      anchorEl={anchorEl}
-//      onClose={() => setAnchorEl(null)}
-//      anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
-//      transformOrigin={{vertical: 'bottom', horizontal: 'right'}}
-//    >
-//      <Typography sx={{ p: 2 }}>
-//        {message}
-//        <button type="button" className="btn btn-primary" style={{marginLeft: "10px"}} onClick={(e) => {onDeleteConfirm(e); setAnchorEl(null)}}>Oui</button>
-//      </Typography>
-//    </Popover>

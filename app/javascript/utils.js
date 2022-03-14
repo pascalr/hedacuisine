@@ -1,4 +1,5 @@
 import Rails from '@rails/ujs'
+import $ from 'jquery'
 
 export function isBlank(array) {
   return !array || array.length == 0

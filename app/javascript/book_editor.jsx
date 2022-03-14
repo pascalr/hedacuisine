@@ -113,8 +113,10 @@ class BookEditor extends React.Component {
   }
 
   removeBookRecipe(book_recipe) {
-    let recipes = this.state.book_recipes.filter(item => item.id != book_recipe.id)
-    this.setState({book_recipes: recipes})
+    ajax({url: book_recipe.url, type: 'DELETE', success: () => {
+      let recipes = this.state.book_recipes.filter(item => item.id != book_recipe.id)
+      this.setState({book_recipes: recipes})
+    }})
   }
 
   removeBookSection(section) {

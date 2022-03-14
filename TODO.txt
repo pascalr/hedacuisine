@@ -25,6 +25,8 @@ Gérer les alias. Les alias de unit entre autre. 't.' == 't'. A unit has many na
 ===== Site statique =====
 
 [ ] 1
+[ ] Pouvoir enlever une recette dans le livre de recette. FIX le popover.
+[ ] Sur un grand écran, afficher par défault la barre de recherche d'un livre à gauche.
 [>] DATA, ajouter toutes les recettes que j'ai déjà ajouter les instructions. Je veux y avoir accès en tout temps sur HedaCuisine. (Pâte à pizza, ...) À travers un livre. Parce qu'ils n'ont pas d'image, je n'y aurai pas accès en recherche en haut.
 [ ] Pouvoir naviguer d'une recette à l'autre dans une catégorie sur le site d'hedacuisine.
 [ ] Add favicon to website.
