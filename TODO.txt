@@ -8,6 +8,7 @@ https://guides.rubyonrails.org/routing.html#direct-routes
 1ère priorité: Site read only
 2e priorité: Site modifiable
 
+DATA: Faire des livres de recettes. 20 recettes de popcorn. 20 recettes au brocolli...
 OPTIMIZE: Link images directory to the path for dynamic website. Inside script to compile, transform all the src of the images to different name for the static website.
 OPTIMIZE: Je pense que c'est redondant d'avoir Attachement et Image. Un seul des deux devrait être suffisant.
 OPTIMIZE: Au lieu de gon, loader avec javascript le data.
