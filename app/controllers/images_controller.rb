@@ -14,14 +14,14 @@ class ImagesController < ApplicationController
   end
 
   def send_image(variant)
-    #render 'active_storage/representations/redirect#show'
-    #render rails_blob_path(variant)
-    #redirect_to variant.url
+    #redirect_to variant
 
-    named_disk_service = ActiveStorage::Blob.services.fetch(variant.blob.service_name) do
+    current_service = ActiveStorage::Blob.service.name
+    #named_disk_service = ActiveStorage::Blob.services.fetch(variant.blob.service_name) do
+    named_disk_service = ActiveStorage::Blob.services.fetch(current_service) do
       ActiveStorage::Blob.service
     end
-
+    variant.processed # Make sure the variant exists
     serve_file named_disk_service.path_for(variant.key), content_type: variant.content_type, disposition: "attachment"
   end
   def original
@@ -103,7 +103,7 @@ private
   end
   
   def set_image
-    @image = Image.includes(original_attachment: :blob).find(params[:id])
+    @image = Image.includes(:original_attachment).find(params[:id])
   end
     
   def image_params

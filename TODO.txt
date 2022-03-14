@@ -1,5 +1,7 @@
 Force avant-bras. Sandales. Bijoux. Mouthpiece. Lunette de soleil. Laptop. Chargeur laptop. Passeport.
 
+/images/thumb/asdf1234asdf1234.jpg
+
 Utiliser direct dans config/routes au lieu de créer des helper dans application helper.
 https://guides.rubyonrails.org/routing.html#direct-routes
 
