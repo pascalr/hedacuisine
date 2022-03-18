@@ -5,3 +5,7 @@ const extractParamFromModel = (model) => {
 export const paste_ingredients_recipes_path = (arg) => {
   return `/qc/recettes/${extractParamFromModel(arg)}/paste_ingredients`
 }
+
+export const create_new_recipe_book_path = (arg) => {
+  return `books/${extractParamFromModel(arg)}/create_new_recipe`
+}

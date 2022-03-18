@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react';
 
+export const Show = ({cond, children}) => {
+  return cond ? children : ''
+}
+
 export const useFetch = (url, {waitFor}) => {
   const [data, setData] = useState(null);
 

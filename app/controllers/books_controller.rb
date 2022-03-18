@@ -1,5 +1,5 @@
 class BooksController < ApplicationController
-  before_action :set_book, only: %i[ edit update destroy on_index_change edit_appearance move_book_recipe move_book_section]
+  before_action :set_book, only: %i[ edit update destroy on_index_change edit_appearance move_book_recipe move_book_section create_new_recipe]
   before_action :set_public_book, only: %i[ show search_data ]
   skip_before_action :authenticate_user!, only: [:index, :show, :search_data]
   skip_before_action :only_admin!, only: [:index, :show, :search_data]
@@ -12,6 +12,14 @@ class BooksController < ApplicationController
       item.update!(position: i+1) if item.position != i+1
     end
     head :no_content
+  end
+
+  def create_new_recipe
+    ActiveRecord::Base.transaction do
+      r = Recipe.create!(name: params[:book_recipe_name])
+      br = @book.book_recipes.create!(recipe_id: r.id)
+    end
+    head :ok
   end
 
   def move_book_recipe

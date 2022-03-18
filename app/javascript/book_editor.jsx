@@ -7,11 +7,13 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Autosuggest from 'react-autosuggest'
 
 import { ajax, sortBy, isBlank } from "./utils"
-import { combineOrderedListWithHeaders } from './lib'
+import { Show, combineOrderedListWithHeaders } from './lib'
 
 import { DescriptionTiptap, ModificationsHandler } from './tiptap'
 
 import {UploadableImage} from './modals/uploadable_image'
+
+import { create_new_recipe_book_path } from './routes'
 
 //
 import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from 'jsxstyle'
@@ -84,12 +86,13 @@ class BookEditor extends React.Component {
   constructor(props) {
     super(props);
     this.recipeFindRef = React.createRef();
-    this.newBookRecipeRecipeIdRef = React.createRef();
+    this.newBookRecipeRecipeNameRef = React.createRef();
     this.newBookSectionNameRef = React.createRef();
     this.state = {
       book: gon.book,
       book_recipes: gon.book_recipes,
       book_sections: gon.book_sections,
+      show_add_new_recipe: false,
     };
     this.state.book.image.onServerUpdate = (image) => {
       this.setState({book: updateRecord(this.state.book, {}, {image: image})})
@@ -99,7 +102,8 @@ class BookEditor extends React.Component {
     }
     //this.state.book.onUpdate = (book) => this.setState({book})
 
-    this.addRecipe = this.addRecipe.bind(this)
+    //this.addRecipeWithId = this.addRecipeWithId.bind(this)
+    this.addNewRecipe = this.addNewRecipe.bind(this)
     this.appendSection = this.appendSection.bind(this)
     this.removeBookRecipe = this.removeBookRecipe.bind(this)
     this.removeBookSection = this.removeBookSection.bind(this)
@@ -126,11 +130,20 @@ class BookEditor extends React.Component {
     }})
   }
     
-  addRecipe() {
-    const recipeId = this.newBookRecipeRecipeIdRef.current.value
+  //addRecipeWithId() {
+  //  const recipeId = this.newBookRecipeRecipeIdRef.current.value
+  //  let data = new FormData()
+  //  data.append("book_recipe[recipe_id]", recipeId)
+  //  ajax({url: gon.book_book_recipes_path, type: 'POST', data: data, success: (book_recipe) => {
+  //    this.setState({book_recipes: [...this.state.book_recipes, book_recipe]})
+  //  }})
+  //}
+    
+  addNewRecipe() {
+    const recipeName = this.newBookRecipeRecipeNameRef.current.value
     let data = new FormData()
-    data.append("book_recipe[recipe_id]", recipeId)
-    ajax({url: gon.book_book_recipes_path, type: 'POST', data: data, success: (book_recipe) => {
+    data.append("book_recipe_name", recipeName)
+    ajax({url: create_new_recipe_book_path(this.state.book), type: 'POST', data: data, success: (book_recipe) => {
       this.setState({book_recipes: [...this.state.book_recipes, book_recipe]})
     }})
   }
@@ -232,8 +245,8 @@ class BookEditor extends React.Component {
           <div>
             <br/><br/>
             <div className="d-block d-sm-flex gap-20 text-center">
-              <UploadableImage image={book.image} onDelete={onImageDelete} variant="small_book" width="235" />
-              <div>
+              <UploadableImage image={book.image} onDelete={onImageDelete} defaultPath="/books/default01.jpg" variant="small_book" width="235" />
+              <div style={{minWidth: "15em"}}>
                 <div className="d-flex">
                   <h2 className="text-black">
                     <EditableField model={book} field="name" className="plain-input"/>
@@ -247,8 +260,11 @@ class BookEditor extends React.Component {
             <br/><br/>
           </div>
         </div>
-        <h1>Liste des recettes</h1>
+        <h1>Recettes</h1>
         <hr/>
+        <Show cond={isBlank(this.state.book_recipes)}>
+          <p>Aucune recette pour l'instant</p>
+        </Show>
         <div ref={this.recipeFindRef} />
         <ul>
           <DragDropContext onDragEnd={(droppedItem) => this.handleDrop(droppedItem)}>
@@ -298,9 +314,11 @@ class BookEditor extends React.Component {
             <Droppable droppableId="recipes-container" type="RECIPE">
               {(provided) => (<>
                 <div {...provided.droppableProps} ref={provided.innerRef}>
-                  <h3 style={{margin: "0", padding: "0.5em 0 0.2em 0"}}>
-                    Recettes non catégorisées
-                  </h3>
+                  <Show cond={!isBlank(this.state.book_recipes.filter(r => !r.book_section_id))}>
+                    <h3 style={{margin: "0", padding: "0.5em 0 0.2em 0"}}>
+                      Recettes non catégorisées
+                    </h3>
+                  </Show>
                   {this.state.book_recipes.filter(r => !r.book_section_id).map((book_recipe, index) => {
                     return <Draggable key={`drag-recipe-${book_recipe.id}`} draggableId={`drag-recipe-${book_recipe.id.toString()}`} index={index}>
                       {(provided) => (<>
@@ -319,14 +337,26 @@ class BookEditor extends React.Component {
             </Droppable>
           </DragDropContext>
         </ul>
-        <div>
-          <input type="text" id="new-book-recipe-recipe-id" placeholder="Numéro de recette..." ref={this.newBookRecipeRecipeIdRef}/>
-          <button type="button" onClick={this.addRecipe} >Ajouter recette</button>
-        </div>
-        <div>
-          <button type="button" onClick={this.appendSection} >Ajouter section</button>
+        <Show cond={this.state.show_add_new_recipe}>
+          <div>
+            <input type="text" ref={this.newBookRecipeRecipeNameRef}/>
+            <button type="button" onClick={this.addNewRecipe} >Créer</button>
+          </div>
+        </Show>
+        <br/>
+        <div className="dropdown" style={{padding: "0 1em"}}>
+          <img data-bs-toggle="dropdown" style={{cursor: "pointer"}} width="36" src="/icons/plus-circle.svg"/>
+          <div className="dropdown-menu" style={{fontSize: "1.5em"}}>
+            <button className="dropdown-item" type="button" className="d-block plain-btn" onClick={this.appendSection}>
+              Ajouter une section
+            </button>
+            <button className="dropdown-item" type="button" className="d-block plain-btn" onClick={() => {this.setState({show_add_new_recipe: !this.state.show_add_new_recipe})}}>
+              Ajouter une nouvelle recette
+            </button>
+          </div>
         </div>
       </div>
+      <div style={{minHeight: "60vh"}}></div>
     </>)
   }
 }

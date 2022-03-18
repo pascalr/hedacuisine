@@ -3,13 +3,13 @@ import Modal from 'react-bootstrap/Modal'
 
 import {asyncUpdateModel, TextField, FileField, RadioField} from '../form'
 
-export const UploadableImage = ({onDelete, image, width, height, variant}) => {
-  let path = image ? image.variants[variant] : ''
+export const UploadableImage = ({onDelete, image, width, height, defaultPath, variant}) => {
+  let path = image && image.variants[variant] ? image.variants[variant] : defaultPath
   // add imagePlaceholder??? width??? height???
   const [showModal, setShowModal] = useState(false)
   return (<>
     <div className="over-container">
-      <ImageModal show={showModal} handleClose={() => setShowModal(false)} {...{image, onDelete, width, height, variant}} />
+      <ImageModal show={showModal} handleClose={() => setShowModal(false)} {...{path, image, onDelete, width, height, variant}} />
       <div style={{cursor: "pointer"}} onClick={() => setShowModal(true)}>
         <img style={{maxWidth: "100vh", height: "auto"}} src={path} {...{width, height}} />
         <div className="bottom-right" style={{color: 'white', fontSize: '2em'}}>
@@ -20,9 +20,7 @@ export const UploadableImage = ({onDelete, image, width, height, variant}) => {
   </>)
 }
 
-const ImageModal = ({onDelete, image, show, handleClose, variant, width, height}) => {
-  let path = image ? image.variants[variant] : ''
-
+const ImageModal = ({onDelete, image, show, handleClose, variant, width, height, path}) => {
   return (<>
     <Modal show={show} onHide={handleClose}>
       <Modal.Dialog>
