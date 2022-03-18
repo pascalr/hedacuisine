@@ -24,7 +24,9 @@ import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from '
 
 import {updateRecord, asyncUpdateModel, EditableField, TextField, ToggleField, CollectionSelect} from './form'
 
-const AddNewRecipe = ({show, inputRef, addNewRecipe}) => {
+const AddNewRecipe = ({show, addNewRecipe}) => {
+
+  const inputRef = useRef(null)
 
   useEffect(() => {
     if (show) {inputRef.current.focus()}
@@ -32,7 +34,7 @@ const AddNewRecipe = ({show, inputRef, addNewRecipe}) => {
 
   handleKeyPressed = (e) => {
     if (e.key === "Enter") {
-      addNewRecipe()
+      addNewRecipe(inputRef.current.value)
       inputRef.current.value = ''
     }
   }
@@ -41,7 +43,7 @@ const AddNewRecipe = ({show, inputRef, addNewRecipe}) => {
     <Show cond={show}>
       <div>
         <input type="text" ref={inputRef} onKeyPress={handleKeyPressed} />
-        <button type="button" onClick={addNewRecipe} >Créer</button>
+        <button type="button" onClick={() => addNewRecipe(inputRef.current.value)} >Créer</button>
       </div>
     </Show>
   )
@@ -109,7 +111,6 @@ class BookEditor extends React.Component {
   constructor(props) {
     super(props);
     this.recipeFindRef = React.createRef();
-    this.newBookRecipeRecipeNameRef = React.createRef();
     this.newBookSectionNameRef = React.createRef();
     this.state = {
       book: gon.book,
@@ -163,10 +164,9 @@ class BookEditor extends React.Component {
   //  }})
   //}
     
-  addNewRecipe() {
-    const recipeName = this.newBookRecipeRecipeNameRef.current.value
+  addNewRecipe(name) {
     let data = new FormData()
-    data.append("book_recipe_name", recipeName)
+    data.append("book_recipe_name", name)
     ajax({url: create_new_recipe_book_path(this.state.book), type: 'POST', data: data, success: (book_recipe) => {
       this.setState({book_recipes: [...this.state.book_recipes, book_recipe]})
     }})
@@ -361,7 +361,7 @@ class BookEditor extends React.Component {
             </Droppable>
           </DragDropContext>
         </ul>
-        <AddNewRecipe show={this.state.show_add_new_recipe} inputRef={this.newBookRecipeRecipeNameRef} addNewRecipe={this.addNewRecipe} />
+        <AddNewRecipe show={this.state.show_add_new_recipe} addNewRecipe={this.addNewRecipe} />
         <br/>
         <div className="dropdown" style={{padding: "0 1em"}}>
           <img data-bs-toggle="dropdown" style={{cursor: "pointer"}} width="36" src="/icons/plus-circle.svg"/>
