@@ -11,7 +11,7 @@
     <span id="next-carrousel-<%= key %>" style="top: 80px; left: calc(100% - 50px);" class="my-tns-control"><%= image_tag icon_path("custom-chevron-right.svg"), size: "45x90" %></span>
   </div>
 
-  <div id="carrousel-<%= key %>" class="book-carrousel d-flex gap-20">
+  <div id="carrousel-<%= key %>" class="book-carrousel d-flex gap-pad-20">
     <% list.each_with_index do |book, i| %>
       <div style="<%= i == list.size-1 ? "" : "padding-right: 1em;" %>">
         <%= link_to book do %>
