@@ -24,6 +24,29 @@ import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from '
 
 import {updateRecord, asyncUpdateModel, EditableField, TextField, ToggleField, CollectionSelect} from './form'
 
+const AddNewRecipe = ({show, inputRef, addNewRecipe}) => {
+
+  useEffect(() => {
+    if (show) {inputRef.current.focus()}
+  }, [show])
+
+  handleKeyPressed = (e) => {
+    if (e.key === "Enter") {
+      addNewRecipe()
+      inputRef.current.value = ''
+    }
+  }
+
+  return (
+    <Show cond={show}>
+      <div>
+        <input type="text" ref={inputRef} onKeyPress={handleKeyPressed} />
+        <button type="button" onClick={addNewRecipe} >Créer</button>
+      </div>
+    </Show>
+  )
+}
+
 const RecipeKindFinder = ({onRecipeKindFound}) => {
   const [value, setValue] = useState('')
   const [suggestions, setSuggestions] = useState([])
@@ -338,12 +361,7 @@ class BookEditor extends React.Component {
             </Droppable>
           </DragDropContext>
         </ul>
-        <Show cond={this.state.show_add_new_recipe}>
-          <div>
-            <input type="text" ref={this.newBookRecipeRecipeNameRef}/>
-            <button type="button" onClick={this.addNewRecipe} >Créer</button>
-          </div>
-        </Show>
+        <AddNewRecipe show={this.state.show_add_new_recipe} inputRef={this.newBookRecipeRecipeNameRef} addNewRecipe={this.addNewRecipe} />
         <br/>
         <div className="dropdown" style={{padding: "0 1em"}}>
           <img data-bs-toggle="dropdown" style={{cursor: "pointer"}} width="36" src="/icons/plus-circle.svg"/>

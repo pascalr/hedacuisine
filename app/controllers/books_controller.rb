@@ -16,11 +16,11 @@ class BooksController < ApplicationController
 
   def create_new_recipe
     ActiveRecord::Base.transaction do
-      r = Recipe.create!(name: params[:book_recipe_name])
+      r = current_user.recipes.create!(name: params[:book_recipe_name])
       br = @book.book_recipes.create!(recipe_id: r.id)
-    end
-    respond_to do |format|
-      format.json {render json: book_recipe.to_obj(includes: :recipe)}
+      respond_to do |format|
+        format.json {render json: br.to_obj(includes: :recipe)}
+      end
     end
   end
 

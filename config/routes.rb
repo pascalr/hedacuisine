@@ -180,5 +180,10 @@ Rails.application.routes.draw do
     resources :articles, param: 'slug'
 
   end
+  resources :books, param: 'slug' do
+    member do
+      post 'create_new_recipe'
+    end
+  end
 
 end
