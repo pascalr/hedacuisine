@@ -113,6 +113,7 @@ class BookEditor extends React.Component {
   appendSection() {
     ajax({url: gon.book.new_book_section_url, type: 'POST', data: {}, success: (section) => {
       this.setState({book_sections: [...this.state.book_sections, section]})
+      this.newBookSectionNameRef.current.focus()
     }})
   }
 
@@ -216,7 +217,6 @@ class BookEditor extends React.Component {
   }
 
   render() {
-
     const onRecipeKindFound = (recipeKindId) => {
       console.log('RecipeKindFound', recipeKindId)
       $.get(`/recipe_kinds/${recipeKindId}/search_recipe`, (raw) => {
@@ -271,13 +271,14 @@ class BookEditor extends React.Component {
             <Droppable droppableId="sections-container" type="SECTION">
               {(provided) => (<>
                 <div className="sections-container" {...provided.droppableProps} ref={provided.innerRef}>
-                  {this.state.book_sections.map((section, index) => (
-                    <Draggable key={`drag-section-${section.id}`} draggableId={`drag-section-${section.id.toString()}`} index={index}>
+                  {this.state.book_sections.map((section, index) => {
+                    let isLast = index - 1 == this.state.book_sections.length
+                    return (<Draggable key={`drag-section-${section.id}`} draggableId={`drag-section-${section.id.toString()}`} index={index}>
                       {(provided) => (<>
                         <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
                           <li className="section">
                             <h3 key={section.id} style={{margin: "0", padding: "0.5em 0 0.2em 0"}}>
-                              <TextField model={section} field="name" className="plain-input" />
+                              <TextField model={section} field="name" className="plain-input" inputRef={this.newBookSectionNameRef} />
                               <span style={{margin: "0 0.2em"}}>
                                 <DeleteConfirmButton id={`del-book-section-${section.id}`} onDeleteConfirm={() => this.removeBookSection(section)} message="Je veux enlever ce titre?" />
                               </span>
@@ -305,8 +306,8 @@ class BookEditor extends React.Component {
                           )}
                         </Droppable>
                       </>)}
-                    </Draggable>
-                  ))}
+                    </Draggable>)
+                  })}
                   {provided.placeholder}
                 </div>
               </>)}

@@ -13,4 +13,8 @@ class BookRecipe < ApplicationRecord
     return "#{id}" if recipe.name.nil?
     return "#{id}-#{recipe.name.gsub(' ', '-')}"
   end
+
+  def to_obj(params={})
+    extract_attributes(params, :position, :book_section_id)
+  end
 end

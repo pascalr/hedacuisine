@@ -19,7 +19,9 @@ class BooksController < ApplicationController
       r = Recipe.create!(name: params[:book_recipe_name])
       br = @book.book_recipes.create!(recipe_id: r.id)
     end
-    head :ok
+    respond_to do |format|
+      format.json {render json: book_recipe.to_obj(includes: :recipe)}
+    end
   end
 
   def move_book_recipe

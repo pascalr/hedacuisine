@@ -51,6 +51,7 @@ module SerializeHelper
   end
 
   def book_recipe_to_obj(book_recipe)
+    obj = book_recipe.to_obj
     obj = extract_attributes(book_recipe, :position, :book_section_id)
     obj[:url] = book_book_recipe_path(book_recipe.book, book_recipe)
     obj[:recipe] = {
