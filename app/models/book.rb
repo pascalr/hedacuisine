@@ -45,5 +45,9 @@ class Book < ApplicationRecord
       front_page_image ? front_page_image.aspect_ratio : 480.0 / 640.0
     end
   end
+  
+  def to_obj(params={})
+    extract_attributes(params, :name, :author, :description_json)
+  end
 
 end

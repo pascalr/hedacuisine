@@ -102,6 +102,11 @@ class RecipesController < ApplicationController
 
   def show
     @recipe = Recipe.includes(recipe_ingredients: {food: [:direct_substitutions, :indirect_substitutions]}).find(params[:slug].split('-')[0])
+    if current_user
+      # Send books data in order to be able to add the recipe to the current user books.
+      gon.books = current_user.books.map {|b| b.to_obj(only: :name)}
+    end
+    gon.recipe_id = @recipe.id
     gon.jbuilder
     # FIXME: This allows any user to read any recipe. Ensure permission
     # if I allow private recipes.

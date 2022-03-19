@@ -33,7 +33,15 @@ protected
   # that you call using record.to_obj(variant: :complete)
   # I don't know... Why not simply call it to_complete_obj as a completely new method?
   def extract_attributes(params, *attributes)
-    obj = attributes.inject({}) {|extracted, attr| extracted[attr] = self.send(attr); extracted}
+    attrs = nil
+    if params[:only]
+      attrs = params[:only].is_a?(Array) ? params[:only] : [params[:only]]
+    elsif params[:except]
+      # TODO when needed
+    else
+      attrs = attributes
+    end
+    obj = attrs.inject({}) {|extracted, attr| extracted[attr] = self.send(attr); extracted}
     obj[:class_name] = self.class.name.underscore
     obj[:id] = self.id
     extract_assoc(obj, self, params[:includes]) if params && params[:includes]

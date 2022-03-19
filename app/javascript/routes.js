@@ -10,3 +10,8 @@ export const paste_ingredients_recipes_path = (arg) => {
 export const create_new_recipe_book_path = (arg) => {
   return `/books/${extractParamFromModel(arg)}/create_new_recipe`
 }
+
+export const book_recipes_book_path = (arg) => {
+  // FIXME: js paths should not be localized
+  return `/qc/livres/${extractParamFromModel(arg)}/recettes`
+}

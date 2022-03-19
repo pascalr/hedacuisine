@@ -2,6 +2,7 @@
 
 import {Utils} from "./recipe_utils"
 import Quantity from './models/quantity'
+import {addRecipeToBook} from './modals/add_recipe_to_book'
 
 function prettyIngredientV2(ing) {
 
@@ -189,6 +190,8 @@ function getIncValue(nb, nb0, positive) {
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
+
+  addRecipeToBook(document.getElementById('add-to-book-btn'))
   
   const servings = gon.recipe_servings_quantity
   window.originalServings = parseInt(servings.innerHTML)
