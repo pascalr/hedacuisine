@@ -34,9 +34,9 @@ protected
   # I don't know... Why not simply call it to_complete_obj as a completely new method?
   def extract_attributes(params, *attributes)
     attrs = nil
-    if params[:only]
+    if params && params[:only]
       attrs = params[:only].is_a?(Array) ? params[:only] : [params[:only]]
-    elsif params[:except]
+    elsif params && params[:except]
       # TODO when needed
     else
       attrs = attributes
