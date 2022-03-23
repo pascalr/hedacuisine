@@ -9,7 +9,7 @@
 
 <% unless recipe.ingredients.blank? %>
   
-  <% foods_dup = recipe.ingredients.group_by(&:food_id).reject {|f,s| s.size == 1}.map(&:first) %>
+  <% foods_dup = recipe.ingredients.group_by {|i| i.food_id ? i.food_id : i.raw_food}.reject {|f,s| s.size == 1}.map(&:first) %>
   
   <h2>Ingrédients</h2>
 
