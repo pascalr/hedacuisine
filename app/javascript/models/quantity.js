@@ -25,7 +25,7 @@ export default class Quantity {
   // TODO: Try to parse complete ingredient separated by de or d'
   // Then, try to parse quantity. Check if label is a unit. Check if label is a food.
   static parseQuantityAndFoodName(raw) {
-    const separators = ["de", "d'"]
+    const separators = [";", "de", "d'"]
     for (let i = 0; i < separators.length; i++) {
       if (raw.includes(separators[i])) {
         const s = raw.split(separators[i])

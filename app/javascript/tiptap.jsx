@@ -398,7 +398,7 @@ const ArticleHeading = Heading.extend({
 function parseItemNbOrRaw(raw) {
 }
         
-const singleIngredientRegex = "(\\\d+|\\\(\\\d+[^-,\\\(\\\)\\\}\\\{]*\\\))"
+const singleIngredientRegex = "(\\\d+|\\\(\\\d+[^-,\\\(\\\)\\\}\\\{]*\\\)|[^-,\\\(\\\)\\\}\\\{]*;[^-,\\\(\\\)\\\}\\\{]*)"
 //const signleIngredientRegex = '({(\d+|\(\d+[^\(\)\}\{]*\))})$'
 
 const StepNode = Node.create({
@@ -509,7 +509,12 @@ const IngredientNode = Node.create({
     let food = null
     let name = null
     let comment = null
-    if (ingredient.startsWith("(")) {
+    if (ingredient.includes(";")) {
+      const [qty, foodName] = Quantity.parseQuantityAndFoodName(ingredient)
+      text = Utils.prettyQuantityFor(qty.raw, foodName)
+      food = gon.foodList.find(food => food.name == foodName)
+      name = foodName
+    } else if (ingredient.startsWith("(")) { // old version
       const raw = ingredient.slice(1,-1)
       const [qty, foodName] = Quantity.parseQuantityAndFoodName(raw)
       text = Utils.prettyQuantityFor(qty.raw, foodName)
@@ -656,7 +661,15 @@ const IngredientListNode = Node.create({
       }
     })
     let list = ings.map(ingredient => {
-      if (ingredient.startsWith("(")) {
+      if (ingredient.includes(";")) {
+        const [qty, foodName] = Quantity.parseQuantityAndFoodName(ingredient)
+        let children = []
+        let text = Utils.prettyQuantityFor(qty.raw, foodName)
+        if (text && text != '') {children.push(text)}
+        //food = gon.foodList.find(food => food.name == foodName)
+        children.push(['span', {class: 'food-name'}, foodName])
+        return ['li', {}, ...children]
+      } else if (ingredient.startsWith("(")) {
         return ['li', HTMLAttributes, "TODO"]
       } else {
         const ing = Object.values(gon.recipe.ingredients || {}).find(ing => ing.item_nb == ingredient)
