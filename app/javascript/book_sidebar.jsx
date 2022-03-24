@@ -53,7 +53,7 @@ const BookSidebar = () => {
 
   let select = (pos) => {
     setSelected(pos)
-    // TODO: Change the value of the input field, but not the search
+    inputField.current.value = pos < 0 ? '' : filtered[pos].recipe.name
   }
 
   let onKeyDown = ({key}) => {
@@ -77,7 +77,7 @@ const BookSidebar = () => {
             <img src="/icons/x-lg.svg"/>
           </button>
           <h2 style={{fontSize: "1.5em"}}>{data ? data.book_name : ''}</h2>
-          <input id="book-filter" type="search" placeholder="Filtrer..." onChange={(e) => setSearch(e.target.value)} autoComplete="off" style={{width: "100%"}} onKeyDown={onKeyDown}/>
+          <input id="book-filter" ref={inputField} type="search" placeholder="Filtrer..." onChange={(e) => setSearch(e.target.value)} autoComplete="off" style={{width: "100%"}} onKeyDown={onKeyDown}/>
           {filtered.map((book_recipe, current) => {
             let printSection = (section_id) => {
               if (sectionPrinted[section_id]) {return ''}

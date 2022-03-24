@@ -8,57 +8,37 @@ const RecipeIndex = () => {
   
   const inputField = useRef(null);
   const [search, setSearch] = useState('')
+  const [selected, setSelected] = useState(-1)
 
-  useEffect(() => {
-    //let elems = document.querySelectorAll('[data-book-search-toggle]')
-    //for (let i = 0; i < elems.length; i++) {
-    //  let elem = elems[i]
-    //  elem.handleToggle = () => {setVisible(true); doInit()} // FIXME: This does not work: setVisible(!visible)
-    //  elem.addEventListener("click", elem.handleToggle)
-    //}
-    //return () => {
-    //  let elems = document.querySelectorAll('[data-book-search-toggle]')
-    //  for (let i = 0; i < elems.length; i++) {
-    //    elem.removeEventListener("click", elem.handleToggle)
-    //  }
-    //}
-  }, []);
+  //useEffect(() => {
+  //  // inputField.current.focus() This would be nice for computers, but it's bad for mobile...
+  //}, []);
  
-  //let term = normalizeSearchText(search)
-  //let filtered = []
-  //if (data) {
-  //  // 0 means no section
-  //  filtered = filtered.concat((data.recipes_by_section[0]||[]).filter(r => (
-  //    r.recipe.name && ~normalizeSearchText(r.recipe.name).indexOf(term)
-  //  )))
-  //  data.book_sections.forEach((book_section) => {
-  //    filtered = filtered.concat((data.recipes_by_section[book_section.id]||[]).filter(r => (
-  //      r.recipe.name && ~normalizeSearchText(r.recipe.name).indexOf(term)
-  //    )))
-  //  })
-  //}
+  let recipes = []
+  let term = normalizeSearchText(search)
+  recipes = gon.recipes.filter(r => (
+    r.name && ~normalizeSearchText(r.name).indexOf(term)
+  ))
 
-  //let select = (pos) => {
-  //  setSelected(pos)
-  //  // TODO: Change the value of the input field, but not the search
-  //}
-
-  let onKeyDown = ({key}) => {
-  //  if (key == "ArrowDown") {select(selected >= filtered.length-1 ? -1 : selected+1)}
-  //  if (key == "ArrowUp") {select(selected < 0 ? filtered.length-1 : selected-1)}
-  //  if (key == "Enter") {window.location.href = filtered[selected].url+"#main"}
+  let select = (pos) => {
+    setSelected(pos)
+    inputField.current.value = pos < 0 ? '' : recipes[pos].name
   }
 
-  let recipes = gon.recipes
+  let onKeyDown = ({key}) => {
+    if (key == "ArrowDown") {select(selected >= recipes.length-1 ? -1 : selected+1)}
+    if (key == "ArrowUp") {select(selected < 0 ? recipes.length-1 : selected-1)}
+    if (key == "Enter") {window.location.href = recipe_path(recipes[selected])}
+  }
 
   return (<>
     <div>
-      <input id="book-filter" type="search" placeholder="Filtrer..." onChange={(e) => setSearch(e.target.value)} autoComplete="off" style={{width: "100%"}} onKeyDown={onKeyDown}/>
+      <input ref={inputField} type="search" placeholder="Filtrer..." onChange={(e) => setSearch(e.target.value)} autoComplete="off" style={{width: "100%"}} onKeyDown={onKeyDown}/>
     </div>
     <ul id="recipes">
       {recipes.map((recipe, current) => {
         return (
-          <li key={recipe.id}><a href={recipe_path(recipe)}>{recipe.name}</a></li>
+          <li key={recipe.id}><a href={recipe_path(recipe)} className={current == selected ? "selected" : undefined}>{recipe.name}</a></li>
         )
       })}
     </ul>
