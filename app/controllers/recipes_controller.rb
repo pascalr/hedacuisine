@@ -72,9 +72,7 @@ class RecipesController < ApplicationController
   end
 
   def my_recipes
-    # OPTIMIZE: Using paginage for this is too much for nothing I believe
-    #@recipes = current_user.recipes.paginate(page: params[:page], per_page: 1)
-    #@recipe = @recipes.first
+    gon.recipes = current_user.recipes.map {|r| r.to_obj(only: :name)}
   end
 
   def move_ing

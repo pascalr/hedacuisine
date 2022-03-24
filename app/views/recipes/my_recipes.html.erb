@@ -6,12 +6,11 @@
 </div>
 <hr style="margin-top: 0;">
 
-<ul>
-  <% if current_user.recipes.blank? %>
-    <p>Aucune recette pour l'instant.</p>
-  <% else %>
-    <% current_user.recipes.each do |recipe| %>
-      <li><%= link_to recipe.name, recipe %></li>
-    <% end %>
+<% if current_user.recipes.blank? %>
+  <p>Aucune recette pour l'instant.</p>
+<% else %>
+  <div id="root"></div>
+  <% content_for :import_js do %>
+    <%= js_import_tag "recipes_index" %>
   <% end %>
-</ul>
+<% end %>
