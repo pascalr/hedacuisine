@@ -1,23 +1,21 @@
 <% book_recipe = nil unless local_assigns[:book_recipe] %>
 <% path = book_recipe ? book_book_recipe_path(book_slug: @book, slug: book_recipe, anchor: "main") : recipe %>
 
-<div class="row" style="margin-top: 5px;">
-  <div class="col-sm-auto" style="margin-bottom: 5px;">
-    <%= link_to path do %>
-      <% if recipe.image %>
-        <%= image_tag small_image_path(recipe.image), width: 255, height: 171 %>
-      <% else %>
-        <%= image_tag '/default_recipe_01.png', width: 255, height: 171 %>
-      <% end %>
+<div class="d-sm-flex gap-15" style="margin-bottom: 1em;">
+  <%= link_to path do %>
+    <% if recipe.image %>
+      <%= image_tag small_image_path(recipe.image), width: 255, height: 171 %>
+    <% else %>
+      <%= image_tag '/default_recipe_01.png', width: 255, height: 171 %>
     <% end %>
-  </div>
-  <div class="col recipe-details-small" style="margin-bottom: 20px;">
+  <% end %>
+  <div>
+    <div style="height: 0.5em;"></div>
     <%= link_to path do %>
       <div class="recipe-listing-title">
         <%= translated(recipe.name) %>
       </div>
     <% end %>
     <%= render partial: "recipes/details_small_version", locals: {recipe: recipe} %>
-
   </div>
 </div>
