@@ -1,5 +1,7 @@
 Pouvoir faire 8 à 10 portions, ou bien 8 - 10 portions.
 
+Scale by ingredient does not work well. Don't convert to grams. Always handle scale same unit. Handle scale with g if I have the data.
+
 Pouvoir créer une recette directement dans my_recipes. Tu écris dans le search field, et si ça n'existe pas, pouvoir créer là.
 
 Ajouter des notifications pour tout. Par exemple, la sauvegarde, les modifications, etc...

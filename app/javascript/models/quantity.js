@@ -1,3 +1,5 @@
+import {extractNumberAtBeginning} from "../utils"
+
 export default class Quantity {
 
   constructor(args = {}) {
@@ -12,7 +14,7 @@ export default class Quantity {
     this.unit = null
 
     if (this.raw != null) {
-      let s = this.raw.match(/^\d+( \d)?([,.\/]\d+)?/g)
+      let s = extractNumberAtBeginning(this.raw)
       if (s != null) {
         let qty_s = s[0]
         this.label = this.raw.substr(qty_s.length).trim()

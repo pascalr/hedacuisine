@@ -1,5 +1,15 @@
 import Rails from '@rails/ujs'
 import $ from 'jquery'
+  
+export function prettyNumber(nb) {
+  //return Math.round(nb*100)/100
+  return Number.parseFloat(Number.parseFloat(nb).toPrecision(3));
+}
+
+export function extractNumberAtBeginning(str) {
+  if (isBlank(str)) {return null}
+  return str.match(/^\d+( \d+\/\d+)?|\d+[,.]\d+/g)[0]
+}
 
 export function isBlank(array) {
   return !array || array.length == 0

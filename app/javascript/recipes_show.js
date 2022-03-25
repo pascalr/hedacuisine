@@ -101,7 +101,7 @@ function scaleRaw(raw) {
 
 function updateServingsInputField() {
   const elem = document.getElementById("servings-input-field");
-  elem.value = scaleRaw(elem.dataset.initial)
+  elem.value = new Servings(elem.dataset.initial).scale(window.scale).print()
 }
 
 function updateIngredientQtyInputField() {
@@ -249,35 +249,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
     var qty = new Quantity({raw: inField.value})
     const inIng = gon.ingredients[inIngs.value]
     var grams = Utils.toGrams(qty.nb, qty.unit, inIng.unit_weight, inIng.density)
-    window.scale = grams / inIng.grams
-    //console.log(f)
-    //console.log(grams)
-    //console.log(inIng.grams)
-    //console.log(scale)
-    updateServingsInputField()
-    updateScalableQuantities()
-    updateScalableVolumes()
-    updateScalableWeights()
-    updateScalableIngredients()
-    updateScalableDetailedIngredients()
-    updateIngredientsWithId()
+    changeScale(grams / inIng.grams)
   })
   
   servingsField.addEventListener('change', event => {
     var qty0 = new Quantity({raw: servingsField.dataset.initial})
     var f = new Quantity({raw: servingsField.value}).nb
-    servingsField.value = (event.forced ? Utils.prettyFraction(f) : f.toString()) + " " + qty0.label
-    window.scale = f / qty0.nb
-    //console.log(f)
-    //console.log(f0)
-    //console.log(scale)
-    updateIngredientQtyInputField()
-    updateScalableQuantities()
-    updateScalableVolumes()
-    updateScalableWeights()
-    updateScalableIngredients()
-    updateScalableDetailedIngredients()
-    updateIngredientsWithId()
+    changeScale(f / qty0.nb)
   })
   
   inIngs.addEventListener('change', event => {
