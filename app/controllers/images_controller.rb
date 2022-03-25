@@ -9,6 +9,13 @@ class ImagesController < ApplicationController
   skip_before_action :authenticate_user!, only: [:thumb, :medium, :small, :original, :portrait_thumb, :small_book, :book]
   skip_before_action :only_admin!, only: [:thumb, :medium, :small, :original, :portrait_thumb, :small_book, :book]
 
+  #around_filter :silence_action, :only => :action
+  #def silence_action
+  #  Rails.logger.silence do
+  #    yield
+  #  end
+  #end
+
   def index
     @images = Image.order(id: :desc).all
   end

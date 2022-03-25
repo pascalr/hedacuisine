@@ -1,23 +1,6 @@
-Dans admin, voir les recettes orphelines pour pouvoir les supprimer si avec duplicats. (Gâteau au sucre à la crème...)
-
-Yentai
-Choa poa
-Ma'a tinto
-
 Pouvoir faire 8 à 10 portions, ou bien 8 - 10 portions.
 
-Image du livre dans show devrait être plus grande.
-
 Ajouter des notifications pour tout. Par exemple, la sauvegarde, les modifications, etc...
-
-Pouvoir créer une nouvelle recette directement en modifiant un livre.
-
-Garder les images que les gens upload sous format png? ( parce que c'est lossless )
-
-/images/thumb/asdf1234asdf1234.jpg
-
-Utiliser direct dans config/routes au lieu de créer des helper dans application helper.
-https://guides.rubyonrails.org/routing.html#direct-routes
 
 1ère priorité: Site read only
 2e priorité: Site modifiable
@@ -36,6 +19,8 @@ Faire une page web qui explique comment concevoir ma version actuelle du robot. 
 Ajouter un field AKA dans les recettes? Pâte brisée. AKA pâte à tarte, abaisse de tarte
 
 Gérer les alias. Les alias de unit entre autre. 't.' == 't'. A unit has many name. A recipe kind has many name. A food has many name. Don't work on this yet...
+
+Dans admin, voir les recettes orphelines pour pouvoir les supprimer si avec duplicats. (Gâteau au sucre à la crème...)
 
 ===== Site statique =====
 

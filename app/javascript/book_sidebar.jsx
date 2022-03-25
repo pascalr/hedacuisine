@@ -40,15 +40,15 @@ const BookSidebar = () => {
   let term = normalizeSearchText(search)
   let filtered = []
   if (data) {
-    // 0 means no section
-    filtered = filtered.concat((data.recipes_by_section[0]||[]).filter(r => (
-      r.recipe.name && ~normalizeSearchText(r.recipe.name).indexOf(term)
-    )))
     data.book_sections.forEach((book_section) => {
       filtered = filtered.concat((data.recipes_by_section[book_section.id]||[]).filter(r => (
         r.recipe.name && ~normalizeSearchText(r.recipe.name).indexOf(term)
       )))
     })
+    // 0 means no section
+    filtered = filtered.concat((data.recipes_by_section[0]||[]).filter(r => (
+      r.recipe.name && ~normalizeSearchText(r.recipe.name).indexOf(term)
+    )))
   }
 
   let select = (pos) => {
@@ -83,7 +83,7 @@ const BookSidebar = () => {
               if (sectionPrinted[section_id]) {return ''}
               sectionPrinted[section_id] = true
               let section = data.book_sections.find(b => b.id == section_id)
-              return section ? <h3>{section.name}</h3> : ''
+              return section ? <h3>{section.name}</h3> : <h3>Autres</h3>
             }
             return (
               <div key={book_recipe.id}>
