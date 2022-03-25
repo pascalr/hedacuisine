@@ -244,9 +244,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
   })
   
   servingsField.addEventListener('change', event => {
-    var qty0 = new Quantity({raw: servingsField.dataset.initial})
-    var f = new Quantity({raw: servingsField.value}).nb
-    changeScale(f / qty0.nb)
+    var initial = new Servings(servingsField.dataset.initial).average()
+    var now = new Servings(servingsField.value).average()
+    console.log("initial", initial)
+    console.log("now", now)
+    changeScale(now / initial)
   })
   
   inIngs.addEventListener('change', event => {
