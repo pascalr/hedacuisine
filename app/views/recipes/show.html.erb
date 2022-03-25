@@ -15,8 +15,8 @@
 
 <%= render partial: "recipes/recipe_description_with_image", locals: {recipe: @recipe} %>
 
-<div class="responsive-sm-above" style="gap: 30px;">
-  <div>
+<div class="d-block d-sm-flex gap-30">
+  <div class="flex-grow-1">
     <%= render partial: "recipes/recipe_body", locals: {recipe: @recipe, hide_header: true} %>
   </div>
   <% if @recipe.recipe_kind %>

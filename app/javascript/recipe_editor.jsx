@@ -447,7 +447,7 @@ class RecipeEditor extends React.Component {
     //console.log(model)
     
     return (<>
-      <div className="responsive-sm-above" style={{gap: "20px"}}>
+      <div className="d-block d-md-flex gap-20">
         <div>
           <div className="over-container">
             <EditRecipeImageModal recipe={recipe} show={this.state.showImageModal}
