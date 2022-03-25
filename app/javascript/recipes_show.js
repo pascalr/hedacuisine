@@ -176,13 +176,6 @@ function addFilterTag(color, text) {
 function numDigits(x) {
   return (Math.log10((x ^ (x >> 31)) - (x >> 31)) | 0) + 1;
 }
-function getScalingFactor(nb, nb0, positive) {
-  let multiplying = nb > nb0
-  let current = Math.round(multiplying ? (nb / nb0) : (nb0 / nb))
-  let now = (!positive == !multiplying) ? (current + 1) : (current - 1)
-  if (now == 0) { now = 2; multiplying = !multiplying }
-  return multiplying ? now : (1.0 / now)
-}
 
 document.addEventListener("DOMContentLoaded", function(event) {
 
@@ -234,15 +227,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
   
   moreButton.addEventListener('click', event => {
-    var f0 = new Quantity({raw: servingsField.dataset.initial}).nb
-    var qty = new Quantity({raw: servingsField.value})
-    changeScale(getScalingFactor(qty.nb, f0, true))
+    let scale = window.scale
+    changeScale(scale >= 1 ? scale + 1 : 1/(1/scale-1))
   })
   
   lessButton.addEventListener('click', event => {
-    var f0 = new Quantity({raw: servingsField.dataset.initial}).nb
-    var qty = new Quantity({raw: servingsField.value})
-    changeScale(getScalingFactor(qty.nb, f0, false))
+    let scale = window.scale
+    changeScale(scale > 1 ? scale - 1 : 1/(1/scale+1))
   })
   
   inField.addEventListener('change', event => {
