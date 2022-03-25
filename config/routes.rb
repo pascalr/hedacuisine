@@ -38,13 +38,7 @@ Rails.application.routes.draw do
   resources :images do
     member do
       patch 'process_image'
-      get 'original', defaults: {locale: nil}, as: nil
-      get 'thumb', defaults: {locale: nil}, as: nil
-      get 'portrait_thumb', defaults: {locale: nil}, as: nil
-      get 'small', defaults: {locale: nil}, as: nil
-      get 'small_book', defaults: {locale: nil}, as: nil
-      get 'book', defaults: {locale: nil}, as: nil
-      get 'medium', defaults: {locale: nil}, as: nil
+      get ':variant', defaults: {locale: nil}, as: nil, action: 'variant'
     end
   end
 

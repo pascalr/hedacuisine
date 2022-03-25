@@ -1,15 +1,13 @@
 class ImagesController < ApplicationController
 
   #include ActiveStorage::SetCurrent # For images path. (thumb, small, medium, original, ...)
-  include ActiveStorage::FileServer # For serve_file method
+  #include ActiveStorage::FileServer # For serve_file method
 
-  #skip_before_action :authenticate_user!, only: [:show]
-  #skip_before_action :only_admin!, only: [ :show]
-  before_action :set_image, only: [:show, :update, :destroy, :edit, :process_image, :small, :medium, :thumb, :original, :portrait_thumb, :small_book, :book]
-  skip_before_action :authenticate_user!, only: [:thumb, :medium, :small, :original, :portrait_thumb, :small_book, :book]
-  skip_before_action :only_admin!, only: [:thumb, :medium, :small, :original, :portrait_thumb, :small_book, :book]
+  before_action :set_image, only: [:show, :update, :destroy, :edit, :process_image, :variant]
+  skip_before_action :authenticate_user!, only: [:variant]
+  skip_before_action :only_admin!, only: [:variant]
 
-  #around_filter :silence_action, :only => :action
+  #around_filter :silence_action, :only => :variant
   #def silence_action
   #  Rails.logger.silence do
   #    yield
@@ -31,26 +29,8 @@ class ImagesController < ApplicationController
     #variant.processed # Make sure the variant exists
     #serve_file named_disk_service.path_for(variant.key), content_type: variant.content_type, disposition: "attachment"
   end
-  def original
-    send_image @image.original
-  end
-  def thumb
-    send_image @image.thumb_variant
-  end
-  def small
-    send_image @image.small_variant
-  end
-  def medium
-    send_image @image.medium_variant
-  end
-  def portrait_thumb
-    send_image @image.portrait_thumb_variant
-  end
-  def small_book
-    send_image @image.small_book_variant
-  end
-  def book
-    send_image @image.book_variant
+  def variant
+    send_image @image.variant(params[:variant])
   end
 
   def show

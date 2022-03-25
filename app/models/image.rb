@@ -29,6 +29,18 @@ class Image < ApplicationRecord
     small_book: {width: 178, height: 258}, # La variante devrait avoir une hauteur minimale du livre sur la page d'acceuil, et une largeur minimale du livre dans le preview à gauche.
     book: {width: 356}
   }
+  def variant(name)
+    case name.to_s
+    when 'thumb' then thumb_variant
+    when 'portrait_thumb' then portrait_thumb_variant
+    when 'small' then small_variant
+    when 'medium' then medium_variant
+    when 'small_book' then small_book_variant
+    when 'book' then book_variant
+    else
+      raise "Error missing variant #{name}"
+    end
+  end
   def thumb_variant
     original.representation(resize_to_fill: [VARIANTS[:thumb][:width], VARIANTS[:thumb][:height]])
   end
