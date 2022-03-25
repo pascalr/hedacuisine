@@ -6,7 +6,15 @@
       <div>
         <br><br>
         <div class="d-block d-sm-flex gap-20 text-center text-sm-left">
-          <%= render partial: "books/title_page", locals: {book: @book} %>
+        <% if @book.front_page_image && @book.front_page_image.original.attached? %>
+          <%= image_tag image_variant_path(@book.front_page_image, :book), width: Image::VARIANTS[:book][:width], height: Image::VARIANTS[:book][:width].to_f/@book.front_page_image.aspect_ratio.to_f %>
+        <% else %>
+          <div style="display: flex; flex-direction: column; align-items: center; max-width: <%= Image::VARIANTS[:book][:width] %>px;">
+            <%= image_tag "/books/default01.jpg", height: 516, width: Image::VARIANTS[:book][:width] %>
+            <div><div style="transform: translate(0, -60px); color: black;">de <%= @book.author %></div></div>
+            <div><div class="book-title"><b><%= @book.name %></b></div></div>
+          </div>
+        <% end %>
           <div>
             <div class="d-flex">
               <div class="flex-grow-1"></div>

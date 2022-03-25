@@ -5,9 +5,9 @@ class ImagesController < ApplicationController
 
   #skip_before_action :authenticate_user!, only: [:show]
   #skip_before_action :only_admin!, only: [ :show]
-  before_action :set_image, only: [:show, :update, :destroy, :edit, :process_image, :small, :medium, :thumb, :original, :portrait_thumb, :small_book]
-  skip_before_action :authenticate_user!, only: [:thumb, :medium, :small, :original, :portrait_thumb, :small_book]
-  skip_before_action :only_admin!, only: [:thumb, :medium, :small, :original, :portrait_thumb, :small_book]
+  before_action :set_image, only: [:show, :update, :destroy, :edit, :process_image, :small, :medium, :thumb, :original, :portrait_thumb, :small_book, :book]
+  skip_before_action :authenticate_user!, only: [:thumb, :medium, :small, :original, :portrait_thumb, :small_book, :book]
+  skip_before_action :only_admin!, only: [:thumb, :medium, :small, :original, :portrait_thumb, :small_book, :book]
 
   def index
     @images = Image.order(id: :desc).all
@@ -41,6 +41,9 @@ class ImagesController < ApplicationController
   end
   def small_book
     send_image @image.small_book_variant
+  end
+  def book
+    send_image @image.book_variant
   end
 
   def show

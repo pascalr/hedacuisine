@@ -26,7 +26,8 @@ class Image < ApplicationRecord
     portrait_thumb: {width: 71, height: 106.5},
     small: {width: 255, height: 171},
     medium: {width: 452, height: 304},
-    small_book: {width: 178, height: 258} # La variante devrait avoir une hauteur minimale du livre sur la page d'acceuil, et une largeur minimale du livre dans le preview à gauche.
+    small_book: {width: 178, height: 258}, # La variante devrait avoir une hauteur minimale du livre sur la page d'acceuil, et une largeur minimale du livre dans le preview à gauche.
+    book: {width: 356}
   }
   def thumb_variant
     original.representation(resize_to_fill: [VARIANTS[:thumb][:width], VARIANTS[:thumb][:height]])
@@ -39,6 +40,9 @@ class Image < ApplicationRecord
   end
   def medium_variant
     original.representation(resize_to_fill: [VARIANTS[:medium][:width], VARIANTS[:medium][:height]])
+  end
+  def book_variant
+    original.representation(size: "#{VARIANTS[:book][:width]}x")
   end
   def small_book_variant
     # La variante devrait avoir une hauteur minimale du livre sur la page d'acceuil, et une largeur minimale du livre dans le preview à gauche.

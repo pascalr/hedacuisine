@@ -43,6 +43,7 @@ Rails.application.routes.draw do
       get 'portrait_thumb', defaults: {locale: nil}, as: nil
       get 'small', defaults: {locale: nil}, as: nil
       get 'small_book', defaults: {locale: nil}, as: nil
+      get 'book', defaults: {locale: nil}, as: nil
       get 'medium', defaults: {locale: nil}, as: nil
     end
   end
