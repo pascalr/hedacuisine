@@ -1,5 +1,7 @@
 Pouvoir faire 8 à 10 portions, ou bien 8 - 10 portions.
 
+Pouvoir créer une recette directement dans my_recipes. Tu écris dans le search field, et si ça n'existe pas, pouvoir créer là.
+
 Ajouter des notifications pour tout. Par exemple, la sauvegarde, les modifications, etc...
 
 1ère priorité: Site read only
@@ -52,7 +54,6 @@ Dans admin, voir les recettes orphelines pour pouvoir les supprimer si avec dupl
 
 [ ] 1
 [ ] Pouvoir modifier le nom de l'ingrédient
-[ ] Faire plus à 24 muffins fait 34 muffins... Peut-être que + et - pourrait faire x2, x3, x4 et ainsi de suite... (/2) et (x2) => (=) et (x3) => (x2) et (x4) => (/3) et (=) => (/4) et (/3)
 [ ] Recipe editor. Écrire le nom de l'ingrédient sans sélectionner le food, devrait quand même trouver le food si exact match.
 [ ] L'autocomplete des aliments ne se fait pas avec les aliments nouvellement créer. Il faut rechargez la page.
 [ ] Utiliser le clavier pour sélectionner un aliment lors de l'ajout d'un ingrédient à une recette fait disparaître le texte de la recherche.

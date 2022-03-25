@@ -176,17 +176,11 @@ function numDigits(x) {
   return (Math.log10((x ^ (x >> 31)) - (x >> 31)) | 0) + 1;
 }
 function getIncValue(nb, nb0, positive) {
-  if (positive) {
-    if (nb <= 0.064) {return 0.125}
-    else if (nb <= 0.5) {return nb * 2.0}
-    else if (nb < 1.0) {return 1.0}
-    return nb + Math.pow(10, numDigits(Math.min(nb, nb0))-1)
-  } else {
-    if (nb <= 0.25) {return 0.125}
-    else if (nb <= 1.0) {return nb / 2.0}
-    let i = Math.pow(10, numDigits(Math.min(nb, nb0))-1)
-    return parseInt(nb) == i ? nb - Math.pow(10, numDigits(Math.min(nb, nb0))-2) : nb - i
-  }
+  let multiplying = nb > nb0
+  let current = Math.round(multiplying ? (nb / nb0) : (nb0 / nb))
+  let now = (!positive == !multiplying) ? (current + 1) : (current - 1)
+  if (now == 0) { now = 2; multiplying = !multiplying }
+  return multiplying ? (nb0 * now) : (nb0 / now)
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
