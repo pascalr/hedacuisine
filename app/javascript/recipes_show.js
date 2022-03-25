@@ -176,19 +176,12 @@ function addFilterTag(color, text) {
 function numDigits(x) {
   return (Math.log10((x ^ (x >> 31)) - (x >> 31)) | 0) + 1;
 }
-//function getScalingFactor(nb, nb0, positive) {
-//  let multiplying = nb > nb0
-//  let current = Math.round(multiplying ? (nb / nb0) : (nb0 / nb))
-//  let now = (!positive == !multiplying) ? (current + 1) : (current - 1)
-//  if (now == 0) { now = 2; multiplying = !multiplying }
-//  return multiplying ? (nb0 * now) : (nb0 / now)
-//}
-function getIncValue(nb, nb0, positive) {
+function getScalingFactor(nb, nb0, positive) {
   let multiplying = nb > nb0
   let current = Math.round(multiplying ? (nb / nb0) : (nb0 / nb))
   let now = (!positive == !multiplying) ? (current + 1) : (current - 1)
   if (now == 0) { now = 2; multiplying = !multiplying }
-  return multiplying ? (nb0 * now) : (nb0 / now)
+  return multiplying ? now : (1.0 / now)
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
@@ -206,6 +199,18 @@ document.addEventListener("DOMContentLoaded", function(event) {
   const servingsField = document.getElementById("servings-input-field");
   const inField = document.getElementById("ingredient-qty-input-field");
   const inIngs = document.getElementById("input-ingredients");
+
+  const changeScale = (scale) => {
+    window.scale = scale
+    updateServingsInputField()
+    updateScalableQuantities()
+    updateScalableVolumes()
+    updateScalableWeights()
+    updateScalableIngredients()
+    updateScalableDetailedIngredients()
+    updateIngredientsWithId()
+    updateIngredientQtyInputField()
+  }
 
   var elements = document.querySelectorAll('.filter-add-red-ing-link');
   for (const elem of elements) {
@@ -231,21 +236,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
   moreButton.addEventListener('click', event => {
     var f0 = new Quantity({raw: servingsField.dataset.initial}).nb
     var qty = new Quantity({raw: servingsField.value})
-    var v = getIncValue(qty.nb, f0, true)
-    servingsField.value = Utils.prettyFraction(v) + " " + qty.label
-    var event = new Event('change');
-    event.forced = true
-    servingsField.dispatchEvent(event);
+    changeScale(getScalingFactor(qty.nb, f0, true))
   })
   
   lessButton.addEventListener('click', event => {
     var f0 = new Quantity({raw: servingsField.dataset.initial}).nb
     var qty = new Quantity({raw: servingsField.value})
-    var v = getIncValue(qty.nb, f0, false)
-    servingsField.value = Utils.prettyFraction(v) + " " + qty.label
-    var event = new Event('change');
-    event.forced = true
-    servingsField.dispatchEvent(event);
+    changeScale(getScalingFactor(qty.nb, f0, false))
   })
   
   inField.addEventListener('change', event => {
