@@ -239,6 +239,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
   inField.addEventListener('change', event => {
     var qty = new Quantity({raw: inField.value})
     const inIng = gon.ingredients[inIngs.value]
+    //console.log("qty", qty)
+    //console.log("inIng", inIng)
     var grams = Utils.toGrams(qty.nb, qty.unit, inIng.unit_weight, inIng.density)
     changeScale(grams / inIng.grams)
   })
@@ -246,9 +248,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
   servingsField.addEventListener('change', event => {
     var initial = new Servings(servingsField.dataset.initial).average()
     var now = new Servings(servingsField.value).average()
-    console.log("initial", new Servings(servingsField.dataset.initial))
-    console.log("initial", initial)
-    console.log("now", now)
     changeScale(now / initial)
   })
   

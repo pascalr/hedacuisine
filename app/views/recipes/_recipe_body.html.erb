@@ -39,10 +39,10 @@
       <% end %>
     </ul>
 
-    <% val = recipe.main_ingredient ? recipe.main_ingredient.raw : '' %>
+    <% ing = recipe.main_ingredient ? recipe.main_ingredient : recipe.ingredients.first %>
     <div class="d-flex" style="text-align: center; margin-top: 4px;">
       <div class="d-none d-md-block">
-        <%= text_field_tag :quantity, pretty_ingredient_qty(recipe.main_ingredient), class: "form-control", style: "width: 9rem; display: inline; text-align: right;", "data-quantity": val, id: "ingredient-qty-input-field" %>
+        <%= text_field_tag :quantity, pretty_ingredient_qty(ing), class: "form-control", style: "width: 9rem; display: inline; text-align: right;", "data-quantity": ing.raw, id: "ingredient-qty-input-field" %>
         <%= collection_select :foo, :input_ingredient, recipe.ingredients, :id, :name, {selected: recipe.main_ingredient_id}, class: "form-select", id: "input-ingredients", style: "display: inline-block; width: auto;" %>
       </div>
       <div style="flex-grow: 1;"></div>

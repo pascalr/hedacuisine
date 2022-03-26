@@ -1,8 +1,5 @@
 Update all the tiptap data. I've changed data-ingredient to data-ingredient-id inside the rendered HTML when possible.
-
-Scale by ingredient does not work well. Don't convert to grams. Always handle scale same unit. Handle scale with g if I have the data.
-
-Pouvoir créer une recette directement dans my_recipes. Tu écris dans le search field, et si ça n'existe pas, pouvoir créer là.
+Attendre d'être de retour au québec.
 
 Ajouter des notifications pour tout. Par exemple, la sauvegarde, les modifications, etc...
 
@@ -25,6 +22,8 @@ Ajouter un field AKA dans les recettes? Pâte brisée. AKA pâte à tarte, abais
 Gérer les alias. Les alias de unit entre autre. 't.' == 't'. A unit has many name. A recipe kind has many name. A food has many name. Don't work on this yet...
 
 Dans admin, voir les recettes orphelines pour pouvoir les supprimer si avec duplicats. (Gâteau au sucre à la crème...)
+
+Scale by ingredient does not work well. Don't convert to grams. Always handle scale same unit. Handle scale with g if I have the data. C'est compliqué à FIX et ce n'est pas très important, je vais faire ça plus tard...
 
 ===== Site statique =====
 
