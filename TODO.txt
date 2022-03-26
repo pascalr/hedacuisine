@@ -1,4 +1,4 @@
-Pouvoir faire 8 à 10 portions, ou bien 8 - 10 portions.
+Update all the tiptap data. I've changed data-ingredient to data-ingredient-id inside the rendered HTML when possible.
 
 Scale by ingredient does not work well. Don't convert to grams. Always handle scale same unit. Handle scale with g if I have the data.
 

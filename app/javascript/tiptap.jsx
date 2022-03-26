@@ -509,6 +509,7 @@ const IngredientNode = Node.create({
     let food = null
     let name = null
     let comment = null
+    let ing = null
     if (ingredient.includes(";")) {
       const [qty, foodName] = Quantity.parseQuantityAndFoodName(ingredient)
       text = Utils.prettyQuantityFor(qty.raw, foodName)
@@ -521,7 +522,7 @@ const IngredientNode = Node.create({
       food = gon.foodList.find(food => food.name == foodName)
       name = foodName
     } else {
-      const ing = Object.values(gon.recipe.ingredients || {}).find(ing => ing.item_nb == ingredient)
+      ing = Object.values(gon.recipe.ingredients || {}).find(ing => ing.item_nb == ingredient)
       if (ing) {
         text = Utils.prettyQuantityFor(ing.raw, ing.name)
         food = ing.food
@@ -537,7 +538,11 @@ const IngredientNode = Node.create({
       children.push(['span', {class: 'food-name'}, name])
     }
     if (comment) { children.push(elementFromString(' '+comment)) }
-    return ['span', {'data-ingredient': HTMLAttributes['raw']}, ...children]
+    if (ing) {
+      return ['span', {'data-ingredient-id': ing.id}, ...children]
+    } else {
+      return ['span', {'data-ingredient': HTMLAttributes['raw']}, ...children]
+    }
   },
 
   //addNodeView() {
@@ -683,7 +688,7 @@ const IngredientListNode = Node.create({
             children.push(['span', {class: 'food-name'}, ing.name])
           }
           if (ing.comment) {children.push(elementFromString(' '+ing.comment))}
-          return ['li', {'data-ingredient': ing.id}, ...children]
+          return ['li', {'data-ingredient-id': ing.id}, ...children]
         }
       }
     })
