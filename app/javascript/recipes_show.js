@@ -246,6 +246,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   servingsField.addEventListener('change', event => {
     var initial = new Servings(servingsField.dataset.initial).average()
     var now = new Servings(servingsField.value).average()
+    console.log("initial", new Servings(servingsField.dataset.initial))
     console.log("initial", initial)
     console.log("now", now)
     changeScale(now / initial)

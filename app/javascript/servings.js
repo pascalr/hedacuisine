@@ -33,6 +33,6 @@ export default class Servings {
   }
 
   average() {
-    return this.qty1 ? (this.qty1+this.qty0)/2.0 : this.qty0
+    return this.qty1 ? (parseFloat(this.qty1)+parseFloat(this.qty0))/2.0 : parseFloat(this.qty0)
   }
 }
