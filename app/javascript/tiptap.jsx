@@ -967,6 +967,7 @@ export class ModificationsHandler {
           data.append(`${editor.updateModel}[${editor.jsonField}]`, json)
           data.append(`${editor.updateModel}[${editor.htmlField}]`, editor.getHTML())
           ajax({url: editor.updateUrl, type: 'PATCH', data: data, success: () => {
+            if (window.display) {window.display("Les changements ont étés enregistrés avec succès.")}
             editor.savedJSON = json
           }})
         }

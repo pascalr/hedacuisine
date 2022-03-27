@@ -4,11 +4,27 @@ import ReactDOM from 'react-dom'
 const FIXED_FOOTER_SIZE = "2"
 
 const FixedFooter = () => {
-  return (
-    <div>
-      Testing1212
-    </div>
-  )
+  const [message, setMessage] = useState('')
+  window.__set_msg = setMessage
+  const [timestamp, setTimestamp] = useState('')
+  window.__set_timestamp = setTimestamp
+  const [timeS, setTimeS] = useState(new Date().getTime() / 1000)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeS(new Date().getTime() / 1000)
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  if (!timestamp || !message) {return ''}
+  let s = Math.round(timeS - timestamp)
+  return <div>{message} (il y a {s} secondes)</div>
+}
+
+window.display = function(msg) {
+  window.__set_msg(msg)
+  window.__set_timestamp(new Date().getTime() / 1000)
 }
 
 document.addEventListener('DOMContentLoaded', () => {
