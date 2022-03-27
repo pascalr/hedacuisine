@@ -1,6 +1,3 @@
-Update all the tiptap data. I've changed data-ingredient to data-ingredient-id inside the rendered HTML when possible.
-Attendre d'être de retour au québec.
-
 Ajouter des notifications pour tout. Par exemple, la sauvegarde, les modifications, etc...
 
 1ère priorité: Site read only
@@ -24,6 +21,9 @@ Gérer les alias. Les alias de unit entre autre. 't.' == 't'. A unit has many na
 Dans admin, voir les recettes orphelines pour pouvoir les supprimer si avec duplicats. (Gâteau au sucre à la crème...)
 
 Scale by ingredient does not work well. Don't convert to grams. Always handle scale same unit. Handle scale with g if I have the data. C'est compliqué à FIX et ce n'est pas très important, je vais faire ça plus tard...
+
+Update all the tiptap data. I've changed data-ingredient to data-ingredient-id inside the rendered HTML when possible.
+Attendre d'être de retour au québec.
 
 ===== Site statique =====
 
