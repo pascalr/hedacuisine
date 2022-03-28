@@ -10,6 +10,7 @@ const FixedFooter = () => {
   const [timeS, setTimeS] = useState(new Date().getTime() / 1000)
 
   window.display = function(msg, isError=false) {
+    console.log('display', msg)
     let t = new Date().getTime() / 1000
     setMessage(msg)
     setTimestamp(t)
@@ -18,7 +19,8 @@ const FixedFooter = () => {
   }
   
   window.displayError = function(msg) {
-    window.display(true)
+    console.log('displayError', msg)
+    window.display(msg, true)
   }
 
   useEffect(() => {
@@ -36,8 +38,6 @@ const FixedFooter = () => {
     if (s < 86400) {h = Math.floor(s/3600); return h < 2 ? `${h} heure` : `${h} heures`}
     d = Math.floor(s/86400); return d < 2 ? `${d} jour` : `${d} jours`
   }
-  console.log('timeS', timeS)
-  console.log('timestampS', timestampS)
   let s = Math.floor(timeS - timestampS)
   if (isError) {
     return <div style={{color: "red"}}>Erreur: {message} (il y a {timeAgoInWords(s)})</div>
