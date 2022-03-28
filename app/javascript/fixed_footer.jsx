@@ -6,12 +6,14 @@ const FIXED_FOOTER_SIZE = "2"
 const FixedFooter = () => {
   const [isError, setIsError] = useState(false)
   const [message, setMessage] = useState('')
-  const [timestamp, setTimestamp] = useState('')
+  const [timestampS, setTimestamp] = useState(null)
   const [timeS, setTimeS] = useState(new Date().getTime() / 1000)
 
   window.display = function(msg, isError=false) {
+    let t = new Date().getTime() / 1000
     setMessage(msg)
-    setTimestamp(new Date().getTime() / 1000)
+    setTimestamp(t)
+    setTimeS(t)
     setIsError(isError)
   }
   
@@ -26,7 +28,7 @@ const FixedFooter = () => {
     return () => clearInterval(interval);
   }, []);
 
-  if (!timestamp || !message) {return ''}
+  if (!timestampS || !message) {return ''}
 
   function timeAgoInWords(s) {
     if (s < 60) {return s < 2 ? `${s} seconde` : `${s} secondes`}
@@ -34,7 +36,9 @@ const FixedFooter = () => {
     if (s < 86400) {h = Math.floor(s/3600); return h < 2 ? `${h} heure` : `${h} heures`}
     d = Math.floor(s/86400); return d < 2 ? `${d} jour` : `${d} jours`
   }
-  let s = Math.floor(timeS - timestamp)
+  console.log('timeS', timeS)
+  console.log('timestampS', timestampS)
+  let s = Math.floor(timeS - timestampS)
   if (isError) {
     return <div style={{color: "red"}}>Erreur: {message} (il y a {timeAgoInWords(s)})</div>
   } else {
