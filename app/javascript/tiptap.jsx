@@ -969,6 +969,8 @@ export class ModificationsHandler {
           ajax({url: editor.updateUrl, type: 'PATCH', data: data, success: () => {
             if (window.display) {window.display("Les changements ont étés enregistrés avec succès.")}
             editor.savedJSON = json
+          }, error: () => {
+            if (window.displayError) {window.displayError("Les changements n'ont pas pu être enregistrés.")}
           }})
         }
       }

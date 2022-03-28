@@ -4,11 +4,20 @@ import ReactDOM from 'react-dom'
 const FIXED_FOOTER_SIZE = "2"
 
 const FixedFooter = () => {
+  const [isError, setIsError] = useState(false)
   const [message, setMessage] = useState('')
-  window.__set_msg = setMessage
   const [timestamp, setTimestamp] = useState('')
-  window.__set_timestamp = setTimestamp
   const [timeS, setTimeS] = useState(new Date().getTime() / 1000)
+
+  window.display = function(msg, isError=false) {
+    setMessage(msg)
+    setTimestamp(new Date().getTime() / 1000)
+    setIsError(isError)
+  }
+  
+  window.displayError = function(msg) {
+    window.display(true)
+  }
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -18,13 +27,19 @@ const FixedFooter = () => {
   }, []);
 
   if (!timestamp || !message) {return ''}
-  let s = Math.round(timeS - timestamp)
-  return <div>{message} (il y a {s} secondes)</div>
-}
 
-window.display = function(msg) {
-  window.__set_msg(msg)
-  window.__set_timestamp(new Date().getTime() / 1000)
+  function timeAgoInWords(s) {
+    if (s < 60) {return s < 2 ? `${s} seconde` : `${s} secondes`}
+    if (s < 3600) {m = Math.floor(s/60); return m < 2 ? `${m} minute` : `${m} minutes`}
+    if (s < 86400) {h = Math.floor(s/3600); return h < 2 ? `${h} heure` : `${h} heures`}
+    d = Math.floor(s/86400); return d < 2 ? `${d} jour` : `${d} jours`
+  }
+  let s = Math.floor(timeS - timestamp)
+  if (isError) {
+    return <div style={{color: "red"}}>Erreur: {message} (il y a {timeAgoInWords(s)})</div>
+  } else {
+    return <div>{message} (il y a {timeAgoInWords(s)})</div>
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
