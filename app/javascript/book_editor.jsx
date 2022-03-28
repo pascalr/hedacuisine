@@ -15,12 +15,9 @@ import {UploadableImage} from './modals/uploadable_image'
 
 import { create_new_recipe_book_path } from './routes'
 
-//
 import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from 'jsxstyle'
 //
-//
 //import Quantity from 'models/quantity'
-//import { Ingredient, Utils } from "recipe_utils"
 
 import {updateRecord, asyncUpdateModel, EditableField, TextField, ToggleField, CollectionSelect} from './form'
 

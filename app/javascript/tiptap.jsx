@@ -50,7 +50,7 @@ function elementFromJSX(value) {
 
 // MINE
 import Quantity from './models/quantity'
-import { Ingredient, Utils } from "./recipe_utils"
+import { Utils } from "./recipe_utils"
 import { ajax } from "./utils"
 
 const PageComponent = () => {

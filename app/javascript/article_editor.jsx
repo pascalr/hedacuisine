@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom'
 import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from 'jsxstyle'
 
 //import Quantity from 'models/quantity'
-//import { Ingredient, Utils } from "recipe_utils"
 
 import { ArticleTiptap, ModificationsHandler } from './tiptap'
 
