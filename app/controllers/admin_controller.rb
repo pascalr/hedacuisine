@@ -9,4 +9,11 @@ class AdminController < ApplicationController
   end
   def test
   end
+  def get_editor_json
+    if params[:model] == "recipes"
+      #render json: Recipe.all_public
+    elsif params[:model] == "recipe_kinds"
+      render json: RecipeKind.all.map {|r| r.to_obj(only: :description_json)}
+    end
+  end
 end

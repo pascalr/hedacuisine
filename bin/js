@@ -1,0 +1,4 @@
+#!/bin/bash
+
+./node_modules/esbuild/bin/esbuild app/javascript/bin/*.* --bundle --outdir=tmp/js
+node tmp/js/$1.js

@@ -32,6 +32,7 @@ Rails.application.routes.draw do
 
   get '/robot_home', to: 'home#robot_index', as: 'robot_home'
   
+  get 'admin/get_editor_json/:model', to: 'admin#get_editor_json', as: 'get_editor_json'
   get 'admin/edit_recipes', to: 'admin#edit_recipes', as: 'admin_edit_recipes'
   get 'admin/test', to: 'admin#test', as: 'admin_test'
 

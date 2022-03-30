@@ -26,6 +26,10 @@ class RecipeKind < ApplicationRecord
     "#{id}-#{name.gsub(' ', '-')}"
   end
 
+  def to_obj(params={})
+    extract_attributes(params, :name, :description_json)
+  end
+
   def description 
     raise "deprecated, use description_json and description_html"
   end

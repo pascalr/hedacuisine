@@ -14,6 +14,10 @@ const getLocale = () => {
   return "qc"
 }
 
+export const get_editor_json_path = (arg) => {
+  return `/admin/get_editor_json/${arg.model}`
+}
+
 export const paste_ingredients_recipes_path = (arg) => {
   // FIXME: js paths should not be localized
   return `/qc/recettes/${extractParamFromModel(arg)}/paste_ingredients`

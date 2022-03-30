@@ -1,5 +1,11 @@
 Ajouter des notifications pour tout. Par exemple, la sauvegarde, les modifications, etc...
 
+Fix les images manquantes...
+
+Deprecate edit_recipes (remove from old_javascript), remove from routes, admin_controller, views
+
+Remove Rails dependency in utils.js
+
 Debugger 1 lbs ... http://localhost:3000/qc/recettes/621-Cigare-aux-choux/edit
 
 recipes_show should use app/javascript/ingredient.js
