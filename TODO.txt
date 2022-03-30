@@ -1,5 +1,10 @@
 Ajouter des notifications pour tout. Par exemple, la sauvegarde, les modifications, etc...
 
+Debugger 1 lbs ... http://localhost:3000/qc/recettes/621-Cigare-aux-choux/edit
+
+recipes_show should use app/javascript/ingredient.js
+tiptap should use app/javascript/ingredient.js
+
 1ère priorité: Site read only
 2e priorité: Site modifiable
 

@@ -51,6 +51,7 @@ function elementFromJSX(value) {
 // MINE
 import Quantity from './models/quantity'
 import { Utils } from "./recipe_utils"
+import Ingredient from "./ingredient"
 import { ajax } from "./utils"
 
 const PageComponent = () => {
@@ -524,8 +525,9 @@ const IngredientNode = Node.create({
     } else {
       ing = Object.values(gon.recipe.ingredients || {}).find(ing => ing.item_nb == ingredient)
       if (ing) {
-        text = Utils.prettyQuantityFor(ing.raw, ing.name)
-        food = ing.food
+        let ingredient = new Ingredient({record: ing})
+        text = ingredient.prettyQty() + " "
+        food = ingredient.food
         comment = ing.comment
         name = ing.name
       }

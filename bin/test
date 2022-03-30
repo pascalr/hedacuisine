@@ -1,0 +1,4 @@
+#!/bin/bash
+
+./node_modules/.bin/esbuild app/javascript/test_all.js --bundle --outfile=tmp/test_all.js
+node tmp/test_all.js
