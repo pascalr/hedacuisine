@@ -4,6 +4,8 @@ Fix les images manquantes...
 
 Deprecate edit_recipes (remove from old_javascript), remove from routes, admin_controller, views
 
+Utilser mon ajax.js au lieu de Rails et de jquery
+
 Remove Rails dependency in utils.js
 
 Debugger 1 lbs ... http://localhost:3000/qc/recettes/621-Cigare-aux-choux/edit
