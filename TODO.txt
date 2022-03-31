@@ -1,5 +1,12 @@
 Ajouter des notifications pour tout. Par exemple, la sauvegarde, les modifications, etc...
 
+Pouvoir supprimer un livre.
+
+Depuis rails 7, utiliser button_to au lieu de link_to pour faire des method: :delete
+Faire un confirm pour le delete du livre.
+
+UNE APPLICATION POUR CHOISIR QUOI MANGER. SWIPE À DROITE, SWIPE À GAUCHE.
+
 Fix les images manquantes...
 
 Deprecate edit_recipes (remove from old_javascript), remove from routes, admin_controller, views
