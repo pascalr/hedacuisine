@@ -12,14 +12,16 @@ import { Show, combineOrderedListWithHeaders } from './lib'
 import { DescriptionTiptap, ModificationsHandler } from './tiptap'
 
 import {UploadableImage} from './modals/uploadable_image'
+import {AddExistingRecipe} from './modals/add_existing_recipe'
 
-import { create_new_recipe_book_path } from './routes'
+import { book_recipes_book_path, create_new_recipe_book_path } from './routes'
 
 import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from 'jsxstyle'
 //
 //import Quantity from 'models/quantity'
 
 import {updateRecord, asyncUpdateModel, EditableField, TextField, ToggleField, CollectionSelect} from './form'
+
 
 const AddNewRecipe = ({show, addNewRecipe}) => {
 
@@ -46,49 +48,6 @@ const AddNewRecipe = ({show, addNewRecipe}) => {
   )
 }
 
-const RecipeKindFinder = ({onRecipeKindFound}) => {
-  const [value, setValue] = useState('')
-  const [suggestions, setSuggestions] = useState([])
-
-  const inputFieldProps = {
-    placeholder: "Trouver une sorte de recette",
-    value,
-    onChange: (e, {newValue}) => setValue(newValue),
-    //ref: foodInputField,
-  };
-
-  const setModel = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
-    console.log("Setting model!")
-    onRecipeKindFound(suggestion.id)
-    //updateAttributes({modelId: suggestion.id, linkName: suggestionValue})
-  }
-  
-  return (
-    <Autosuggest
-      suggestions={suggestions}
-      onSuggestionsFetchRequested={({value}) => {
-        const inputValue = value.trim().toLowerCase();
-        const inputLength = inputValue.length;
-       
-        const matched = inputLength === 0 ? [] : gon.recipe_kinds.filter(model =>
-          model.name.includes(inputValue)
-        )
-        // Order the matches by relevance?
-        setSuggestions(matched)
-      }}
-      onSuggestionsClearRequested={() => setSuggestions([])}
-      getSuggestionValue={suggestion => suggestion.name}
-      renderSuggestion={(suggestion, { isHighlighted }) => (
-        <div style={{ background: isHighlighted ? '#4095bf' : 'white', color: isHighlighted ? 'white' : 'black' }}>
-          {suggestion.name}
-        </div>
-      )}
-      onSuggestionSelected={setModel}
-      inputProps={inputFieldProps}
-    />
-  )
-}
-
 const PercentageCompleted = ({recipe}) => {
 
   let percent = 0
@@ -109,6 +68,7 @@ class BookEditor extends React.Component {
     super(props);
     this.recipeFindRef = React.createRef();
     this.newBookSectionNameRef = React.createRef();
+    this.addExistingRecipeBtnRef = React.createRef();
     this.state = {
       book: gon.book,
       book_recipes: gon.book_recipes,
@@ -129,6 +89,7 @@ class BookEditor extends React.Component {
     this.removeBookRecipe = this.removeBookRecipe.bind(this)
     this.removeBookSection = this.removeBookSection.bind(this)
     this.handleDrop = this.handleDrop.bind(this)
+    this.createBookRecipe = this.createBookRecipe.bind(this)
   }
 
   appendSection() {
@@ -165,6 +126,13 @@ class BookEditor extends React.Component {
     let data = new FormData()
     data.append("book_recipe_name", name)
     ajax({url: create_new_recipe_book_path(this.state.book), type: 'POST', data: data, success: (book_recipe) => {
+      this.setState({book_recipes: [...this.state.book_recipes, book_recipe]})
+    }})
+  }
+  createBookRecipe(recipe) {
+    let data = new FormData()
+    data.append("book_recipe[recipe_id]", recipe.id)
+    ajax({url: book_recipes_book_path(this.state.book), type: 'POST', data: data, success: (book_recipe) => {
       this.setState({book_recipes: [...this.state.book_recipes, book_recipe]})
     }})
   }
@@ -258,6 +226,9 @@ class BookEditor extends React.Component {
       asyncUpdateModel(book, {front_page_image_id: null})
     }
     let sortedRecipes = sortBy(this.state.book_recipes, 'position')
+    let bookRecipesId = this.state.book_recipes.map(r => r.recipe.id)
+
+    let userRecipes = gon.user_recipes.filter(r => !bookRecipesId.includes(r.id))
     
     return (<>
       <div style={{maxWidth: "900px", margin: "auto"}}>
@@ -337,7 +308,7 @@ class BookEditor extends React.Component {
                 <div {...provided.droppableProps} ref={provided.innerRef}>
                   <Show cond={!isBlank(this.state.book_recipes.filter(r => !r.book_section_id))}>
                     <h3 style={{margin: "0", padding: "0.5em 0 0.2em 0"}}>
-                      Recettes non catégorisées
+                      Autres recettes
                     </h3>
                   </Show>
                   {this.state.book_recipes.filter(r => !r.book_section_id).map((book_recipe, index) => {
@@ -359,12 +330,16 @@ class BookEditor extends React.Component {
           </DragDropContext>
         </ul>
         <AddNewRecipe show={this.state.show_add_new_recipe} addNewRecipe={this.addNewRecipe} />
+        <AddExistingRecipe recipes={userRecipes} btnRef={this.addExistingRecipeBtnRef} createBookRecipe={this.createBookRecipe} />
         <br/>
         <div className="dropdown" style={{padding: "0 1em"}}>
-          <img data-bs-toggle="dropdown" style={{cursor: "pointer"}} width="36" src="/icons/plus-circle.svg"/>
-          <div className="dropdown-menu" style={{fontSize: "1.5em"}}>
+          <img data-bs-toggle="dropdown" style={{cursor: "pointer"}} width="24" src="/icons/plus-circle.svg"/>
+          <div className="dropdown-menu" style={{fontSize: "1.1em"}}>
             <button className="dropdown-item" type="button" className="d-block plain-btn" onClick={this.appendSection}>
               Ajouter une section
+            </button>
+            <button ref={this.addExistingRecipeBtnRef} className="dropdown-item" type="button" className="d-block plain-btn">
+              Ajouter une recette existante
             </button>
             <button className="dropdown-item" type="button" className="d-block plain-btn" onClick={() => {this.setState({show_add_new_recipe: !this.state.show_add_new_recipe})}}>
               Ajouter une nouvelle recette
@@ -391,3 +366,46 @@ document.addEventListener('DOMContentLoaded', () => {
   const root = document.getElementById('root')
   if (root) {ReactDOM.render(<BookEditor/>, root)}
 })
+
+//const RecipeKindFinder = ({onRecipeKindFound}) => {
+//  const [value, setValue] = useState('')
+//  const [suggestions, setSuggestions] = useState([])
+//
+//  const inputFieldProps = {
+//    placeholder: "Trouver une sorte de recette",
+//    value,
+//    onChange: (e, {newValue}) => setValue(newValue),
+//    //ref: foodInputField,
+//  };
+//
+//  const setModel = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
+//    console.log("Setting model!")
+//    onRecipeKindFound(suggestion.id)
+//    //updateAttributes({modelId: suggestion.id, linkName: suggestionValue})
+//  }
+//  
+//  return (
+//    <Autosuggest
+//      suggestions={suggestions}
+//      onSuggestionsFetchRequested={({value}) => {
+//        const inputValue = value.trim().toLowerCase();
+//        const inputLength = inputValue.length;
+//       
+//        const matched = inputLength === 0 ? [] : gon.recipe_kinds.filter(model =>
+//          model.name.includes(inputValue)
+//        )
+//        // Order the matches by relevance?
+//        setSuggestions(matched)
+//      }}
+//      onSuggestionsClearRequested={() => setSuggestions([])}
+//      getSuggestionValue={suggestion => suggestion.name}
+//      renderSuggestion={(suggestion, { isHighlighted }) => (
+//        <div style={{ background: isHighlighted ? '#4095bf' : 'white', color: isHighlighted ? 'white' : 'black' }}>
+//          {suggestion.name}
+//        </div>
+//      )}
+//      onSuggestionSelected={setModel}
+//      inputProps={inputFieldProps}
+//    />
+//  )
+//}

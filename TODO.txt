@@ -1,5 +1,11 @@
 Ajouter des notifications pour tout. Par exemple, la sauvegarde, les modifications, etc...
 
+Quand j'ajoute une recette existante, l'ajoutée automatiquement et la retirée de la liste. Ne pas afficher dans la liste les recettes qui sont dans le livre.
+
+Pouvoir faire moins ou plus pour les catégories en éditant un livre. Comme ça on peut drag'n drop plus facile sans avoir à trop scroller.
+
+Je n'arrive pas à cliquer sur une recette d'un livre.
+
 Pouvoir supprimer un livre.
 
 Depuis rails 7, utiliser button_to au lieu de link_to pour faire des method: :delete
