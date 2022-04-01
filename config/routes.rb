@@ -149,6 +149,7 @@ Rails.application.routes.draw do
 
       collection do
         get 'new_variant'
+        get 'suggestions'
       end
     end
     get 'my_recipes', to: 'recipes#my_recipes'

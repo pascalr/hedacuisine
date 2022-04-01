@@ -18,6 +18,25 @@ class RecipesController < ApplicationController
   def what_to_eat
   end
 
+  def _recipes_for_occasion(occasion)
+    # <button type="button" className="btn btn-primary">Repas pour toute la semaine</button>
+    # <button type="button" className="btn btn-primary">Recette rapide de semaine</button>
+    # <button type="button" className="btn btn-primary">Recevoir des invités</button>
+    # <button type="button" className="btn btn-primary">Apporter à un potluck</button>
+    # <button type="button" className="btn btn-primary">Emporter un repas pour la journée</button>
+    # <button type="button" className="btn btn-primary">Un ingrédient près d'être périmé</button>
+    # <button type="button" className="btn btn-primary">Se gâter</button>
+    case occasion.to_s
+    when "all_week" then
+    else
+      raise "Unkown occasion " + occasion
+    end
+  end
+  def suggestions
+    occasion = params[:occasion]
+    recipes = _recipes_for_occasion(occasion)    
+  end
+
   # TODO: Move all these functions elsewhere, inside lib? Inside RecipeIngredient?
   def __trim_between_unit_and_food(line)
     line = line.strip

@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 
+const ChooseRecipe = () => {
+  return (<>
+  </>)
+}
+
 const ChooseOccasion = () => {
   // Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
   return (<>
