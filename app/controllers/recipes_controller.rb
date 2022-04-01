@@ -14,6 +14,9 @@ class RecipesController < ApplicationController
     #@recipes = Recipe.order(:name).all
     #@items = Item.order(:name).all
   end
+  
+  def what_to_eat
+  end
 
   # TODO: Move all these functions elsewhere, inside lib? Inside RecipeIngredient?
   def __trim_between_unit_and_food(line)

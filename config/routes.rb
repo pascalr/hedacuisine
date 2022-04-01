@@ -176,6 +176,9 @@ Rails.application.routes.draw do
     resources :articles, param: 'slug'
 
   end
+
+  get 'what_to_eat', to: 'recipes#what_to_eat', as: 'what_to_eat'
+
   resources :books, param: 'slug' do
     member do
       post 'create_new_recipe'
