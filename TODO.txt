@@ -1,15 +1,91 @@
+Passer à travers toutes les recettes, et sélectionner celle que je sais qui sont zéro-déchets.
+
+Un site de recette, ça réponds au besoin de découverte et de connaissance. Si tu tombes dessus par hasard,
+là tu peux découvrir des inspirations. Mais en général, tu recherches une recette et là tu tombes dessus.
+Mon site ne sert pas à grand chose dans cette situation, parce qu'il existe déjà une multitude de site internets.
+
+Ce qui serait plus pertinent, c'est de faire mon livre de Recettes Zéro-Déchets. Parce que je n'en trouve pas tant pour l'instant.
+Mes recettes zéro-déchets, c'est un peu en stand-by par contre, parce que je n'aime pas cuisiner quand je ne suis pas dans ma cuisine.
+Mais je voudrais le devenir stricte pendant au moins 1 mois en revenant pour me forcer à le faire. Faire l'épicerie seulement au bulk barn
+et ailleurs pour les fruits et légumes. Ça va être du boulot, mais ça va être ça ma job que je fais chaque jour en revenant du boulot.
+Manger seulement des recettes dans mon livres recettes zéro-déchets.
+
+Ce qui est cool aussi de mon site, n'est pas tant de compétitionner comme site de recettes, mais d'offrir la possibilité au
+gens de faire leur propre livre de recette et d'ainsi de l'immortaliser. Mais ça demande beaucoup d'ouvrage et il en reste encore
+beaucoup à faire pour fixer tous les petits bugs, rendre bilingue et satisfaire tout le monde.
+
+J'aimerais régler mes problèmes en premier. Trouver des recettes zéro-déchets (je veux faire ça, mais petit à petit, et au bout
+d'un an ou deux je vais avoir un livre). 
+
+Ensuite, je veux régler le problème de qu'est-ce qu'on mange? Qu'est ce qu'on mange pour se gâter un vendredi soir? Qu'est-ce qu'on cuisine ce dimanche pour toute la semaine. Qu'est-ce qu'on fait comme recette pour passer les courgettes qui restent? Qu'est qu'on cuisine pour recevoir des amis véganes? Qu'est qu'on cuisine pour recevoir toute la famille? Qu'est-ce qu'on cuisine pour apporter à un potluck?
+
+Gardons ça simple pour l'instant. Régler le problème pour moi et Céline.
+
+Une page web que j'ouvre.
+
+Pour quelle occasion cuisiner?
+- Se gâter
+- Repas pour toute la semaine
+- Repas pour emporter la journée
+- Pour passer un ingrédient
+- Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
+- Pour apporter à un potluck
+
+Ajouter un float aux catégories.
+score_special_treat
+score_week_long
+score_carry_for_day
+score_guests
+score_potluck
+
+Pour développer le score initial: Une page web qui prends une recette. Elle te suggère une autre recette à côté et tu dois dire si elle est
+plus ou moins pour cette catégorie.
+Ou bien sélectionner de 1 à 10 au début pour chaque catégorie.
+
+Ça recherche dans toutes mes recettes. Suggestions de recettes une par une. Swipe à gauche pour passer. Cliquer le bouton Cuisiner! pour cuisiner.
+Suggérer les recettes de l'utilisateur actuels et ses favoris. Aussi des catégories de recettes.
+
+Le faire avec les catégories en premier. Parce que ça je le contrôle. Mais idéalement aussi avec les recettes non catégorisés, sinon ils ne pourront pas... Peut-être créer une pseudo-catégorie dans ces cas là? Et là je pourrais le merge plus tard ou whatever.
+
+Avec Céline, trouver une recette ensemble. On swipe côte à côte ensemble.
+
+Garder tous les swipes en mémoire pour développer un algorithme qui s'améliore.
+
+Des boutons les uns après les autres
+
+OK, je veux manger avec Céline. Je me retrouve avec le même problème. On ne sait pas quoi cuisiner...
+UNE APPLICATION POUR CHOISIR QUOI MANGER. SWIPE À DROITE, SWIPE À GAUCHE.
+
+Faire la version à une seule personne en premier...
+
+Tu arrives sur CuisineSuggestions.com
+Tu crées une nouvelle demande de suggestions.
+Ça te donne une addresse internet que tu peux partager avec les personnes impliquées.
+
+Ou tu ouvres ton application CuisineSuggestions.
+Tu enregistres tes amis, ou ça utilise tes contacts.
+
+Tu vois une image de la recette, avec son nom en dessous.
+SWIPE À DROITE (OU GAUCHE) Ça veut dire que ça te tente de le manger à cette date.
+SWIPE À GAUCHE (OU DROITE) pour dire que ça ne te tente pas de le manger.
+Il y a aussi un gros bouton avec trois petits points en bas à droite. Avec les options suivantes:
+- Ajouter à mes catégories / Retirer de mes catégories
+- Ne plus me suggérer ce choix
+
+What to eat?
+Quelque chose de nouveau ou quelque chose que j'ai déjà mangé ou peu importe?
+Pour combien de repas?
+Pour combien de personnes?
+
 Ajouter des notifications pour tout. Par exemple, la sauvegarde, les modifications, etc...
 
 Gérer les duplicats dans mes recettes...
 
 Ajouter un search pour ajouter une recette existante.
 
-Pouvoir faire moins ou plus pour les catégories en éditant un livre. Comme ça on peut drag'n drop plus facile sans avoir à trop scroller.
-
 Depuis rails 7, utiliser button_to au lieu de link_to pour faire des method: :delete
 Faire un confirm pour le delete du livre.
 
-UNE APPLICATION POUR CHOISIR QUOI MANGER. SWIPE À DROITE, SWIPE À GAUCHE.
 
 Fix les images manquantes...
 Puma caught this error: nil can't be coerced into Float (TypeError)
