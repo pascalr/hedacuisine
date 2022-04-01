@@ -36,7 +36,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_07_232811) do
     t.string "filename", limit: 255, null: false
     t.string "content_type", limit: 255
     t.text "metadata"
-    t.integer "byte_size", null: false
+    t.bigint "byte_size", null: false
     t.string "checksum", limit: 255
     t.datetime "created_at", precision: nil, null: false
     t.string "service_name", limit: 255, null: false

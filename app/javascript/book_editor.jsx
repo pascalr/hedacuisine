@@ -1,22 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
-
-import { DeleteConfirmButton } from './components/delete_confirm_button'
-
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Autosuggest from 'react-autosuggest'
+import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from 'jsxstyle'
 
+import { DeleteConfirmButton } from './components/delete_confirm_button'
 import { ajax, sortBy, isBlank } from "./utils"
 import { Show, combineOrderedListWithHeaders } from './lib'
-
 import { DescriptionTiptap, ModificationsHandler } from './tiptap'
-
 import {UploadableImage} from './modals/uploadable_image'
 import {AddExistingRecipe} from './modals/add_existing_recipe'
-
 import { book_recipes_book_path, create_new_recipe_book_path } from './routes'
+import {PercentageCompleted} from './helpers/recipes_helper'
 
-import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from 'jsxstyle'
 //
 //import Quantity from 'models/quantity'
 
@@ -46,20 +42,6 @@ const AddNewRecipe = ({show, addNewRecipe}) => {
       </div>
     </Show>
   )
-}
-
-const PercentageCompleted = ({recipe}) => {
-
-  let percent = 0
-  if (!isBlank(recipe.ingredients)) {percent += 30}
-  if (!isBlank(recipe.json)) {percent += 30}
-  if (recipe.cooking_time || recipe.preparation_time || recipe.total_time) {percent += 15}
-  if (recipe.raw_servings) {percent += 15}
-  if (recipe.main_ingredient_id) {percent += 10}
-
-  return (<>
-    <span>{percent}%</span>
-  </>)
 }
 
 class BookEditor extends React.Component {

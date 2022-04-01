@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 
+import {PercentageCompleted} from './helpers/recipes_helper'
 import { isBlank, normalizeSearchText } from "./utils"
 import { recipe_path } from "./routes"
 
@@ -38,7 +39,10 @@ const RecipeIndex = () => {
     <ul id="recipes">
       {recipes.map((recipe, current) => {
         return (
-          <li key={recipe.id}><a href={recipe_path(recipe)} className={current == selected ? "selected" : undefined}>{recipe.name}</a></li>
+          <li key={recipe.id}>
+            <a href={recipe_path(recipe)} className={current == selected ? "selected" : undefined}>{recipe.name}</a>
+            <span>&nbsp;(<PercentageCompleted recipe={recipe}/>)</span>
+          </li>
         )
       })}
     </ul>

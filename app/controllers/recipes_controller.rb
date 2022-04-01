@@ -72,7 +72,8 @@ class RecipesController < ApplicationController
   end
 
   def my_recipes
-    gon.recipes = current_user.recipes.map {|r| r.to_obj(only: :name)}
+    #gon.recipes = current_user.recipes.order(:name).map {|r| r.to_obj(only: :name)}
+    gon.recipes = current_user.recipes.order(:name).map {|r| r.to_obj}
   end
 
   def move_ing

@@ -12,6 +12,26 @@ Faire un confirm pour le delete du livre.
 UNE APPLICATION POUR CHOISIR QUOI MANGER. SWIPE À DROITE, SWIPE À GAUCHE.
 
 Fix les images manquantes...
+Puma caught this error: nil can't be coerced into Float (TypeError)
+/home/pascalr/.rvm/gems/ruby-3.0.2/gems/activesupport-7.0.2.2/lib/active_support/notifications/instrumenter.rb:133:in `-'
+/home/pascalr/.rvm/gems/ruby-3.0.2/gems/activesupport-7.0.2.2/lib/active_support/notifications/instrumenter.rb:133:in `duration'
+/home/pascalr/.rvm/gems/ruby-3.0.2/gems/activesupport-7.0.2.2/lib/active_support/core_ext/enumerable.rb:61:in `map'
+/home/pascalr/.rvm/gems/ruby-3.0.2/gems/activesupport-7.0.2.2/lib/active_support/core_ext/enumerable.rb:61:in `sum'
+/home/pascalr/.rvm/gems/ruby-3.0.2/gems/activesupport-7.0.2.2/lib/active_support/core_ext/enumerable.rb:298:in `sum'
+/home/pascalr/.rvm/gems/ruby-3.0.2/gems/actionpack-7.0.2.2/lib/action_dispatch/middleware/server_timing.rb:26:in `block in call'
+/home/pascalr/.rvm/gems/ruby-3.0.2/gems/actionpack-7.0.2.2/lib/action_dispatch/middleware/server_timing.rb:25:in `each'
+/home/pascalr/.rvm/gems/ruby-3.0.2/gems/actionpack-7.0.2.2/lib/action_dispatch/middleware/server_timing.rb:25:in `map'
+/home/pascalr/.rvm/gems/ruby-3.0.2/gems/actionpack-7.0.2.2/lib/action_dispatch/middleware/server_timing.rb:25:in `call'
+/home/pascalr/.rvm/gems/ruby-3.0.2/gems/actionpack-7.0.2.2/lib/action_dispatch/middleware/executor.rb:14:in `call'
+/home/pascalr/.rvm/gems/ruby-3.0.2/gems/actionpack-7.0.2.2/lib/action_dispatch/middleware/static.rb:23:in `call'
+/home/pascalr/.rvm/gems/ruby-3.0.2/gems/rack-2.2.3/lib/rack/sendfile.rb:110:in `call'
+/home/pascalr/.rvm/gems/ruby-3.0.2/gems/actionpack-7.0.2.2/lib/action_dispatch/middleware/host_authorization.rb:137:in `call'
+/home/pascalr/.rvm/gems/ruby-3.0.2/gems/railties-7.0.2.2/lib/rails/engine.rb:530:in `call'
+/home/pascalr/.rvm/gems/ruby-3.0.2/gems/puma-4.3.11/lib/puma/configuration.rb:228:in `call'
+/home/pascalr/.rvm/gems/ruby-3.0.2/gems/puma-4.3.11/lib/puma/server.rb:718:in `handle_request'
+/home/pascalr/.rvm/gems/ruby-3.0.2/gems/puma-4.3.11/lib/puma/server.rb:472:in `process_client'
+/home/pascalr/.rvm/gems/ruby-3.0.2/gems/puma-4.3.11/lib/puma/server.rb:328:in `block in run'
+/home/pascalr/.rvm/gems/ruby-3.0.2/gems/puma-4.3.11/lib/puma/thread_pool.rb:134:in `block in spawn_thread'
 
 Deprecate edit_recipes (remove from old_javascript), remove from routes, admin_controller, views
 Utilser mon ajax.js au lieu de Rails et de jquery
