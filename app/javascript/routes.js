@@ -36,3 +36,12 @@ export const recipe_path = (arg) => {
   // FIXME: js paths should not be localized
   return `/${getTranslatedRouteWithLocale("recipes")}/${extractParamFromModel(arg)}`
 }
+
+export const suggestions_path = () => {
+  return `/${getTranslatedRouteWithLocale("recipes")}/suggestions`
+}
+
+export const image_variant_path = (image, variant) => {
+  if (!image || !variant) {return null}
+  return `/images/${image.id ? image.id : image}/${variant}`
+}

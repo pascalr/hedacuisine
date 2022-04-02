@@ -166,6 +166,12 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+.over-container .bottom-center {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+}
 
 .editable-input {
   border: none;
@@ -351,6 +357,11 @@ footer {
   background-color: #212529;
   color: white;
   clear: both;
+}
+
+.font-satisfy {
+  font-family: "Satisfy", cursive;
+  font-weight: bold;
 }
 
 .recipe-listing-title {

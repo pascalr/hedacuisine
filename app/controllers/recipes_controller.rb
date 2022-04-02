@@ -26,15 +26,17 @@ class RecipesController < ApplicationController
     # <button type="button" className="btn btn-primary">Emporter un repas pour la journée</button>
     # <button type="button" className="btn btn-primary">Un ingrédient près d'être périmé</button>
     # <button type="button" className="btn btn-primary">Se gâter</button>
-    case occasion.to_s
-    when "all_week" then
-    else
-      raise "Unkown occasion " + occasion
-    end
+    #case occasion.to_s
+    #when "all_week" then
+    #else
+    #  raise "Unkown occasion " + occasion
+    #end
   end
   def suggestions
-    occasion = params[:occasion]
-    recipes = _recipes_for_occasion(occasion)    
+    #occasion = params[:occasion]
+    #recipes = _recipes_for_occasion(occasion)    
+    suggestions = RecipeKind.limit(10)
+    render json: suggestions.map {|s| s.to_obj(only: [:name, :image_id])}
   end
 
   # TODO: Move all these functions elsewhere, inside lib? Inside RecipeIngredient?
