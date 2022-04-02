@@ -1,5 +1,10 @@
 import Rails from '@rails/ujs'
 import $ from 'jquery'
+
+export function preloadImage(url) {
+  var img = new Image();
+  img.src = url;
+}
   
 export function prettyNumber(nb) {
   //return Math.round(nb*100)/100

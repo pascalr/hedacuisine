@@ -7,6 +7,9 @@ const getTranslatedRouteWithLocale = (route) => {
   if (route == "recipes") {
     if (locale == 'qc') {return 'qc/recettes'}
   }
+  if (route == "recipe_kinds") {
+    if (locale == 'qc') {return 'qc/catégories'}
+  }
   throw "Can't get translated route"
 }
 
@@ -35,6 +38,11 @@ export const book_recipes_book_path = (arg) => {
 export const recipe_path = (arg) => {
   // FIXME: js paths should not be localized
   return `/${getTranslatedRouteWithLocale("recipes")}/${extractParamFromModel(arg)}`
+}
+
+export const recipe_kind_path = (arg) => {
+  // FIXME: js paths should not be localized
+  return `/${getTranslatedRouteWithLocale("recipe_kinds")}/${extractParamFromModel(arg)}`
 }
 
 export const suggestions_path = () => {

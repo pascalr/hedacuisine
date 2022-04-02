@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 import Hammer from "react-hammerjs"
 
-import { ajax } from "./utils"
-import { suggestions_path, image_variant_path } from './routes'
+import { ajax, preloadImage } from "./utils"
+import { recipe_kind_path, suggestions_path, image_variant_path } from './routes'
 
 const PAGE_CHOOSE_OCCASION = 1
 const PAGE_CHOOSE_RECIPE = 2
@@ -16,6 +16,9 @@ const ChooseRecipe = () => {
   useEffect(() => {
     ajax({url: suggestions_path(), type: 'GET', success: (suggestions) => {
       setSuggestions(suggestions)
+      for (let i = 0; i < suggestions.length; i++) {
+        preloadImage(image_variant_path(suggestions[i].image_id, "medium"))
+      }
     }})
   }, [])
 
@@ -42,7 +45,7 @@ const ChooseRecipe = () => {
           <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "2em", padding: "0.2em 0.8em 0 0.2em"}}>{suggestion.name}</h2>
         </div>
         <div id="choose-btns" className="d-flex flex-column">
-          <button type="button" className="btn btn-primary">Oui!</button>
+          <button type="button" className="btn btn-primary" onClick={() => {window.location = recipe_kind_path(suggestion)}}>Oui!</button>
           <button type="button" className="btn btn-danger" onClick={() => nextSuggestion()}>Non, pas cette fois</button>
         </div>
       </div>
