@@ -155,6 +155,18 @@
   width: fit-content;
   height: fit-content;
 }
+.over-container .left-center {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.over-container .right-center {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
 .over-container .bottom-right {
   position: absolute;
   bottom: 8px;
@@ -492,7 +504,7 @@ ul.dash > li:before {
   font-size: 1.11rem;
   cursor: pointer;
 }
-.my-tns-control[aria-disabled='true'] {
+*[aria-disabled='true'] {
   opacity: 0.2;
   cursor: auto;
 }

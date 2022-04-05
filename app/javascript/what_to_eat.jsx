@@ -38,13 +38,15 @@ const ChooseRecipe = () => {
       setPage(page+1)
     }
   }
+  const previousSuggestion = () => {
+    setSuggestionNb(suggestionNb <= 0 ? 0 : suggestionNb - 1)
+  }
   
   let handleSwipe = ({direction}) => {
-    console.log("dir", direction)
     if (direction == 2) { // left
       nextSuggestion()
-    } else if (direction == 4) {
-      setSuggestionNb(suggestionNb <= 0 ? 0 : suggestionNb - 1)
+    } else if (direction == 4) { // right
+      previousSuggestion()
     }
   }
  
@@ -57,6 +59,12 @@ const ChooseRecipe = () => {
         <div className="over-container" style={{margin: "auto"}}>
           <img src={image_variant_path(suggestion.image_id, "medium")} style={{maxWidth: "100vw"}} width="452" height="304" />
           <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "2em", padding: "0.2em 0.8em 0 0.2em"}}>{suggestion.name}</h2>
+          <div className="left-center">
+            <img src={icon_path("custom-chevron-left.svg")} width="45" height="90" onClick={previousSuggestion} aria-disabled={suggestionNb <= 0} />
+          </div>
+          <div className="right-center">
+            <img src={icon_path("custom-chevron-right.svg")} width="45" height="90" onClick={nextSuggestion} aria-disabled={doneFetching && suggestionNb >= suggestions.length-1} />
+          </div>
         </div>
         <div id="choose-btns" className="d-flex flex-column">
           <button type="button" className="btn btn-primary" onClick={() => {window.location = recipe_kind_path(suggestion)}}>Oui!</button>
