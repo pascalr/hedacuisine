@@ -40,8 +40,11 @@ const ChooseRecipe = () => {
   }
   
   let handleSwipe = ({direction}) => {
+    console.log("dir", direction)
     if (direction == 2) { // left
       nextSuggestion()
+    } else if (direction == 4) {
+      setSuggestionNb(suggestionNb <= 0 ? 0 : suggestionNb - 1)
     }
   }
  
@@ -75,7 +78,7 @@ const ChooseOccasionButton = ({image, title, changePage}) => {
 const ChooseOccasion = ({changePage}) => {
   // Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
   return (<>
-    <div className="d-flex flex-column flex-items-center" style={{maxWidth: "400px", margin: "auto"}}>
+    <div className="d-flex flex-column flex-items-center" style={{maxWidth: "375px", margin: "auto"}}>
       <div className="d-flex">
         <ChooseOccasionButton image="quick-recipe.jpg" title="Recette rapide" changePage={changePage} />
         <div className="flex-grow-1"/>
