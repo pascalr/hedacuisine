@@ -2,6 +2,15 @@ const extractParamFromModel = (model) => {
   return model.id
 }
 
+const appendParams = (arg) => {
+  if (typeof arg == 'object') {
+    let s = "?"
+    Object.keys(arg).forEach(key => {s += key + "=" + arg[key] + "&"})
+    return s.substr(0, s.length-1)
+  }
+  return ''
+}
+
 const getTranslatedRouteWithLocale = (route) => {
   let locale = getLocale()
   if (route == "recipes") {
@@ -45,8 +54,8 @@ export const recipe_kind_path = (arg) => {
   return `/${getTranslatedRouteWithLocale("recipe_kinds")}/${extractParamFromModel(arg)}`
 }
 
-export const suggestions_path = () => {
-  return `/${getTranslatedRouteWithLocale("recipes")}/suggestions`
+export const suggestions_path = (arg) => {
+  return `/${getTranslatedRouteWithLocale("recipes")}/suggestions${appendParams(arg)}`
 }
 
 export const image_variant_path = (image, variant) => {

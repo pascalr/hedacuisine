@@ -35,7 +35,10 @@ class RecipesController < ApplicationController
   def suggestions
     #occasion = params[:occasion]
     #recipes = _recipes_for_occasion(occasion)    
-    suggestions = RecipeKind.limit(5)
+    collection = RecipeKind.all
+    items = 5 # items per page
+    offset = ((params[:page].to_i || 1) - 1) * items
+    suggestions = collection.offset(offset).limit(items)
     render json: suggestions.map {|s| s.to_obj(only: [:name, :image_id])}
   end
 

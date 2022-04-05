@@ -10,22 +10,33 @@ const PAGE_CHOOSE_RECIPE = 2
 
 const ChooseRecipe = () => {
 
-  const [suggestions, setSuggestions] = useState(null)
+  const [suggestions, setSuggestions] = useState([])
   const [suggestionNb, setSuggestionNb] = useState(0)
+  const [itemsPerPage, setItemsPerPage] = useState(null)
+  const [page, setPage] = useState(1)
+  const [doneFetching, setDoneFetching] = useState(false)
  
   useEffect(() => {
-    ajax({url: suggestions_path(), type: 'GET', success: (suggestions) => {
-      setSuggestions(suggestions)
-      for (let i = 0; i < suggestions.length; i++) {
-        preloadImage(image_variant_path(suggestions[i].image_id, "medium"))
+    ajax({url: suggestions_path({page}), type: 'GET', success: (suggests) => {
+      if (itemsPerPage == null) {setItemsPerPage(suggests.length)}
+      if (suggests == [] || suggests.length < itemsPerPage) {
+        console.log('done fetching received ', suggests)
+        setDoneFetching(true)
+      }
+      setSuggestions(suggestions.concat(suggests))
+      for (let i = 0; i < suggests.length; i++) {
+        preloadImage(image_variant_path(suggests[i].image_id, "medium"))
       }
     }})
-  }, [])
+  }, [page])
 
   const nextSuggestion = () => {
-    // TODO: Load more suggestions
-    // Stop when there are no more suggestions.
-    setSuggestionNb(suggestionNb + 1)
+    if (suggestionNb < suggestions.length-1) {
+      setSuggestionNb(suggestionNb + 1)
+    }
+    if (!doneFetching && suggestionNb >= suggestions.length - 2) {
+      setPage(page+1)
+    }
   }
   
   let handleSwipe = ({direction}) => {
@@ -40,7 +51,7 @@ const ChooseRecipe = () => {
   return (<>
     <Hammer onSwipe={handleSwipe}>
       <div>
-        <div className="over-container">
+        <div className="over-container" style={{margin: "auto"}}>
           <img src={image_variant_path(suggestion.image_id, "medium")} style={{maxWidth: "100vw"}} width="452" height="304" />
           <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "2em", padding: "0.2em 0.8em 0 0.2em"}}>{suggestion.name}</h2>
         </div>

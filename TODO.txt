@@ -1,7 +1,6 @@
-Quand je suggère des recettes, la première est Oui, cuisinner cela, ou bien Oui, cette recette!
-Les boutons suivants sont Non, pas un déssert. Ou non, une recette végane...
-Le premier bouton en bleu.
-Les boutons suivants en rouge.
+TODO: TRADUCTIONS. Faire les traductions uniquement lors de la compilation. Le site dynamique te permets seulement d'accèder à tes recettes, donc dans ta langue.
+
+pagy paginate suggestions
 
 Passer à travers toutes les recettes, et sélectionner celle que je sais qui sont zéro-déchets.
 
