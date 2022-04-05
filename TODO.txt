@@ -1,3 +1,5 @@
+TODO: Pouvoir personallisé les choix de recherches de recettes. Par exemple, ajouter picnic. Ou amis véganes.
+
 TODO: TRADUCTIONS. Faire les traductions uniquement lors de la compilation. Le site dynamique te permets seulement d'accèder à tes recettes, donc dans ta langue.
 
 pagy paginate suggestions

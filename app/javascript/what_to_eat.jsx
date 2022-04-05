@@ -64,18 +64,44 @@ const ChooseRecipe = () => {
   </>)
 }
 
+const ChooseOccasionButton = ({image, title}) => {
+  return (
+    <div className="d-flex p-1 flex-column align-items-center">
+      <img src={`/img/${image}`} width="150" height="150" />
+      <b>{title}</b>
+    </div>
+  )
+}
 const ChooseOccasion = ({changePage}) => {
   // Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
   return (<>
     <h2 style={{textAlign: "center"}}>Pour quelle occasion cuisiner?</h2>
-    <div id="occasions-btns" className="d-flex flex-column">
-      <button type="button" className="btn btn-primary" onClick={() => changePage(PAGE_CHOOSE_RECIPE)}>Repas pour toute la semaine</button>
-      <button type="button" className="btn btn-primary" onClick={() => changePage(PAGE_CHOOSE_RECIPE)}>Recette rapide de semaine</button>
-      <button type="button" className="btn btn-primary" onClick={() => changePage(PAGE_CHOOSE_RECIPE)}>Recevoir des invités</button>
-      <button type="button" className="btn btn-primary" onClick={() => changePage(PAGE_CHOOSE_RECIPE)}>Apporter à un potluck</button>
-      <button type="button" className="btn btn-primary" onClick={() => changePage(PAGE_CHOOSE_RECIPE)}>Emporter un repas pour la journée</button>
-      <button type="button" className="btn btn-primary" onClick={() => changePage(PAGE_CHOOSE_RECIPE)}>Un ingrédient près d'être périmé</button>
-      <button type="button" className="btn btn-primary" onClick={() => changePage(PAGE_CHOOSE_RECIPE)}>Se gâter</button>
+    <div className="d-flex flex-column flex-items-center" style={{maxWidth: "400px", margin: "auto"}}>
+      <div className="d-flex">
+        <ChooseOccasionButton image="quick-recipe.jpg" title="Recette rapide" />
+        <div className="flex-grow-1"/>
+        <ChooseOccasionButton image="" title="Plusieurs repas" />
+      </div> 
+      <div className="d-flex">
+        <ChooseOccasionButton image="cheers-glasses.jpg" title="Recevoir des invités" />
+        <div className="flex-grow-1"/>
+        <ChooseOccasionButton image="" title="Apporter à un potluck" />
+      </div> 
+      <div className="d-flex">
+        <ChooseOccasionButton image="" title="Camping" />
+        <div className="flex-grow-1"/>
+        <ChooseOccasionButton image="" title="Picnic" />
+      </div> 
+      <div className="d-flex">
+        <ChooseOccasionButton image="romantic-diner.jpg" title="Souper romantique" />
+        <div className="flex-grow-1"/>
+        <ChooseOccasionButton image="" title="???" />
+      </div> 
+      <div className="d-flex">
+        <ChooseOccasionButton image="" title="Ingrédient presque périmé" />
+        <div className="flex-grow-1"/>
+        <div style={{width: "calc(150px + 1em)"}}/>
+      </div> 
     </div>
   </>)
 }
