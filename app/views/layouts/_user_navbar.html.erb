@@ -6,6 +6,9 @@
     <div class="navbar-nav" style="width: 100%;">
       <%= link_to_active_if "recipes" == controller_name && action_name == "my_recipes", "Mes recettes", public_editor_url(my_recipes_path), class: "nav-item nav-link" %>
       <%= link_to_active 'Mes livres', public_editor_url(my_books_path), class: "nav-item nav-link" %>
+      <%= link_to what_to_eat_path, class: "nav-item nav-link" do %>
+        <%= image_tag icon_path("eat.svg"), height:"24", width:"24" %>
+      <% end %>
       <div style="flex-grow: 3;"></div>
       <% if user_signed_in? %>
         <div class="dropdown nav-item">
