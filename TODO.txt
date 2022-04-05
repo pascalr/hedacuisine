@@ -1,4 +1,5 @@
 TODO: Pouvoir personallisé les choix de recherches de recettes. Par exemple, ajouter picnic. Ou amis véganes.
+Ajouter soupe, déssert et salade. Lunch aussi avec des tupperware.
 
 TODO: TRADUCTIONS. Faire les traductions uniquement lors de la compilation. Le site dynamique te permets seulement d'accèder à tes recettes, donc dans ta langue.
 
