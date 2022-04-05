@@ -26,6 +26,10 @@ const getLocale = () => {
   return "qc"
 }
 
+export const icon_path = (arg) => {
+  return `/icons/${arg}`
+}
+
 export const get_editor_json_path = (arg) => {
   return `/admin/get_editor_json/${arg.model}`
 }

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import Hammer from "react-hammerjs"
 
 import { ajax, preloadImage } from "./utils"
-import { recipe_kind_path, suggestions_path, image_variant_path } from './routes'
+import { icon_path, recipe_kind_path, suggestions_path, image_variant_path } from './routes'
 
 const PAGE_CHOOSE_OCCASION = 1
 const PAGE_CHOOSE_RECIPE = 2
@@ -70,12 +70,12 @@ const ChooseOccasion = ({changePage}) => {
     <h2 style={{textAlign: "center"}}>Pour quelle occasion cuisiner?</h2>
     <div id="occasions-btns" className="d-flex flex-column">
       <button type="button" className="btn btn-primary" onClick={() => changePage(PAGE_CHOOSE_RECIPE)}>Repas pour toute la semaine</button>
-      <button type="button" className="btn btn-primary">Recette rapide de semaine</button>
-      <button type="button" className="btn btn-primary">Recevoir des invités</button>
-      <button type="button" className="btn btn-primary">Apporter à un potluck</button>
-      <button type="button" className="btn btn-primary">Emporter un repas pour la journée</button>
-      <button type="button" className="btn btn-primary">Un ingrédient près d'être périmé</button>
-      <button type="button" className="btn btn-primary">Se gâter</button>
+      <button type="button" className="btn btn-primary" onClick={() => changePage(PAGE_CHOOSE_RECIPE)}>Recette rapide de semaine</button>
+      <button type="button" className="btn btn-primary" onClick={() => changePage(PAGE_CHOOSE_RECIPE)}>Recevoir des invités</button>
+      <button type="button" className="btn btn-primary" onClick={() => changePage(PAGE_CHOOSE_RECIPE)}>Apporter à un potluck</button>
+      <button type="button" className="btn btn-primary" onClick={() => changePage(PAGE_CHOOSE_RECIPE)}>Emporter un repas pour la journée</button>
+      <button type="button" className="btn btn-primary" onClick={() => changePage(PAGE_CHOOSE_RECIPE)}>Un ingrédient près d'être périmé</button>
+      <button type="button" className="btn btn-primary" onClick={() => changePage(PAGE_CHOOSE_RECIPE)}>Se gâter</button>
     </div>
   </>)
 }
@@ -84,13 +84,32 @@ const WhatToEat = () => {
 
   const [currentPage, setCurrentPage] = useState(1)
 
+  const parentPages = {
+    2: 1
+  }
+
   const pages = {
     1: <ChooseOccasion changePage={setCurrentPage} />,
     2: <ChooseRecipe changePage={setCurrentPage} />
   }
 
+  const goBack = () => {
+    if (parentPages[currentPage]) {
+      setCurrentPage(parentPages[currentPage])
+    } else {
+      window.history.back()
+    }
+  }
+
   // Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
   return (<>
+    <div className="d-flex">
+      <img src={icon_path("arrow-left-square.svg")} width="24" style={{paddingLeft: "0.5em"}} onClick={goBack} />
+      <div className="flex-grow-1"/>
+      <h1 style={{marginBottom: "0"}}>Quoi manger?</h1>
+      <div className="flex-grow-1"/>
+    </div>
+    <hr style={{color: "#aaa", marginTop: "0"}}/>
     {pages[currentPage]}
   </>)
 }
