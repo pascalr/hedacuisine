@@ -19,7 +19,7 @@ class SuggestionsController < ApplicationController
     #  raise "Unkown occasion " + occasion
     #end
   end
-  def suggestions
+  def index
     #occasion = params[:occasion]
     #recipes = _recipes_for_occasion(occasion)    
     collection = RecipeKind.all
