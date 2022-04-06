@@ -114,10 +114,10 @@ const CreateCustomFilter = ({changePage}) => {
 
 const ChooseOccasionButton = ({image, title, changePage}) => {
   return (
-    <div className="d-flex p-1 flex-column align-items-center" onClick={() => changePage(2)}>
+    <button className="plain-btn d-flex p-1 flex-column align-items-center" onClick={() => changePage(2)}>
       <img src={`/img/${image}`} width="150" height="150" />
       <b>{title}</b>
-    </div>
+    </button>
   )
 }
 const ChooseOccasion = ({changePage}) => {

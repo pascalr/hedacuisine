@@ -2,6 +2,8 @@ Sort recipes by user choices.
 Pour chaque sorte de trucs, pour chaque utilisateur, noter le nombre de fois sélectionner et le nombre de fois skipper.
 TODO: Create training page
 
+Changer le logo de Qu'est-ce qu'on mange? pour dark theme. Background en gris foncé plus clair un peu, et ustensiles en blanc.
+
 TODO: Add last_selected_at:date au suggestions. Attendre idéalement 2 semaines / 1 mois avant de rerecommandé une recette.
 
 Ok, le plus simple est de gérer peut-être des manières custom en premier, comme ça je vais voir ce que ça requiert?
