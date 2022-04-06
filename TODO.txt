@@ -1,5 +1,6 @@
 Sort recipes by user choices.
 Pour chaque sorte de trucs, pour chaque utilisateur, noter le nombre de fois sélectionner et le nombre de fois skipper.
+TODO: Create training page
 
 Ok, le plus simple est de gérer peut-être des manières custom en premier, comme ça je vais voir ce que ça requiert?
 

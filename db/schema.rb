@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_01_234253) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_01_233810) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", limit: 255, null: false
     t.text "body"
@@ -586,19 +586,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_01_234253) do
     t.integer "user_id", null: false
     t.integer "recipe_id"
     t.integer "recipe_kind_id"
-    t.float "all_week_score"
+    t.integer "filter_id"
+    t.integer "skip_count"
+    t.integer "selected_count"
+    t.float "score"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_suggestions_on_user_id"
-  end
-
-  create_table "swipes", force: :cascade do |t|
-    t.boolean "is_positive"
-    t.integer "suggestion_id", null: false
-    t.integer "occasion_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["suggestion_id"], name: "index_swipes_on_suggestion_id"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -775,7 +769,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_01_234253) do
   add_foreign_key "sections", "articles"
   add_foreign_key "similar_recipes", "recipes"
   add_foreign_key "suggestions", "users"
-  add_foreign_key "swipes", "suggestions"
   add_foreign_key "tasks", "users"
   add_foreign_key "unit_system_items", "unit_systems"
   add_foreign_key "unit_system_items", "units"

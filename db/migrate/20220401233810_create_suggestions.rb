@@ -4,7 +4,10 @@ class CreateSuggestions < ActiveRecord::Migration[7.0]
       t.references :user, null: false, foreign_key: true
       t.integer :recipe_id
       t.integer :recipe_kind_id
-      t.float :all_week_score
+      t.integer :filter_id
+      t.integer :skip_count
+      t.integer :selected_count
+      t.float :score
 
       t.timestamps
     end
