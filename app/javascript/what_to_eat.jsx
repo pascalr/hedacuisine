@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import Hammer from "react-hammerjs"
 
 import { ajax, preloadImage } from "./utils"
-import { icon_path, recipe_kind_path, suggestions_path, image_variant_path } from './routes'
+import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path } from './routes'
 
 const PAGE_CHOOSE_OCCASION = 1
 const PAGE_CHOOSE_RECIPE = 2
@@ -12,6 +12,7 @@ const ChooseRecipe = () => {
 
   const [suggestions, setSuggestions] = useState([])
   const [suggestionNb, setSuggestionNb] = useState(0)
+  const [maxSuggestionNb, setMaxSuggestionNb] = useState(0)
   const [itemsPerPage, setItemsPerPage] = useState(null)
   const [page, setPage] = useState(1)
   const [doneFetching, setDoneFetching] = useState(false)
@@ -32,7 +33,9 @@ const ChooseRecipe = () => {
 
   const nextSuggestion = () => {
     if (suggestionNb < suggestions.length-1) {
-      setSuggestionNb(suggestionNb + 1)
+      let nb = suggestionNb + 1
+      setSuggestionNb(nb)
+      if (nb > maxSuggestionNb) { setMaxSuggestionNb(nb) }
     }
     if (!doneFetching && suggestionNb >= suggestions.length - 2) {
       setPage(page+1)
@@ -41,7 +44,7 @@ const ChooseRecipe = () => {
   const previousSuggestion = () => {
     setSuggestionNb(suggestionNb <= 0 ? 0 : suggestionNb - 1)
   }
-  
+
   let handleSwipe = ({direction}) => {
     if (direction == 2) { // left
       nextSuggestion()
@@ -51,8 +54,25 @@ const ChooseRecipe = () => {
   }
  
   let suggestion = suggestions ? suggestions[suggestionNb] : null
-
   if (!suggestion) {return ''}
+
+  const encodeId = (id, isRecipeKind) => (`${isRecipeKind ? '' : '_'}${id}`)
+  const selectRecipe = () => {
+    let skipped = []
+    for (let i = 0; i < suggestionNb; i++) {
+      skipped.push(encodeId(suggestions[i].id))
+    }
+    for (let i = suggestionNb+1; i <= maxSuggestionNb; i++) {
+      skipped.push(encodeId(suggestions[i].id))
+    }
+    // send stats, which recipe was skipped, which was selected
+    ajax({url: send_data_suggestions_path, type: 'PUT', data: {skipped, selected: encodeId(suggestion.id)}, success: (suggests) => {
+      window.location = recipe_kind_path(suggestion)
+    }, error: () => {
+      window.location = recipe_kind_path(suggestion)
+    }})
+  }
+  
   return (<>
     <Hammer onSwipe={handleSwipe}>
       <div>
@@ -67,7 +87,7 @@ const ChooseRecipe = () => {
           </div>
         </div>
         <div id="choose-btns" className="d-flex flex-column">
-          <button type="button" className="btn btn-primary" onClick={() => {window.location = recipe_kind_path(suggestion)}}>Oui!</button>
+          <button type="button" className="btn btn-primary" onClick={selectRecipe}>Oui!</button>
           <button type="button" className="btn btn-danger" onClick={() => nextSuggestion()}>Non, pas cette fois</button>
         </div>
       </div>
@@ -139,7 +159,7 @@ const WhatToEat = () => {
 
   const pages = {
     1: <ChooseOccasion changePage={setCurrentPage} />,
-    2: <ChooseRecipe changePage={setCurrentPage} />
+    2: <ChooseRecipe changePage={setCurrentPage} />,
     3: <CreateCustomFilter changePage={setCurrentPage} />
   }
 

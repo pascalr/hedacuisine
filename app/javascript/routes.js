@@ -62,6 +62,10 @@ export const suggestions_path = (arg) => {
   return `/${getTranslatedRouteWithLocale("recipes")}/suggestions${appendParams(arg)}`
 }
 
+export const send_data_suggestions_path = (arg) => {
+  return `/suggestions/send_data`
+}
+
 export const image_variant_path = (image, variant) => {
   if (!image || !variant) {return null}
   return `/images/${image.id ? image.id : image}/${variant}`

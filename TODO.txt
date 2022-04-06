@@ -8,6 +8,7 @@ TODO: Pouvoir personallisé les choix de recherches de recettes. Par exemple, aj
 Ajouter soupe, déssert et salade. Lunch aussi avec des tupperware.
 
 TODO: TRADUCTIONS. Faire les traductions uniquement lors de la compilation. Le site dynamique te permets seulement d'accèder à tes recettes, donc dans ta langue.
+Possiblement modifier les Expressions pour les Food. Non c'est correct, les foods doivent être dans toutes les langues. Recipe kind aussi.
 
 Passer à travers toutes les recettes, et sélectionner celle que je sais qui sont zéro-déchets.
 
