@@ -59,7 +59,7 @@ export const recipe_kind_path = (arg) => {
 }
 
 export const suggestions_path = (arg) => {
-  return `/${getTranslatedRouteWithLocale("recipes")}/suggestions${appendParams(arg)}`
+  return `/suggestions${appendParams(arg)}`
 }
 
 export const send_data_suggestions_path = (arg) => {

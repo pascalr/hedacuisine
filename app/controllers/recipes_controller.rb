@@ -14,33 +14,6 @@ class RecipesController < ApplicationController
     #@recipes = Recipe.order(:name).all
     #@items = Item.order(:name).all
   end
-  
-  def what_to_eat
-  end
-
-  def _recipes_for_occasion(occasion)
-    # <button type="button" className="btn btn-primary">Repas pour toute la semaine</button>
-    # <button type="button" className="btn btn-primary">Recette rapide de semaine</button>
-    # <button type="button" className="btn btn-primary">Recevoir des invités</button>
-    # <button type="button" className="btn btn-primary">Apporter à un potluck</button>
-    # <button type="button" className="btn btn-primary">Emporter un repas pour la journée</button>
-    # <button type="button" className="btn btn-primary">Un ingrédient près d'être périmé</button>
-    # <button type="button" className="btn btn-primary">Se gâter</button>
-    #case occasion.to_s
-    #when "all_week" then
-    #else
-    #  raise "Unkown occasion " + occasion
-    #end
-  end
-  def suggestions
-    #occasion = params[:occasion]
-    #recipes = _recipes_for_occasion(occasion)    
-    collection = RecipeKind.all
-    items = 5 # items per page
-    offset = ((params[:page].to_i || 1) - 1) * items
-    suggestions = collection.offset(offset).limit(items)
-    render json: suggestions.map {|s| s.to_obj(only: [:name, :image_id])}
-  end
 
   # TODO: Move all these functions elsewhere, inside lib? Inside RecipeIngredient?
   def __trim_between_unit_and_food(line)

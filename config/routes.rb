@@ -14,6 +14,8 @@ Rails.application.routes.draw do
     end
   end
   patch 'suggestions/send_data', to: 'suggestions#send_data', as: 'send_data_suggestions'
+  get 'what_to_eat', to: 'suggestions#what_to_eat', as: 'what_to_eat'
+  get 'suggestions', to: 'suggestions#index'
   resources :food_tags
   get 'search/index'
   resources :listings
@@ -150,7 +152,6 @@ Rails.application.routes.draw do
 
       collection do
         get 'new_variant'
-        get 'suggestions'
       end
     end
     get 'my_recipes', to: 'recipes#my_recipes'
@@ -178,8 +179,6 @@ Rails.application.routes.draw do
     resources :articles, param: 'slug'
 
   end
-
-  get 'what_to_eat', to: 'recipes#what_to_eat', as: 'what_to_eat'
 
   resources :books, param: 'slug' do
     member do
