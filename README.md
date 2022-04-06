@@ -17,6 +17,8 @@ Prendre les valeurs de heroku et les mettre pour figaro.
 $ sudo apt install ruby-sequel
 $ gem install sequel
 
+# TODO: Essayer d'utiliser ASDF au lieu du rbenv et de nvm
+
 ### Installer node.js
 $ wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 $ source ~/.bashrc

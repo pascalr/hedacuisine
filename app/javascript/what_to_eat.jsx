@@ -75,6 +75,23 @@ const ChooseRecipe = () => {
   </>)
 }
 
+const CreateCustomFilter = ({changePage}) => {
+  return (<>
+    <h2>Créer un nouveau filtre</h2>
+    <h3>Titre</h3>
+    <h3>Image</h3>
+    <h3>Quantité?</h3>
+    <p>Pas de restant, Deux repas, Plusieurs repas</p>
+    <h3>Rapidité?</h3>
+    <p>Très long, long, rapide, très rapide</p>
+    <h3>Sophistiqué?</h3>
+    <p>Très simple, simple, élaboré, très élaboré</p>
+    <p></p>
+    <h3></h3>
+    <h3></h3>
+  </>)
+}
+
 const ChooseOccasionButton = ({image, title, changePage}) => {
   return (
     <div className="d-flex p-1 flex-column align-items-center" onClick={() => changePage(2)}>
@@ -116,12 +133,14 @@ const WhatToEat = () => {
   const [currentPage, setCurrentPage] = useState(1)
 
   const parentPages = {
-    2: 1
+    2: 1,
+    3: 1,
   }
 
   const pages = {
     1: <ChooseOccasion changePage={setCurrentPage} />,
     2: <ChooseRecipe changePage={setCurrentPage} />
+    3: <CreateCustomFilter changePage={setCurrentPage} />
   }
 
   const goBack = () => {
