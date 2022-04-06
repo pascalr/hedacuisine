@@ -56,17 +56,17 @@ const ChooseRecipe = () => {
   let suggestion = suggestions ? suggestions[suggestionNb] : null
   if (!suggestion) {return ''}
 
-  const encodeId = (id, isRecipeKind) => (`${isRecipeKind ? '' : '_'}${id}`)
+  const encodeRecord = (record) => (`${record.class_name == "recipe_kind" ? '' : '_'}${record.id}`)
   const selectRecipe = () => {
     let skipped = []
     for (let i = 0; i < suggestionNb; i++) {
-      skipped.push(encodeId(suggestions[i].id))
+      skipped.push(encodeRecord(suggestions[i]))
     }
     for (let i = suggestionNb+1; i <= maxSuggestionNb; i++) {
-      skipped.push(encodeId(suggestions[i].id))
+      skipped.push(encodeRecord(suggestions[i]))
     }
     // send stats, which recipe was skipped, which was selected
-    ajax({url: send_data_suggestions_path(), type: 'PATCH', data: {skipped, selected: encodeId(suggestion.id)}, success: (suggests) => {
+    ajax({url: send_data_suggestions_path(), type: 'PATCH', data: {skipped, selected: encodeRecord(suggestion)}, success: (suggests) => {
       window.location = recipe_kind_path(suggestion)
     }, error: () => {
       window.location = recipe_kind_path(suggestion)

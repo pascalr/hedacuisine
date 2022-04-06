@@ -19,27 +19,43 @@ class SuggestionsController < ApplicationController
     #  raise "Unkown occasion " + occasion
     #end
   end
+  def paginate_collections(collections, offset, nbItems)
+  end
   def index
     #occasion = params[:occasion]
     #recipes = _recipes_for_occasion(occasion)    
-    collection = RecipeKind.all
-    items = 5 # items per page
-    offset = ((params[:page].to_i || 1) - 1) * items
-    suggestions = collection.offset(offset).limit(items)
-    render json: suggestions.map {|s| s.to_obj(only: [:name, :image_id])}
+    filter_id = nil
+    suggestions = current_user.suggestions.where(filter_id: filter_id, score: 0...).order(:score)
+    recipes = current_user.recipes.left_outer_joins(:suggestions).where(suggestions: {id: nil})
+    recipe_kinds = RecipeKind.left_outer_joins(:suggestions).where(suggestions: {id: nil})
+    bad_suggestions = current_user.suggestions.where(filter_id: filter_id, score: ...0).order(:score)
+    collections = [suggestions, recipes, recipe_kinds, bad_suggestions]
+    result = []
+    nbItems = 5 # items per page
+    offset = ((params[:page].to_i || 1) - 1) * nbItems
+    collections.each do |collection|
+      result += collection.offset(offset).limit(nbItems - result.size)
+      break if result.size >= nbItems
+    end
+    render json: result.map {|s|
+      r = (s.is_a? Suggestion) ? s.about : s
+      r.to_obj(only: [:name, :image_id])
+    }
   end
 
   def send_data
     selected = decode_record(params[:selected])
-    selected.increment!(:selected_count)
+    selected.increment(:selected_count)
+    selected.save!
     skipped = params[:skipped].each do |id|
       record = decode_record(id)
-      record.increment!(:skip_count)
+      record.increment(:skip_count)
+      record.save!
     end
   end
 private
   def decode_record(id)
-    args = (id.start_with? "_") ? {recipe_id: id} : {recipe_kind_id: id}
+    args = (id.start_with? "_") ? {recipe_id: id[1..-1]} : {recipe_kind_id: id}
     current_user.suggestions.find_or_create_by(args)
   end
 end

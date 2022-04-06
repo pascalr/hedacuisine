@@ -61,6 +61,7 @@ class Recipe < ApplicationRecord
   has_many :recipe_ingredients, dependent: :delete_all#, foreign_key: 'recipe_id'
   has_many :recipe_notes, dependent: :delete_all#, foreign_key: 'recipe_id'
   has_many :ingredient_sections, dependent: :delete_all#, foreign_key: 'recipe_id'
+  has_many :suggestions
 
   has_many :book_recipes
 
@@ -142,7 +143,8 @@ class Recipe < ApplicationRecord
     #desc.gsub("\n", "<br>")
   end
   def image_id
-    base_recipe ? base_recipe.image_id : self[:image_id]
+    #base_recipe ? base_recipe.image_id : self[:image_id]
+    use_personalised_image ? self.image_id : (self.recipe_kind ? self.recipe_kind.image_id : nil)
   end
   def image
     use_personalised_image ? self.recipe_image : (self.recipe_kind ? self.recipe_kind.image : nil)
