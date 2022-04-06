@@ -1,4 +1,4 @@
-class AdminController < ApplicationController
+class SuggestionsController < ApplicationController
   #skip_before_action :authenticate_user!, only: [:test]
   #skip_before_action :only_admin!, only: [:test]
   def send_data
@@ -11,6 +11,7 @@ class AdminController < ApplicationController
   end
 private
   def decode_record(id)
-    current_user.suggestions.find_or_create_by(id.strat_with? "_" ? {recipe_id: id} : {recipe_kind_id: id})
+    args = (id.start_with? "_") ? {recipe_id: id} : {recipe_kind_id: id}
+    current_user.suggestions.find_or_create_by(args)
   end
 end

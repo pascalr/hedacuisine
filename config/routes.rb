@@ -13,7 +13,7 @@ Rails.application.routes.draw do
       get 'stylesheet'
     end
   end
-  get 'suggestions/send_data', to: 'suggestions#send_data', as: 'send_data_suggestions'
+  patch 'suggestions/send_data', to: 'suggestions#send_data', as: 'send_data_suggestions'
   resources :food_tags
   get 'search/index'
   resources :listings

@@ -66,7 +66,7 @@ const ChooseRecipe = () => {
       skipped.push(encodeId(suggestions[i].id))
     }
     // send stats, which recipe was skipped, which was selected
-    ajax({url: send_data_suggestions_path, type: 'PUT', data: {skipped, selected: encodeId(suggestion.id)}, success: (suggests) => {
+    ajax({url: send_data_suggestions_path(), type: 'PATCH', data: {skipped, selected: encodeId(suggestion.id)}, success: (suggests) => {
       window.location = recipe_kind_path(suggestion)
     }, error: () => {
       window.location = recipe_kind_path(suggestion)
