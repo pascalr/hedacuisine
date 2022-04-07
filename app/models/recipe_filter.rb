@@ -1,6 +1,5 @@
 class RecipeFilter < ApplicationRecord
   belongs_to :user, optional: true
-  belongs_to :recipe
   belongs_to :image, optional: true
 
   def to_obj(params={})

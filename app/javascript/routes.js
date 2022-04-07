@@ -62,6 +62,10 @@ export const suggestions_path = (arg) => {
   return `/suggestions${appendParams(arg)}`
 }
 
+export const recipe_filters_path = (arg) => {
+  return `/recipe_filters`
+}
+
 export const send_data_suggestions_path = (arg) => {
   return `/suggestions/send_data`
 }

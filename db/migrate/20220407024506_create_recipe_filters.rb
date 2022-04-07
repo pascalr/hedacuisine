@@ -4,7 +4,6 @@ class CreateRecipeFilters < ActiveRecord::Migration[7.0]
       t.string :name
       t.integer :image_id
       t.integer :user_id
-      t.references :recipe, null: false, foreign_key: true
 
       t.timestamps
     end

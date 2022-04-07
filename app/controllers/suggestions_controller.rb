@@ -3,6 +3,7 @@ class SuggestionsController < ApplicationController
   #skip_before_action :only_admin!, only: [:test]
 
   def what_to_eat
+    gon.recipe_filters = current_user.recipe_filters.map {|f| f.to_obj }
   end
 
   def _recipes_for_occasion(occasion)

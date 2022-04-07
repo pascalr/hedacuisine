@@ -441,10 +441,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_07_024506) do
     t.string "name"
     t.integer "image_id"
     t.integer "user_id"
-    t.integer "recipe_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["recipe_id"], name: "index_recipe_filters_on_recipe_id"
   end
 
   create_table "recipe_ingredients", force: :cascade do |t|
@@ -764,7 +762,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_07_024506) do
   add_foreign_key "pages", "books"
   add_foreign_key "recipe_comments", "recipes"
   add_foreign_key "recipe_comments", "users"
-  add_foreign_key "recipe_filters", "recipes"
   add_foreign_key "recipe_ingredients", "foods"
   add_foreign_key "recipe_ingredients", "recipes"
   add_foreign_key "recipe_ingredients", "units"
