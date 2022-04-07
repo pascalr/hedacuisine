@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_01_233810) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_07_024506) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", limit: 255, null: false
     t.text "body"
@@ -437,6 +437,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_01_233810) do
     t.index ["user_id"], name: "index_recipe_comments_on_user_id"
   end
 
+  create_table "recipe_filters", force: :cascade do |t|
+    t.string "name"
+    t.integer "image_id"
+    t.integer "user_id"
+    t.integer "recipe_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recipe_id"], name: "index_recipe_filters_on_recipe_id"
+  end
+
   create_table "recipe_ingredients", force: :cascade do |t|
     t.bigint "recipe_id", null: false
     t.bigint "food_id"
@@ -754,6 +764,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_01_233810) do
   add_foreign_key "pages", "books"
   add_foreign_key "recipe_comments", "recipes"
   add_foreign_key "recipe_comments", "users"
+  add_foreign_key "recipe_filters", "recipes"
   add_foreign_key "recipe_ingredients", "foods"
   add_foreign_key "recipe_ingredients", "recipes"
   add_foreign_key "recipe_ingredients", "units"

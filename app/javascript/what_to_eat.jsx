@@ -4,9 +4,7 @@ import Hammer from "react-hammerjs"
 
 import { ajax, preloadImage } from "./utils"
 import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path } from './routes'
-
-const PAGE_CHOOSE_OCCASION = 1
-const PAGE_CHOOSE_RECIPE = 2
+import {TextField} from './form'
 
 const ChooseRecipe = () => {
 
@@ -97,52 +95,52 @@ const ChooseRecipe = () => {
   </>)
 }
 
-const CreateCustomFilter = ({changePage}) => {
+const EditFilter = ({changePage}) => {
+  const [name, setName] = useState('')
   return (<>
     <h2>Créer un nouveau filtre</h2>
     <h3>Titre</h3>
+    <input type="text" value={name||''} name='recipe_filter[name]' onChange={(e) => setName(e.target.value)} />
     <h3>Image</h3>
-    <h3>Quantité?</h3>
-    <p>Pas de restant, Deux repas, Plusieurs repas</p>
-    <h3>Rapidité?</h3>
-    <p>Très long, long, rapide, très rapide</p>
-    <h3>Sophistiqué?</h3>
-    <p>Très simple, simple, élaboré, très élaboré</p>
-    <p></p>
-    <h3></h3>
-    <h3></h3>
   </>)
 }
 
-const ChooseOccasionButton = ({image, title, changePage}) => {
+const ChooseOccasionButton = ({image, title, handleClick}) => {
   return (
-    <button className="plain-btn d-flex p-1 flex-column align-items-center" onClick={() => changePage(2)}>
+    <button className="plain-btn d-flex p-1 flex-column align-items-center" onClick={handleClick}>
       <img src={`/img/${image}`} width="150" height="150" />
       <b>{title}</b>
     </button>
   )
 }
-const ChooseOccasion = ({changePage}) => {
+const ChooseOccasion = ({recipeFilters, addRecipeFilter, changePage}) => {
+
+  const createRecipeFilter = () => {
+    ajax({url: recipe_filters_path(), type: 'POST', data: {}, success: (recipe_filter) => {
+      addRecipeFilter(recipe_filter)
+    }})
+  }
+
   // Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
   return (<>
     <div className="d-flex flex-column flex-items-center" style={{maxWidth: "375px", margin: "auto"}}>
       <div className="d-flex">
-        <ChooseOccasionButton image="quick-recipe.jpg" title="Recette rapide" changePage={changePage} />
+        <ChooseOccasionButton image="quick-recipe.jpg" title="Recette rapide" handleClick={() => changePage(2)} />
         <div className="flex-grow-1"/>
-        <ChooseOccasionButton image="three-meals.jpg" title="Plusieurs repas" changePage={changePage} />
+        <ChooseOccasionButton image="three-meals.jpg" title="Plusieurs repas" handleClick={() => changePage(2)} />
       </div> 
       <div className="d-flex">
-        <ChooseOccasionButton image="cheers-glasses.jpg" title="Recevoir des invités" changePage={changePage} />
+        <ChooseOccasionButton image="cheers-glasses.jpg" title="Recevoir des invités" handleClick={() => changePage(2)} />
         <div className="flex-grow-1"/>
-        <ChooseOccasionButton image="table-food.jpg" title="Apporter à un potluck" changePage={changePage} />
+        <ChooseOccasionButton image="table-food.jpg" title="Apporter à un potluck" handleClick={() => changePage(2)} />
       </div> 
       <div className="d-flex">
-        <ChooseOccasionButton image="romantic-diner.jpg" title="Souper romantique" changePage={changePage} />
+        <ChooseOccasionButton image="romantic-diner.jpg" title="Souper romantique" handleClick={() => changePage(2)} />
         <div className="flex-grow-1"/>
-        <ChooseOccasionButton image="picnic.jpg" title="Picnic" changePage={changePage} />
+        <ChooseOccasionButton image="picnic.jpg" title="Picnic" handleClick={() => changePage(2)} />
       </div> 
       <div className="d-flex">
-        <ChooseOccasionButton image="question-mark.jpg" title="Personnalisé" changePage={changePage} />
+        <ChooseOccasionButton image="question-mark.jpg" title="Personnalisé" handleClick={() => createRecipeFilter()} />
         <div className="flex-grow-1"/>
         <div style={{width: "calc(150px + 1em)"}}/>
       </div> 
@@ -153,6 +151,11 @@ const ChooseOccasion = ({changePage}) => {
 const WhatToEat = () => {
 
   const [currentPage, setCurrentPage] = useState(1)
+  const [recipeFilters, setRecipeFilters] = useState([])
+  
+  useEffect(() => {
+    if (gon.recipe_filters) { setRecipeFilters(gon.recipe_filters) }
+  }, [])
 
   const parentPages = {
     2: 1,
@@ -160,9 +163,9 @@ const WhatToEat = () => {
   }
 
   const pages = {
-    1: <ChooseOccasion changePage={setCurrentPage} />,
+    1: <ChooseOccasion changePage={setCurrentPage} recipeFilters={recipeFilters} addRecipeFilter={(filter) => setRecipeFilters(recipeFilters.concat([filter]))} />,
     2: <ChooseRecipe changePage={setCurrentPage} />,
-    3: <CreateCustomFilter changePage={setCurrentPage} />
+    3: <EditFilter changePage={setCurrentPage} />
   }
 
   const goBack = () => {
