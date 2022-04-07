@@ -198,12 +198,12 @@ export const RadioField = ({model, field, value, label, ...props}) => {
           
   </>)
 }
-export const TextField = ({model, field, inputRef, ...props}) => {
+export const TextField = ({model, field, inputRef, onUpdate, ...props}) => {
   const [value, setValue] = useState(model[field])
   return (
     <input type="text" value={value||''} name={model.class_name+"["+field+"]"} id={field} ref={inputRef} {...props}
       onChange={(e) => setValue(e.target.value)}
-      onBlur={(e) => {updateModelField(model, field, value)}} />
+      onBlur={(e) => {onUpdate ? onUpdate(model, field, value) : updateModelField(model, field, value)}} />
   )
 }
 export const EditableField = ({model, field}) => {

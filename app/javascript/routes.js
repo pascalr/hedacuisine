@@ -65,6 +65,9 @@ export const suggestions_path = (arg) => {
 export const recipe_filters_path = (arg) => {
   return `/recipe_filters`
 }
+export const recipe_filter_path = (arg) => {
+  return `/recipe_filters/${extractParamFromModel(arg)}`
+}
 
 export const send_data_suggestions_path = (arg) => {
   return `/suggestions/send_data`

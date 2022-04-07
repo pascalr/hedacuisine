@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import Hammer from "react-hammerjs"
 
 import { ajax, preloadImage } from "./utils"
-import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, recipe_filters_path } from './routes'
+import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, recipe_filters_path, recipe_filter_path } from './routes'
 import {TextField} from './form'
 
 const ChooseRecipe = () => {
@@ -95,13 +95,37 @@ const ChooseRecipe = () => {
   </>)
 }
 
-const EditFilter = ({changePage}) => {
+const EditFilter = ({changePage, pageArgs}) => {
   const [name, setName] = useState('')
+  const filter = pageArgs ? pageArgs.filter : null
+  if (!filter) {console.log("Can't edit filter, did not exist."); return '';}
+
+  //this.state.book.onServerUpdate = (book) => {
+  //  this.setState({book: updateRecord(this.state.book, book, {image: {}})})
+  //}
+
+  const updateFilterField = (model, field, value) => {
+    ajax({url: recipe_filter_path(model), type: 'PATCH', data: {[model.class_name+"["+field+"]"]: value}, success: (recipe_filter) => {
+      console.log('TODO: Update filter name in js')
+    }})
+  }
+
   return (<>
     <h2>Modifier le filtre</h2>
     <h3>Titre</h3>
-    <input type="text" value={name||''} name='recipe_filter[name]' onChange={(e) => setName(e.target.value)} />
+    <TextField model={filter} field="name" onUpdate={updateFilterField} />
     <h3>Image</h3>
+  </>)
+}
+
+const EditConfig = ({recipeFilters, changePage}) => {
+
+  const editFilters = recipeFilters.map(filter => (<div key={filter.id} onClick={() => changePage(3, {filter: filter})}>{filter.name || "Sans nom"}</div>))
+
+  return (<>
+    <h2>Paramètres des filtres</h2>
+    {editFilters}
+    <h2>Paramètres généraux</h2>
   </>)
 }
 
@@ -109,7 +133,7 @@ const ChooseOccasionButton = ({winWidth, image, title, handleClick}) => {
   return (
     <div style={{width: `${Math.min(200, winWidth/2)}px`, padding: `${Math.min(25, (winWidth-300)/4)}px`, display: "inline-block"}}>
       <button className="plain-btn d-flex p-1 flex-column align-items-center" onClick={handleClick}>
-        <img src={`/img/${image}`} width="150" height="150" />
+        <img src={image} width="150" height="150" />
         <b>{title}</b>
       </button>
     </div>
@@ -138,14 +162,15 @@ const ChooseOccasion = ({recipeFilters, addRecipeFilter, changePage}) => {
   // Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
   return (<>
     <div style={{maxWidth: "100vw", width: "400px", margin: "auto"}}>
-      <ChooseOccasionButton winWidth={winWidth} image="quick-recipe.jpg" title="Recette rapide" handleClick={() => changePage(2)} />
-      <ChooseOccasionButton winWidth={winWidth} image="three-meals.jpg" title="Plusieurs repas" handleClick={() => changePage(2)} />
-      <ChooseOccasionButton winWidth={winWidth} image="cheers-glasses.jpg" title="Recevoir des invités" handleClick={() => changePage(2)} />
-      <ChooseOccasionButton winWidth={winWidth} image="table-food.jpg" title="Apporter à un potluck" handleClick={() => changePage(2)} />
-      <ChooseOccasionButton winWidth={winWidth} image="romantic-diner.jpg" title="Souper romantique" handleClick={() => changePage(2)} />
-      <ChooseOccasionButton winWidth={winWidth} image="picnic.jpg" title="Picnic" handleClick={() => changePage(2)} />
+      <ChooseOccasionButton winWidth={winWidth} image="/img/quick-recipe.jpg" title="Recette rapide" handleClick={() => changePage(2)} />
+      <ChooseOccasionButton winWidth={winWidth} image="/img/three-meals.jpg" title="Plusieurs repas" handleClick={() => changePage(2)} />
+      <ChooseOccasionButton winWidth={winWidth} image="/img/cheers-glasses.jpg" title="Recevoir des invités" handleClick={() => changePage(2)} />
+      <ChooseOccasionButton winWidth={winWidth} image="/img/table-food.jpg" title="Apporter à un potluck" handleClick={() => changePage(2)} />
+      <ChooseOccasionButton winWidth={winWidth} image="/img/romantic-diner.jpg" title="Souper romantique" handleClick={() => changePage(2)} />
+      <ChooseOccasionButton winWidth={winWidth} image="/img/picnic.jpg" title="Picnic" handleClick={() => changePage(2)} />
       {buttons}
-      <ChooseOccasionButton winWidth={winWidth} image="plus.jpg" title="Nouveau" handleClick={() => createRecipeFilter()} />
+      <ChooseOccasionButton winWidth={winWidth} image="/img/plus.jpg" title="Nouveau" handleClick={() => createRecipeFilter()} />
+      <ChooseOccasionButton winWidth={winWidth} image="/icons/gear.svg" title="Paramètres" handleClick={() => changePage(4)} />
     </div>
   </>)
 }
@@ -163,6 +188,7 @@ const WhatToEat = () => {
   const parentPages = {
     2: 1,
     3: 1,
+    4: 1,
   }
 
   const changePage = (pageNb, args=null) => {
@@ -173,7 +199,8 @@ const WhatToEat = () => {
   const pages = {
     1: <ChooseOccasion changePage={changePage} recipeFilters={recipeFilters} addRecipeFilter={(filter) => setRecipeFilters(recipeFilters.concat([filter]))} />,
     2: <ChooseRecipe changePage={changePage} />,
-    3: <EditFilter changePage={changePage} />
+    3: <EditFilter changePage={changePage} pageArgs={pageArgs} />,
+    4: <EditConfig changePage={changePage} recipeFilters={recipeFilters} />
   }
 
   const goBack = () => {

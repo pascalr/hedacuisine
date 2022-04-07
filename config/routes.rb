@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   get 'what_to_eat', to: 'suggestions#what_to_eat', as: 'what_to_eat'
   get 'suggestions', to: 'suggestions#index'
   resources :food_tags
-  resources :recipe_filters, only: [:create]
+  resources :recipe_filters, only: [:create, :update, :destroy]
   get 'search/index'
   resources :listings
   resources :ingredients
