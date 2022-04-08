@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import Hammer from "react-hammerjs"
 
 import { ajax, preloadImage } from "./utils"
-import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, recipe_filters_path, recipe_filter_path, data_to_train_suggestions_path } from './routes'
+import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, send_training_data_suggestions_path, recipe_filters_path, recipe_filter_path, data_to_train_suggestions_path } from './routes'
 import {TextField} from './form'
 import {PublicImageField} from './modals/public_image'
 import { DeleteConfirmButton } from './components/delete_confirm_button'
@@ -125,24 +125,17 @@ const TrainFilter = ({changePage, pageArgs, recipeFilters, setRecipeFilters}) =>
   if (!filter) {console.log("Can't train filter, did not exist."); return '';}
   
   const [dataToTrain, setDataToTrain] = useState([])
-  const [trainNb, setTrainNb] = useState(0)
   const [selected, setSelected] = useState({})
-  const [itemsPerPage, setItemsPerPage] = useState(null)
   const [doneFetching, setDoneFetching] = useState(false)
 
   const fetchBatch = () => {
     ajax({url: data_to_train_suggestions_path(), type: 'GET', success: (data) => {
-      if (itemsPerPage == null) {setItemsPerPage(data.length)}
-      if (data == [] || data.length < itemsPerPage) {
+      if (!data || data == []) {
         console.log('done fetching received ', data)
         setDoneFetching(true)
       }
-      setDataToTrain(dataToTrain.concat(data))
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].image_id) {
-          preloadImage(image_variant_path(data[i].image_id, "medium"))
-        }
-      }
+      setSelected({})
+      setDataToTrain(data)
     }})
   }
 
@@ -150,33 +143,6 @@ const TrainFilter = ({changePage, pageArgs, recipeFilters, setRecipeFilters}) =>
     fetchBatch()
   }, [])
 
-  const nextData = () => {
-    if (trainNb < dataToTrain.length-1) {
-      setTrainNb(trainNb + 1)
-    }
-    if (!doneFetching && trainNb >= dataToTrain.length - 2) {
-      fetchBatch()
-    }
-  }
-
-  let record = dataToTrain ? dataToTrain[trainNb] : null
-  if (!record) {return ''}
-
-  //const selectRecipe = () => {
-  //  let skipped = []
-  //  for (let i = 0; i < suggestionNb; i++) {
-  //    skipped.push(encodeRecord(suggestions[i]))
-  //  }
-  //  for (let i = suggestionNb+1; i <= maxSuggestionNb; i++) {
-  //    skipped.push(encodeRecord(suggestions[i]))
-  //  }
-  //  // send stats, which recipe was skipped, which was selected
-  //  ajax({url: send_data_suggestions_path(), type: 'PATCH', data: {skipped, selected: encodeRecord(suggestion)}, success: (suggests) => {
-  //    window.location = recipe_kind_path(suggestion)
-  //  }, error: () => {
-  //    window.location = recipe_kind_path(suggestion)
-  //  }})
-  //}
   const submitData = () => {
     let skipped = []
     let sel = []
@@ -188,9 +154,10 @@ const TrainFilter = ({changePage, pageArgs, recipeFilters, setRecipeFilters}) =>
       }
     }
     ajax({url: send_training_data_suggestions_path(), type: 'POST', data: {skipped, selected: sel}, success: () => {
+      console.log('Fetching second batch of data')
       fetchBatch()
-    }, error: () => {
-      // TODO
+    }, error: (err) => {
+      console.log('Error sending training data', err)
     }})
   }
               
@@ -199,6 +166,8 @@ const TrainFilter = ({changePage, pageArgs, recipeFilters, setRecipeFilters}) =>
     s[nb] = !s[nb]
     setSelected(s)
   }
+
+  if (!dataToTrain || dataToTrain.length <= 0) {return ''}
 
   return (<>
     <h2 style={{textAlign: 'center'}}>Quelle recette correspond à {filter.name} ?</h2>

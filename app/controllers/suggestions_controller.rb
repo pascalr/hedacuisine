@@ -62,13 +62,23 @@ class SuggestionsController < ApplicationController
   def send_training_data
     skipped = params[:skipped]
     selected = params[:selected]
+    skipped.each do |id|
+      record = decode_record(id)
+      record.filtered = true
+      record.save!
+    end
+    selected.each do |id|
+      record = decode_record(id)
+      record.filtered = false
+      record.save!
+    end
   end
 
   def send_data
     selected = decode_record(params[:selected])
     selected.increment(:selected_count)
     selected.save!
-    skipped = params[:skipped].each do |id|
+    params[:skipped].each do |id|
       record = decode_record(id)
       record.increment(:skip_count)
       record.save!

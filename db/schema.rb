@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_08_030011) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_08_204230) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", limit: 255, null: false
     t.text "body"
@@ -438,12 +438,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_08_030011) do
   end
 
   create_table "recipe_filters", force: :cascade do |t|
-    t.string "name"
+    t.string "name", limit: 255
     t.integer "image_id"
     t.integer "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "image_src"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.string "image_src", limit: 255
   end
 
   create_table "recipe_ingredients", force: :cascade do |t|
@@ -592,15 +592,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_08_030011) do
   end
 
   create_table "suggestions", force: :cascade do |t|
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.integer "recipe_id"
     t.integer "recipe_kind_id"
     t.integer "filter_id"
     t.integer "skip_count"
     t.integer "selected_count"
     t.float "score"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.boolean "filtered"
     t.index ["user_id"], name: "index_suggestions_on_user_id"
   end
 
