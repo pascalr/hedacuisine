@@ -7,6 +7,8 @@ import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send
 import {TextField} from './form'
 import {PublicImageField} from './modals/public_image'
 import { DeleteConfirmButton } from './components/delete_confirm_button'
+  
+const encodeRecord = (record) => (`${record.class_name == "recipe_kind" ? '' : '_'}${record.id}`)
 
 const ChooseRecipe = ({changePage, pageArgs, recipeFilters}) => {
 
@@ -60,7 +62,6 @@ const ChooseRecipe = ({changePage, pageArgs, recipeFilters}) => {
   let suggestion = suggestions ? suggestions[suggestionNb] : null
   if (!suggestion) {return ''}
 
-  const encodeRecord = (record) => (`${record.class_name == "recipe_kind" ? '' : '_'}${record.id}`)
   const selectRecipe = () => {
     let skipped = []
     for (let i = 0; i < suggestionNb; i++) {
@@ -176,6 +177,22 @@ const TrainFilter = ({changePage, pageArgs, recipeFilters, setRecipeFilters}) =>
   //    window.location = recipe_kind_path(suggestion)
   //  }})
   //}
+  const submitData = () => {
+    let skipped = []
+    let sel = []
+    for (let i = 0; i < dataToTrain.length; i++) {
+      if (selected[i]) {
+        sel.push(encodeRecord(dataToTrain[i]))
+      } else {
+        skipped.push(encodeRecord(dataToTrain[i]))
+      }
+    }
+    ajax({url: send_training_data_suggestions_path(), type: 'POST', data: {skipped, selected: sel}, success: () => {
+      fetchBatch()
+    }, error: () => {
+      // TODO
+    }})
+  }
               
   const imageClicked = (nb) => {
     let s = {...selected}
@@ -184,7 +201,7 @@ const TrainFilter = ({changePage, pageArgs, recipeFilters, setRecipeFilters}) =>
   }
 
   return (<>
-    <h2 style={{textAlign: 'center'}}>Entraîner: {filter.name}</h2>
+    <h2 style={{textAlign: 'center'}}>Quelle recette correspond à {filter.name} ?</h2>
     <table>
       <tbody>
         {[0,1,2,3,4].map(i => {
@@ -203,6 +220,8 @@ const TrainFilter = ({changePage, pageArgs, recipeFilters, setRecipeFilters}) =>
         })}
       </tbody>
     </table>
+    <br/>
+    <button type="button" className="btn btn-primary" onClick={submitData}>Soumettre</button>
   </>)
   
   //return (<>

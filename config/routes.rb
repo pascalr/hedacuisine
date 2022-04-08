@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   end
   get 'public_images', to: 'images#public_images', as: 'public_images'
   patch 'suggestions/send_data', to: 'suggestions#send_data', as: 'send_data_suggestions'
-  patch 'suggestions/send_training_data', to: 'suggestions#send_training_data', as: 'send_training_data_suggestions'
+  post 'suggestions/send_training_data', to: 'suggestions#send_training_data', as: 'send_training_data_suggestions'
   get 'what_to_eat', to: 'suggestions#what_to_eat', as: 'what_to_eat'
   get 'suggestions/data_to_train', to: 'suggestions#data_to_train', as: 'data_to_train_suggestions'
   get 'suggestions', to: 'suggestions#index'

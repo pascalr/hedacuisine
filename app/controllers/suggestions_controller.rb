@@ -59,6 +59,11 @@ class SuggestionsController < ApplicationController
     }
   end
 
+  def send_training_data
+    skipped = params[:skipped]
+    selected = params[:selected]
+  end
+
   def send_data
     selected = decode_record(params[:selected])
     selected.increment(:selected_count)
