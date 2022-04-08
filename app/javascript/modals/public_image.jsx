@@ -8,13 +8,12 @@ import { public_images_path } from '../routes'
 //import {asyncUpdateModel, TextField, FileField, RadioField} from '../form'
 
 export const PublicImageField = ({model, field, defaultSrc, url, getter, setter}) => {
-  const [src, setSrc] = useState(model[field])
   const [showModal, setShowModal] = useState(false)
 
   return (<>
     <PublicImageModal show={showModal} setShowModal={setShowModal} model={model} field={field} url={url} getter={getter} setter={setter} />
     <div className="over-container" style={{cursor: "pointer", border: "1px dashed black"}} onClick={() => setShowModal(true)}>
-      <img src={`/img/${src ? src : defaultSrc}`} />
+      <img src={`/img/${model[field] || defaultSrc}`} width="150" height="150" />
       <div className="bottom-right" style={{color: 'white', fontSize: '2em'}}>
         <img src="/icons/pencil-circle.svg" style={{width: "5rem", padding: "0.5rem"}}/>
       </div>
@@ -25,7 +24,6 @@ export const PublicImageField = ({model, field, defaultSrc, url, getter, setter}
 const PublicImageModal = ({model, field, show, setShowModal, url, getter, setter}) => {
 
   const publicImages = useFetch(public_images_path()) // FIXME: useFetch should cache the data...
-  console.log('publicImages', publicImages)
 
   const updateSrc = (image) => {
     updateRecordField(model, field, image, url, getter, setter)

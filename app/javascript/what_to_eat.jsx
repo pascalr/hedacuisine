@@ -8,7 +8,7 @@ import {TextField} from './form'
 import {PublicImageField} from './modals/public_image'
 import { DeleteConfirmButton } from './components/delete_confirm_button'
 
-const ChooseRecipe = ({changePage, pageArgs}) => {
+const ChooseRecipe = ({changePage, pageArgs, recipeFilters}) => {
 
   const [suggestions, setSuggestions] = useState([])
   const [suggestionNb, setSuggestionNb] = useState(0)
@@ -17,7 +17,7 @@ const ChooseRecipe = ({changePage, pageArgs}) => {
   const [page, setPage] = useState(1)
   const [doneFetching, setDoneFetching] = useState(false)
 
-  const filter = pageArgs ? pageArgs.filter : null
+  const filter = pageArgs && pageArgs.filterId ? recipeFilters.find(f => f.id == pageArgs.filterId) : null
  
   useEffect(() => {
     ajax({url: suggestions_path({page}), type: 'GET', success: (suggests) => {
@@ -102,7 +102,7 @@ const ChooseRecipe = ({changePage, pageArgs}) => {
 
 const EditFilter = ({changePage, pageArgs, recipeFilters, setRecipeFilters}) => {
   const [name, setName] = useState('')
-  const filter = pageArgs ? pageArgs.filter : null
+  const filter = pageArgs && pageArgs.filterId ? recipeFilters.find(f => f.id == pageArgs.filterId) : null
   if (!filter) {console.log("Can't edit filter, did not exist."); return '';}
 
   return (<>
@@ -125,7 +125,7 @@ const EditConfig = ({recipeFilters, changePage, setRecipeFilters}) => {
 
   const editFilters = recipeFilters.map(filter => (
     <li key={filter.id}>
-      <u className="clickable" onClick={() => changePage(3, {filter: filter})}>{filter.name || "Sans nom"}</u>
+      <u className="clickable" onClick={() => changePage(3, {filterId: filter.id})}>{filter.name || "Sans nom"}</u>
       <DeleteConfirmButton id={`del-recipe-filter-${filter.id}`} onDeleteConfirm={() => removeRecipeFilter(filter)} message="Je veux supprimer ce filtre?" />
     </li>))
 
@@ -166,11 +166,11 @@ const ChooseOccasion = ({recipeFilters, addRecipeFilter, changePage}) => {
   const createRecipeFilter = () => {
     ajax({url: recipe_filters_path(), type: 'POST', data: {}, success: (recipe_filter) => {
       addRecipeFilter(recipe_filter)
-      changePage(3, {filter: recipe_filter})
+      changePage(3, {filterId: recipe_filter.id})
     }})
   }
 
-  const buttons = recipeFilters.map(filter => <ChooseOccasionButton key={filter.id} winWidth={winWidth} image={`/img/${filter.image_src || "question-mark.jpg"}`} title={filter.name || "Sans nom"} handleClick={() => changePage(2, {filter: filter})} />)
+  const buttons = recipeFilters.map(filter => <ChooseOccasionButton key={filter.id} winWidth={winWidth} image={`/img/${filter.image_src || "question-mark.jpg"}`} title={filter.name || "Sans nom"} handleClick={() => changePage(2, {filterId: filter.id})} />)
 
   // Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
   return (<>
@@ -211,7 +211,7 @@ const WhatToEat = () => {
 
   const pages = {
     1: <ChooseOccasion changePage={changePage} recipeFilters={recipeFilters} addRecipeFilter={(filter) => setRecipeFilters(recipeFilters.concat([filter]))} />,
-    2: <ChooseRecipe changePage={changePage} pageArgs={pageArgs} />,
+    2: <ChooseRecipe changePage={changePage} pageArgs={pageArgs} recipeFilters={recipeFilters} />,
     3: <EditFilter changePage={changePage} pageArgs={pageArgs} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
     4: <EditConfig changePage={changePage} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />
   }
