@@ -101,26 +101,10 @@ const EditFilter = ({changePage, pageArgs, recipeFilters, setRecipeFilters}) => 
   const filter = pageArgs ? pageArgs.filter : null
   if (!filter) {console.log("Can't edit filter, did not exist."); return '';}
 
-  //this.state.book.onServerUpdate = (book) => {
-  //  this.setState({book: updateRecord(this.state.book, book, {image: {}})})
-  //}
-
-  const updateFilterField = (model, field, value) => {
-    ajax({url: recipe_filter_path(model), type: 'PATCH', data: {[model.class_name+"["+field+"]"]: value}, success: (recipe_filter) => {
-      let filters = recipeFilters.map(f => {
-        if (f.id == model.id) {
-          f[field] = value
-        }
-        return f
-      })
-      setRecipeFilters(filters)
-    }})
-  }
-
   return (<>
     <h2>Modifier le filtre</h2>
     <h3>Titre</h3>
-    <TextField model={filter} field="name" onUpdate={updateFilterField} />
+    <TextField model={filter} field="name" url={recipe_filter_path(filter)} getter={recipeFilters} setter={setRecipeFilters} />
     <h3>Image</h3>
   </>)
 }

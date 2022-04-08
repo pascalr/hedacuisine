@@ -198,8 +198,24 @@ export const RadioField = ({model, field, value, label, ...props}) => {
           
   </>)
 }
-export const TextField = ({model, field, inputRef, onUpdate, ...props}) => {
+const updateRecordField = (model, field, value, url, getter, setter) => {
+  ajax({url: url, type: 'PATCH', data: {[model.class_name+"["+field+"]"]: value}, success: (record) => {
+    let records = getter.map(r => {
+      if (r.id == model.id) {
+        r[field] = value
+      }
+      return r
+    })
+    setter(records)
+  }})
+}
+export const TextField = ({model, field, inputRef, onUpdate, url, getter, setter, ...props}) => {
   const [value, setValue] = useState(model[field])
+
+  if (url && getter && setter) {
+    onUpdate = (model, field, value) => updateRecordField(model, field, value, url, getter, setter)
+  }
+
   return (
     <input type="text" value={value||''} name={model.class_name+"["+field+"]"} id={field} ref={inputRef} {...props}
       onChange={(e) => setValue(e.target.value)}
