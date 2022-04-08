@@ -50,7 +50,7 @@ class SuggestionsController < ApplicationController
     recipes = current_user.recipes.left_outer_joins(:suggestions).where(suggestions: {id: nil})
     recipe_kinds = RecipeKind.left_outer_joins(:suggestions).where(suggestions: {id: nil})
     collections = [recipes, recipe_kinds]
-    nbItems = 5 # items per batch
+    nbItems = 20 # items per batch
     offset = params[:offset] || 0
     result = paginate_collections(collections, offset, nbItems)
     render json: result.map {|s|
