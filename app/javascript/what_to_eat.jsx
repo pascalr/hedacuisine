@@ -175,12 +175,6 @@ const ChooseOccasion = ({recipeFilters, addRecipeFilter, changePage}) => {
   // Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
   return (<>
     <div style={{maxWidth: "100vw", width: "400px", margin: "auto"}}>
-      <ChooseOccasionButton winWidth={winWidth} image="/img/quick-recipe.jpg" title="Recette rapide" handleClick={() => changePage(2)} />
-      <ChooseOccasionButton winWidth={winWidth} image="/img/three-meals.jpg" title="Plusieurs repas" handleClick={() => changePage(2)} />
-      <ChooseOccasionButton winWidth={winWidth} image="/img/cheers-glasses.jpg" title="Recevoir des invités" handleClick={() => changePage(2)} />
-      <ChooseOccasionButton winWidth={winWidth} image="/img/table-food.jpg" title="Apporter à un potluck" handleClick={() => changePage(2)} />
-      <ChooseOccasionButton winWidth={winWidth} image="/img/romantic-diner.jpg" title="Souper romantique" handleClick={() => changePage(2)} />
-      <ChooseOccasionButton winWidth={winWidth} image="/img/picnic.jpg" title="Picnic" handleClick={() => changePage(2)} />
       {buttons}
       <ChooseOccasionButton winWidth={winWidth} image="/img/plus.jpg" title="Nouveau" handleClick={() => createRecipeFilter()} />
       <ChooseOccasionButton winWidth={winWidth} image="/icons/gear-gray.svg" title="Paramètres" handleClick={() => changePage(4)} />
