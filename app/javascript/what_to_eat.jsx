@@ -123,20 +123,23 @@ const EditConfig = ({recipeFilters, changePage, setRecipeFilters}) => {
     }})
   }
 
-  const editFilters = recipeFilters.map(filter => (
+  const userFilters = recipeFilters.filter(f => f.user_id)
+  const defaultFilters = recipeFilters.filter(f => !f.user_id)
+
+  const editFilters = userFilters.map(filter => (
     <li key={filter.id}>
       <u className="clickable" onClick={() => changePage(3, {filterId: filter.id})}>{filter.name || "Sans nom"}</u>
       <DeleteConfirmButton id={`del-recipe-filter-${filter.id}`} onDeleteConfirm={() => removeRecipeFilter(filter)} message="Je veux supprimer ce filtre?" />
     </li>))
-
-  //const onRecipeFilterDelete = () => {
-  //  asyncUpdateModel(book, {front_page_image_id: null})
-  //}
+  const defFilters = defaultFilters.map(filter => (<li key={filter.id}>{filter.name || "Sans nom"}</li>))
+    // TODO: Add the ability to remove default filters...
+    // <DeleteConfirmButton id={`del-recipe-filter-${filter.id}`} onDeleteConfirm={() => removeRecipeFilter(filter)} message="Je veux supprimer ce filtre?" />
 
   return (<>
     <h2>Filtres</h2>
     <ul>
     {editFilters}
+    {defFilters}
     </ul>
     <h2>Paramètres généraux</h2>
   </>)
