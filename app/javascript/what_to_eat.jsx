@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import Hammer from "react-hammerjs"
 
 import { ajax, preloadImage } from "./utils"
-import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, recipe_filters_path, recipe_filter_path } from './routes'
+import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, recipe_filters_path, recipe_filter_path, data_to_train_suggestions_path } from './routes'
 import {TextField} from './form'
 import {PublicImageField} from './modals/public_image'
 import { DeleteConfirmButton } from './components/delete_confirm_button'
@@ -111,6 +111,91 @@ const EditFilter = ({changePage, pageArgs, recipeFilters, setRecipeFilters}) => 
     <TextField model={filter} field="name" url={recipe_filter_path(filter)} getter={recipeFilters} setter={setRecipeFilters} />
     <h3>Image</h3>
     <PublicImageField model={filter} field="image_src" defaultSrc={"question-mark.jpg"} url={recipe_filter_path(filter)} getter={recipeFilters} setter={setRecipeFilters} />
+    <br/>
+    <div>
+      <button type="button" className="btn btn-primary" onClick={() => changePage(5, {filterId: filter.id})}>Entraîner</button>
+    </div>
+  </>)
+}
+
+const TrainFilter = ({changePage, pageArgs, recipeFilters, setRecipeFilters}) => {
+
+  const filter = pageArgs && pageArgs.filterId ? recipeFilters.find(f => f.id == pageArgs.filterId) : null
+  if (!filter) {console.log("Can't train filter, did not exist."); return '';}
+  
+  const [dataToTrain, setDataToTrain] = useState([])
+  const [trainNb, setTrainNb] = useState(0)
+  const [itemsPerPage, setItemsPerPage] = useState(null)
+  const [doneFetching, setDoneFetching] = useState(false)
+
+  const fetchBatch = () => {
+    ajax({url: data_to_train_suggestions_path(), type: 'GET', success: (data) => {
+      if (itemsPerPage == null) {setItemsPerPage(data.length)}
+      if (data == [] || data.length < itemsPerPage) {
+        console.log('done fetching received ', data)
+        setDoneFetching(true)
+      }
+      setDataToTrain(dataToTrain.concat(data))
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].image_id) {
+          preloadImage(image_variant_path(data[i].image_id, "medium"))
+        }
+      }
+    }})
+  }
+
+  useEffect(() => {
+    fetchBatch()
+  }, [])
+
+  const nextData = () => {
+    if (trainNb < dataToTrain.length-1) {
+      setTrainNb(trainNb + 1)
+    }
+    if (!doneFetching && trainNb >= dataToTrain.length - 2) {
+      fetchBatch()
+    }
+  }
+
+  let record = dataToTrain ? dataToTrain[trainNb] : null
+  if (!record) {return ''}
+
+  //const selectRecipe = () => {
+  //  let skipped = []
+  //  for (let i = 0; i < suggestionNb; i++) {
+  //    skipped.push(encodeRecord(suggestions[i]))
+  //  }
+  //  for (let i = suggestionNb+1; i <= maxSuggestionNb; i++) {
+  //    skipped.push(encodeRecord(suggestions[i]))
+  //  }
+  //  // send stats, which recipe was skipped, which was selected
+  //  ajax({url: send_data_suggestions_path(), type: 'PATCH', data: {skipped, selected: encodeRecord(suggestion)}, success: (suggests) => {
+  //    window.location = recipe_kind_path(suggestion)
+  //  }, error: () => {
+  //    window.location = recipe_kind_path(suggestion)
+  //  }})
+  //}
+  
+  return (<>
+    <h2 style={{textAlign: 'center'}}>Entraîner: {filter.name}</h2>
+    <div>
+      <div className="over-container" style={{margin: "auto"}}>
+        <img src={record.image_id ? image_variant_path(record.image_id, "medium") : "/default_recipe_01.png"} style={{maxWidth: "100vw"}} width="452" height="304" />
+        <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "2em", padding: "0.2em 0.8em 0 0.2em"}}>{record.name}</h2>
+      </div>
+      <div>
+        <button type="button" className="btn btn-primary" onClick={() => {}}>1</button>
+        <button type="button" className="btn btn-primary" onClick={() => {}}>2</button>
+        <button type="button" className="btn btn-primary" onClick={() => {}}>3</button>
+        <button type="button" className="btn btn-primary" onClick={() => {}}>4</button>
+        <button type="button" className="btn btn-primary" onClick={() => {}}>5</button>
+        <button type="button" className="btn btn-primary" onClick={() => {}}>6</button>
+        <button type="button" className="btn btn-primary" onClick={() => {}}>7</button>
+        <button type="button" className="btn btn-primary" onClick={() => {}}>8</button>
+        <button type="button" className="btn btn-primary" onClick={() => {}}>9</button>
+        <button type="button" className="btn btn-primary" onClick={() => {}}>10</button>
+      </div>
+    </div>
   </>)
 }
 
@@ -199,6 +284,7 @@ const WhatToEat = () => {
     2: 1,
     3: 4,
     4: 1,
+    5: 3,
   }
 
   const changePage = (pageNb, args=null) => {
@@ -210,7 +296,8 @@ const WhatToEat = () => {
     1: <ChooseOccasion changePage={changePage} recipeFilters={recipeFilters} addRecipeFilter={(filter) => setRecipeFilters(recipeFilters.concat([filter]))} />,
     2: <ChooseRecipe changePage={changePage} pageArgs={pageArgs} recipeFilters={recipeFilters} />,
     3: <EditFilter changePage={changePage} pageArgs={pageArgs} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
-    4: <EditConfig changePage={changePage} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />
+    4: <EditConfig changePage={changePage} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
+    5: <TrainFilter changePage={changePage} pageArgs={pageArgs} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
   }
 
   const goBack = () => {

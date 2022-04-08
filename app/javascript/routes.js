@@ -77,6 +77,14 @@ export const send_data_suggestions_path = (arg) => {
   return `/suggestions/send_data`
 }
 
+export const send_training_data_suggestions_path = (arg) => {
+  return `/suggestions/send_training_data`
+}
+
+export const data_to_train_suggestions_path = (arg) => {
+  return `/suggestions/data_to_train${appendParams(arg)}`
+}
+
 export const image_variant_path = (image, variant) => {
   if (!image || !variant) {return null}
   return `/images/${image.id ? image.id : image}/${variant}`

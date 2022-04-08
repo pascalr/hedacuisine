@@ -21,6 +21,12 @@ class SuggestionsController < ApplicationController
     #end
   end
   def paginate_collections(collections, offset, nbItems)
+    result = []
+    collections.each do |collection|
+      result += collection.offset(offset).limit(nbItems - result.size)
+      break if result.size >= nbItems
+    end
+    return result
   end
   def index
     #occasion = params[:occasion]
@@ -31,13 +37,22 @@ class SuggestionsController < ApplicationController
     recipe_kinds = RecipeKind.left_outer_joins(:suggestions).where(suggestions: {id: nil})
     bad_suggestions = current_user.suggestions.where(filter_id: filter_id, score: ...0).order(:score)
     collections = [suggestions, recipes, recipe_kinds, bad_suggestions]
-    result = []
     nbItems = 5 # items per page
     offset = ((params[:page].to_i || 1) - 1) * nbItems
-    collections.each do |collection|
-      result += collection.offset(offset).limit(nbItems - result.size)
-      break if result.size >= nbItems
-    end
+    result = paginate_collections(collections, offset, nbItems)
+    render json: result.map {|s|
+      r = (s.is_a? Suggestion) ? s.about : s
+      r.to_obj(only: [:name, :image_id])
+    }
+  end
+
+  def data_to_train
+    recipes = current_user.recipes.left_outer_joins(:suggestions).where(suggestions: {id: nil})
+    recipe_kinds = RecipeKind.left_outer_joins(:suggestions).where(suggestions: {id: nil})
+    collections = [recipes, recipe_kinds]
+    nbItems = 5 # items per batch
+    offset = params[:offset] || 0
+    result = paginate_collections(collections, offset, nbItems)
     render json: result.map {|s|
       r = (s.is_a? Suggestion) ? s.about : s
       r.to_obj(only: [:name, :image_id])

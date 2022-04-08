@@ -1,3 +1,7 @@
+FIXME: Go back with pageArgs in what_to_eat
+
+Ajouter les filtres Halloween, Noël, Pacques, ...
+
 Un + au lieu d'un ? pour créer un nouveau filtre.
 
 TODO: Create training page
