@@ -7,7 +7,7 @@ import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send
 import {TextField} from './form'
 import { DeleteConfirmButton } from './components/delete_confirm_button'
 
-const ChooseRecipe = () => {
+const ChooseRecipe = ({changePage, pageArgs}) => {
 
   const [suggestions, setSuggestions] = useState([])
   const [suggestionNb, setSuggestionNb] = useState(0)
@@ -15,6 +15,8 @@ const ChooseRecipe = () => {
   const [itemsPerPage, setItemsPerPage] = useState(null)
   const [page, setPage] = useState(1)
   const [doneFetching, setDoneFetching] = useState(false)
+
+  const filter = pageArgs ? pageArgs.filter : null
  
   useEffect(() => {
     ajax({url: suggestions_path({page}), type: 'GET', success: (suggests) => {
@@ -75,6 +77,7 @@ const ChooseRecipe = () => {
   }
   
   return (<>
+    {filter && filter.name ? <h2 style={{textAlign: 'center'}}>{filter.name}</h2> : ''}
     <Hammer onSwipe={handleSwipe}>
       <div>
         <div className="over-container" style={{margin: "auto"}}>
@@ -206,7 +209,7 @@ const WhatToEat = () => {
 
   const pages = {
     1: <ChooseOccasion changePage={changePage} recipeFilters={recipeFilters} addRecipeFilter={(filter) => setRecipeFilters(recipeFilters.concat([filter]))} />,
-    2: <ChooseRecipe changePage={changePage} />,
+    2: <ChooseRecipe changePage={changePage} pageArgs={pageArgs} />,
     3: <EditFilter changePage={changePage} pageArgs={pageArgs} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
     4: <EditConfig changePage={changePage} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />
   }
