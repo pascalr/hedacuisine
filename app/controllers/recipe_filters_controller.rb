@@ -1,6 +1,6 @@
 class RecipeFiltersController < ApplicationController
 
-  before_action :set_recipe_filter
+  before_action :set_recipe_filter, only: [:update, :destroy]
 
   #skip_before_action :authenticate_user!, only: [:test]
   #skip_before_action :only_admin!, only: [:test]
