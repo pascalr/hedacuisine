@@ -31,11 +31,11 @@ class SuggestionsController < ApplicationController
   def index
     #occasion = params[:occasion]
     #recipes = _recipes_for_occasion(occasion)    
-    filter_id = nil
-    suggestions = current_user.suggestions.where(filter_id: filter_id, score: 0...).order(:score)
+    filter_id = params[:filter_id]
+    suggestions = current_user.suggestions.all_valid.where(filter_id: filter_id, score: 0...).order(:score)
     recipes = current_user.recipes.left_outer_joins(:suggestions).where(suggestions: {id: nil})
     recipe_kinds = RecipeKind.left_outer_joins(:suggestions).where(suggestions: {id: nil})
-    bad_suggestions = current_user.suggestions.where(filter_id: filter_id, score: ...0).order(:score)
+    bad_suggestions = current_user.suggestions.all_valid.where(filter_id: filter_id, score: ...0).order(:score)
     collections = [suggestions, recipes, recipe_kinds, bad_suggestions]
     nbItems = 5 # items per page
     offset = ((params[:page].to_i || 1) - 1) * nbItems

@@ -22,7 +22,7 @@ const ChooseRecipe = ({changePage, pageArgs, recipeFilters}) => {
   const filter = pageArgs && pageArgs.filterId ? recipeFilters.find(f => f.id == pageArgs.filterId) : null
  
   useEffect(() => {
-    ajax({url: suggestions_path({page}), type: 'GET', success: (suggests) => {
+    ajax({url: suggestions_path({page, filterId: filter ? filter.id : null}), type: 'GET', success: (suggests) => {
       if (itemsPerPage == null) {setItemsPerPage(suggests.length)}
       if (suggests == [] || suggests.length < itemsPerPage) {
         console.log('done fetching received ', suggests)
@@ -178,6 +178,7 @@ const TrainFilter = ({changePage, pageArgs, recipeFilters, setRecipeFilters}) =>
             {[0,1,2,3].map(j => {
               let nb = j*5+i
               let record = dataToTrain[nb]
+              if (!record) {return <td key={j}></td>}
               return (<td key={j}>
                 <div className="over-container clickable" style={{margin: "auto", border: `4px solid ${selected[nb] ? 'blue' : 'white'}`}} onClick={() => imageClicked(nb)}>
                   <img src={record.image_id ? image_variant_path(record.image_id, "small") : "/default_recipe_01.png"} width="255" height="171" />
