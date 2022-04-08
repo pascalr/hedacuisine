@@ -4,7 +4,8 @@ import Hammer from "react-hammerjs"
 
 import { ajax, preloadImage } from "./utils"
 import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, recipe_filters_path, recipe_filter_path } from './routes'
-import {PublicImageField, TextField} from './form'
+import {TextField} from './form'
+import {PublicImageField} from './modals/public_image'
 import { DeleteConfirmButton } from './components/delete_confirm_button'
 
 const ChooseRecipe = ({changePage, pageArgs}) => {

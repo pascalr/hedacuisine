@@ -209,18 +209,6 @@ const updateRecordField = (model, field, value, url, getter, setter) => {
     setter(records)
   }})
 }
-export const PublicImageField = ({model, field, defaultSrc}) => {
-  const [src, setSrc] = useState(model[field])
-
-  return (
-    <div className="over-container" style={{cursor: "pointer"}} onClick={() => (true)}>
-      <img src={`/img/${src ? src : defaultSrc}`} />
-      <div className="bottom-right" style={{color: 'white', fontSize: '2em'}}>
-        <img src="/icons/pencil-circle.svg" style={{width: "5rem", padding: "0.5rem"}}/>
-      </div>
-    </div>
-  )
-}
 export const TextField = ({model, field, inputRef, onUpdate, url, getter, setter, ...props}) => {
   const [value, setValue] = useState(model[field])
 
