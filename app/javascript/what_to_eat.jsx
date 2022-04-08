@@ -181,7 +181,7 @@ const ChooseOccasion = ({recipeFilters, addRecipeFilter, changePage}) => {
       <ChooseOccasionButton winWidth={winWidth} image="/img/picnic.jpg" title="Picnic" handleClick={() => changePage(2)} />
       {buttons}
       <ChooseOccasionButton winWidth={winWidth} image="/img/plus.jpg" title="Nouveau" handleClick={() => createRecipeFilter()} />
-      <ChooseOccasionButton winWidth={winWidth} image="/icons/gear.svg" title="Paramètres" handleClick={() => changePage(4)} />
+      <ChooseOccasionButton winWidth={winWidth} image="/icons/gear-gray.svg" title="Paramètres" handleClick={() => changePage(4)} />
     </div>
   </>)
 }
