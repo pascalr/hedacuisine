@@ -69,6 +69,10 @@ export const recipe_filter_path = (arg) => {
   return `/recipe_filters/${extractParamFromModel(arg)}`
 }
 
+export const public_images_path = (arg) => {
+  return `/public_images`
+}
+
 export const send_data_suggestions_path = (arg) => {
   return `/suggestions/send_data`
 }

@@ -8,7 +8,9 @@ export const Show = ({cond, children}) => {
   return cond ? children : ''
 }
 
-export const useFetch = (url, {waitFor}) => {
+// TODO: Cache the data by url
+export const useFetch = (url, args={}) => {
+  const {waitFor} = args
   const [data, setData] = useState(null);
 
   useEffect(() => {

@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Modal from 'react-bootstrap/Modal'
 
+import { useFetch } from "../lib"
+import { public_images_path } from '../routes'
+
 //import {asyncUpdateModel, TextField, FileField, RadioField} from '../form'
 
 export const PublicImageField = ({model, field, defaultSrc}) => {
@@ -20,7 +23,8 @@ export const PublicImageField = ({model, field, defaultSrc}) => {
 
 const PublicImageModal = ({show, setShowModal}) => {
 
-  console.log('show', show)
+  const publicImages = useFetch(public_images_path()) // FIXME: useFetch should cache the data...
+  console.log('publicImages', publicImages)
 
   return (<>
     <Modal show={show} onHide={() => setShowModal(false)}>
