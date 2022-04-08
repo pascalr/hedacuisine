@@ -4,7 +4,7 @@ import Hammer from "react-hammerjs"
 
 import { ajax, preloadImage } from "./utils"
 import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, recipe_filters_path, recipe_filter_path } from './routes'
-import {TextField} from './form'
+import {PublicImageField, TextField} from './form'
 import { DeleteConfirmButton } from './components/delete_confirm_button'
 
 const ChooseRecipe = ({changePage, pageArgs}) => {
@@ -109,6 +109,7 @@ const EditFilter = ({changePage, pageArgs, recipeFilters, setRecipeFilters}) => 
     <h3>Titre</h3>
     <TextField model={filter} field="name" url={recipe_filter_path(filter)} getter={recipeFilters} setter={setRecipeFilters} />
     <h3>Image</h3>
+    <PublicImageField model={filter} field="image_src" defaultSrc={"question-mark.jpg"} />
   </>)
 }
 
