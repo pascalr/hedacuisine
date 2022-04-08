@@ -5,6 +5,7 @@ import Hammer from "react-hammerjs"
 import { ajax, preloadImage } from "./utils"
 import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, recipe_filters_path, recipe_filter_path } from './routes'
 import {TextField} from './form'
+import { DeleteConfirmButton } from './components/delete_confirm_button'
 
 const ChooseRecipe = () => {
 
@@ -95,7 +96,7 @@ const ChooseRecipe = () => {
   </>)
 }
 
-const EditFilter = ({changePage, pageArgs}) => {
+const EditFilter = ({changePage, pageArgs, recipeFilters, setRecipeFilters}) => {
   const [name, setName] = useState('')
   const filter = pageArgs ? pageArgs.filter : null
   if (!filter) {console.log("Can't edit filter, did not exist."); return '';}
@@ -106,7 +107,13 @@ const EditFilter = ({changePage, pageArgs}) => {
 
   const updateFilterField = (model, field, value) => {
     ajax({url: recipe_filter_path(model), type: 'PATCH', data: {[model.class_name+"["+field+"]"]: value}, success: (recipe_filter) => {
-      console.log('TODO: Update filter name in js')
+      let filters = recipeFilters.map(f => {
+        if (f.id == model.id) {
+          f[field] = value
+        }
+        return f
+      })
+      setRecipeFilters(filters)
     }})
   }
 
@@ -118,13 +125,30 @@ const EditFilter = ({changePage, pageArgs}) => {
   </>)
 }
 
-const EditConfig = ({recipeFilters, changePage}) => {
+const EditConfig = ({recipeFilters, changePage, setRecipeFilters}) => {
 
-  const editFilters = recipeFilters.map(filter => (<div key={filter.id} onClick={() => changePage(3, {filter: filter})}>{filter.name || "Sans nom"}</div>))
+  const removeRecipeFilter = (filter) => {
+    ajax({url: recipe_filter_path(filter), type: 'DELETE', success: () => {
+      let filters = recipeFilters.filter(f => f.id != filter.id)
+      setRecipeFilters(filters)
+    }})
+  }
+
+  const editFilters = recipeFilters.map(filter => (
+    <li key={filter.id}>
+      <u className="clickable" onClick={() => changePage(3, {filter: filter})}>{filter.name || "Sans nom"}</u>
+      <DeleteConfirmButton id={`del-recipe-filter-${filter.id}`} onDeleteConfirm={() => removeRecipeFilter(filter)} message="Je veux supprimer ce filtre?" />
+    </li>))
+
+  //const onRecipeFilterDelete = () => {
+  //  asyncUpdateModel(book, {front_page_image_id: null})
+  //}
 
   return (<>
-    <h2>Paramètres des filtres</h2>
+    <h2>Filtres</h2>
+    <ul>
     {editFilters}
+    </ul>
     <h2>Paramètres généraux</h2>
   </>)
 }
@@ -157,7 +181,7 @@ const ChooseOccasion = ({recipeFilters, addRecipeFilter, changePage}) => {
     }})
   }
 
-  const buttons = recipeFilters.map(filter => <ChooseOccasionButton key={filter.id} winWidth={winWidth} image="question-mark.jpg" title={filter.name || "Sans nom"} handleClick={() => changePage(2, {filter: filter})} />)
+  const buttons = recipeFilters.map(filter => <ChooseOccasionButton key={filter.id} winWidth={winWidth} image="/img/question-mark.jpg" title={filter.name || "Sans nom"} handleClick={() => changePage(2, {filter: filter})} />)
 
   // Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
   return (<>
@@ -187,7 +211,7 @@ const WhatToEat = () => {
 
   const parentPages = {
     2: 1,
-    3: 1,
+    3: 4,
     4: 1,
   }
 
@@ -199,8 +223,8 @@ const WhatToEat = () => {
   const pages = {
     1: <ChooseOccasion changePage={changePage} recipeFilters={recipeFilters} addRecipeFilter={(filter) => setRecipeFilters(recipeFilters.concat([filter]))} />,
     2: <ChooseRecipe changePage={changePage} />,
-    3: <EditFilter changePage={changePage} pageArgs={pageArgs} />,
-    4: <EditConfig changePage={changePage} recipeFilters={recipeFilters} />
+    3: <EditFilter changePage={changePage} pageArgs={pageArgs} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
+    4: <EditConfig changePage={changePage} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />
   }
 
   const goBack = () => {
