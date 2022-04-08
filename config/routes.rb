@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       get 'stylesheet'
     end
   end
+  get 'public_images', to: 'images#public_images', as: 'public_images'
   patch 'suggestions/send_data', to: 'suggestions#send_data', as: 'send_data_suggestions'
   get 'what_to_eat', to: 'suggestions#what_to_eat', as: 'what_to_eat'
   get 'suggestions', to: 'suggestions#index'

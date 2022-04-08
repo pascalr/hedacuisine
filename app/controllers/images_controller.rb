@@ -18,6 +18,12 @@ class ImagesController < ApplicationController
     @images = Image.order(id: :desc).all
   end
 
+  def public_images
+    path = Rails.root.join('public/img/').to_s
+    files = Dir.glob(path+'*')
+    render json: files.map {|f| f[path.length..-1]}
+  end
+
   def send_image(variant)
     redirect_to variant
 
