@@ -198,7 +198,7 @@ export const RadioField = ({model, field, value, label, ...props}) => {
           
   </>)
 }
-const updateRecordField = (model, field, value, url, getter, setter) => {
+export const updateRecordField = (model, field, value, url, getter, setter) => {
   ajax({url: url, type: 'PATCH', data: {[model.class_name+"["+field+"]"]: value}, success: (record) => {
     let records = getter.map(r => {
       if (r.id == model.id) {

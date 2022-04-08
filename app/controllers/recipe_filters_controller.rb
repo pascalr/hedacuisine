@@ -27,6 +27,6 @@ private
       @recipe_filter = current_user.recipe_filters.find(params[:id])
     end
     def recipe_filter_params
-      params.require(:recipe_filter).permit(:name)
+      params.require(:recipe_filter).permit(:name, :image_src)
     end
 end

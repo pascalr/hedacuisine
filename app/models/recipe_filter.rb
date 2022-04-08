@@ -3,6 +3,6 @@ class RecipeFilter < ApplicationRecord
   belongs_to :image, optional: true
 
   def to_obj(params={})
-    extract_attributes(params, :name)
+    extract_attributes(params, :name, :image_src)
   end
 end

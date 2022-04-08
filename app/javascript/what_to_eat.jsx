@@ -110,7 +110,7 @@ const EditFilter = ({changePage, pageArgs, recipeFilters, setRecipeFilters}) => 
     <h3>Titre</h3>
     <TextField model={filter} field="name" url={recipe_filter_path(filter)} getter={recipeFilters} setter={setRecipeFilters} />
     <h3>Image</h3>
-    <PublicImageField model={filter} field="image_src" defaultSrc={"question-mark.jpg"} />
+    <PublicImageField model={filter} field="image_src" defaultSrc={"question-mark.jpg"} url={recipe_filter_path(filter)} getter={recipeFilters} setter={setRecipeFilters} />
   </>)
 }
 
@@ -170,7 +170,7 @@ const ChooseOccasion = ({recipeFilters, addRecipeFilter, changePage}) => {
     }})
   }
 
-  const buttons = recipeFilters.map(filter => <ChooseOccasionButton key={filter.id} winWidth={winWidth} image="/img/question-mark.jpg" title={filter.name || "Sans nom"} handleClick={() => changePage(2, {filter: filter})} />)
+  const buttons = recipeFilters.map(filter => <ChooseOccasionButton key={filter.id} winWidth={winWidth} image={`/img/${filter.image_src || "question-mark.jpg"}`} title={filter.name || "Sans nom"} handleClick={() => changePage(2, {filter: filter})} />)
 
   // Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
   return (<>
