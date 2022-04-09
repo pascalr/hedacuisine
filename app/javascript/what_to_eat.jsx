@@ -71,7 +71,7 @@ const ChooseRecipe = ({changePage, pageArgs, recipeFilters}) => {
       skipped.push(encodeRecord(suggestions[i]))
     }
     // send stats, which recipe was skipped, which was selected
-    ajax({url: send_data_suggestions_path(), type: 'PATCH', data: {skipped, selected: encodeRecord(suggestion)}, success: (suggests) => {
+    ajax({url: send_data_suggestions_path(), type: 'PATCH', data: {filterId: filter.id, skipped, selected: encodeRecord(suggestion)}, success: (suggests) => {
       window.location = recipe_kind_path(suggestion)
     }, error: () => {
       window.location = recipe_kind_path(suggestion)
@@ -153,7 +153,7 @@ const TrainFilter = ({changePage, pageArgs, recipeFilters, setRecipeFilters}) =>
         skipped.push(encodeRecord(dataToTrain[i]))
       }
     }
-    ajax({url: send_training_data_suggestions_path(), type: 'POST', data: {skipped, selected: sel}, success: () => {
+    ajax({url: send_training_data_suggestions_path(), type: 'POST', data: {filterId: filter.id, skipped, selected: sel}, success: () => {
       console.log('Fetching second batch of data')
       fetchBatch()
     }, error: (err) => {

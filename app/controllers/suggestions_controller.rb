@@ -47,6 +47,8 @@ class SuggestionsController < ApplicationController
   end
 
   def data_to_train
+    filter_id = params[:filter_id]
+    #current_user.suggestions.where()
     recipes = current_user.recipes.left_outer_joins(:suggestions).where(suggestions: {id: nil})
     recipe_kinds = RecipeKind.left_outer_joins(:suggestions).where(suggestions: {id: nil})
     collections = [recipes, recipe_kinds]
@@ -60,33 +62,35 @@ class SuggestionsController < ApplicationController
   end
 
   def send_training_data
+    filter_id = params[:filterId]
     skipped = params[:skipped] || []
     selected = params[:selected] || []
     skipped.each do |id|
-      record = decode_record(id)
+      record = decode_record(id, filter_id)
       record.filtered = true
       record.save!
     end
     selected.each do |id|
-      record = decode_record(id)
+      record = decode_record(id, filter_id)
       record.filtered = false
       record.save!
     end
   end
 
   def send_data
-    selected = decode_record(params[:selected])
+    filter_id = params[:filterId]
+    selected = decode_record(params[:selected], filter_id)
     selected.increment(:selected_count)
     selected.save!
     params[:skipped].each do |id|
-      record = decode_record(id)
+      record = decode_record(id, filter_id)
       record.increment(:skip_count)
       record.save!
     end
   end
 private
-  def decode_record(id)
+  def decode_record(id, filter_id)
     args = (id.start_with? "_") ? {recipe_id: id[1..-1]} : {recipe_kind_id: id}
-    current_user.suggestions.find_or_create_by(args)
+    current_user.suggestions.find_or_create_by(args.merge({filter_id: filter_id}))
   end
 end
