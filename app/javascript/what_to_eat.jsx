@@ -129,7 +129,7 @@ const TrainFilter = ({changePage, pageArgs, recipeFilters, setRecipeFilters}) =>
   const [doneFetching, setDoneFetching] = useState(false)
 
   const fetchBatch = () => {
-    ajax({url: data_to_train_suggestions_path(), type: 'GET', success: (data) => {
+    ajax({url: data_to_train_suggestions_path({filterId: filter.id}), type: 'GET', success: (data) => {
       if (!data || data == []) {
         console.log('done fetching received ', data)
         setDoneFetching(true)

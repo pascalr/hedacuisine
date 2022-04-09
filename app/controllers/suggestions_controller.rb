@@ -31,7 +31,7 @@ class SuggestionsController < ApplicationController
   def index
     #occasion = params[:occasion]
     #recipes = _recipes_for_occasion(occasion)    
-    filter_id = params[:filter_id]
+    filter_id = params[:filterId]
     suggestions = current_user.suggestions.all_valid.where(filter_id: filter_id, score: 0...).order(:score)
     recipes = current_user.recipes.left_outer_joins(:suggestions).where(suggestions: {id: nil})
     recipe_kinds = RecipeKind.left_outer_joins(:suggestions).where(suggestions: {id: nil})
@@ -47,10 +47,10 @@ class SuggestionsController < ApplicationController
   end
 
   def data_to_train
-    filter_id = params[:filter_id]
+    filter_id = params[:filterId]
     #current_user.suggestions.where()
-    recipes = current_user.recipes.left_outer_joins(:suggestions).where(suggestions: {id: nil})
-    recipe_kinds = RecipeKind.left_outer_joins(:suggestions).where(suggestions: {id: nil})
+    recipes = current_user.recipes.left_outer_joins(:suggestions).where('suggestions.id IS NULL OR suggestions.filter_id != ?', filter_id)
+    recipe_kinds = RecipeKind.left_outer_joins(:suggestions).where('suggestions.id IS NULL OR suggestions.filter_id != ?', filter_id)
     collections = [recipes, recipe_kinds]
     nbItems = 20 # items per batch
     offset = params[:offset] || 0
