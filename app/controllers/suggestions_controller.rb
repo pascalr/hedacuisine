@@ -49,6 +49,7 @@ class SuggestionsController < ApplicationController
   def data_to_train
     filter_id = params[:filterId]
     #current_user.suggestions.where()
+    #recipes = current_user.recipes.left_outer_joins(:suggestions).where('recipe_kind_id IS NULL AND (suggestions.id IS NULL OR suggestions.filter_id != ?)', filter_id)
     recipes = current_user.recipes.left_outer_joins(:suggestions).where('suggestions.id IS NULL OR suggestions.filter_id != ?', filter_id)
     recipe_kinds = RecipeKind.left_outer_joins(:suggestions).where('suggestions.id IS NULL OR suggestions.filter_id != ?', filter_id)
     collections = [recipes, recipe_kinds]

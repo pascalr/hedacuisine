@@ -329,7 +329,7 @@ const WhatToEat = () => {
   // Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
   return (<>
     <div className="d-flex">
-      <img src={icon_path("arrow-left-square.svg")} width="24" style={{paddingLeft: "0.5em"}} onClick={goBack} />
+      <img className="clickable" src={icon_path("arrow-left-square.svg")} width="24" style={{paddingLeft: "0.5em"}} onClick={goBack} />
       <div className="flex-grow-1"/>
       <h1 style={{marginBottom: "0"}}>Qu'est-ce qu'on mange?</h1>
       <div className="flex-grow-1"/>
