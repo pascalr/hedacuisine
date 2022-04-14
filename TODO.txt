@@ -1,3 +1,5 @@
+Changer l'history, l'url de la page avec javascript. Reload devrait reload la même page.
+
 FIXME: Ne pas afficher le même recipe et le recipe kind.
 
 FIXME: Go back with pageArgs in what_to_eat

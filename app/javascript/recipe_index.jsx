@@ -4,7 +4,7 @@ import {PercentageCompleted} from './helpers/recipes_helper'
 import { isBlank, normalizeSearchText } from "./utils"
 import { recipe_path } from "./routes"
 
-export const RecipeIndex = ({userRecipes}) => {
+export const RecipeIndex = ({userRecipes, showPercentCompleted}) => {
   
   const inputField = useRef(null);
   const [search, setSearch] = useState('')
@@ -36,15 +36,17 @@ export const RecipeIndex = ({userRecipes}) => {
     <div>
       <input ref={inputField} type="search" placeholder="Filtrer..." onChange={(e) => setSearch(e.target.value)} autoComplete="off" style={{width: "100%"}} onKeyDown={onKeyDown}/>
     </div>
-    <ul id="recipes">
-      {recipes.map((recipe, current) => {
-        return (
-          <li key={recipe.id}>
-            <a href={recipe_path(recipe)} className={current == selected ? "selected" : undefined}>{recipe.name}</a>
-            <span>&nbsp;(<PercentageCompleted recipe={recipe}/>)</span>
-          </li>
-        )
-      })}
-    </ul>
+    {!userRecipes ? 'Loading...' : (
+      <ul id="recipes" className="list-group">
+        {recipes.map((recipe, current) => {
+          return (
+            <li className="list-group-item" key={recipe.id}>
+              <a href={recipe_path(recipe)} className={current == selected ? "selected" : undefined}>{recipe.name}</a>
+              {!showPercentCompleted ? '' : <span>&nbsp;(<PercentageCompleted recipe={recipe}/>)</span>}
+            </li>
+          )
+        })}
+      </ul>)
+    }
   </>)
 }
