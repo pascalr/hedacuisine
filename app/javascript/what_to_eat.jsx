@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 import Hammer from "react-hammerjs"
 
+import {RecipeIndex} from './recipe_index'
 import { ajax, preloadImage } from "./utils"
 import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, send_training_data_suggestions_path, recipe_filters_path, recipe_filter_path, data_to_train_suggestions_path } from './routes'
 import {TextField} from './form'
@@ -281,12 +282,23 @@ const ChooseOccasion = ({recipeFilters, addRecipeFilter, changePage}) => {
   // Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
   return (<>
     <div style={{maxWidth: "100vw", width: "400px", margin: "auto"}}>
-      <ChooseOccasionButton winWidth={winWidth} image="/img/cooking.jpg" title="Mes recettes" handleClick={() => {}} />
+      <ChooseOccasionButton winWidth={winWidth} image="/img/cooking.jpg" title="Mes recettes" handleClick={() => changePage(6)} />
       <ChooseOccasionButton winWidth={winWidth} image="/img/recipes.jpg" title="Mes livres" handleClick={() => {}} />
       {buttons}
       <ChooseOccasionButton winWidth={winWidth} image="/img/plus.jpg" title="Nouveau" handleClick={() => createRecipeFilter()} />
       <ChooseOccasionButton winWidth={winWidth} image="/icons/gear-gray.svg" title="Paramètres" handleClick={() => changePage(4)} />
     </div>
+  </>)
+}
+
+const MyRecipes = () => {
+      //<%= link_to translated("Nouvelle recette"), new_recipe_path, class: "btn btn-outline-primary btn-sm" %>
+      //<%= link_to translated("Quoi manger?"), what_to_eat_path, class: "btn btn-outline-secondary btn-sm" %>
+  return (<>
+    <div className="d-flex gap-10" style={{alignItems: "center"}}>
+      <h2>Mes recettes</h2>
+    </div>
+    <RecipeIndex userRecipes={[]} />
   </>)
 }
 
@@ -305,6 +317,7 @@ const WhatToEat = () => {
     3: 4,
     4: 1,
     5: 3,
+    6: 1,
   }
 
   const changePage = (pageNb, args=null) => {
@@ -318,6 +331,7 @@ const WhatToEat = () => {
     3: <EditFilter changePage={changePage} pageArgs={pageArgs} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
     4: <EditConfig changePage={changePage} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
     5: <TrainFilter changePage={changePage} pageArgs={pageArgs} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
+    6: <MyRecipes changePage={changePage} pageArgs={pageArgs} />,
   }
 
   const goBack = () => {
