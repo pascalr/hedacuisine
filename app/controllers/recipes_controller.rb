@@ -72,8 +72,13 @@ class RecipesController < ApplicationController
   end
 
   def my_recipes
-    #gon.recipes = current_user.recipes.order(:name).map {|r| r.to_obj(only: :name)}
+    #gon.recipes = current_user.recipes.order(:name).map {|r| r.to_obj(only: :name)} # Commented because showing percentage completed which requires all the data
     gon.recipes = current_user.recipes.order(:name).map {|r| r.to_obj}
+  end
+
+  def user_recipes
+    #render json: current_user.recipes.order(:name).map {|r| r.to_obj(only: :name)} # Commented because showing percentage completed which requires all the data
+    render json: current_user.recipes.order(:name).map {|r| r.to_obj}
   end
 
   def move_ing

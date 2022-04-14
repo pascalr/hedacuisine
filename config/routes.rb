@@ -60,6 +60,7 @@ Rails.application.routes.draw do
   post 'change_food_tag', to: 'foods#change_tag'
 
   get 'recipes/visibility'
+  get 'recipes/user_recipes'
 
   resources :sections, only: [:create, :update, :destroy] do
     patch :move

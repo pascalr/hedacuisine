@@ -77,6 +77,10 @@ export const send_data_suggestions_path = (arg) => {
   return `/suggestions/send_data`
 }
 
+export const user_recipes_recipes_path = (arg) => {
+  return `/recipes/user_recipes`
+}
+
 export const send_training_data_suggestions_path = (arg) => {
   return `/suggestions/send_training_data`
 }

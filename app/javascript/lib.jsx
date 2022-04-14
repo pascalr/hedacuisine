@@ -16,6 +16,7 @@ export const useFetch = (url, args={}) => {
   useEffect(() => {
     if (waitFor != false) {
       async function fetchData() {
+        console.log(`Fetching data at ${url}`)
         const response = await fetch(url);
         const json = await response.json();
         setData(json);

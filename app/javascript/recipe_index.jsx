@@ -16,6 +16,7 @@ export const RecipeIndex = ({userRecipes}) => {
  
   let recipes = []
   let term = normalizeSearchText(search)
+  if (!userRecipes) {userRecipes = []}
   recipes = userRecipes.filter(r => (
     r.name && ~normalizeSearchText(r.name).indexOf(term)
   ))

@@ -2,9 +2,10 @@ import React, { useState, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 import Hammer from "react-hammerjs"
 
+import { useFetch } from "./lib"
 import {RecipeIndex} from './recipe_index'
 import { ajax, preloadImage } from "./utils"
-import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, send_training_data_suggestions_path, recipe_filters_path, recipe_filter_path, data_to_train_suggestions_path } from './routes'
+import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, send_training_data_suggestions_path, recipe_filters_path, recipe_filter_path, data_to_train_suggestions_path, user_recipes_recipes_path } from './routes'
 import {TextField} from './form'
 import {PublicImageField} from './modals/public_image'
 import { DeleteConfirmButton } from './components/delete_confirm_button'
@@ -292,13 +293,15 @@ const ChooseOccasion = ({recipeFilters, addRecipeFilter, changePage}) => {
 }
 
 const MyRecipes = () => {
+
+  const recipes = useFetch(user_recipes_recipes_path())
       //<%= link_to translated("Nouvelle recette"), new_recipe_path, class: "btn btn-outline-primary btn-sm" %>
       //<%= link_to translated("Quoi manger?"), what_to_eat_path, class: "btn btn-outline-secondary btn-sm" %>
   return (<>
     <div className="d-flex gap-10" style={{alignItems: "center"}}>
       <h2>Mes recettes</h2>
     </div>
-    <RecipeIndex userRecipes={[]} />
+    <RecipeIndex userRecipes={recipes} />
   </>)
 }
 
