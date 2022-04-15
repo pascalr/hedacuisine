@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_15_035059) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_15_181001) do
   create_table "accounts", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -210,6 +210,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_15_035059) do
     t.datetime "updated_at", precision: nil, null: false
     t.index ["menu_id"], name: "index_favorite_menus_on_menu_id"
     t.index ["user_id"], name: "index_favorite_menus_on_user_id"
+  end
+
+  create_table "filtered_recipes", force: :cascade do |t|
+    t.integer "filterable_id"
+    t.string "filterable_type"
+    t.boolean "match"
+    t.integer "recipe_filter_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recipe_filter_id"], name: "index_filtered_recipes_on_recipe_filter_id"
   end
 
   create_table "food_preferences", force: :cascade do |t|
@@ -756,6 +766,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_15_035059) do
   add_foreign_key "english_expressions", "expressions"
   add_foreign_key "favorite_menus", "menus"
   add_foreign_key "favorite_menus", "users"
+  add_foreign_key "filtered_recipes", "recipe_filters"
   add_foreign_key "food_preferences", "foods"
   add_foreign_key "food_preferences", "users"
   add_foreign_key "food_recipes", "foods"

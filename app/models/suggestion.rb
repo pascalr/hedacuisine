@@ -13,6 +13,10 @@ class Suggestion < ApplicationRecord
     self.score = (selected_count || 0) * 10 - (skip_count || 0)
   end
 
+  def filter
+    raise "deprecated, use FilteredRecipe instead"
+  end
+
   def about
     recipe_id ? recipe : recipe_kind
   end

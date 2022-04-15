@@ -3,6 +3,7 @@ class RecipeKind < ApplicationRecord
   belongs_to :kind, optional: true
   has_many :recipes
   has_many :suggestions
+  has_many :filtered_recipes, as: :filterable
 
   alias image_assoc image
   def image

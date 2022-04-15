@@ -103,12 +103,17 @@ export const user_books_books_path = (arg) => {
   return `/books/user_books`
 }
 
-export const send_training_data_suggestions_path = (arg) => {
-  return `/suggestions/send_training_data`
+//export const send_training_data_suggestions_path = (arg) => {
+//  return `/suggestions/send_training_data`
+//}
+//export const data_to_train_suggestions_path = (arg) => {
+//  return `/suggestions/data_to_train${appendParams(arg)}`
+//}
+export const missing_filtered_recipes_path = (arg) => {
+  return `/filtered_recipes/missing${appendParams(arg)}`
 }
-
-export const data_to_train_suggestions_path = (arg) => {
-  return `/suggestions/data_to_train${appendParams(arg)}`
+export const batch_update_filtered_recipes_path = (arg) => {
+  return `/filtered_recipes/batch_update`
 }
 
 export const image_variant_path = (image, variant) => {

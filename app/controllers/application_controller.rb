@@ -11,6 +11,15 @@ class ApplicationController < ActionController::Base
   def set_application_controller
     @application_controller = self
   end
+  
+  def paginate_collections(collections, offset, nbItems)
+    result = []
+    collections.each do |collection|
+      result += collection.offset(offset).limit(nbItems - result.size)
+      break if result.size >= nbItems
+    end
+    return result
+  end
 
   def set_region_and_locale
     #@region = current_region

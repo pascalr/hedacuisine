@@ -21,14 +21,6 @@ class SuggestionsController < ApplicationController
     #  raise "Unkown occasion " + occasion
     #end
   end
-  def paginate_collections(collections, offset, nbItems)
-    result = []
-    collections.each do |collection|
-      result += collection.offset(offset).limit(nbItems - result.size)
-      break if result.size >= nbItems
-    end
-    return result
-  end
   def index
     #occasion = params[:occasion]
     #recipes = _recipes_for_occasion(occasion)    
@@ -45,38 +37,6 @@ class SuggestionsController < ApplicationController
       r = (s.is_a? Suggestion) ? s.about : s
       r.to_obj(only: [:name, :image_id])
     }
-  end
-
-  def data_to_train
-    filter_id = params[:filterId]
-    #current_user.suggestions.where()
-    #recipes = current_user.recipes.left_outer_joins(:suggestions).where('recipe_kind_id IS NULL AND (suggestions.id IS NULL OR suggestions.filter_id != ?)', filter_id)
-    recipes = current_user.recipes.left_outer_joins(:suggestions).where('suggestions.id IS NULL OR suggestions.filter_id != ?', filter_id)
-    recipe_kinds = RecipeKind.left_outer_joins(:suggestions).where('suggestions.id IS NULL OR suggestions.filter_id != ?', filter_id)
-    collections = [recipes, recipe_kinds]
-    nbItems = 20 # items per batch
-    offset = params[:offset] || 0
-    result = paginate_collections(collections, offset, nbItems)
-    render json: result.map {|s|
-      r = (s.is_a? Suggestion) ? s.about : s
-      r.to_obj(only: [:name, :image_id])
-    }
-  end
-
-  def send_training_data
-    filter_id = params[:filterId]
-    skipped = params[:skipped] || []
-    selected = params[:selected] || []
-    skipped.each do |id|
-      record = decode_record(id, filter_id)
-      record.filtered = true
-      record.save!
-    end
-    selected.each do |id|
-      record = decode_record(id, filter_id)
-      record.filtered = false
-      record.save!
-    end
   end
 
   def send_data

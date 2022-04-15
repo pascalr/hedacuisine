@@ -17,12 +17,13 @@ Rails.application.routes.draw do
   end
   get 'public_images', to: 'images#public_images', as: 'public_images'
   patch 'suggestions/send_data', to: 'suggestions#send_data', as: 'send_data_suggestions'
-  post 'suggestions/send_training_data', to: 'suggestions#send_training_data', as: 'send_training_data_suggestions'
+  post 'filtered_recipes/batch_update', to: 'filtered_recipes#batch_update', as: 'batch_update_filtered_recipes'
+  get 'filtered_recipes/missing', to: 'filtered_recipes#missing', as: 'missing_filtered_recipes'
   get 'what_to_eat', to: 'suggestions#what_to_eat', as: 'what_to_eat'
-  get 'suggestions/data_to_train', to: 'suggestions#data_to_train', as: 'data_to_train_suggestions'
   get 'suggestions', to: 'suggestions#index'
   resources :food_tags
   resources :recipe_filters, only: [:create, :update, :destroy]
+  resources :filtered_recipes, only: [:create, :update, :destroy]
   get 'search/index'
   resources :listings
   resources :ingredients

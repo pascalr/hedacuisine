@@ -34,6 +34,7 @@ class Recipe < ApplicationRecord
   belongs_to :recipe_kind, optional: true
 
   has_many :references
+  has_many :filtered_recipes, as: :filterable
 
   belongs_to :kind, optional: true
   has_many :recipe_tools

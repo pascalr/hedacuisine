@@ -7,7 +7,7 @@ import Hammer from "react-hammerjs"
 import { useCacheOrFetch } from "./lib"
 import {RecipeIndex} from './recipe_index'
 import { ajax, preloadImage, getUrlParams } from "./utils"
-import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, send_training_data_suggestions_path, recipe_filters_path, recipe_filter_path, data_to_train_suggestions_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path } from './routes'
+import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path } from './routes'
 import {TextField} from './form'
 import {PublicImageField} from './modals/public_image'
 import { DeleteConfirmButton } from './components/delete_confirm_button'
@@ -133,7 +133,7 @@ const TrainFilter = ({changePage, page, recipeFilters, setRecipeFilters}) => {
   const [doneFetching, setDoneFetching] = useState(false)
 
   const fetchBatch = () => {
-    ajax({url: data_to_train_suggestions_path({filterId: filter.id}), type: 'GET', success: (data) => {
+    ajax({url: missing_filtered_recipes_path({recipe_filter_id: filter.id}), type: 'GET', success: (data) => {
       if (!data || data == []) {
         console.log('done fetching received ', data)
         setDoneFetching(true)
@@ -148,16 +148,8 @@ const TrainFilter = ({changePage, page, recipeFilters, setRecipeFilters}) => {
   }, [])
 
   const submitData = () => {
-    let skipped = []
-    let sel = []
-    for (let i = 0; i < dataToTrain.length; i++) {
-      if (selected[i]) {
-        sel.push(encodeRecord(dataToTrain[i]))
-      } else {
-        skipped.push(encodeRecord(dataToTrain[i]))
-      }
-    }
-    ajax({url: send_training_data_suggestions_path(), type: 'POST', data: {filterId: filter.id, skipped, selected: sel}, success: () => {
+    let data = dataToTrain.map((d,i) => ({filterable_type: d.class_name, filterable_id: d.id, selected: selected[i]}))
+    ajax({url: batch_update_filtered_recipes_path(), type: 'POST', data: {recipe_filter_id: filter.id, data: JSON.stringify(data)}, success: () => {
       console.log('Fetching second batch of data')
       fetchBatch()
     }, error: (err) => {
