@@ -1,6 +1,6 @@
 class SuggestionsController < ApplicationController
   #skip_before_action :authenticate_user!, only: [:test]
-  #skip_before_action :only_admin!, only: [:test]
+  skip_before_action :only_admin!, only: [:what_to_eat]
 
   def what_to_eat
     gon.recipe_filters = RecipeFilter.where(user_id: nil).or(current_user.recipe_filters).map {|f| f.to_obj }
