@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 import Hammer from "react-hammerjs"
+//var windowHistory = window.history // window.history.back() => same as back in browser
+//import history from 'history/hash'
 
 import { useFetch } from "./lib"
 import {RecipeIndex} from './recipe_index'
-import { ajax, preloadImage } from "./utils"
-import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, send_training_data_suggestions_path, recipe_filters_path, recipe_filter_path, data_to_train_suggestions_path, user_recipes_recipes_path } from './routes'
+import { ajax, preloadImage, getUrlParams } from "./utils"
+import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, send_training_data_suggestions_path, recipe_filters_path, recipe_filter_path, data_to_train_suggestions_path, user_recipes_recipes_path, new_recipe_path } from './routes'
 import {TextField} from './form'
 import {PublicImageField} from './modals/public_image'
 import { DeleteConfirmButton } from './components/delete_confirm_button'
@@ -295,11 +297,11 @@ const ChooseOccasion = ({recipeFilters, addRecipeFilter, changePage}) => {
 const MyRecipes = () => {
 
   const recipes = useFetch(user_recipes_recipes_path())
-      //<%= link_to translated("Nouvelle recette"), new_recipe_path, class: "btn btn-outline-primary btn-sm" %>
       //<%= link_to translated("Quoi manger?"), what_to_eat_path, class: "btn btn-outline-secondary btn-sm" %>
   return (<>
-    <div className="d-flex gap-10" style={{alignItems: "center"}}>
+    <div className="d-flex gap-20" style={{alignItems: "center"}}>
       <h2>Mes recettes</h2>
+      <a href={new_recipe_path()} className="btn btn-outline-primary btn-sm">Nouvelle recette</a>
     </div>
     <RecipeIndex userRecipes={recipes} />
   </>)
@@ -313,6 +315,28 @@ const WhatToEat = () => {
   
   useEffect(() => {
     if (window.gon && gon.recipe_filters) { setRecipeFilters(gon.recipe_filters) }
+
+    let params = getUrlParams()
+    if (params.page) {
+      setCurrentPage(params.page)
+      setPageArgs(params)
+    }
+
+    //console.log('setting onpopstate')
+    //window.onpopstate = function(event) {
+    //  console.log('onpopstate')
+    //  console.log('location', document.location)
+    //  console.log('state', event.state)
+    //  //setCurrentPage(location.state.page)
+    //  //alert(`location: ${document.location}, state: ${JSON.stringify(event.state)}`)
+    //}
+
+    //history.push('', getUrlParams())
+    //history.push('', {page: 1})
+    //let unlisten = history.listen(({ location, action }) => {
+    //  console.log(action, location.pathname, location.state);
+    //  setCurrentPage(location.state.page)
+    //});
   }, [])
 
   const parentPages = {
@@ -323,7 +347,10 @@ const WhatToEat = () => {
     6: 1,
   }
 
-  const changePage = (pageNb, args=null) => {
+  const changePage = (pageNb, args={}) => {
+    let s = {page: pageNb}
+    window.history.replaceState(s, '', '?'+new URLSearchParams(s).toString())
+    //history.push('/', {page: pageNb, ...args})
     setCurrentPage(pageNb)
     setPageArgs(args)
   }
@@ -339,16 +366,24 @@ const WhatToEat = () => {
 
   const goBack = () => {
     if (parentPages[currentPage]) {
+      //console.log('loc', history.location)
+      //history.back()
       setCurrentPage(parentPages[currentPage])
     } else {
-      window.history.back()
+      console.log('here?')
+      windowHistory.back()
     }
+  }
+
+  let moveBtn = ''
+  if (parentPages[currentPage]) {
+    moveBtn = <img className="clickable" src={icon_path("arrow-up-square.svg")} width="24" style={{paddingLeft: "0.5em"}} onClick={goBack} />
   }
 
   // Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
   return (<>
     <div className="d-flex">
-      <img className="clickable" src={icon_path("arrow-left-square.svg")} width="24" style={{paddingLeft: "0.5em"}} onClick={goBack} />
+      {moveBtn}
       <div className="flex-grow-1"/>
       <h1 style={{marginBottom: "0"}}>Qu'est-ce qu'on mange?</h1>
       <div className="flex-grow-1"/>

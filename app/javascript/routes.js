@@ -53,6 +53,10 @@ export const recipe_path = (arg) => {
   return `/${getTranslatedRouteWithLocale("recipes")}/${extractParamFromModel(arg)}`
 }
 
+export const new_recipe_path = (arg) => {
+  return `/${getTranslatedRouteWithLocale("recipes")}/new`
+}
+
 export const recipe_kind_path = (arg) => {
   // FIXME: js paths should not be localized
   return `/${getTranslatedRouteWithLocale("recipe_kinds")}/${extractParamFromModel(arg)}`

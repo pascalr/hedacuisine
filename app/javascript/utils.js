@@ -1,6 +1,17 @@
 import Rails from '@rails/ujs'
 import $ from 'jquery'
 
+export function getUrlParams(url=null) {
+  var r = {};
+  if (!url) {url = window.location.href}
+  let s = url.split('?', 2)
+  let params = s[s.length-1]
+  for (let pair of new URLSearchParams(params).entries()) {
+    r[pair[0]] = pair[1]
+  }
+  return r
+}
+
 export function preloadImage(url) {
   var img = new Image();
   img.src = url;
