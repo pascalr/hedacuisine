@@ -238,7 +238,18 @@ const EditConfig = ({recipeFilters, changePage, setRecipeFilters}) => {
       <u className="clickable" onClick={() => changePage(3, {filterId: filter.id})}>{filter.name || "Sans nom"}</u>
       <DeleteConfirmButton id={`del-recipe-filter-${filter.id}`} onDeleteConfirm={() => removeRecipeFilter(filter)} message="Je veux supprimer ce filtre?" />
     </li>))
-  const defFilters = defaultFilters.map(filter => (<li key={filter.id}>{filter.name || "Sans nom"}</li>))
+  const defFilters = defaultFilters.map(filter => {
+    if (gon.current_user_admin) {
+      return (
+        <li key={filter.id}>
+          <u className="clickable" onClick={() => changePage(3, {filterId: filter.id})}>{filter.name || "Sans nom"}</u>
+          <DeleteConfirmButton id={`del-recipe-filter-${filter.id}`} onDeleteConfirm={() => removeRecipeFilter(filter)} message="Je veux supprimer ce filtre?" />
+        </li>
+      )
+    } else {
+      return <li key={filter.id}>{filter.name || "Sans nom"}</li>
+    }
+  })
     // TODO: Add the ability to remove default filters...
     // <DeleteConfirmButton id={`del-recipe-filter-${filter.id}`} onDeleteConfirm={() => removeRecipeFilter(filter)} message="Je veux supprimer ce filtre?" />
 
@@ -334,12 +345,13 @@ const MyRecipes = () => {
 const WhatToEat = () => {
 
   const [recipeFilters, setRecipeFilters] = useState([])
-  const [page, setPage] = useState({})
+  const [page, setPage] = useState(getUrlParams())
+  //const [page, setPage] = useState({})
   
   useEffect(() => {
     if (window.gon && gon.recipe_filters) { setRecipeFilters(gon.recipe_filters) }
 
-    setPage(getUrlParams())
+    //setPage(getUrlParams())
   }, [])
 
   const parentPages = {
