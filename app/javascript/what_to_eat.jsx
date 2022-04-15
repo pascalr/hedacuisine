@@ -323,7 +323,7 @@ const MyRecipes = () => {
   const recipes = useCacheOrFetch(user_recipes_recipes_path())
       //<%= link_to translated("Quoi manger?"), what_to_eat_path, class: "btn btn-outline-secondary btn-sm" %>
   return (<>
-    <div className="d-flex gap-20" style={{alignItems: "center"}}>
+    <div className="d-flex gap-20 align-items-center">
       <h2>Mes recettes</h2>
       <a href={new_recipe_path()} className="btn btn-outline-primary btn-sm">Nouvelle recette</a>
     </div>
@@ -377,12 +377,12 @@ const WhatToEat = () => {
 
   let moveBtn = ''
   if (page.page && parentPages[page.page]) {
-    moveBtn = <img className="clickable" src={icon_path("arrow-up-square.svg")} width="24" style={{paddingLeft: "0.5em"}} onClick={goUp} />
+    moveBtn = <img className="clickable" src={icon_path("arrow-up-square.svg")} width="28" style={{paddingLeft: "0.5em"}} onClick={goUp} />
   }
 
   // Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
   return (<>
-    <div className="d-flex">
+    <div className="d-flex align-items-center">
       {moveBtn}
       <div className="flex-grow-1"/>
       <h1 style={{marginBottom: "0"}}>Qu'est-ce qu'on mange?</h1>
