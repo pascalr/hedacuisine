@@ -1,6 +1,6 @@
 module ApplicationHelper
   
-  def current_user
+  def _current_user
     return nil if current_account.blank?
     u = current_account.users.find(session[:current_user_id]) if session[:current_user_id]
     if u.blank?
@@ -9,6 +9,9 @@ module ApplicationHelper
       session[:current_user_id] = u.id
     end
     u
+  end
+  def current_user
+    @current_user ||= _current_user
   end
 
   def css_import_tag(name, params={})

@@ -22,21 +22,22 @@ class SuggestionsController < ApplicationController
     #end
   end
   def index
-    #occasion = params[:occasion]
-    #recipes = _recipes_for_occasion(occasion)    
-    filter_id = params[:filterId]
-    suggestions = current_user.suggestions.all_valid.where(filter_id: filter_id, score: 0...).order(:score)
-    recipes = current_user.recipes.left_outer_joins(:suggestions).where(suggestions: {id: nil})
-    recipe_kinds = RecipeKind.left_outer_joins(:suggestions).where(suggestions: {id: nil})
-    bad_suggestions = current_user.suggestions.all_valid.where(filter_id: filter_id, score: ...0).order(:score)
-    collections = [suggestions, recipes, recipe_kinds, bad_suggestions]
-    nbItems = 5 # items per page
-    offset = ((params[:page].to_i || 1) - 1) * nbItems
-    result = paginate_collections(collections, offset, nbItems)
-    render json: result.map {|s|
-      r = (s.is_a? Suggestion) ? s.about : s
-      r.to_obj(only: [:name, :image_id])
-    }
+    filtered_recipes = RecipeFilter.left_outer_joins(:filterable).where(recipe_filter_id: params[:recipe_filter_id], match: true)
+    ##occasion = params[:occasion]
+    ##recipes = _recipes_for_occasion(occasion)    
+    #filter_id = params[:filterId]
+    #suggestions = current_user.suggestions.all_valid.where(filter_id: filter_id, score: 0...).order(:score)
+    #recipes = current_user.recipes.left_outer_joins(:suggestions).where(suggestions: {id: nil})
+    #recipe_kinds = RecipeKind.left_outer_joins(:suggestions).where(suggestions: {id: nil})
+    #bad_suggestions = current_user.suggestions.all_valid.where(filter_id: filter_id, score: ...0).order(:score)
+    #collections = [suggestions, recipes, recipe_kinds, bad_suggestions]
+    #nbItems = 5 # items per page
+    #offset = ((params[:page].to_i || 1) - 1) * nbItems
+    #result = paginate_collections(collections, offset, nbItems)
+    #render json: result.map {|s|
+    #  r = (s.is_a? Suggestion) ? s.about : s
+    #  r.to_obj(only: [:name, :image_id])
+    #}
   end
 
   def send_data

@@ -26,7 +26,7 @@ const ChooseRecipe = ({changePage, page, recipeFilters}) => {
   const filter = page && page.filterId ? recipeFilters.find(f => f.id == page.filterId) : null
  
   useEffect(() => {
-    ajax({url: suggestions_path({recipePage, filterId: filter ? filter.id : null}), type: 'GET', success: (suggests) => {
+    ajax({url: suggestions_path({recipePage, recipe_filter_id: filter ? filter.id : null}), type: 'GET', success: (suggests) => {
       if (itemsPerPage == null) {setItemsPerPage(suggests.length)}
       if (suggests == [] || suggests.length < itemsPerPage) {
         console.log('done fetching received ', suggests)

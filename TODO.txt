@@ -1,5 +1,7 @@
 Admin doit pouvoir modifier les RecipeFilter.
 
+Pouvoir filtrer une recette dans les suggestions. Un des boutons devrait être cela.
+
 Rediriger après le login vers une page pour choisir l'utilisateur comme dans netflix.
 
 FIXME: Ne pas afficher le même recipe et le recipe kind.
