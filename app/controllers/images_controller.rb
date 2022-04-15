@@ -4,7 +4,7 @@ class ImagesController < ApplicationController
   #include ActiveStorage::FileServer # For serve_file method
 
   before_action :set_image, only: [:show, :update, :destroy, :edit, :process_image, :variant]
-  skip_before_action :authenticate_user!, only: [:variant]
+  skip_before_action :authenticate_account!, only: [:variant]
   skip_before_action :only_admin!, only: [:variant]
 
   #around_filter :silence_action, :only => :variant

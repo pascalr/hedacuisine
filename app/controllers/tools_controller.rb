@@ -1,6 +1,6 @@
 class ToolsController < ApplicationController
   before_action :set_tool, only: %i[ show edit update destroy ]
-  skip_before_action :authenticate_user!, only: [:show]
+  skip_before_action :authenticate_account!, only: [:show]
   skip_before_action :only_admin!, only: [:show]
 
   def show

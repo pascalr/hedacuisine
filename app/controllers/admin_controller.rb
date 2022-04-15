@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:test]
+  skip_before_action :authenticate_account!, only: [:test]
   skip_before_action :only_admin!, only: [:test]
   def index
   end

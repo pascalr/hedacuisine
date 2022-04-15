@@ -1,6 +1,6 @@
 class MachinesController < ApplicationController
   before_action :set_machine, only: %i[ show edit update destroy inventory grocery_list config inventory_config grocery_config ]
-  skip_before_action :authenticate_user!, only: [:index]
+  skip_before_action :authenticate_account!, only: [:index]
   skip_before_action :only_admin!, only: [:index, :inventory, :inventory_config, :grocery_config, :show]
 
   # GET /machines or /machines.json

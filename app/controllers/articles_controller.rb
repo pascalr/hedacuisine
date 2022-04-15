@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:index, :show]
+  skip_before_action :authenticate_account!, only: [:index, :show]
   skip_before_action :only_admin!, only: [:index, :show]
   before_action :set_article, only: [:show, :update, :destroy, :edit]
 
