@@ -14,19 +14,19 @@ import { DeleteConfirmButton } from './components/delete_confirm_button'
   
 const encodeRecord = (record) => (`${record.class_name == "recipe_kind" ? '' : '_'}${record.id}`)
 
-const ChooseRecipe = ({changePage, pageArgs, recipeFilters}) => {
+const ChooseRecipe = ({changePage, page, recipeFilters}) => {
 
   const [suggestions, setSuggestions] = useState([])
   const [suggestionNb, setSuggestionNb] = useState(0)
   const [maxSuggestionNb, setMaxSuggestionNb] = useState(0)
   const [itemsPerPage, setItemsPerPage] = useState(null)
-  const [page, setPage] = useState(1)
+  const [recipePage, setRecipePage] = useState(1)
   const [doneFetching, setDoneFetching] = useState(false)
 
-  const filter = pageArgs && pageArgs.filterId ? recipeFilters.find(f => f.id == pageArgs.filterId) : null
+  const filter = page && page.filterId ? recipeFilters.find(f => f.id == page.filterId) : null
  
   useEffect(() => {
-    ajax({url: suggestions_path({page, filterId: filter ? filter.id : null}), type: 'GET', success: (suggests) => {
+    ajax({url: suggestions_path({recipePage, filterId: filter ? filter.id : null}), type: 'GET', success: (suggests) => {
       if (itemsPerPage == null) {setItemsPerPage(suggests.length)}
       if (suggests == [] || suggests.length < itemsPerPage) {
         console.log('done fetching received ', suggests)
@@ -39,7 +39,7 @@ const ChooseRecipe = ({changePage, pageArgs, recipeFilters}) => {
         }
       }
     }})
-  }, [page])
+  }, [recipePage])
 
   const nextSuggestion = () => {
     if (suggestionNb < suggestions.length-1) {
@@ -48,7 +48,7 @@ const ChooseRecipe = ({changePage, pageArgs, recipeFilters}) => {
       if (nb > maxSuggestionNb) { setMaxSuggestionNb(nb) }
     }
     if (!doneFetching && suggestionNb >= suggestions.length - 2) {
-      setPage(page+1)
+      setRecipePage(recipePage+1)
     }
   }
   const previousSuggestion = () => {
@@ -105,9 +105,9 @@ const ChooseRecipe = ({changePage, pageArgs, recipeFilters}) => {
   </>)
 }
 
-const EditFilter = ({changePage, pageArgs, recipeFilters, setRecipeFilters}) => {
+const EditFilter = ({changePage, page, recipeFilters, setRecipeFilters}) => {
   const [name, setName] = useState('')
-  const filter = pageArgs && pageArgs.filterId ? recipeFilters.find(f => f.id == pageArgs.filterId) : null
+  const filter = page && page.filterId ? recipeFilters.find(f => f.id == page.filterId) : null
   if (!filter) {console.log("Can't edit filter, did not exist."); return '';}
 
   return (<>
@@ -123,9 +123,9 @@ const EditFilter = ({changePage, pageArgs, recipeFilters, setRecipeFilters}) => 
   </>)
 }
 
-const TrainFilter = ({changePage, pageArgs, recipeFilters, setRecipeFilters}) => {
+const TrainFilter = ({changePage, page, recipeFilters, setRecipeFilters}) => {
 
-  const filter = pageArgs && pageArgs.filterId ? recipeFilters.find(f => f.id == pageArgs.filterId) : null
+  const filter = page && page.filterId ? recipeFilters.find(f => f.id == page.filterId) : null
   if (!filter) {console.log("Can't train filter, did not exist."); return '';}
   
   const [dataToTrain, setDataToTrain] = useState([])
@@ -309,34 +309,13 @@ const MyRecipes = () => {
 
 const WhatToEat = () => {
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const [pageArgs, setPageArgs] = useState(null)
   const [recipeFilters, setRecipeFilters] = useState([])
+  const [page, setPage] = useState({})
   
   useEffect(() => {
     if (window.gon && gon.recipe_filters) { setRecipeFilters(gon.recipe_filters) }
 
-    let params = getUrlParams()
-    if (params.page) {
-      setCurrentPage(params.page)
-      setPageArgs(params)
-    }
-
-    //console.log('setting onpopstate')
-    //window.onpopstate = function(event) {
-    //  console.log('onpopstate')
-    //  console.log('location', document.location)
-    //  console.log('state', event.state)
-    //  //setCurrentPage(location.state.page)
-    //  //alert(`location: ${document.location}, state: ${JSON.stringify(event.state)}`)
-    //}
-
-    //history.push('', getUrlParams())
-    //history.push('', {page: 1})
-    //let unlisten = history.listen(({ location, action }) => {
-    //  console.log(action, location.pathname, location.state);
-    //  setCurrentPage(location.state.page)
-    //});
+    setPage(getUrlParams())
   }, [])
 
   const parentPages = {
@@ -350,34 +329,27 @@ const WhatToEat = () => {
   const changePage = (pageNb, args={}) => {
     let s = {page: pageNb}
     window.history.replaceState(s, '', '?'+new URLSearchParams(s).toString())
-    //history.push('/', {page: pageNb, ...args})
-    setCurrentPage(pageNb)
-    setPageArgs(args)
+    setPage({page: pageNb, ...args})
   }
 
   const pages = {
     1: <ChooseOccasion changePage={changePage} recipeFilters={recipeFilters} addRecipeFilter={(filter) => setRecipeFilters(recipeFilters.concat([filter]))} />,
-    2: <ChooseRecipe changePage={changePage} pageArgs={pageArgs} recipeFilters={recipeFilters} />,
-    3: <EditFilter changePage={changePage} pageArgs={pageArgs} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
+    2: <ChooseRecipe changePage={changePage} page={page} recipeFilters={recipeFilters} />,
+    3: <EditFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
     4: <EditConfig changePage={changePage} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
-    5: <TrainFilter changePage={changePage} pageArgs={pageArgs} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
-    6: <MyRecipes changePage={changePage} pageArgs={pageArgs} />,
+    5: <TrainFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
+    6: <MyRecipes changePage={changePage} page={page} />,
   }
 
-  const goBack = () => {
-    if (parentPages[currentPage]) {
-      //console.log('loc', history.location)
-      //history.back()
-      setCurrentPage(parentPages[currentPage])
-    } else {
-      console.log('here?')
-      windowHistory.back()
+  const goUp = () => {
+    if (page.page && parentPages[page.page]) {
+      setPage({page: parentPages[page.page]})
     }
   }
 
   let moveBtn = ''
-  if (parentPages[currentPage]) {
-    moveBtn = <img className="clickable" src={icon_path("arrow-up-square.svg")} width="24" style={{paddingLeft: "0.5em"}} onClick={goBack} />
+  if (page.page && parentPages[page.page]) {
+    moveBtn = <img className="clickable" src={icon_path("arrow-up-square.svg")} width="24" style={{paddingLeft: "0.5em"}} onClick={goUp} />
   }
 
   // Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
@@ -389,7 +361,7 @@ const WhatToEat = () => {
       <div className="flex-grow-1"/>
     </div>
     <hr style={{color: "#aaa", marginTop: "0"}}/>
-    {pages[currentPage]}
+    {pages[page.page || 1]}
   </>)
 }
 
