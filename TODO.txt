@@ -1,3 +1,5 @@
+Tout ce qui est login devrait se faire avec Account et non avec User.
+
 Faire un login avec le nom de l'utilisateur comme dans netflix.
 
 Remplacer les link_to ... method: :post ou :patch, par des button_to. (parce que link_to ne fonctionne pas pour une raison quelquonque...)

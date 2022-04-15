@@ -3,6 +3,7 @@
 #end
 
 Rails.application.routes.draw do
+  devise_for :accounts
 
   #root :to => 'home#index'
   # FIXME: Put this constant somewhere. Don't hard code it.
