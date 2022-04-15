@@ -1,6 +1,7 @@
 module ApplicationHelper
   
   def current_user
+    return nil if current_account.blank?
     u = current_account.users.find(session[:current_user_id]) if session[:current_user_id]
     if u.blank?
       u = current_account.users.first
