@@ -8,7 +8,28 @@ export const Show = ({cond, children}) => {
   return cond ? children : ''
 }
 
-// TODO: Cache the data by url
+// FIXME: Badly implemented I believe...
+export const useCacheOrFetch = (url, args={}) => {
+  const {waitFor, cache} = args
+  const [data, setData] = useState(window[`fetched_${url}`]);
+
+  useEffect(() => {
+    if (!window[`fetching_${url}`] && waitFor != false) {
+      async function fetchData() {
+        console.log(`Fetching data at ${url}`)
+        const response = await fetch(url);
+        const json = await response.json();
+        window[`fetched_${url}`] = json
+        setData(json);
+      }
+      window[`fetching_${url}`] = true
+      fetchData();
+    }
+  }, [url, waitFor]);
+
+  return data;
+};
+
 export const useFetch = (url, args={}) => {
   const {waitFor} = args
   const [data, setData] = useState(null);

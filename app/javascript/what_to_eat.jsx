@@ -4,7 +4,7 @@ import Hammer from "react-hammerjs"
 //var windowHistory = window.history // window.history.back() => same as back in browser
 //import history from 'history/hash'
 
-import { useFetch } from "./lib"
+import { useCacheOrFetch } from "./lib"
 import {RecipeIndex} from './recipe_index'
 import { ajax, preloadImage, getUrlParams } from "./utils"
 import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, send_training_data_suggestions_path, recipe_filters_path, recipe_filter_path, data_to_train_suggestions_path, user_recipes_recipes_path, new_recipe_path } from './routes'
@@ -296,7 +296,7 @@ const ChooseOccasion = ({recipeFilters, addRecipeFilter, changePage}) => {
 
 const MyRecipes = () => {
 
-  const recipes = useFetch(user_recipes_recipes_path())
+  const recipes = useCacheOrFetch(user_recipes_recipes_path())
       //<%= link_to translated("Quoi manger?"), what_to_eat_path, class: "btn btn-outline-secondary btn-sm" %>
   return (<>
     <div className="d-flex gap-20" style={{alignItems: "center"}}>
