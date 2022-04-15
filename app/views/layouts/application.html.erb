@@ -4,7 +4,7 @@
     <% title = yield(:title) %>
     <% title = title.blank? ? "HedaCuisine – Recettes chefs amateurs" : title %>
     <title><%= title %></title>
-    <% if user_signed_in? %>
+    <% unless Rails.env == "local" %>
       <%= csrf_meta_tags %>
     <% end %>
     <%= csp_meta_tag %>

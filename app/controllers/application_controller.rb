@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  before_action :authenticate_user!
+  before_action :authenticate_account!
   before_action :set_region_and_locale
   before_action :only_admin!
 
@@ -23,8 +23,10 @@ class ApplicationController < ActionController::Base
   end
 
   def only_admin!
-    if current_user && !current_user.admin?
-      redirect_to request.referrer, alert: 'Only administrators can see this page!'
+    if current_account && !current_account.admin?
+      # FIXME: This can do an infinite redirect, if the referrer an only be seen by an admin...
+      #redirect_to request.referrer, alert: 'Only administrators can see this page!'
+      raise "Only administrators can see this page!"
     end
   end
 

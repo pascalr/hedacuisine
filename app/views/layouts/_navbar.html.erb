@@ -13,7 +13,7 @@
         <%= link_to_active 'Articles', articles_path, class: "nav-item nav-link" %>
       <% end %>
       <div style="flex-grow: 3;"></div>
-      <% if user_signed_in? %>
+      <% if account_signed_in? %>
         <%# if (params[:locale] && params[:locale][0..1] == 'fr') || (params[:locale].blank? && I18n.default_locale[0..1] == 'fr') %>
           <%# link_to 'EN', url_for(locale: 'en'), class: 'nav-item nav-link' %>
           <%# url_for(params.merge({:your_new_parameter => value})) maybe this is above does not work %>

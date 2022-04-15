@@ -1,6 +1,6 @@
 class RecipesController < ApplicationController
   before_action :set_recipe, only: [:do_process, :edit, :update, :destroy, :rate, :cheat, :view_body, :move_ing, :old_edit, :page, :paste_ingredients]
-  skip_before_action :authenticate_user!, only: [:show, :index]
+  skip_before_action :authenticate_account!, only: [:show, :index]
   skip_before_action :only_admin!, only: [:show, :index]
 
   def index

@@ -4,6 +4,7 @@
 
 Rails.application.routes.draw do
   devise_for :accounts
+  #devise_for :users
 
   #root :to => 'home#index'
   # FIXME: Put this constant somewhere. Don't hard code it.
@@ -35,7 +36,6 @@ Rails.application.routes.draw do
   resources :food_preferences
   get 'meta/index'
   resources :units
-  devise_for :users
   resources :tools
 
   get '/robot_home', to: 'home#robot_index', as: 'robot_home'

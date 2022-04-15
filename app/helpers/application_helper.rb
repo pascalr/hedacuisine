@@ -1,4 +1,11 @@
 module ApplicationHelper
+  
+  def current_user
+    a = current_account
+    u = a.users.first
+    u = a.users.create! if u.blank? 
+    u
+  end
 
   def css_import_tag(name, params={})
     stylesheet_link_tag(name, params)
@@ -117,7 +124,7 @@ module ApplicationHelper
   end
 
   def current_user_admin?
-    current_user && current_user.admin?
+    current_account && current_account.admin?
   end
 
   def current_unit_system

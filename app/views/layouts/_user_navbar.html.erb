@@ -6,7 +6,7 @@
     <div class="navbar-nav" style="width: 100%;">
       <%= link_to "Mes recettes", public_editor_url(what_to_eat_path), class: "nav-item nav-link" %>
       <div style="flex-grow: 3;"></div>
-      <% if user_signed_in? %>
+      <% if account_signed_in? %>
         <div class="dropdown nav-item">
           <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <%= current_user.email %>
@@ -14,7 +14,7 @@
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <%= link_to "Mon profil", current_user, class: "dropdown-item" %>
             <%= link_to t("heda.modify"), users_modify_path, class: "dropdown-item" %>
-            <%= link_to t("heda.menu.logout"), destroy_user_session_path, method: :delete, class: "dropdown-item"  %>
+            <%= link_to t("heda.menu.logout"), destroy_account_session_path, method: :delete, class: "dropdown-item"  %>
             <% unless current_user.siblings.blank? %>
               <li><hr class="dropdown-divider"></li>
               <li><h6 class="dropdown-header">Changer de compte</h6></li>
@@ -25,8 +25,8 @@
           </div>
         </div>
       <% else %>
-        <%# link_to t("devise.shared.links.sign_up"), new_user_registration_path, class: "nav-item nav-link" %>
-        <%= link_to t("devise.sessions.new.sign_in"), public_editor_url(new_user_session_path), class: "nav-item nav-link" %>
+        <%# link_to t("devise.shared.links.sign_up"), new_account_registration_path, class: "nav-item nav-link" %>
+        <%= link_to t("devise.sessions.new.sign_in"), public_editor_url(new_account_session_path), class: "nav-item nav-link" %>
       <% end %>
     </div>
   </div>
