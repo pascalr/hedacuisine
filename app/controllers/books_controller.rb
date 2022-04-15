@@ -93,6 +93,7 @@ class BooksController < ApplicationController
 
   def my_books
     @books = current_user.books.order(:name)
+    @siblings_books = current_user.siblings.map {|u| u.books.order(:name) }.flatten
   end
 
   def user_books

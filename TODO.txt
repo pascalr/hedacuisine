@@ -1,23 +1,8 @@
-Tout ce qui est login devrait se faire avec Account et non avec User.
-
-Faire un login avec le nom de l'utilisateur comme dans netflix.
-
-Remplacer les link_to ... method: :post ou :patch, par des button_to. (parce que link_to ne fonctionne pas pour une raison quelquonque...)
+Rediriger après le login vers une page pour choisir l'utilisateur comme dans netflix.
 
 FIXME: Ne pas afficher le même recipe et le recipe kind.
 
-Ajouter les filtres Halloween, Noël, Pacques, ...
-
-Send the filter_id. Create a RecipeFilter model.
-
-Changer le logo de Qu'est-ce qu'on mange? pour dark theme. Background en gris foncé plus clair un peu, et ustensiles en blanc.
-
 TODO: Add last_selected_at:date au suggestions. Attendre idéalement 2 semaines / 1 mois avant de rerecommandé une recette.
-
-Ok, le plus simple est de gérer peut-être des manières custom en premier, comme ça je vais voir ce que ça requiert?
-
-TODO: Pouvoir personallisé les choix de recherches de recettes. Par exemple, ajouter picnic. Ou amis véganes.
-Ajouter soupe, déssert et salade. Lunch aussi avec des tupperware.
 
 TODO: TRADUCTIONS. Faire les traductions uniquement lors de la compilation. Le site dynamique te permets seulement d'accèder à tes recettes, donc dans ta langue.
 Possiblement modifier les Expressions pour les Food. Non c'est correct, les foods doivent être dans toutes les langues. Recipe kind aussi.
@@ -252,3 +237,5 @@ https://ready.mobi/#2072291-8gbd
 11:49:56 web.1  | /home/pascalr/.rvm/gems/ruby-3.0.2/gems/puma-4.3.11/lib/puma/server.rb:472:in `process_client'
 11:49:56 web.1  | /home/pascalr/.rvm/gems/ruby-3.0.2/gems/puma-4.3.11/lib/puma/server.rb:328:in `block in run'
 11:49:56 web.1  | /home/pascalr/.rvm/gems/ruby-3.0.2/gems/puma-4.3.11/lib/puma/thread_pool.rb:134:in `block in spawn_thread'
+
+Remplacer les link_to ... method: :post ou :patch, par des button_to. (parce que link_to ne fonctionne pas pour une raison quelquonque...)
