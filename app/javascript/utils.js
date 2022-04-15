@@ -1,13 +1,21 @@
 import Rails from '@rails/ujs'
 import $ from 'jquery'
 
+function stringToPrimitive(str) {
+  let i = parseInt(str)
+  if (i.toString() == str) {return i}
+  let f = parseFloat(str)
+  if (f.toString() == str) {return f}
+  return str
+}
+
 export function getUrlParams(url=null) {
   var r = {};
   if (!url) {url = window.location.href}
   let s = url.split('?', 2)
   let params = s[s.length-1]
   for (let pair of new URLSearchParams(params).entries()) {
-    r[pair[0]] = pair[1]
+    r[pair[0]] = stringToPrimitive(pair[1])
   }
   return r
 }

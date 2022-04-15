@@ -15,7 +15,7 @@ import { DeleteConfirmButton } from './components/delete_confirm_button'
 const encodeRecord = (record) => (`${record.class_name == "recipe_kind" ? '' : '_'}${record.id}`)
 
 const ChooseRecipe = ({changePage, page, recipeFilters}) => {
-
+  
   const [suggestions, setSuggestions] = useState([])
   const [suggestionNb, setSuggestionNb] = useState(0)
   const [maxSuggestionNb, setMaxSuggestionNb] = useState(0)
@@ -26,7 +26,8 @@ const ChooseRecipe = ({changePage, page, recipeFilters}) => {
   const filter = page && page.filterId ? recipeFilters.find(f => f.id == page.filterId) : null
  
   useEffect(() => {
-    ajax({url: suggestions_path({recipePage, recipe_filter_id: filter ? filter.id : null}), type: 'GET', success: (suggests) => {
+    if (!recipeFilters || recipeFilters.length == 0) {return}
+    ajax({url: suggestions_path({recipePage, recipe_filter_id: filter.id}), type: 'GET', success: (suggests) => {
       if (itemsPerPage == null) {setItemsPerPage(suggests.length)}
       if (suggests == [] || suggests.length < itemsPerPage) {
         console.log('done fetching received ', suggests)
@@ -39,7 +40,7 @@ const ChooseRecipe = ({changePage, page, recipeFilters}) => {
         }
       }
     }})
-  }, [recipePage])
+  }, [recipePage, recipeFilters])
 
   const nextSuggestion = () => {
     if (suggestionNb < suggestions.length-1) {
@@ -64,7 +65,7 @@ const ChooseRecipe = ({changePage, page, recipeFilters}) => {
   }
  
   let suggestion = suggestions ? suggestions[suggestionNb] : null
-  if (!suggestion) {return ''}
+  if (!suggestion) {console.log('no suggestion to show'); return ''}
 
   const selectRecipe = () => {
     let skipped = []
@@ -356,9 +357,9 @@ const WhatToEat = () => {
   }
 
   const changePage = (pageNb, args={}) => {
-    let s = {page: pageNb}
+    let s = {page: pageNb, ...args}
     window.history.replaceState(s, '', '?'+new URLSearchParams(s).toString())
-    setPage({page: pageNb, ...args})
+    setPage(s)
   }
 
   const pages = {
