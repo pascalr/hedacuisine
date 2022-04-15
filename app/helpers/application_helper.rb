@@ -1,9 +1,12 @@
 module ApplicationHelper
   
   def current_user
-    a = current_account
-    u = a.users.first
-    u = a.users.create! if u.blank? 
+    u = current_account.users.find(session[:current_user_id]) if session[:current_user_id]
+    if u.blank?
+      u = current_account.users.first
+      u = current_account.users.create! if u.blank? 
+      session[:current_user_id] = u.id
+    end
     u
   end
 

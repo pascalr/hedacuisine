@@ -3,9 +3,9 @@ class UsersController < ApplicationController
   skip_before_action :only_admin!
 
   def change_to_sibling
-    @sibling = User.find(params[:id])
-    raise "Error user is not a sibling!" unless current_user.siblings.include?(@sibling)
-    sign_in @sibling
+    @sibling = current_account.users.find_by(id: params[:id])
+    session[:current_user_id] = @sibling.id
+    #sign_in @sibling
     redirect_back fallback_location: home_path
   end
 
