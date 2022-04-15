@@ -61,6 +61,7 @@ Rails.application.routes.draw do
 
   get 'recipes/visibility'
   get 'recipes/user_recipes'
+  get 'books/user_books'
 
   resources :sections, only: [:create, :update, :destroy] do
     patch :move

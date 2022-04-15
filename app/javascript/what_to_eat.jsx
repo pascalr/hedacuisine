@@ -7,7 +7,7 @@ import Hammer from "react-hammerjs"
 import { useCacheOrFetch } from "./lib"
 import {RecipeIndex} from './recipe_index'
 import { ajax, preloadImage, getUrlParams } from "./utils"
-import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, send_training_data_suggestions_path, recipe_filters_path, recipe_filter_path, data_to_train_suggestions_path, user_recipes_recipes_path, new_recipe_path } from './routes'
+import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, send_training_data_suggestions_path, recipe_filters_path, recipe_filter_path, data_to_train_suggestions_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path } from './routes'
 import {TextField} from './form'
 import {PublicImageField} from './modals/public_image'
 import { DeleteConfirmButton } from './components/delete_confirm_button'
@@ -283,14 +283,38 @@ const ChooseOccasion = ({recipeFilters, addRecipeFilter, changePage}) => {
   const buttons = recipeFilters.map(filter => <ChooseOccasionButton key={filter.id} winWidth={winWidth} image={`/img/${filter.image_src || "question-mark.jpg"}`} title={filter.name || "Sans nom"} handleClick={() => changePage(2, {filterId: filter.id})} />)
 
   // Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
+  //<ChooseOccasionButton winWidth={winWidth} image="/img/recipes.jpg" title="Mes livres" handleClick={() => changePage(7)} />
   return (<>
     <div style={{maxWidth: "100vw", width: "400px", margin: "auto"}}>
       <ChooseOccasionButton winWidth={winWidth} image="/img/cooking.jpg" title="Mes recettes" handleClick={() => changePage(6)} />
-      <ChooseOccasionButton winWidth={winWidth} image="/img/recipes.jpg" title="Mes livres" handleClick={() => {}} />
+      <ChooseOccasionButton winWidth={winWidth} image="/img/recipes.jpg" title="Mes livres" handleClick={() => {window.location.href = my_books_path()}} />
       {buttons}
       <ChooseOccasionButton winWidth={winWidth} image="/img/plus.jpg" title="Nouveau" handleClick={() => createRecipeFilter()} />
       <ChooseOccasionButton winWidth={winWidth} image="/icons/gear-gray.svg" title="Paramètres" handleClick={() => changePage(4)} />
     </div>
+  </>)
+}
+
+const MyBooks = () => {
+
+  const books = useCacheOrFetch(user_books_books_path())
+
+  console.log('books', books)
+
+  let key = 1
+  return (<>
+    <div className="d-flex gap-20" style={{alignItems: "center"}}>
+      <h2>Mes livres</h2>
+      <a href={new_book_path()} className="btn btn-outline-primary btn-sm">Nouveau livre</a>
+    </div>
+    <hr style={{marginTop: "0"}}/>
+    <div className="position-limbo" style={{zIndex: 10}}>
+      <span id={`prev-carrousel-${key}`} style={{left: "5px", top: "80px"}} className="my-tns-control" aria-disabled='true'><img src="/icons/custom-chevron-left.svg" size="45x90"/></span>
+      <span id={`next-carrousel-${key}`} style={{left: "calc(100% - 50px)", top: "80px"}} className="my-tns-control"><img src="/icons/custom-chevron-right.svg" size="45x90"/></span>
+    </div>
+    <div style={{height: "2em"}}></div>
+    <h2>Livres favoris</h2>
+    <hr style={{marginTop: "0"}}/>
   </>)
 }
 
@@ -324,6 +348,7 @@ const WhatToEat = () => {
     4: 1,
     5: 3,
     6: 1,
+    7: 1,
   }
 
   const changePage = (pageNb, args={}) => {
@@ -339,10 +364,13 @@ const WhatToEat = () => {
     4: <EditConfig changePage={changePage} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
     5: <TrainFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
     6: <MyRecipes changePage={changePage} page={page} />,
+    7: <MyBooks changePage={changePage} page={page} />,
   }
 
   const goUp = () => {
     if (page.page && parentPages[page.page]) {
+      let s = {page: parentPages[page.page]}
+      window.history.replaceState(s, '', '?'+new URLSearchParams(s).toString())
       setPage({page: parentPages[page.page]})
     }
   }

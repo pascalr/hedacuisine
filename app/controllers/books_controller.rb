@@ -95,6 +95,10 @@ class BooksController < ApplicationController
     @books = current_user.books.order(:name)
   end
 
+  def user_books
+    render json: current_user.books.order(:name).map {|b| b.to_obj }
+  end
+
   def create
     @book = current_user.books.create!(book_params)
     redirect_to edit_book_path(@book)
