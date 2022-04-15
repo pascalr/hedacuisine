@@ -1,3 +1,5 @@
+Only load search data when the field is focused for the top search (app/javascript/autocomplete_search.js) I belive.
+
 Admin doit pouvoir modifier les RecipeFilter.
 
 Pouvoir filtrer une recette dans les suggestions. Un des boutons devrait être cela.

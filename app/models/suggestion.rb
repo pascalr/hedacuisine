@@ -17,6 +17,9 @@ class Suggestion < ApplicationRecord
     raise "deprecated, use FilteredRecipe instead"
   end
 
+  def about_id
+    recipe_id ? recipe_id : recipe_kind_id
+  end
   def about
     recipe_id ? recipe : recipe_kind
   end

@@ -22,7 +22,19 @@ class SuggestionsController < ApplicationController
     #end
   end
   def index
-    filtered_recipes = RecipeFilter.left_outer_joins(:filterable).where(recipe_filter_id: params[:recipe_filter_id], match: true)
+    filtered_recipes = FilteredRecipe.where(recipe_filter_id: params[:recipe_filter_id], match: true)
+    recipe_ids = filtered_recipes.select {|f| f.filterable_type == "Recipe"}.map(&:filterable_id)
+    recipe_kinds_ids = filtered_recipes.select {|f| f.filterable_type == "RecipeKind"}.map(&:filterable_id)
+    suggestions = current_user.suggestions.where(filter_id: params[:recipe_filter_id], recipe_id: recipe_ids).or(current_user.suggestions.where(filter_id: params[:recipe_filter_id], recipe_kind_id: recipe_kinds_ids)).order(:score)
+    nbItems = 5 # items per page
+    offset = ((params[:page].to_i || 1) - 1) * nbItems
+    result = suggestions.offset(offset).limit(nbItems)
+    if result.size < nbItems
+      ids = suggestions.map(&:about_id)
+      fresh_suggestions = filtered_recipes.reject {|f| ids.include?(f.filterable_id) }
+      limit = nbItems - result.size - 1
+      result += fresh_suggestions[0..limit]
+    end
     ##occasion = params[:occasion]
     ##recipes = _recipes_for_occasion(occasion)    
     #filter_id = params[:filterId]
@@ -34,10 +46,10 @@ class SuggestionsController < ApplicationController
     #nbItems = 5 # items per page
     #offset = ((params[:page].to_i || 1) - 1) * nbItems
     #result = paginate_collections(collections, offset, nbItems)
-    #render json: result.map {|s|
-    #  r = (s.is_a? Suggestion) ? s.about : s
-    #  r.to_obj(only: [:name, :image_id])
-    #}
+    render json: result.map {|s|
+      r = (s.is_a? Suggestion) ? s.about : s.filterable
+      r.to_obj(only: [:name, :image_id])
+    }
   end
 
   def send_data
