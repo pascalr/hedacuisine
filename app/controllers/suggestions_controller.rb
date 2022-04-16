@@ -26,10 +26,17 @@ class SuggestionsController < ApplicationController
     recipe_ids = filtered_recipes.select {|f| f.filterable_type == "Recipe"}.map(&:filterable_id)
     recipe_kinds_ids = filtered_recipes.select {|f| f.filterable_type == "RecipeKind"}.map(&:filterable_id)
     suggestions = current_user.suggestions.where(filter_id: params[:recipe_filter_id], recipe_id: recipe_ids).or(current_user.suggestions.where(filter_id: params[:recipe_filter_id], recipe_kind_id: recipe_kinds_ids)).order(:score)
-    nbItems = 5 # items per page
+    nbItems = 5 # items per page MATCH WITH CLIENT CODE
     offset = ((params[:page].to_i || 1) - 1) * nbItems
     result = suggestions.offset(offset).limit(nbItems)
+    # let's say there are 8 suggestions
+    # we want 5 items
+    # we want page 2
+    # we have 20 fresh suggestions
+    # we want suggestions 5 to 8 and 2 fresh suggestions
+    # offset = 5
     if result.size < nbItems
+      offset = [offset - suggestions.count, 0].max
       ids = suggestions.map(&:about_id)
       fresh_suggestions = filtered_recipes.reject {|f| ids.include?(f.filterable_id) }
       limit = nbItems - result.size - 1

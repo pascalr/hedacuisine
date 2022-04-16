@@ -19,16 +19,15 @@ const ChooseRecipe = ({changePage, page, recipeFilters}) => {
   const [suggestions, setSuggestions] = useState([])
   const [suggestionNb, setSuggestionNb] = useState(0)
   const [maxSuggestionNb, setMaxSuggestionNb] = useState(0)
-  const [itemsPerPage, setItemsPerPage] = useState(null)
   const [recipePage, setRecipePage] = useState(1)
   const [doneFetching, setDoneFetching] = useState(false)
+  const itemsPerPage = 5 // MATCH WITH SERVER CODE
 
   const filter = page && page.filterId ? recipeFilters.find(f => f.id == page.filterId) : null
  
   useEffect(() => {
     if (!recipeFilters || recipeFilters.length == 0) {return}
-    ajax({url: suggestions_path({recipePage, recipe_filter_id: filter.id}), type: 'GET', success: (suggests) => {
-      if (itemsPerPage == null) {setItemsPerPage(suggests.length)}
+    ajax({url: suggestions_path({page: recipePage, recipe_filter_id: filter.id}), type: 'GET', success: (suggests) => {
       if (suggests == [] || suggests.length < itemsPerPage) {
         console.log('done fetching received ', suggests)
         setDoneFetching(true)
@@ -63,6 +62,9 @@ const ChooseRecipe = ({changePage, page, recipeFilters}) => {
       previousSuggestion()
     }
   }
+
+  console.log('nb', suggestionNb)
+  console.log('suggestions', suggestions)
  
   let suggestion = suggestions ? suggestions[suggestionNb] : null
   if (!suggestion) {console.log('no suggestion to show'); return ''}
