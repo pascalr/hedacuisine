@@ -45,7 +45,7 @@ export const RecipeIndex = ({userRecipes, favoriteRecipes, showPercentCompleted,
     {loading ? 'Loading...' : (
       <ul id="recipes" className="list-group">
         {recipes.map((recipe, current) => {
-          let header = current == nbUserRecipes ? <h3>Recettes favorites</h3> : ''
+          let header = current == nbUserRecipes ? <h3 key='header'>Recettes favorites</h3> : ''
           return (<>
             {header}
             <li className="list-group-item" key={recipe.id}>

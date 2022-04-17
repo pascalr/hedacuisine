@@ -1,6 +1,9 @@
 2.5 L ne s'affiche pas correctement...
 10 t d'eau devrait être 2.5L d'eau
 
+Rediriger vers l'application dans prod l'url de base.
+Renommer what_to_eat en app.
+
 Ne pas pouvoir mettre en favoris une recette qui appartient à l'utilisateur.
 
 Le edit menu des recettes en dessous des recipe kinds devrait avoir un encadré carré, pour que ce soit plus évident que c'est un bouton.

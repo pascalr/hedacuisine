@@ -288,7 +288,7 @@ class Recipe < ApplicationRecord
   #end
 
   def is_user_favorite(user)
-    recipe.favorite_recipes.where(user_id: user.id).exist?
+    self.favorite_recipes.where(user_id: user.id).exists?
   end
 
   def user_favorite(user)
