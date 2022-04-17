@@ -5,9 +5,10 @@ class FilteredRecipesController < ApplicationController
   def missing
     filter_id = params[:recipe_filter_id]
     #current_user.suggestions.where()
-    #recipes = current_user.recipes.left_outer_joins(:suggestions).where('recipe_kind_id IS NULL AND (suggestions.id IS NULL OR suggestions.filter_id != ?)', filter_id)
-    recipes = current_user.recipes.left_outer_joins(:filtered_recipes).where(filtered_recipes: {id: nil})
-    recipe_kinds = RecipeKind.left_outer_joins(:filtered_recipes).where(filtered_recipes: {id: nil})
+    recipes = current_user.recipes.left_outer_joins(:filtered_recipes).where('filtered_recipes.id IS NULL OR filtered_recipes.recipe_filter_id != ?', filter_id)
+    recipe_kinds = RecipeKind.left_outer_joins(:filtered_recipes).where('filtered_recipes.id IS NULL OR filtered_recipes.recipe_filter_id != ?', filter_id)
+    #recipes = current_user.recipes.left_outer_joins(:filtered_recipes).where(filtered_recipes: {id: nil})
+    #recipe_kinds = RecipeKind.left_outer_joins(:filtered_recipes).where(filtered_recipes: {id: nil})
     collections = [recipes, recipe_kinds]
     nbItems = 20 # items per batch
     offset = params[:offset] || 0

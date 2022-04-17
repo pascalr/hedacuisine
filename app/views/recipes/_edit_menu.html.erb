@@ -10,7 +10,7 @@
       <%= link_to 'Voir la source', recipe.source, class: "dropdown-item" %>
     <% end %>
     <%= link_to "Créer une variation", new_variant_recipes_path(base_recipe_id: recipe.id), class: "dropdown-item" %>
-    <% if user_signed_in? and current_user.id == recipe.user_id %>
+    <% if account_signed_in? and current_user.id == recipe.user_id %>
       <%= form_with(model: recipe, class: "inline", local: true) do |form| %>
         <%= form.hidden_field :is_public, value: !recipe.is_public %>
         <% if recipe.is_public %>

@@ -14,6 +14,7 @@ class User < ApplicationRecord
 
   has_many :menus
   has_many :recipes
+  has_many :favorite_recipes
   has_many :raw_favorite_menus, class_name: 'FavoriteMenu'
   has_many :favorite_menus, through: 'raw_favorite_menus', source: 'menu'
   has_many :recipe_ratings

@@ -20,7 +20,7 @@
       </div>-->
     <%# end %>
     <div style="flex-grow: 1;"></div>
-    <% if user_signed_in? %>
+    <% if account_signed_in? %>
       <%= render partial: "recipes/edit_menu", locals: {recipe: recipe} %>
     <% end %>
   </div>

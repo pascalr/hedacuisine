@@ -1,3 +1,7 @@
+Add validate uniqueness of filtered_recipes.
+
+Pouvoir modifier le filtre après avoir cliqué dessus. Ajouter un petit dropdown avec trois petits points.
+
 Only load search data when the field is focused for the top search (app/javascript/autocomplete_search.js) I belive.
 
 Admin doit pouvoir modifier les RecipeFilter.
