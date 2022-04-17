@@ -33,7 +33,7 @@
     <%= link_to "FIXME", class: "btn btn-outline-secondary" do %>
       <%= image_tag icon_path("download.svg") %>
     <% end %>
-    <%= image_tag icon_path(recipe.is_user_favorite(current_user) ? "star-fill.svg" : "star.svg"), class: "recipe-favorite-toggleable" %>
+    <%= image_tag icon_path(recipe.is_user_favorite(current_user) ? "star-fill.svg" : "star.svg"), class: "recipe-favorite-toggleable clickable btn btn-outline-secondary" %>
   </div>
 <% end %>
 <% unless true or @recipe.recipe_kind.blank? %>
