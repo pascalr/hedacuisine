@@ -79,7 +79,7 @@ class RecipesController < ApplicationController
   def user_recipes
     render json: ({
       userRecipes: current_user.recipes.order(:name).map {|r| r.to_obj(only: :name)},
-      favoriteRecipes: current_user.favorite_recipes.includes(:recipe).order(:name).map(&:recipe).map {|r| r.to_obj(only: :name)}
+      favoriteRecipes: current_user.favorite_recipes.includes(:recipe).map(&:recipe).sort_by(&:name).map {|r| r.to_obj(only: :name)}
     #render json: current_user.recipes.order(:name).map {|r| r.to_obj}
     })
   end
