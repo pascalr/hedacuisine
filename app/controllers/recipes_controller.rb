@@ -77,8 +77,11 @@ class RecipesController < ApplicationController
   end
 
   def user_recipes
-    render json: current_user.recipes.order(:name).map {|r| r.to_obj(only: :name)} # Commented because showing percentage completed which requires all the data
+    render json: ({
+      userRecipes: current_user.recipes.order(:name).map {|r| r.to_obj(only: :name)},
+      favoriteRecipes: current_user.favorite_recipes.includes(:recipe).order(:name).map(&:recipe).map {|r| r.to_obj(only: :name)}
     #render json: current_user.recipes.order(:name).map {|r| r.to_obj}
+    })
   end
 
   def move_ing

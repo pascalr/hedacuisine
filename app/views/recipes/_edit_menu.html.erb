@@ -22,5 +22,11 @@
     <% end %>
     <span data-bs-toggle="collapse" data-bs-target="#calendar" class="dropdown-item" style="cursor: pointer;">Ajouter à mon calendrier</span>
     <span id="add-to-book-btn" class="dropdown-item" style="cursor: pointer;">Ajouter à mon livre</span>
+    <% fav = recipe.user_favorite(current_user) %>
+    <% if fav.blank? %>
+      <%= button_to "Ajouter à mes favoris", favorite_recipes_path(recipe_id: recipe.id), method: :post, class: "dropdown-item clickable" %>
+    <% else %>
+      <%= button_to "Retirer de mes favoris", favorite_recipe_path(fav), method: :delete, class: "dropdown-item clickable" %>
+    <% end %>
   </div>
 </span>

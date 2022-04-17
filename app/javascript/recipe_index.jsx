@@ -4,7 +4,7 @@ import {PercentageCompleted} from './helpers/recipes_helper'
 import { isBlank, normalizeSearchText } from "./utils"
 import { recipe_path } from "./routes"
 
-export const RecipeIndex = ({userRecipes, showPercentCompleted}) => {
+export const RecipeIndex = ({userRecipes, favoriteRecipes, showPercentCompleted, loading}) => {
   
   const inputField = useRef(null);
   const [search, setSearch] = useState('')
@@ -17,9 +17,14 @@ export const RecipeIndex = ({userRecipes, showPercentCompleted}) => {
   let recipes = []
   let term = normalizeSearchText(search)
   if (!userRecipes) {userRecipes = []}
+  if (!favoriteRecipes) {favoriteRecipes = []}
   recipes = userRecipes.filter(r => (
     r.name && ~normalizeSearchText(r.name).indexOf(term)
   ))
+  let nbUserRecipes = recipes.length
+  recipes = recipes.concat(favoriteRecipes.filter(r => (
+    r.name && ~normalizeSearchText(r.name).indexOf(term)
+  )))
 
   let select = (pos) => {
     setSelected(pos)
@@ -36,15 +41,18 @@ export const RecipeIndex = ({userRecipes, showPercentCompleted}) => {
     <div>
       <input ref={inputField} type="search" placeholder="Filtrer..." onChange={(e) => setSearch(e.target.value)} autoComplete="off" style={{width: "100%"}} onKeyDown={onKeyDown}/>
     </div>
-    {!userRecipes ? 'Loading...' : (
+    <h3>Recettes personnelles</h3>
+    {loading ? 'Loading...' : (
       <ul id="recipes" className="list-group">
         {recipes.map((recipe, current) => {
-          return (
+          let header = current == nbUserRecipes ? <h3>Recettes favorites</h3> : ''
+          return (<>
+            {header}
             <li className="list-group-item" key={recipe.id}>
               <a href={recipe_path(recipe)} className={current == selected ? "selected" : undefined}>{recipe.name}</a>
               {!showPercentCompleted ? '' : <span>&nbsp;(<PercentageCompleted recipe={recipe}/>)</span>}
             </li>
-          )
+          </>)
         })}
       </ul>)
     }

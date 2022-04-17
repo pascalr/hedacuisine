@@ -326,14 +326,16 @@ const MyBooks = () => {
 
 const MyRecipes = () => {
 
-  const recipes = useCacheOrFetch(user_recipes_recipes_path())
+  const data = useCacheOrFetch(user_recipes_recipes_path())
+  const userRecipes = data ? data.userRecipes : null
+  const favoriteRecipes = data ? data.favoriteRecipes : null
       //<%= link_to translated("Quoi manger?"), what_to_eat_path, class: "btn btn-outline-secondary btn-sm" %>
   return (<>
     <div className="d-flex gap-20 align-items-center">
       <h2>Mes recettes</h2>
       <a href={new_recipe_path()} className="btn btn-outline-primary btn-sm">Nouvelle recette</a>
     </div>
-    <RecipeIndex userRecipes={recipes} />
+    <RecipeIndex userRecipes={userRecipes} favoriteRecipes={favoriteRecipes} loading={!data} />
   </>)
 }
 

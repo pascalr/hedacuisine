@@ -1,3 +1,12 @@
+2.5 L ne s'affiche pas correctement...
+10 t d'eau devrait être 2.5L d'eau
+
+Ne pas pouvoir mettre en favoris une recette qui appartient à l'utilisateur.
+
+Le edit menu des recettes en dessous des recipe kinds devrait avoir un encadré carré, pour que ce soit plus évident que c'est un bouton.
+
+FIXME: If a user is on his a private recipe, then changes to another user, show an appropriate error message. RecipeKindController#show
+
 Add validate uniqueness of filtered_recipes.
 
 Pouvoir modifier le filtre après avoir cliqué dessus. Ajouter un petit dropdown avec trois petits points.

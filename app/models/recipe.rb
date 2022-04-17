@@ -286,6 +286,14 @@ class Recipe < ApplicationRecord
   #  #end
   #  #return 200
   #end
+
+  def is_user_favorite(user)
+    recipe.favorite_recipes.where(user_id: user.id).exist?
+  end
+
+  def user_favorite(user)
+    self.favorite_recipes.where(user_id: user.id).first
+  end
   
   alias ingredients recipe_ingredients
   alias notes recipe_notes

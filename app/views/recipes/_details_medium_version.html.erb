@@ -22,20 +22,20 @@
     <span style="color: gray;"><%= scalable_qty(recipe.servings_quantity) %> <%= recipe.servings_name %></span>
   </div>
 <% end %>
-<div style="display: flex; gap: 5px; margin-top: 10px;">
-  <%= link_to "FIXME", class: "btn btn-outline-secondary" do %>
-    <%= image_tag icon_path("printer.svg") %>
-  <% end %>
-  <%= link_to "FIXME", class: "btn btn-outline-secondary" do %>
-    <%= image_tag icon_path("share.svg") %>
-  <% end %>
-  <%= link_to "FIXME", class: "btn btn-outline-secondary" do %>
-    <%= image_tag icon_path("download.svg") %>
-  <% end %>
-  <%= link_to "FIXME", class: "btn btn-outline-secondary" do %>
-    <%= image_tag icon_path("star.svg") %>
-  <% end %>
-</div>
+<% if account_signed_in? %>
+  <div style="display: flex; gap: 5px; margin-top: 10px;">
+    <%= link_to "FIXME", class: "btn btn-outline-secondary" do %>
+      <%= image_tag icon_path("printer.svg") %>
+    <% end %>
+    <%= link_to "FIXME", class: "btn btn-outline-secondary" do %>
+      <%= image_tag icon_path("share.svg") %>
+    <% end %>
+    <%= link_to "FIXME", class: "btn btn-outline-secondary" do %>
+      <%= image_tag icon_path("download.svg") %>
+    <% end %>
+    <%= image_tag icon_path(recipe.is_user_favorite(current_user) ? "star-fill.svg" : "star.svg"), class: "recipe-favorite-toggleable" %>
+  </div>
+<% end %>
 <% unless true or @recipe.recipe_kind.blank? %>
   <br>
   <% nb = @recipe.recipe_kind.recipes.all_public.count %>
