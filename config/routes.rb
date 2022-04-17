@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   patch 'suggestions/send_data', to: 'suggestions#send_data', as: 'send_data_suggestions'
   post 'filtered_recipes/batch_update', to: 'filtered_recipes#batch_update', as: 'batch_update_filtered_recipes'
   get 'filtered_recipes/missing', to: 'filtered_recipes#missing', as: 'missing_filtered_recipes'
-  get 'what_to_eat', to: 'suggestions#what_to_eat', as: 'what_to_eat'
+  get 'app', to: 'app#index', as: 'app'
   get 'suggestions', to: 'suggestions#index'
   resources :food_tags
   resources :favorite_recipes, only: [:create, :destroy]

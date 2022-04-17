@@ -4,7 +4,7 @@
   </button>
   <div class="collapse navbar-collapse bg-dark">
     <div class="navbar-nav" style="width: 100%;">
-      <%= link_to "Mon compte", public_editor_url(what_to_eat_path), class: "nav-item nav-link" %>
+      <%= link_to "Mon compte", public_editor_url(app_path), class: "nav-item nav-link" %>
       <div style="flex-grow: 3;"></div>
       <% if account_signed_in? %>
         <div class="dropdown nav-item">

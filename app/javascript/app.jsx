@@ -329,7 +329,7 @@ const MyRecipes = () => {
   const data = useCacheOrFetch(user_recipes_recipes_path())
   const userRecipes = data ? data.userRecipes : null
   const favoriteRecipes = data ? data.favoriteRecipes : null
-      //<%= link_to translated("Quoi manger?"), what_to_eat_path, class: "btn btn-outline-secondary btn-sm" %>
+      //<%= link_to translated("Quoi manger?"), app_path, class: "btn btn-outline-secondary btn-sm" %>
   return (<>
     <div className="d-flex gap-20 align-items-center">
       <h2>Mes recettes</h2>
@@ -339,7 +339,7 @@ const MyRecipes = () => {
   </>)
 }
 
-const WhatToEat = () => {
+const App = () => {
 
   const [recipeFilters, setRecipeFilters] = useState([])
   const [page, setPage] = useState(getUrlParams())
@@ -404,6 +404,6 @@ const WhatToEat = () => {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  const root = document.getElementById('what-to-eat')
-  if (root) {ReactDOM.render(<WhatToEat/>, root)}
+  const root = document.getElementById('app')
+  if (root) {ReactDOM.render(<App/>, root)}
 })
