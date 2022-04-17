@@ -2,11 +2,6 @@ class SuggestionsController < ApplicationController
   #skip_before_action :authenticate_user!, only: [:test]
   skip_before_action :only_admin!, only: [:app]
 
-  def app
-    gon.recipe_filters = RecipeFilter.where(user_id: nil).or(current_user.recipe_filters).map {|f| f.to_obj }
-    gon.current_user_admin = current_user_admin?
-  end
-
   def _recipes_for_occasion(occasion)
     # <button type="button" className="btn btn-primary">Repas pour toute la semaine</button>
     # <button type="button" className="btn btn-primary">Recette rapide de semaine</button>
