@@ -80,18 +80,9 @@
   </div>
   <div style="height: 0.2em;"></div>
   <div id="current-page">
-    <div class="d-lg-flex gap-lg-20">
-      <div>
-        <%= render partial: "recipes/recipe_body", locals: {recipe: recipe} %>
-      </div>
-      <% if recipe.book %>
-        <div style="width: 200px; font-size: 1.2em;">
-          <div><b>Recette tiré du livre</b></div>
-          <%= link_to recipe.book do %>
-            <%= render partial: "books/title_page", locals: {book: recipe.book} %>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
+    <%= render partial: "recipes/recipe_body", locals: {recipe: recipe} %>
+    <% if recipe.book %>
+      <%= render partial: "books/abstract", locals: {book: recipe.book} %>
+    <% end %>
   </div>
 </div>
