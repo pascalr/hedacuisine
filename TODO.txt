@@ -1,7 +1,6 @@
-2.5 L ne s'affiche pas correctement...
-10 t d'eau devrait être 2.5L d'eau
+Mettre la page titre du livre en bas. Pas à droite. Dans recipe show et dans book recipe show.
 
-Gauffres s'affichent beaucoup trop large... https://aqueous-fortress-30634.herokuapp.com/qc/livres/9-Recettes-%C3%A0-Pascal/recettes/65-Gaufres#main
+Changer le format des bubble. En fait enlever le concept de bubble, parce que je ne veux pas le mettre à droite, je veux toujours le mettre en bas...
 
 Rediriger vers l'application dans prod l'url de base.
 Renommer what_to_eat en app.

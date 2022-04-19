@@ -15,14 +15,10 @@
 
 <%= render partial: "recipes/recipe_description_with_image", locals: {recipe: @recipe} %>
 
-<div class="d-block d-sm-flex gap-30">
-  <div class="flex-grow-1">
-    <%= render partial: "recipes/recipe_body", locals: {recipe: @recipe, hide_header: true} %>
-  </div>
-  <% if @recipe.recipe_kind %>
-    <%= render partial: "recipe_kinds/bubble", locals: {recipe: @recipe, recipe_kind: @recipe.recipe_kind} %>
-  <% end %>
-</div>
+<%= render partial: "recipes/recipe_body", locals: {recipe: @recipe, hide_header: true} %>
+<% if @recipe.recipe_kind %>
+  <%= render partial: "recipe_kinds/bubble", locals: {recipe: @recipe, recipe_kind: @recipe.recipe_kind} %>
+<% end %>
 
 <%# javascript_pack_tag current_user ? "recipe_rating" : "recipe_rating_read_only" %>
 <% content_for :import_js do %>

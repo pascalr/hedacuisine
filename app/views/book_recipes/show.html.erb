@@ -39,14 +39,10 @@
     <hr id="main" style="width: 80%; margin-left: 10%; margin-right: 10%; margin-bottom: 2.5em;">
     <%= render partial: "recipes/recipe_description_with_image", locals: {recipe: @recipe} %>
     
-    <div class="d-block d-md-flex gap-30">
-      <div>
-        <%= render partial: "recipes/recipe_body", locals: {recipe: @recipe, hide_header: true} %>
-      </div>
-      <% if @recipe.recipe_kind %>
-        <%= render partial: "recipe_kinds/bubble", locals: {recipe: @recipe, recipe_kind: @recipe.recipe_kind} %>
-      <% end %>
-    </div>
+    <%= render partial: "recipes/recipe_body", locals: {recipe: @recipe, hide_header: true} %>
+    <% if @recipe.recipe_kind %>
+      <%= render partial: "recipe_kinds/bubble", locals: {recipe: @recipe, recipe_kind: @recipe.recipe_kind} %>
+    <% end %>
   </div>
 </div>
   
