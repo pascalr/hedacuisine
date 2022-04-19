@@ -1,11 +1,5 @@
-Mettre la page titre du livre en bas. Pas à droite. Dans recipe show et dans book recipe show.
-
 Changer le format des bubble. En fait enlever le concept de bubble, parce que je ne veux pas le mettre à droite, je veux toujours le mettre en bas...
-
-Rediriger vers l'application dans prod l'url de base.
-Renommer what_to_eat en app.
-
-Ne pas pouvoir mettre en favoris une recette qui appartient à l'utilisateur.
+Mettre l'abstract de livre plus beau aussi...
 
 Le edit menu des recettes en dessous des recipe kinds devrait avoir un encadré carré, pour que ce soit plus évident que c'est un bouton.
 
