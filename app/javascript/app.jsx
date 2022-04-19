@@ -40,6 +40,8 @@ const ChooseRecipe = ({changePage, page, recipeFilters}) => {
       }
     }})
   }, [recipePage, recipeFilters])
+  
+  if (!filter) {return ''}
 
   const nextSuggestion = () => {
     if (suggestionNb < suggestions.length-1) {
@@ -67,7 +69,7 @@ const ChooseRecipe = ({changePage, page, recipeFilters}) => {
   console.log('suggestions', suggestions)
  
   let suggestion = suggestions ? suggestions[suggestionNb] : null
-  if (!suggestion) {console.log('no suggestion to show'); return ''}
+  if (!suggestion) {console.log('no suggestion to show'); return filter.name ? <h2 style={{textAlign: 'center'}}>{filter.name}</h2> : ''}
 
   const selectRecipe = () => {
     let skipped = []
@@ -86,7 +88,7 @@ const ChooseRecipe = ({changePage, page, recipeFilters}) => {
   }
   
   return (<>
-    {filter && filter.name ? <h2 style={{textAlign: 'center'}}>{filter.name}</h2> : ''}
+    {filter.name ? <h2 style={{textAlign: 'center'}}>{filter.name}</h2> : ''}
     <Hammer onSwipe={handleSwipe}>
       <div>
         <div className="over-container" style={{margin: "auto"}}>
