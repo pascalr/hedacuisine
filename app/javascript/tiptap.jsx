@@ -505,40 +505,44 @@ const IngredientNode = Node.create({
   // HTMLAttributes here comes from attributes.renderHTML as defined in addAttributes().
   renderHTML({ node, HTMLAttributes }) {
 
-    const ingredient = HTMLAttributes['raw']
-    let text = null
-    let food = null
-    let name = null
-    let comment = null
-    let ing = null
-    if (ingredient.includes(";")) {
-      const [qty, foodName] = Quantity.parseQuantityAndFoodName(ingredient)
-      text = Utils.prettyQuantityFor(qty.raw, foodName)
-      food = gon.foodList.find(food => food.name == foodName)
-      name = foodName
-    } else if (ingredient.startsWith("(")) { // old version
-      const raw = ingredient.slice(1,-1)
-      const [qty, foodName] = Quantity.parseQuantityAndFoodName(raw)
-      text = Utils.prettyQuantityFor(qty.raw, foodName)
-      food = gon.foodList.find(food => food.name == foodName)
-      name = foodName
-    } else {
-      ing = Object.values(gon.recipe.ingredients || {}).find(ing => ing.item_nb == ingredient)
-      if (ing) {
-        let ingredient = new Ingredient({record: ing})
-        text = ingredient.prettyQty() + " "
-        food = ingredient.food
-        comment = ing.comment
-        name = ing.name
+    // ingredient can be a number, which is the item nb, or it can be a raw ingredient (quantity separated by food by a semicolon)
+    const parseIngredient = (ingredient) => {
+      let text = null
+      let food = null
+      let name = null
+      let comment = null
+      let ing = null
+      if (ingredient.includes(";")) {
+        const [qty, foodName] = Quantity.parseQuantityAndFoodName(ingredient)
+        text = Utils.prettyQuantityFor(qty.raw, foodName)
+        food = gon.foodList.find(food => food.name == foodName)
+        name = foodName
+      } else if (ingredient.startsWith("(")) { // old version
+        const raw = ingredient.slice(1,-1)
+        const [qty, foodName] = Quantity.parseQuantityAndFoodName(raw)
+        text = Utils.prettyQuantityFor(qty.raw, foodName)
+        food = gon.foodList.find(food => food.name == foodName)
+        name = foodName
+      } else {
+        ing = Object.values(gon.recipe.ingredients || {}).find(ing => ing.item_nb == ingredient)
+        if (ing) {
+          let ingredient = new Ingredient({record: ing})
+          text = ingredient.prettyQty() + " "
+          food = ingredient.food
+          comment = ing.comment
+          name = ing.name
+        }
       }
+      return ({text, food, name, comment, ing})
     }
+    
+    //const ingredientToHtml = (text, food, name, comment, ing) => {
+    //}
+
+    const {text, food, name, comment, ing} = parseIngredient(HTMLAttributes['raw'])
     let children = []
     if (text && text != '') {children.push(text)}
-    if (food && food.is_public) {
-      children.push(['span', {class: 'food-name'}, ['a', {href: food.url}, name]])
-    } else {
-      children.push(['span', {class: 'food-name'}, name])
-    }
+    children.push(['span', {class: 'food-name'}, (food && food.is_public) ? ['a', {href: food.url}, name] : name])
     if (comment) { children.push(elementFromString(' '+comment)) }
     if (ing) {
       return ['span', {'data-ingredient-id': ing.id}, ...children]
