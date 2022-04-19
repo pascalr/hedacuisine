@@ -1,0 +1,23 @@
+<h3 style="border-bottom: 1px solid black; font-size: 1.3em; width: 20em;">Recette tiré du livre</h3>
+<div style="width: fit-content; margin: auto;">
+  <div>
+    <div class="d-block d-sm-flex gap-20 text-center">
+      <%= link_to book do %>
+        <%= render partial: "books/title_page", locals: {book: book} %>
+      <% end %>
+      <div>
+        <%= link_to book do %>
+          <h2 class="text-black"><%= book.name %></h2>
+        <% end %>
+        <div style="max-width: 600px">
+          <%= my_sanitize(book.description_html) %>
+        </div>
+        <%= link_to book do %>
+          <button class="btn btn-outline-primary">Voir les recettes</button>
+        <% end %>
+        <button type="button" class="btn btn-outline-primary" data-book-search-toggle="true"><%= image_tag icon_path("search_blue.svg"), size: "20x20" %></button>
+      </div>
+    </div>
+    <br>
+  </div>
+</div>

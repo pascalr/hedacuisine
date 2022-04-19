@@ -10,39 +10,16 @@
 <% end %>
 
 <div class="d-flex">
-  <div id="book-sidebar" data-url="<%= search_data_book_path(@book, format: 'json')%>">
-  </div>
+  <div id="book-sidebar" data-url="<%= search_data_book_path(@book, format: 'json')%>"></div>
   <div>
-    <div style="width: fit-content; margin: auto;">
-      <div>
-        <br><br>
-        <div class="d-block d-sm-flex gap-20 text-center">
-          <%= link_to @book do %>
-            <%= render partial: "books/title_page", locals: {book: @book} %>
-          <% end %>
-          <div>
-            <%= link_to @book do %>
-              <h2 class="text-black"><%= @book.name %></h2>
-            <% end %>
-            <div style="max-width: 600px">
-              <%= my_sanitize(@book.description_html) %>
-            </div>
-            <%= link_to @book do %>
-              <button class="btn btn-outline-primary">Voir les recettes</button>
-            <% end %>
-            <button type="button" class="btn btn-outline-primary" data-book-search-toggle="true"><%= image_tag icon_path("search_blue.svg"), size: "20x20" %></button>
-          </div>
-        </div>
-        <br>
-      </div>
-    </div>
-    <hr id="main" style="width: 80%; margin-left: 10%; margin-right: 10%; margin-bottom: 2.5em;">
+    <div style="height: 0.5em;"></div>
     <%= render partial: "recipes/recipe_description_with_image", locals: {recipe: @recipe} %>
     
     <%= render partial: "recipes/recipe_body", locals: {recipe: @recipe, hide_header: true} %>
     <% if @recipe.recipe_kind %>
       <%= render partial: "recipe_kinds/bubble", locals: {recipe: @recipe, recipe_kind: @recipe.recipe_kind} %>
     <% end %>
+    <%= render partial: "books/abstract", locals: {book: @book} %>
   </div>
 </div>
   
