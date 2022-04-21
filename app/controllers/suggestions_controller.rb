@@ -21,16 +21,19 @@ class SuggestionsController < ApplicationController
     recipe_ids = filtered_recipes.select {|f| f.filterable_type == "Recipe"}.map(&:filterable_id)
     recipe_kinds_ids = filtered_recipes.select {|f| f.filterable_type == "RecipeKind"}.map(&:filterable_id)
     suggestions = current_user.suggestions.where(filter_id: params[:recipe_filter_id], recipe_id: recipe_ids).or(current_user.suggestions.where(filter_id: params[:recipe_filter_id], recipe_kind_id: recipe_kinds_ids)).order(:score)
-    nbItems = 5 # items per page MATCH WITH CLIENT CODE
-    offset = ((params[:page].to_i || 1) - 1) * nbItems
-    result = suggestions.offset(offset).limit(nbItems)
-    if result.size < nbItems
-      offset = [offset - suggestions.count, 0].max
-      ids = suggestions.map(&:about_id)
-      fresh_suggestions = filtered_recipes.reject {|f| ids.include?(f.filterable_id) }
-      limit = nbItems - result.size - 1
-      result += fresh_suggestions[offset..(offset+limit)]
-    end
+    ids = suggestions.map(&:about_id)
+    fresh_suggestions = filtered_recipes.reject {|f| ids.include?(f.filterable_id) }
+    result = suggestions.to_a + fresh_suggestions.to_a
+    #nbItems = 5 # items per page MATCH WITH CLIENT CODE
+    #offset = ((params[:page].to_i || 1) - 1) * nbItems
+    #result = suggestions.offset(offset).limit(nbItems)
+    #if result.size < nbItems
+    #  offset = [offset - suggestions.count, 0].max
+    #  ids = suggestions.map(&:about_id)
+    #  fresh_suggestions = filtered_recipes.reject {|f| ids.include?(f.filterable_id) }
+    #  limit = nbItems - result.size - 1
+    #  result += fresh_suggestions[offset..(offset+limit)]
+    #end
     render json: result.map {|s|
       r = (s.is_a? Suggestion) ? s.about : s.filterable
       r.to_obj(only: [:name, :image_id])

@@ -16,30 +16,33 @@ const encodeRecord = (record) => (`${record.class_name == "recipe_kind" ? '' : '
 
 const ChooseRecipe = ({changePage, page, recipeFilters}) => {
   
-  const [suggestions, setSuggestions] = useState([])
+  //const [suggestions, setSuggestions] = useState([])
   const [suggestionNb, setSuggestionNb] = useState(0)
   const [maxSuggestionNb, setMaxSuggestionNb] = useState(0)
-  const [recipePage, setRecipePage] = useState(1)
-  const [doneFetching, setDoneFetching] = useState(false)
-  const itemsPerPage = 5 // MATCH WITH SERVER CODE
+  const suggestions = useCacheOrFetch(suggestions_path({recipe_filter_id: page.filterId}))
 
-  const filter = page && page.filterId ? recipeFilters.find(f => f.id == page.filterId) : null
+  const filter = recipeFilters.find(f => f.id == page.filterId)
+  //const [recipePage, setRecipePage] = useState(1)
+  //const [doneFetching, setDoneFetching] = useState(false)
+  //const itemsPerPage = 5 // MATCH WITH SERVER CODE
  
-  useEffect(() => {
-    if (!recipeFilters || recipeFilters.length == 0) {return}
-    ajax({url: suggestions_path({page: recipePage, recipe_filter_id: filter.id}), type: 'GET', success: (suggests) => {
-      if (suggests == [] || suggests.length < itemsPerPage) {
-        console.log('done fetching received ', suggests)
-        setDoneFetching(true)
-      }
-      setSuggestions(suggestions.concat(suggests))
-      for (let i = 0; i < suggests.length; i++) {
-        if (suggests[i].image_id) {
-          preloadImage(image_variant_path(suggests[i].image_id, "medium"))
-        }
-      }
-    }})
-  }, [recipePage, recipeFilters])
+  //useEffect(() => {
+  //  if (!recipeFilters || recipeFilters.length == 0) {return}
+  //  //ajax({url: suggestions_path({page: recipePage, recipe_filter_id: filter.id}), type: 'GET', success: (suggests) => {
+  //  ajax({url: suggestions_path({recipe_filter_id: filter.id}), type: 'GET', success: (suggests) => {
+  //    if (suggests == [] || suggests.length < itemsPerPage) {
+  //      console.log('done fetching received ', suggests)
+  //      setDoneFetching(true)
+  //    }
+  //    setSuggestions(suggestions.concat(suggests))
+  //    //for (let i = 0; i < suggests.length; i++) {
+  //    //  if (suggests[i].image_id) {
+  //    //    preloadImage(image_variant_path(suggests[i].image_id, "medium"))
+  //    //  }
+  //    //}
+  //  }})
+  //}, [recipeFilters])
+  //}, [recipePage, recipeFilters])
   
   if (!filter) {return ''}
 
@@ -49,9 +52,9 @@ const ChooseRecipe = ({changePage, page, recipeFilters}) => {
       setSuggestionNb(nb)
       if (nb > maxSuggestionNb) { setMaxSuggestionNb(nb) }
     }
-    if (!doneFetching && suggestionNb >= suggestions.length - 2) {
-      setRecipePage(recipePage+1)
-    }
+    //if (!doneFetching && suggestionNb >= suggestions.length - 2) {
+    //  setRecipePage(recipePage+1)
+    //}
   }
   const previousSuggestion = () => {
     setSuggestionNb(suggestionNb <= 0 ? 0 : suggestionNb - 1)
@@ -99,7 +102,7 @@ const ChooseRecipe = ({changePage, page, recipeFilters}) => {
             <img src={icon_path("custom-chevron-left.svg")} width="45" height="90" onClick={previousSuggestion} aria-disabled={suggestionNb <= 0} />
           </div>
           <div className="right-center">
-            <img src={icon_path("custom-chevron-right.svg")} width="45" height="90" onClick={nextSuggestion} aria-disabled={doneFetching && suggestionNb >= suggestions.length-1} />
+            <img src={icon_path("custom-chevron-right.svg")} width="45" height="90" onClick={nextSuggestion} aria-disabled={suggestionNb >= suggestions.length-1} />
           </div>
         </div>
         <div id="choose-btns" className="d-flex flex-column">
