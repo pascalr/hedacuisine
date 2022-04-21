@@ -1,8 +1,6 @@
 Changer le format des bubble. En fait enlever le concept de bubble, parce que je ne veux pas le mettre à droite, je veux toujours le mettre en bas...
 Mettre l'abstract de livre plus beau aussi...
 
-Le edit menu des recettes en dessous des recipe kinds devrait avoir un encadré carré, pour que ce soit plus évident que c'est un bouton.
-
 FIXME: If a user is on his a private recipe, then changes to another user, show an appropriate error message. RecipeKindController#show
 
 Pouvoir modifier le filtre après avoir cliqué dessus. Ajouter un petit dropdown avec trois petits points.
@@ -250,3 +248,5 @@ https://ready.mobi/#2072291-8gbd
 11:49:56 web.1  | /home/pascalr/.rvm/gems/ruby-3.0.2/gems/puma-4.3.11/lib/puma/thread_pool.rb:134:in `block in spawn_thread'
 
 Remplacer les link_to ... method: :post ou :patch, par des button_to. (parce que link_to ne fonctionne pas pour une raison quelquonque...)
+
+Le edit menu des recettes en dessous des recipe kinds devrait avoir un encadré carré, pour que ce soit plus évident que c'est un bouton.
