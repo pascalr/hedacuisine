@@ -85,9 +85,19 @@ const ChooseRecipe = ({changePage, page, recipeFilters}) => {
   </>)
 }
 
-const SuggestionsOverview = () => {
+const SuggestionsOverview = ({changePage, page, recipeFilters}) => {
+  const suggestions = useCacheOrFetch(suggestions_path({recipe_filter_id: page.filterId}))
+  const filter = recipeFilters.find(f => f.id == page.filterId)
+  console.log('suggestions', suggestions)
   return (<>
     <h2>Suggestions</h2>
+    {(suggestions || []).map(suggestion => {
+      //return <img key={suggestion.id} src={suggestion.image_id ? image_variant_path(suggestion.image_id, "small") : "/default_recipe_01.png"} style={{maxWidth: "100vw", marginBottom: "10px", marginLeft: "10px"}} width="255" height="171" />
+      return <div key={suggestion.id} className="over-container clickable d-inline-block">
+        <img src={suggestion.image_id ? image_variant_path(suggestion.image_id, "small") : "/default_recipe_01.png"} width="255" height="171" style={{maxWidth: "100vw", marginBottom: "10px", marginLeft: "10px"}} />
+        <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "1.2em", padding: "0.2em 0.8em 0 0.2em"}}>{suggestion.name}: {suggestion.score ? suggestion.score : '?'}</h2>
+      </div>
+    })}
   </>)
 }
 
@@ -366,7 +376,7 @@ const App = () => {
     5: <TrainFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
     6: <MyRecipes changePage={changePage} page={page} />,
     7: <MyBooks changePage={changePage} page={page} />,
-    8: <SuggestionsOverview changePage={changePage} page={page} />,
+    8: <SuggestionsOverview changePage={changePage} page={page} recipeFilters={recipeFilters} />,
   }
 
   const goUp = () => {

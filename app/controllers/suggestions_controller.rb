@@ -36,7 +36,9 @@ class SuggestionsController < ApplicationController
     #end
     render json: result.map {|s|
       r = (s.is_a? Suggestion) ? s.about : s.filterable
-      r.to_obj(only: [:name, :image_id])
+      o = r.to_obj(only: [:name, :image_id])
+      o[:score] = s.score if s.is_a? Suggestion
+      o
     }
   end
 
