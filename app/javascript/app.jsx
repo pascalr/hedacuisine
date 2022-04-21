@@ -168,7 +168,7 @@ const TrainFilter = ({changePage, page, recipeFilters, setRecipeFilters}) => {
     setSelected(s)
   }
 
-  if (!dataToTrain || dataToTrain.length <= 0) {return ''}
+  if (!dataToTrain || dataToTrain.length <= 0) {return <p>Il ne reste plus aucune recette ou catégorie à entrainer.</p>}
 
   return (<>
     <h2 style={{textAlign: 'center'}}>Quelle recette correspond à {filter.name} ?</h2>
