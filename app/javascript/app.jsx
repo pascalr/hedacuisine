@@ -85,24 +85,34 @@ const ChooseRecipe = ({changePage, page, recipeFilters}) => {
   </>)
 }
 
-const RecipeImageWithTitle = ({record}) => {
-  return <div className="over-container clickable d-inline-block">
-    <img src={record.image_id ? image_variant_path(record.image_id, "small") : "/default_recipe_01.png"} width="255" height="171" style={{maxWidth: "100vw", marginBottom: "10px", marginLeft: "10px"}} />
+              //return (<td key={j}>
+              //  <div className="over-container clickable" style={{margin: "auto", border: `4px solid ${selected[nb] ? 'blue' : 'white'}`}} onClick={() => imageClicked(nb)}>
+              //    <img src={record.image_id ? image_variant_path(record.image_id, "small") : "/default_recipe_01.png"} width="255" height="171" />
+              //    <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "1.2em", padding: "0.2em 0.8em 0 0.2em"}}>{record.name}</h2>
+              //  </div>
+              //</td>)
+const RecipeImageWithTitle = ({record, selected, selectItem, itemNb}) => {
+  console.log('selected', selected)
+  return <div className="over-container clickable d-inline-block" style={{border: `4px solid ${selected ? 'blue' : 'white'}`}} onClick={() => selectItem(itemNb)}>
+    <img src={record.image_id ? image_variant_path(record.image_id, "small") : "/default_recipe_01.png"} width="255" height="171" style={{maxWidth: "100vw"}} />
     <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "1.2em", padding: "0.2em 0.8em 0 0.2em"}}>{record.name}</h2>
   </div>
 }
 
 const SuggestionsOverview = ({changePage, page, recipeFilters}) => {
+  const [selected, setSelected] = useState({})
   const all = useCacheOrFetch(all_recipe_kinds_recipe_filters_path({recipe_filter_id: page.filterId}))
-  console.log('all', all)
   if (!all) {return 'Loading...'}
   const {matching, not_matching, unkown} = all
   const filter = recipeFilters.find(f => f.id == page.filterId)
-  console.log('matching', matching)
-  console.log('not_matching', not_matching)
-  console.log('unkown', unkown)
 
-  const printItems = (items) => ((items || []).map(record => <RecipeImageWithTitle record={record} key={record.id} />))
+  const selectItem = (itemNb) => {
+    let s = {...selected}; s[itemNb] = !selected[itemNb]; setSelected(s)
+  }
+
+  const printItems = (items) => <div style={{marginLeft: "4px"}}>
+    {((items || []).map((record,i) => <RecipeImageWithTitle record={record} key={selected[i] ? "sel-"+record.id : record.id} selected={selected[i]} itemNb={i} selectItem={selectItem} />))}
+  </div>
 
   const filterName = `«${filter.name}»`
 
