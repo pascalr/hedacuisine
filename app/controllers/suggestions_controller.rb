@@ -24,12 +24,6 @@ class SuggestionsController < ApplicationController
     nbItems = 5 # items per page MATCH WITH CLIENT CODE
     offset = ((params[:page].to_i || 1) - 1) * nbItems
     result = suggestions.offset(offset).limit(nbItems)
-    # let's say there are 8 suggestions
-    # we want 5 items
-    # we want page 2
-    # we have 20 fresh suggestions
-    # we want suggestions 5 to 8 and 2 fresh suggestions
-    # offset = 5
     if result.size < nbItems
       offset = [offset - suggestions.count, 0].max
       ids = suggestions.map(&:about_id)
@@ -37,17 +31,6 @@ class SuggestionsController < ApplicationController
       limit = nbItems - result.size - 1
       result += fresh_suggestions[offset..(offset+limit)]
     end
-    ##occasion = params[:occasion]
-    ##recipes = _recipes_for_occasion(occasion)    
-    #filter_id = params[:filterId]
-    #suggestions = current_user.suggestions.all_valid.where(filter_id: filter_id, score: 0...).order(:score)
-    #recipes = current_user.recipes.left_outer_joins(:suggestions).where(suggestions: {id: nil})
-    #recipe_kinds = RecipeKind.left_outer_joins(:suggestions).where(suggestions: {id: nil})
-    #bad_suggestions = current_user.suggestions.all_valid.where(filter_id: filter_id, score: ...0).order(:score)
-    #collections = [suggestions, recipes, recipe_kinds, bad_suggestions]
-    #nbItems = 5 # items per page
-    #offset = ((params[:page].to_i || 1) - 1) * nbItems
-    #result = paginate_collections(collections, offset, nbItems)
     render json: result.map {|s|
       r = (s.is_a? Suggestion) ? s.about : s.filterable
       r.to_obj(only: [:name, :image_id])

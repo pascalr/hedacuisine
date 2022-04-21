@@ -110,6 +110,12 @@ const ChooseRecipe = ({changePage, page, recipeFilters}) => {
   </>)
 }
 
+const SuggestionsOverview = () => {
+  return (<>
+    <h2>Suggestions</h2>
+  </>)
+}
+
 const EditFilter = ({changePage, page, recipeFilters, setRecipeFilters}) => {
   const [name, setName] = useState('')
   const filter = page && page.filterId ? recipeFilters.find(f => f.id == page.filterId) : null
@@ -123,7 +129,15 @@ const EditFilter = ({changePage, page, recipeFilters, setRecipeFilters}) => {
     <PublicImageField model={filter} field="image_src" defaultSrc={"question-mark.jpg"} url={recipe_filter_path(filter)} getter={recipeFilters} setter={setRecipeFilters} />
     <br/>
     <div>
-      <button type="button" className="btn btn-primary" onClick={() => changePage(5, {filterId: filter.id})}>Entraîner</button>
+      <button type="button" className="btn btn-primary" onClick={() => changePage(5, {filterId: filter.id})}>Filtrer les nouvelles suggestions</button>
+    </div>
+    <br/>
+    <div>
+      <button type="button" className="btn btn-primary" onClick={() => {}}>Modifier les filtres</button>
+    </div>
+    <br/>
+    <div>
+      <button type="button" className="btn btn-primary" onClick={() => changePage(8, {filterId: filter.id})}>Voir les suggestions</button>
     </div>
   </>)
 }
@@ -360,6 +374,7 @@ const App = () => {
     5: 3,
     6: 1,
     7: 1,
+    8: 3, // SuggestionsOverview => EditFilter
   }
 
   const changePage = (pageNb, args={}) => {
@@ -376,6 +391,7 @@ const App = () => {
     5: <TrainFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
     6: <MyRecipes changePage={changePage} page={page} />,
     7: <MyBooks changePage={changePage} page={page} />,
+    8: <SuggestionsOverview changePage={changePage} page={page} />,
   }
 
   const goUp = () => {

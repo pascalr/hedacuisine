@@ -1,3 +1,7 @@
+Faire deux autres vues pour configurer les recipes filters. Une vue pour voir toutes les recettes qui ne sont pas dans le diltre pour pouvoir changer didée et les ajouter dedans. aussi. Voir toutes les recipes kinds qui match le filtre dans l'ordre de la meilleure suggestion à la moins bonne. Un tableau d'image. Pouvoir cliquer sur une image pour que ça ouvre un encadré explicatif. (nom, nombre de fois cuisinner, nombre de fois skipper, date dernière cuisinne)
+
+Pouvoir ajouter une suggestions manquante à un RecipeFilter.
+
 Changer le format des bubble. En fait enlever le concept de bubble, parce que je ne veux pas le mettre à droite, je veux toujours le mettre en bas...
 Mettre l'abstract de livre plus beau aussi...
 
