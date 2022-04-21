@@ -87,6 +87,7 @@ const ChooseRecipe = ({changePage, page, recipeFilters}) => {
     }})
   }
   
+  //<button type="button" className="btn btn-danger" onClick={() => nextSuggestion()}>Non, pas cette fois</button>
   return (<>
     {filter.name ? <h2 style={{textAlign: 'center'}}>{filter.name}</h2> : ''}
     <Hammer onSwipe={handleSwipe}>
@@ -102,8 +103,7 @@ const ChooseRecipe = ({changePage, page, recipeFilters}) => {
           </div>
         </div>
         <div id="choose-btns" className="d-flex flex-column">
-          <button type="button" className="btn btn-primary" onClick={selectRecipe}>Oui!</button>
-          <button type="button" className="btn btn-danger" onClick={() => nextSuggestion()}>Non, pas cette fois</button>
+          <button type="button" className="btn btn-primary" onClick={selectRecipe}>Cuisiner!</button>
         </div>
       </div>
     </Hammer>

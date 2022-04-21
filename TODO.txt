@@ -3,11 +3,7 @@ Mettre l'abstract de livre plus beau aussi...
 
 FIXME: If a user is on his a private recipe, then changes to another user, show an appropriate error message. RecipeKindController#show
 
-Pouvoir modifier le filtre après avoir cliqué dessus. Ajouter un petit dropdown avec trois petits points.
-
 Pouvoir filtrer une recette dans les suggestions. Un des boutons devrait être cela.
-
-Rediriger après le login vers une page pour choisir l'utilisateur comme dans netflix.
 
 FIXME: Ne pas afficher le même recipe et le recipe kind.
 

@@ -35,7 +35,7 @@ class SuggestionsController < ApplicationController
       ids = suggestions.map(&:about_id)
       fresh_suggestions = filtered_recipes.reject {|f| ids.include?(f.filterable_id) }
       limit = nbItems - result.size - 1
-      result += fresh_suggestions[0..limit]
+      result += fresh_suggestions[offset..(offset+limit)]
     end
     ##occasion = params[:occasion]
     ##recipes = _recipes_for_occasion(occasion)    
