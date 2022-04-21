@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   get 'filtered_recipes/missing', to: 'filtered_recipes#missing', as: 'missing_filtered_recipes'
   get 'app', to: 'app#index', as: 'app'
   get 'suggestions', to: 'suggestions#index'
+  get 'all_recipe_kinds', to: 'recipe_filters#all_recipe_kinds'
   resources :food_tags
   resources :favorite_recipes, only: [:create, :destroy]
   resources :recipe_filters, only: [:create, :update, :destroy]

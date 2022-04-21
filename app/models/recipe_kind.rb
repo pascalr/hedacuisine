@@ -4,6 +4,11 @@ class RecipeKind < ApplicationRecord
   has_many :recipes
   has_many :suggestions
   has_many :filtered_recipes, as: :filterable
+  has_many :recipe_filters, through: :filtered_recipes
+  has_many :match_filtered_recipes, -> {where('filtered_recipes.match' => true)}, as: :filterable, class_name: 'FilteredRecipe'
+  has_many :nomatch_filtered_recipes, -> {where('filtered_recipes.match' => [nil, false])}, as: :filterable, class_name: 'FilteredRecipe'
+  has_many :matching_filters, through: :match_filtered_recipes, source: :recipe_filter
+  has_many :notmatching_filters, through: :nomatch_filtered_recipes, source: :recipe_filter
 
   alias image_assoc image
   def image

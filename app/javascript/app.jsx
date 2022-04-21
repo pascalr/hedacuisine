@@ -7,7 +7,7 @@ import Hammer from "react-hammerjs"
 import { useCacheOrFetch } from "./lib"
 import {RecipeIndex} from './recipe_index'
 import { ajax, preloadImage, getUrlParams } from "./utils"
-import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path } from './routes'
+import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path } from './routes'
 import {TextField} from './form'
 import {PublicImageField} from './modals/public_image'
 import { DeleteConfirmButton } from './components/delete_confirm_button'
@@ -85,19 +85,34 @@ const ChooseRecipe = ({changePage, page, recipeFilters}) => {
   </>)
 }
 
+const RecipeImageWithTitle = ({record}) => {
+  return <div className="over-container clickable d-inline-block">
+    <img src={record.image_id ? image_variant_path(record.image_id, "small") : "/default_recipe_01.png"} width="255" height="171" style={{maxWidth: "100vw", marginBottom: "10px", marginLeft: "10px"}} />
+    <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "1.2em", padding: "0.2em 0.8em 0 0.2em"}}>{record.name}</h2>
+  </div>
+}
+
 const SuggestionsOverview = ({changePage, page, recipeFilters}) => {
-  const suggestions = useCacheOrFetch(suggestions_path({recipe_filter_id: page.filterId}))
+  const all = useCacheOrFetch(all_recipe_kinds_recipe_filters_path({recipe_filter_id: page.filterId}))
+  console.log('all', all)
+  if (!all) {return 'Loading...'}
+  const {matching, not_matching, unkown} = all
   const filter = recipeFilters.find(f => f.id == page.filterId)
-  console.log('suggestions', suggestions)
+  console.log('matching', matching)
+  console.log('not_matching', not_matching)
+  console.log('unkown', unkown)
+
+  const printItems = (items) => ((items || []).map(record => <RecipeImageWithTitle record={record} key={record.id} />))
+
+  const filterName = `«${filter.name}»`
+
   return (<>
-    <h2>Suggestions</h2>
-    {(suggestions || []).map(suggestion => {
-      //return <img key={suggestion.id} src={suggestion.image_id ? image_variant_path(suggestion.image_id, "small") : "/default_recipe_01.png"} style={{maxWidth: "100vw", marginBottom: "10px", marginLeft: "10px"}} width="255" height="171" />
-      return <div key={suggestion.id} className="over-container clickable d-inline-block">
-        <img src={suggestion.image_id ? image_variant_path(suggestion.image_id, "small") : "/default_recipe_01.png"} width="255" height="171" style={{maxWidth: "100vw", marginBottom: "10px", marginLeft: "10px"}} />
-        <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "1.2em", padding: "0.2em 0.8em 0 0.2em"}}>{suggestion.name}: {suggestion.score ? suggestion.score : '?'}</h2>
-      </div>
-    })}
+    <h3>Recette(s) qui correspond(ent) au filtre {filterName}</h3>
+    {printItems(matching)}
+    <h3>Recette(s) non catégorisée(s)</h3>
+    {printItems(unkown)}
+    <h3>Recette(s) qui ne correspond(ent) pas au filtre {filterName}</h3>
+    {printItems(not_matching)}
   </>)
 }
 

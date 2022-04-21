@@ -80,6 +80,10 @@ export const suggestions_path = (arg) => {
   return `/suggestions${appendParams(arg)}`
 }
 
+export const all_recipe_kinds_recipe_filters_path = (arg) => {
+  return `/all_recipe_kinds${appendParams(arg)}`
+}
+
 export const recipe_filters_path = (arg) => {
   return `/recipe_filters`
 }
