@@ -1,3 +1,5 @@
+FIXME: Je ne veux pas destroy all. Je veux update all... Filtered recipes...
+
 Fix preload image depuis que j'ai modifié suggestions index retournent toutes les possibilités et non seulement une page. Mais il faut les preloader les images.
 
 Faire deux autres vues pour configurer les recipes filters. Une vue pour voir toutes les recettes qui ne sont pas dans le diltre pour pouvoir changer didée et les ajouter dedans. aussi. Voir toutes les recipes kinds qui match le filtre dans l'ordre de la meilleure suggestion à la moins bonne. Un tableau d'image. Pouvoir cliquer sur une image pour que ça ouvre un encadré explicatif. (nom, nombre de fois cuisinner, nombre de fois skipper, date dernière cuisinne)

@@ -7,7 +7,7 @@ import Hammer from "react-hammerjs"
 import { useCacheOrFetch } from "./lib"
 import {RecipeIndex} from './recipe_index'
 import { ajax, preloadImage, getUrlParams } from "./utils"
-import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path } from './routes'
+import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_create_filtered_recipes_path, batch_destroy_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path } from './routes'
 import {TextField} from './form'
 import {PublicImageField} from './modals/public_image'
 import { DeleteConfirmButton } from './components/delete_confirm_button'
@@ -120,15 +120,34 @@ const SuggestionsOverview = ({changePage, page, recipeFilters}) => {
     </div>
   }
 
+  const removeFromFilter = () => {
+    let removeIds = matching.filter((r,i) => selected[i]).map(r => r.id)
+    ajax({url: batch_destroy_filtered_recipes_path(), type: 'DELETE', data: {recipe_filter_id: filter.id, ids: removeIds}, success: () => {
+      //let keepList = matching.filter((r,i) => !selected[i])
+    }, error: (err) => {
+      console.log('Error removeFromFilter', err)
+    }})
+  }
+  const addToFilter = () => {
+  }
+  const updateMatchFilter = () => {
+  }
+  const updateNomatchFilter = () => {
+  }
+
   const filterName = `«${filter.name}»`
 
   return (<>
     <h3>Recette(s) qui correspond(ent) au filtre {filterName}</h3>
     {printItems(matching)}
+    <button type="button" className="btn btn-primary" onClick={() => removeFromFilter()}>Retirer du filtre</button>
     <h3>Recette(s) non catégorisée(s)</h3>
     {printItems(unkown)}
+    <button type="button" className="btn btn-primary" onClick={() => {}}>Valider</button>
+    <button type="button" className="btn btn-primary" style={{marginLeft: "0.5em"}} onClick={() => {}}>Invalider</button>
     <h3>Recette(s) qui ne correspond(ent) pas au filtre {filterName}</h3>
     {printItems(not_matching)}
+    <button type="button" className="btn btn-primary" onClick={() => {}}>Ajouter au filtre</button>
   </>)
 }
 
@@ -184,7 +203,7 @@ const TrainFilter = ({changePage, page, recipeFilters, setRecipeFilters}) => {
 
   const submitData = () => {
     let data = dataToTrain.map((d,i) => ({filterable_type: d.class_name, filterable_id: d.id, selected: selected[i]}))
-    ajax({url: batch_update_filtered_recipes_path(), type: 'POST', data: {recipe_filter_id: filter.id, data: JSON.stringify(data)}, success: () => {
+    ajax({url: batch_create_filtered_recipes_path(), type: 'POST', data: {recipe_filter_id: filter.id, data: JSON.stringify(data)}, success: () => {
       console.log('Fetching second batch of data')
       fetchBatch()
     }, error: (err) => {

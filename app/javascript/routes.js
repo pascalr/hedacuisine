@@ -116,8 +116,11 @@ export const user_books_books_path = (arg) => {
 export const missing_filtered_recipes_path = (arg) => {
   return `/filtered_recipes/missing${appendParams(arg)}`
 }
-export const batch_update_filtered_recipes_path = (arg) => {
+export const batch_create_filtered_recipes_path = (arg) => {
   return `/filtered_recipes/batch_update`
+}
+export const batch_destroy_filtered_recipes_path = (arg) => {
+  return `/filtered_recipes/batch_destroy`
 }
 
 export const image_variant_path = (image, variant) => {

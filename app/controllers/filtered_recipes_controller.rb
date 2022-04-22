@@ -14,7 +14,7 @@ class FilteredRecipesController < ApplicationController
     render json: result.map {|r| r.to_obj(only: [:name, :image_id]) }
   end
 
-  def batch_update
+  def batch_create
     filter_id = params[:recipe_filter_id]
     data = JSON.parse(params[:data])
     data.each do |d|
@@ -25,6 +25,16 @@ class FilteredRecipesController < ApplicationController
       record.match = !!d["selected"]
       record.save!
     end
+  end
+
+  def batch_destroy
+    #filter_id = params[:recipe_filter_id]
+    FilteredRecipe.where(recipe_filter_id: params[:recipe_filter_id], filterable_type: 'RecipeKind', filterable_id: params[:ids]).destroy_all
+    #data = JSON.parse(params[:data])
+    #data.each do |d|
+    #  FilteredRecipe.find(d["id"]).destroy!
+    #end
+    render json: {status: 'OK'}
   end
 
   #skip_before_action :authenticate_user!, only: [:test]
