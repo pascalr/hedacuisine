@@ -117,7 +117,7 @@ export const missing_filtered_recipes_path = (arg) => {
   return `/filtered_recipes/missing${appendParams(arg)}`
 }
 export const batch_create_filtered_recipes_path = (arg) => {
-  return `/filtered_recipes/batch_update`
+  return `/filtered_recipes/batch_create`
 }
 export const batch_destroy_filtered_recipes_path = (arg) => {
   return `/filtered_recipes/batch_destroy`

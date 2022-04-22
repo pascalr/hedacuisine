@@ -149,22 +149,34 @@ const SuggestionsOverview = ({changePage, page, recipeFilters}) => {
       }))
       setSelected({})
     }, error: (err) => {
-      console.log('Error removeFromFilter', err)
+      console.log('Error updateItems', err)
     }})
   }
-  const addItems = (match) => {
+  const addItems = (its, match) => {
+    let f = its.filter(r => selected[r.id])
+    let ids = f.map(r => r.id)
+    let data = f.map((d,i) => ({filterable_type: d.class_name, filterable_id: d.id, selected: match}))
+    ajax({url: batch_create_filtered_recipes_path(), type: 'POST', data: {recipe_filter_id: filter.id, data: JSON.stringify(data)}, success: () => {
+      setItems(items.map(item => {
+        if (ids.includes(item.id)) { item.group = match ? 1 : 2 }
+        return item
+      }))
+      setSelected({})
+    }, error: (err) => {
+      console.log('Error addItems', err)
+    }})
   }
 
   const filterName = `«${filter.name}»`
 
   return (<>
+    <h3>Recette(s) non catégorisée(s) du filtre {filterName}?</h3>
+    {printItems(unkown)}
     <h3>Recette(s) qui correspond(ent) au filtre {filterName}</h3>
     {printItems(matching)}
     <button type="button" className="btn btn-primary" onClick={() => updateItems(matching, false)}>Retirer du filtre</button>
-    <h3>Recette(s) non catégorisée(s)</h3>
-    {printItems(unkown)}
-    <button type="button" className="btn btn-primary" onClick={() => {}}>Valider</button>
-    <button type="button" className="btn btn-primary" style={{marginLeft: "0.5em"}} onClick={() => {}}>Invalider</button>
+    <button type="button" className="btn btn-primary" onClick={() => addItems(unkown, true)}>Correspond</button>
+    <button type="button" className="btn btn-primary" style={{marginLeft: "0.5em"}} onClick={() => addItems(unkown, false)}>Ne correspond pas</button>
     <h3>Recette(s) qui ne correspond(ent) pas au filtre {filterName}</h3>
     {printItems(notMatching)}
     <button type="button" className="btn btn-primary" onClick={() => updateItems(notMatching, true)}>Ajouter au filtre</button>
