@@ -91,8 +91,8 @@ const ChooseRecipe = ({changePage, page, recipeFilters}) => {
               //    <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "1.2em", padding: "0.2em 0.8em 0 0.2em"}}>{record.name}</h2>
               //  </div>
               //</td>)
-const RecipeImageWithTitle = ({record, selected, selectItem, itemNb}) => {
-  return <div className="over-container clickable d-inline-block" style={{border: `4px solid ${selected ? 'blue' : 'white'}`}} onClick={() => selectItem(itemNb)}>
+const RecipeImageWithTitle = ({record, selected, selectItem}) => {
+  return <div className="over-container clickable d-inline-block" style={{border: `4px solid ${selected ? 'blue' : 'white'}`}} onClick={() => selectItem(record)}>
     <img src={record.image_id ? image_variant_path(record.image_id, "small") : "/default_recipe_01.png"} width="255" height="171" style={{maxWidth: "100vw"}} />
     <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "1.2em", padding: "0.2em 0.8em 0 0.2em"}}>{record.name}</h2>
   </div>
@@ -105,34 +105,29 @@ const SuggestionsOverview = ({changePage, page, recipeFilters}) => {
   const {matching, not_matching, unkown} = all
   const filter = recipeFilters.find(f => f.id == page.filterId)
 
-  const selectItem = (itemNb) => {
-    let s = {...selected}; s[itemNb] = !selected[itemNb]; setSelected(s)
+  const selectItem = (item) => {
+    console.log('selected', selected)
+    let s = {...selected}; s[item.id] = !selected[item.id]; setSelected(s)
+    console.log('s', s)
   }
 
-  let itemI = 0
   const printItems = (items) => {
     return <div style={{marginLeft: "4px"}}>
       {((items || []).map((record) => {
-        let o = <RecipeImageWithTitle record={record} key={record.id} selected={selected[itemI]} itemNb={itemI} selectItem={selectItem} />
-        itemI += 1
-        return o
+        return <RecipeImageWithTitle record={record} key={record.id} selected={selected[record.id]} selectItem={selectItem} />
       }))}
     </div>
   }
 
-  const removeFromFilter = () => {
-    let removeIds = matching.filter((r,i) => selected[i]).map(r => r.id)
-    ajax({url: batch_update_filtered_recipes_path(), type: 'PATCH', data: {recipe_filter_id: filter.id, ids: removeIds, match: false}, success: () => {
+  const updateItems = (items, match) => {
+    let removeIds = items.filter(r => selected[r.id]).map(r => r.id)
+    ajax({url: batch_update_filtered_recipes_path(), type: 'PATCH', data: {recipe_filter_id: filter.id, ids: removeIds, match}, success: () => {
       //let keepList = matching.filter((r,i) => !selected[i])
     }, error: (err) => {
       console.log('Error removeFromFilter', err)
     }})
   }
-  const addToFilter = () => {
-  }
-  const updateMatchFilter = () => {
-  }
-  const updateNomatchFilter = () => {
+  const addItems = (match) => {
   }
 
   const filterName = `«${filter.name}»`
@@ -140,14 +135,14 @@ const SuggestionsOverview = ({changePage, page, recipeFilters}) => {
   return (<>
     <h3>Recette(s) qui correspond(ent) au filtre {filterName}</h3>
     {printItems(matching)}
-    <button type="button" className="btn btn-primary" onClick={() => removeFromFilter()}>Retirer du filtre</button>
+    <button type="button" className="btn btn-primary" onClick={() => updateItems(matching, false)}>Retirer du filtre</button>
     <h3>Recette(s) non catégorisée(s)</h3>
     {printItems(unkown)}
     <button type="button" className="btn btn-primary" onClick={() => {}}>Valider</button>
     <button type="button" className="btn btn-primary" style={{marginLeft: "0.5em"}} onClick={() => {}}>Invalider</button>
     <h3>Recette(s) qui ne correspond(ent) pas au filtre {filterName}</h3>
     {printItems(not_matching)}
-    <button type="button" className="btn btn-primary" onClick={() => {}}>Ajouter au filtre</button>
+    <button type="button" className="btn btn-primary" onClick={() => updateItems(not_matching, true)}>Ajouter au filtre</button>
   </>)
 }
 
