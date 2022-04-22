@@ -6,7 +6,7 @@ import Hammer from "react-hammerjs"
 
 import { useCacheOrFetch } from "./lib"
 import {RecipeIndex} from './recipe_index'
-import { ajax, preloadImage, getUrlParams } from "./utils"
+import { ajax, isBlank, preloadImage, getUrlParams } from "./utils"
 import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, batch_create_filtered_recipes_path, batch_destroy_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path } from './routes'
 import {TextField} from './form'
 import {PublicImageField} from './modals/public_image'
@@ -123,9 +123,12 @@ const SuggestionsOverview = ({changePage, page, recipeFilters}) => {
   const filter = recipeFilters.find(f => f.id == page.filterId)
 
   const selectItem = (item) => {
-    console.log('selected', selected)
     let s = {...selected}; s[item.id] = !selected[item.id]; setSelected(s)
-    console.log('s', s)
+  }
+  const selectAll = (its, select=true) => {
+    let s = {...selected};
+    its.forEach(i => {s[i.id] = select})
+    setSelected(s)
   }
 
   const printItems = (items) => {
@@ -171,14 +174,16 @@ const SuggestionsOverview = ({changePage, page, recipeFilters}) => {
 
   return (<>
     <h3>Recette(s) non catégorisée(s) du filtre {filterName}?</h3>
-    {printItems(unkown)}
-    <h3>Recette(s) qui correspond(ent) au filtre {filterName}</h3>
-    {printItems(matching)}
-    <button type="button" className="btn btn-primary" onClick={() => updateItems(matching, false)}>Retirer du filtre</button>
-    <button type="button" className="btn btn-primary" onClick={() => addItems(unkown, true)}>Correspond</button>
+    {isBlank(unkown) ? <p>Auncune recette non catégorisée.</p> : printItems(unkown)}
+    <button type="button" className="btn btn-outline-primary" onClick={() => selectAll(unkown, true)}>Tout sélectionner</button>
+    <button type="button" className="btn btn-outline-primary" style={{marginLeft: "0.5em"}} onClick={() => selectAll(unkown, false)}>Tout désélectionner</button>
+    <button type="button" className="btn btn-primary" style={{marginLeft: "0.5em"}} onClick={() => addItems(unkown, true)}>Correspond</button>
     <button type="button" className="btn btn-primary" style={{marginLeft: "0.5em"}} onClick={() => addItems(unkown, false)}>Ne correspond pas</button>
+    <h3>Recette(s) qui correspond(ent) au filtre {filterName}</h3>
+    {isBlank(matching) ? <p>Auncune recette correspond au filtre.</p> : printItems(matching)}
+    <button type="button" className="btn btn-primary" onClick={() => updateItems(matching, false)}>Retirer du filtre</button>
     <h3>Recette(s) qui ne correspond(ent) pas au filtre {filterName}</h3>
-    {printItems(notMatching)}
+    {isBlank(notMatching) ? <p>Auncune recette correspond au filtre.</p> : printItems(notMatching)}
     <button type="button" className="btn btn-primary" onClick={() => updateItems(notMatching, true)}>Ajouter au filtre</button>
   </>)
 }

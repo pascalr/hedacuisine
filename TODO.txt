@@ -1,4 +1,7 @@
 Ajouter des oeufs mimosa.
+Airplane foods comme filtre. https://pixabay.com/fr/vectors/avion-vol-tournant-transport-26564/
+Ajouter filtre poulet, produit laitier, porc, boeuf.
+Ajouter filtre végétarien.
 
 FIXME: Je ne veux pas destroy all. Je veux update all... Filtered recipes...
 
