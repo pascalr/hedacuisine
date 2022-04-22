@@ -100,9 +100,26 @@ const RecipeImageWithTitle = ({record, selected, selectItem}) => {
 
 const SuggestionsOverview = ({changePage, page, recipeFilters}) => {
   const [selected, setSelected] = useState({})
-  const all = useCacheOrFetch(all_recipe_kinds_recipe_filters_path({recipe_filter_id: page.filterId}))
-  if (!all) {return 'Loading...'}
-  const {matching, not_matching, unkown} = all
+  //const [matching, setMatching] = useState([])
+  //const [notMatching, setNotMatching] = useState([])
+  //const [unkown, setUnkown] = useState([])
+  const [items, setItems] = useState(null)
+  const fetchedItems = useCacheOrFetch(all_recipe_kinds_recipe_filters_path({recipe_filter_id: page.filterId}))
+  useEffect(() => {if (fetchedItems) {setItems(fetchedItems)}}, [fetchedItems])
+  //const all = useCacheOrFetch(all_recipe_kinds_recipe_filters_path({recipe_filter_id: page.filterId}))
+  //useEffect(() => {
+  //  if (all) {
+  //    setMatching(all.matching)
+  //    setNotMatching(all.not_matching)
+  //    setUnkown(all.unkown)
+  //  }
+  //}, [all])
+  //if (!all) {return 'Loading...'}
+  if (!items) {return 'Loading...'}
+  const unkown = items.filter(i => i.group == 0)
+  const matching = items.filter(i => i.group == 1)
+  const notMatching = items.filter(i => i.group == 2)
+
   const filter = recipeFilters.find(f => f.id == page.filterId)
 
   const selectItem = (item) => {
@@ -119,10 +136,18 @@ const SuggestionsOverview = ({changePage, page, recipeFilters}) => {
     </div>
   }
 
-  const updateItems = (items, match) => {
-    let removeIds = items.filter(r => selected[r.id]).map(r => r.id)
-    ajax({url: batch_update_filtered_recipes_path(), type: 'PATCH', data: {recipe_filter_id: filter.id, ids: removeIds, match}, success: () => {
+  const updateItems = (its, match) => {
+    let updateIds = its.filter(r => selected[r.id]).map(r => r.id)
+    ajax({url: batch_update_filtered_recipes_path(), type: 'PATCH', data: {recipe_filter_id: filter.id, ids: updateIds, match}, success: () => {
       //let keepList = matching.filter((r,i) => !selected[i])
+      //setMatching(all.matching)
+      //setNotMatching(all.not_matching)
+      //setUnkown(all.unkown)
+      setItems(items.map(item => {
+        if (updateIds.includes(item.id)) { item.group = match ? 1 : 2 }
+        return item
+      }))
+      setSelected({})
     }, error: (err) => {
       console.log('Error removeFromFilter', err)
     }})
@@ -141,8 +166,8 @@ const SuggestionsOverview = ({changePage, page, recipeFilters}) => {
     <button type="button" className="btn btn-primary" onClick={() => {}}>Valider</button>
     <button type="button" className="btn btn-primary" style={{marginLeft: "0.5em"}} onClick={() => {}}>Invalider</button>
     <h3>Recette(s) qui ne correspond(ent) pas au filtre {filterName}</h3>
-    {printItems(not_matching)}
-    <button type="button" className="btn btn-primary" onClick={() => updateItems(not_matching, true)}>Ajouter au filtre</button>
+    {printItems(notMatching)}
+    <button type="button" className="btn btn-primary" onClick={() => updateItems(notMatching, true)}>Ajouter au filtre</button>
   </>)
 }
 

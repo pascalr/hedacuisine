@@ -7,20 +7,22 @@ class RecipeFiltersController < ApplicationController
     filtered_recipes = filter.filtered_recipes.where(filterable_type: 'RecipeKind')
     filtered_recipes_by_recipe_kind_id = filtered_recipes.inject({}) {|acc, r| acc[r.filterable_id] = r; acc}
     recipe_kinds = RecipeKind.all
-    groups = {unkown: [], matching: [], not_matching: []}
-    recipe_kinds.map {|k|
+    #groups = {unkown: [], matching: [], not_matching: []}
+    render json: recipe_kinds.map {|k|
       o = k.to_obj(only: [:name, :image_id])
       f = filtered_recipes_by_recipe_kind_id[k.id]
+      o[:group] = !f ? 0 : (f.match ? 1 : 2)
       #o[:score] = suggestion.score
-      if f && f.match
-        groups[:matching] << o
-      elsif f
-        groups[:not_matching] << o
-      else 
-        groups[:unkown] << o
-      end
+      #if f && f.match
+      #  groups[:matching] << o
+      #elsif f
+      #  groups[:not_matching] << o
+      #else 
+      #  groups[:unkown] << o
+      #end
+      o
     }
-    render json: groups
+    #render json: groups
   end
 
   #skip_before_action :authenticate_user!, only: [:test]
