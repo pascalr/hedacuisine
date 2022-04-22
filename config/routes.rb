@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   get 'public_images', to: 'images#public_images', as: 'public_images'
   patch 'suggestions/send_data', to: 'suggestions#send_data', as: 'send_data_suggestions'
   post 'filtered_recipes/batch_create', to: 'filtered_recipes#batch_create', as: 'batch_create_filtered_recipes'
+  patch 'filtered_recipes/batch_update', to: 'filtered_recipes#batch_update', as: 'batch_update_filtered_recipes'
   delete 'filtered_recipes/batch_destroy', to: 'filtered_recipes#batch_destroy', as: 'batch_destroy_filtered_recipes'
   get 'filtered_recipes/missing', to: 'filtered_recipes#missing', as: 'missing_filtered_recipes'
   get 'app', to: 'app#index', as: 'app'

@@ -27,13 +27,13 @@ class FilteredRecipesController < ApplicationController
     end
   end
 
+  def batch_update
+    FilteredRecipe.where(recipe_filter_id: params[:recipe_filter_id], filterable_type: 'RecipeKind', filterable_id: params[:ids]).update!(match: params[:match])
+    render json: {status: 'OK'}
+  end
+
   def batch_destroy
-    #filter_id = params[:recipe_filter_id]
     FilteredRecipe.where(recipe_filter_id: params[:recipe_filter_id], filterable_type: 'RecipeKind', filterable_id: params[:ids]).destroy_all
-    #data = JSON.parse(params[:data])
-    #data.each do |d|
-    #  FilteredRecipe.find(d["id"]).destroy!
-    #end
     render json: {status: 'OK'}
   end
 
