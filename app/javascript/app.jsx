@@ -92,7 +92,6 @@ const ChooseRecipe = ({changePage, page, recipeFilters}) => {
               //  </div>
               //</td>)
 const RecipeImageWithTitle = ({record, selected, selectItem, itemNb}) => {
-  console.log('selected', selected)
   return <div className="over-container clickable d-inline-block" style={{border: `4px solid ${selected ? 'blue' : 'white'}`}} onClick={() => selectItem(itemNb)}>
     <img src={record.image_id ? image_variant_path(record.image_id, "small") : "/default_recipe_01.png"} width="255" height="171" style={{maxWidth: "100vw"}} />
     <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "1.2em", padding: "0.2em 0.8em 0 0.2em"}}>{record.name}</h2>
@@ -110,9 +109,16 @@ const SuggestionsOverview = ({changePage, page, recipeFilters}) => {
     let s = {...selected}; s[itemNb] = !selected[itemNb]; setSelected(s)
   }
 
-  const printItems = (items) => <div style={{marginLeft: "4px"}}>
-    {((items || []).map((record,i) => <RecipeImageWithTitle record={record} key={selected[i] ? "sel-"+record.id : record.id} selected={selected[i]} itemNb={i} selectItem={selectItem} />))}
-  </div>
+  let itemI = 0
+  const printItems = (items) => {
+    return <div style={{marginLeft: "4px"}}>
+      {((items || []).map((record) => {
+        let o = <RecipeImageWithTitle record={record} key={record.id} selected={selected[itemI]} itemNb={itemI} selectItem={selectItem} />
+        itemI += 1
+        return o
+      }))}
+    </div>
+  }
 
   const filterName = `«${filter.name}»`
 
