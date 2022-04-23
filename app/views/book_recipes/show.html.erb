@@ -16,10 +16,11 @@
     <%= render partial: "recipes/recipe_description_with_image", locals: {recipe: @recipe} %>
     
     <%= render partial: "recipes/recipe_body", locals: {recipe: @recipe, hide_header: true} %>
+    <%= render partial: "books/abstract", locals: {book: @book} %>
+    <br>
     <% if @recipe.recipe_kind %>
       <%= render partial: "recipe_kinds/bubble", locals: {recipe: @recipe, recipe_kind: @recipe.recipe_kind} %>
     <% end %>
-    <%= render partial: "books/abstract", locals: {book: @book} %>
   </div>
 </div>
   

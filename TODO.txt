@@ -1,5 +1,5 @@
 TODO: Test preloadImage.
-FIXME: Very very slow recipes show.
+FIXME: Very very slow recipes show. La loupe dans books _abstract est très lent aussi. Essayer de redémarrer mon ordinateur ultérieurement.
 
 Ajouter des oeufs mimosa.
 Airplane foods comme filtre. https://pixabay.com/fr/vectors/avion-vol-tournant-transport-26564/
