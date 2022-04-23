@@ -1,6 +1,6 @@
 <div class="bg-fill" style="width: 100%; height: 0.5rem;"></div>
 <div class="d-flex bg-fill ps-3 w-100" style="font-size: 1.2rem; align-items: center; flex-wrap: wrap;">
-  <div style="margin-right: 1rem;"><b><%= recipe.name %></b></div>
+  <div style="margin-right: 1rem;"><%= link_to recipe do %><b style="color: white;"><%= recipe.name %><% end %></b></div>
 
   <div class="d-flex" style="flex-grow: 1;">
     <%# if alternatives.blank? %>
