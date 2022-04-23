@@ -1,9 +1,10 @@
+TODO: Test preloadImage.
+FIXME: Very very slow recipes show.
+
 Ajouter des oeufs mimosa.
 Airplane foods comme filtre. https://pixabay.com/fr/vectors/avion-vol-tournant-transport-26564/
 Ajouter filtre poulet, produit laitier, porc, boeuf.
 Ajouter filtre végétarien.
-
-FIXME: Je ne veux pas destroy all. Je veux update all... Filtered recipes...
 
 Fix preload image depuis que j'ai modifié suggestions index retournent toutes les possibilités et non seulement une page. Mais il faut les preloader les images.
 

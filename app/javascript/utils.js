@@ -21,6 +21,7 @@ export function getUrlParams(url=null) {
 }
 
 export function preloadImage(url) {
+  console.log('Preloading url ', url)
   var img = new Image();
   img.src = url;
 }

@@ -15,10 +15,25 @@ import { DeleteConfirmButton } from './components/delete_confirm_button'
 const encodeRecord = (record) => (`${record.class_name == "recipe_kind" ? '' : '_'}${record.id}`)
 
 const ChooseRecipe = ({changePage, page, recipeFilters}) => {
+
+  const preloadSuggestion = (suggestion) => {
+    console.log('preloading suggestion')
+    if (suggestion.image_id) {
+      preloadImage(image_variant_path(suggestion.image_id, "medium"))
+    }
+  }
   
   const [suggestionNb, setSuggestionNb] = useState(0)
   const [maxSuggestionNb, setMaxSuggestionNb] = useState(0)
   const suggestions = useCacheOrFetch(suggestions_path({recipe_filter_id: page.filterId}))
+  useEffect(() => {
+    console.log('inside use effect')
+    if (suggestions) {
+      for (let i = 0; i < 3 && i < suggestions.length-1; i++) {
+        preloadSuggestion(suggestions[i])
+      }
+    }
+  }, [suggestions])
 
   const filter = recipeFilters.find(f => f.id == page.filterId)
   
@@ -29,6 +44,9 @@ const ChooseRecipe = ({changePage, page, recipeFilters}) => {
       let nb = suggestionNb + 1
       setSuggestionNb(nb)
       if (nb > maxSuggestionNb) { setMaxSuggestionNb(nb) }
+    }
+    if (suggestionNb+2 < suggestions.length-1 && suggestionNb == maxSuggestionNb) {
+      preloadSuggestion(suggestions[suggestionNb])
     }
   }
   const previousSuggestion = () => {
