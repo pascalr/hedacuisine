@@ -71,7 +71,7 @@ export const new_recipe_path = (arg) => {
 }
 
 export const new_book_path = (arg) => {
-  return `/${getTranslatedRouteWithLocale("books")}/${getTranslatedRoute("new")`
+  return `/${getTranslatedRouteWithLocale("books")}/${getTranslatedRoute("new")}`
 }
 
 export const my_books_path = (arg) => {
