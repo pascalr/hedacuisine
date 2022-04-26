@@ -11,21 +11,28 @@ const appendParams = (arg) => {
   return ''
 }
 
-const getTranslatedRouteWithLocale = (route) => {
-  let locale = getLocale()
+const getTranslatedRoute = (route,locale=null) => {
+  if (!locale) {locale = getLocale()}
   if (route == "recipes") {
-    if (locale == 'qc') {return 'qc/recettes'}
+    if (locale == 'qc') {return 'recettes'}
   }
   if (route == "recipe_kinds") {
-    if (locale == 'qc') {return 'qc/catégories'}
+    if (locale == 'qc') {return 'catégories'}
   }
   if (route == "books") {
-    if (locale == 'qc') {return 'qc/livres'}
+    if (locale == 'qc') {return 'livres'}
   }
   if (route == "my_books") {
-    if (locale == 'qc') {return 'qc/mes_livres'}
+    if (locale == 'qc') {return 'mes_livres'}
+  }
+  if (route == "new") {
+    if (locale == 'qc') {return 'nouveau'}
   }
   throw "Can't get translated route"
+}
+const getTranslatedRouteWithLocale = (route) => {
+  let locale = getLocale()
+  return `${locale}/${getTranslatedRoute(route, locale)}`
 }
 
 const getLocale = () => {
