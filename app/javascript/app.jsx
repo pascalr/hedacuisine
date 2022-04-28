@@ -336,14 +336,14 @@ const EditConfig = ({recipeFilters, changePage, setRecipeFilters}) => {
 
   const editFilters = userFilters.map(filter => (
     <li key={filter.id}>
-      <u className="clickable" onClick={() => changePage(3, {filterId: filter.id})}>{filter.name || "Sans nom"}</u>
+      <u className="cursor-pointer" onClick={() => changePage(3, {filterId: filter.id})}>{filter.name || "Sans nom"}</u>
       <DeleteConfirmButton id={`del-recipe-filter-${filter.id}`} onDeleteConfirm={() => removeRecipeFilter(filter)} message="Je veux supprimer ce filtre?" />
     </li>))
   const defFilters = defaultFilters.map(filter => {
     if (gon.current_user_admin) {
       return (
         <li key={filter.id}>
-          <u className="clickable" onClick={() => changePage(3, {filterId: filter.id})}>{filter.name || "Sans nom"}</u>
+          <u className="cursor-pointer" onClick={() => changePage(3, {filterId: filter.id})}>{filter.name || "Sans nom"}</u>
           <DeleteConfirmButton id={`del-recipe-filter-${filter.id}`} onDeleteConfirm={() => removeRecipeFilter(filter)} message="Je veux supprimer ce filtre?" />
         </li>
       )

@@ -1,3 +1,8 @@
+Ajouter un bouton aux catégories: Find matching recipes.
+Comme ça quand je crée une catégorie, j'ajoute les recettes déjà existante.
+
+Renommer mes favoris (recettes) en ma liste (comme dans netflix). L'idée est de mettre là des recettes pour plein de raisons différentes. C'est une liste temporaire, ensuite tu fais ce que tu veux avec.
+
 TODO: Test preloadImage.
 FIXME: Very very slow recipes show. La loupe dans books _abstract est très lent aussi. Essayer de redémarrer mon ordinateur ultérieurement.
 
