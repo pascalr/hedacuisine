@@ -221,7 +221,7 @@ module IngredientsHelper
     qty = Quantity.new(ing.food).set_from_raw(ing.raw)
     return "" unless qty
     if qty.unit and qty.unit.is_volume?
-      return "#{pretty_volume_from_ml(qty.ml, ing.food.is_liquid?)}"
+      return "#{pretty_volume_from_ml(qty.ml, ing.food && ing.food.is_liquid?)}"
     elsif qty.unit and qty.unit.is_weight?
       return "#{pretty_weight(qty.grams)}"
     elsif !ing.raw.blank?
