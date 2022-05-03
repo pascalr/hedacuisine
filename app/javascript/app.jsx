@@ -430,7 +430,7 @@ const MyBooks = () => {
   </>)
 }
 
-const MyRecipes = () => {
+const MyRecipes = ({suggestions}) => {
 
   const data = useCacheOrFetch(user_recipes_recipes_path())
   const userRecipes = data ? data.userRecipes : null
@@ -441,15 +441,17 @@ const MyRecipes = () => {
       <h2>Mes recettes</h2>
       <a href={new_recipe_path()} className="btn btn-outline-primary btn-sm">Nouvelle recette</a>
     </div>
-    <RecipeIndex userRecipes={userRecipes} favoriteRecipes={favoriteRecipes} loading={!data} />
+    <RecipeIndex userRecipes={userRecipes} favoriteRecipes={favoriteRecipes} loading={!data} suggestions={suggestions} />
   </>)
 }
 
 const App = () => {
 
   const [recipeFilters, setRecipeFilters] = useState([])
+  const [suggestions, setSuggestions] = useState(gon.suggestions)
   const [page, setPage] = useState(getUrlParams())
   //const [page, setPage] = useState({})
+  console.log('suggestions', suggestions)
   
   useEffect(() => {
     if (window.gon && gon.recipe_filters) { setRecipeFilters(gon.recipe_filters) }
@@ -479,7 +481,7 @@ const App = () => {
     3: <EditFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
     4: <EditConfig changePage={changePage} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
     5: <TrainFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
-    6: <MyRecipes changePage={changePage} page={page} />,
+    6: <MyRecipes changePage={changePage} page={page} suggestions={suggestions} />,
     7: <MyBooks changePage={changePage} page={page} />,
     8: <SuggestionsOverview changePage={changePage} page={page} recipeFilters={recipeFilters} />,
   }

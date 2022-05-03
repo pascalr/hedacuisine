@@ -23,4 +23,8 @@ class Suggestion < ApplicationRecord
   def about
     recipe_id ? recipe : recipe_kind
   end
+
+  def to_obj(params={})
+    extract_attributes(params, :user_id, :recipe_id, :filter_id, :score)
+  end
 end

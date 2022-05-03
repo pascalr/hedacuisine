@@ -1,3 +1,16 @@
+<% if current_user %>
+  <% tags = current_user.suggestions.where(recipe_id: recipe.id) # FIXME: db query inside view %>
+  <div>
+    <b>Tags: </b>
+    <% if tags.blank? %>
+      <span style="color: gray;"> Aucun</span>
+    <% else %>
+      <% tags.each do |tag| %>
+        <span style="color: gray;"> #<%= tag.name %></span>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
 <% unless recipe.preparation_time.nil? %>
   <div>
     <b>Préparation:</b>

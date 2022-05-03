@@ -1,3 +1,14 @@
+TODO: Ajouter un modal pour sélectionner les tags. Créer une suggestion pour chaque tag sélectionner. Supprimer les suggestions pour les tags désélectionner.
+
+OK, je crois que Suggestion serait seulement pour les recettes, et FilteredRecipe seulement pour les RecipeKind.
+For Suggestions, recipe_kind_id should be deprecated, filtered too.
+
+Pouvior tager Pâté chinois directement.
+Finir la recette de Tofu à la vapeur. FIX 30 de haricots verts
+Ajouter à mes recettes en cliquant sur l'étoile.
+Ajouter une page, modifier les tags, pour une recette, et peut-être utiliser la même chose pour les recipe kinds.
+Faire la recette de pâté chinois végétarian si c'est bon.
+
 Ajouter un bouton aux catégories: Find matching recipes.
 Comme ça quand je crée une catégorie, j'ajoute les recettes déjà existante.
 

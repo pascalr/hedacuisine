@@ -4,7 +4,7 @@ import {PercentageCompleted} from './helpers/recipes_helper'
 import { isBlank, normalizeSearchText } from "./utils"
 import { recipe_path } from "./routes"
 
-export const RecipeIndex = ({userRecipes, favoriteRecipes, showPercentCompleted, loading}) => {
+export const RecipeIndex = ({userRecipes, favoriteRecipes, showPercentCompleted, loading, suggestions}) => {
   
   const inputField = useRef(null);
   const [search, setSearch] = useState('')
@@ -45,14 +45,15 @@ export const RecipeIndex = ({userRecipes, favoriteRecipes, showPercentCompleted,
     {loading ? 'Loading...' : (
       <ul id="recipes" className="list-group">
         {recipes.map((recipe, current) => {
-          let header = current == nbUserRecipes ? <h3 key='header'>Recettes favorites</h3> : ''
-          return (<>
+          let header = current == nbUserRecipes ? <h3 key={'hdr-'+current}>Recettes favorites</h3> : ''
+          return (<span key={recipe.id}>
             {header}
             <li className="list-group-item" key={recipe.id}>
               <a href={recipe_path(recipe)} className={current == selected ? "selected" : undefined}>{recipe.name}</a>
               {!showPercentCompleted ? '' : <span>&nbsp;(<PercentageCompleted recipe={recipe}/>)</span>}
+              <span style={{color: 'gray', fontSize: '0.78em'}}> #RecetteRapide #Végétarien</span>
             </li>
-          </>)
+          </span>)
         })}
       </ul>)
     }

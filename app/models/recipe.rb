@@ -64,6 +64,7 @@ class Recipe < ApplicationRecord
   has_many :recipe_notes, dependent: :delete_all#, foreign_key: 'recipe_id'
   has_many :ingredient_sections, dependent: :delete_all#, foreign_key: 'recipe_id'
   has_many :suggestions
+  has_many :tags, through: :suggestions
 
   has_many :book_recipes
 
