@@ -51,7 +51,11 @@ export const RecipeIndex = ({userRecipes, favoriteRecipes, showPercentCompleted,
             <li className="list-group-item" key={recipe.id}>
               <a href={recipe_path(recipe)} className={current == selected ? "selected" : undefined}>{recipe.name}</a>
               {!showPercentCompleted ? '' : <span>&nbsp;(<PercentageCompleted recipe={recipe}/>)</span>}
-              <span style={{color: 'gray', fontSize: '0.78em'}}> #RecetteRapide #Végétarien</span>
+              <span style={{color: 'gray', fontSize: '0.78em'}}> #RecetteRapide #Végétarien </span>
+              &nbsp;
+              <button type="button" className="btn btn-outline-secondary" style={{fontSize: '0.8em', padding: '0em 0.2em 0em 0.2em'}}>Modifier</button>
+              &nbsp;
+              <button type="button" className="btn btn-outline-secondary" style={{fontSize: '0.8em', padding: '0em 0.2em 0em 0.2em'}}>Retirer</button>
             </li>
           </span>)
         })}
