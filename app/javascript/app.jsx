@@ -14,7 +14,7 @@ import { DeleteConfirmButton } from './components/delete_confirm_button'
   
 const encodeRecord = (record) => (`${record.class_name == "recipe_kind" ? '' : '_'}${record.id}`)
 
-const TagSuggestions = ({tags, suggestions, changePage}) => {
+const TagSuggestions = ({tags, suggestions, page, changePage}) => {
 
   //const preloadSuggestion = (suggestion) => {
   //  console.log('preloading suggestion')
@@ -26,11 +26,9 @@ const TagSuggestions = ({tags, suggestions, changePage}) => {
   const [suggestionNb, setSuggestionNb] = useState(0)
   const [maxSuggestionNb, setMaxSuggestionNb] = useState(0)
 
-  return ''
-
-  //const filter = recipeFilters.find(f => f.id == page.filterId)
+  const filter = tags.find(f => f.id == page.filterId)
   
-  //if (!filter) {return ''}
+  if (!filter) {return ''}
 
   //const nextSuggestion = () => {
   //  if (suggestionNb < suggestions.length-1) {
@@ -74,41 +72,41 @@ const TagSuggestions = ({tags, suggestions, changePage}) => {
   //}
   //
   ////<button type="button" className="btn btn-danger" onClick={() => nextSuggestion()}>Non, pas cette fois</button>
-  //return (<>
-  //  <ul class="nav nav-tabs">
-  //    <li class="nav-item">
-  //      <a class="nav-link" href="#">Mes recettes</a>
-  //    </li>
-  //    <li class="nav-item">
-  //      <a class="nav-link active" aria-current="page" href="#">Autres recettes</a>
-  //    </li>
-  //    <li class="nav-item">
-  //      <a class="nav-link" href="#">Filtres</a>
-  //    </li>
-  //  </ul>
-  //  <br/>
-  //  {filter.name ? <h2 style={{textAlign: 'center'}}>{filter.name}</h2> : ''}
-  //  <Hammer onSwipe={handleSwipe}>
-  //    <div>
-  //      <div className="over-container" style={{margin: "auto"}}>
-  //        <img src={suggestion.image_id ? image_variant_path(suggestion.image_id, "medium") : "/default_recipe_01.png"} style={{maxWidth: "100vw"}} width="452" height="304" />
-  //        <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "2em", padding: "0.2em 0.8em 0 0.2em"}}>{suggestion.name}</h2>
-  //        <div className="left-center">
-  //          <img src={icon_path("custom-chevron-left.svg")} width="45" height="90" onClick={previousSuggestion} aria-disabled={suggestionNb <= 0} />
-  //        </div>
-  //        <div className="right-center">
-  //          <img src={icon_path("custom-chevron-right.svg")} width="45" height="90" onClick={nextSuggestion} aria-disabled={suggestionNb >= suggestions.length-1} />
-  //        </div>
-  //      </div>
-  //      <div id="choose-btns" className="d-flex flex-column">
-  //        <button type="button" className="btn btn-primary" onClick={selectRecipe}>Cuisiner!</button>
-  //      </div>
-  //    </div>
-  //  </Hammer>
-  //</>)
+    //<Hammer onSwipe={handleSwipe}>
+    //  <div>
+    //    <div className="over-container" style={{margin: "auto"}}>
+    //      <img src={suggestion.image_id ? image_variant_path(suggestion.image_id, "medium") : "/default_recipe_01.png"} style={{maxWidth: "100vw"}} width="452" height="304" />
+    //      <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "2em", padding: "0.2em 0.8em 0 0.2em"}}>{suggestion.name}</h2>
+    //      <div className="left-center">
+    //        <img src={icon_path("custom-chevron-left.svg")} width="45" height="90" onClick={previousSuggestion} aria-disabled={suggestionNb <= 0} />
+    //      </div>
+    //      <div className="right-center">
+    //        <img src={icon_path("custom-chevron-right.svg")} width="45" height="90" onClick={nextSuggestion} aria-disabled={suggestionNb >= suggestions.length-1} />
+    //      </div>
+    //    </div>
+    //    <div id="choose-btns" className="d-flex flex-column">
+    //      <button type="button" className="btn btn-primary" onClick={selectRecipe}>Cuisiner!</button>
+    //    </div>
+    //  </div>
+    //</Hammer>
+  return (<>
+    <ul className="nav nav-tabs">
+      <li className="nav-item">
+        <a className="nav-link active" aria-current="page" href="#">Mes recettes</a>
+      </li>
+      <li className="nav-item">
+        <a className="nav-link" onClick={() => changePage(2, {filterId: page.filterId})}>Autres recettes</a>
+      </li>
+      <li className="nav-item">
+        <a className="nav-link" href="#">Filtres</a>
+      </li>
+    </ul>
+    <br/>
+    {filter.name ? <h2 style={{textAlign: 'center'}}>{filter.name}</h2> : ''}
+  </>)
 }
 
-const ChooseRecipe = ({changePage, page, recipeFilters}) => {
+const TagCategorySuggestions = ({changePage, page, recipeFilters}) => {
 
   const preloadSuggestion = (suggestion) => {
     console.log('preloading suggestion')
@@ -178,7 +176,7 @@ const ChooseRecipe = ({changePage, page, recipeFilters}) => {
   return (<>
     <ul className="nav nav-tabs">
       <li className="nav-item">
-        <a className="nav-link" href="#">Mes recettes</a>
+        <a className="nav-link" onClick={() => changePage(9, {filterId: page.filterId})}>Mes recettes</a>
       </li>
       <li className="nav-item">
         <a className="nav-link active" aria-current="page" href="#">Autres recettes</a>
@@ -595,14 +593,14 @@ const App = () => {
 
   const pages = {
     1: <ChooseOccasion changePage={changePage} recipeFilters={recipeFilters} addRecipeFilter={(filter) => setRecipeFilters(recipeFilters.concat([filter]))} />,
-    2: <ChooseRecipe changePage={changePage} page={page} recipeFilters={recipeFilters} />,
+    2: <TagCategorySuggestions changePage={changePage} page={page} recipeFilters={recipeFilters} />,
     3: <EditFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
     4: <EditConfig changePage={changePage} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
     5: <TrainFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
     6: <MyRecipes changePage={changePage} page={page} suggestions={suggestions} tags={recipeFilters} />,
     7: <MyBooks changePage={changePage} page={page} />,
     8: <SuggestionsOverview changePage={changePage} page={page} recipeFilters={recipeFilters} />,
-    9: <TagSuggestions changePage={changePage} suggestions={suggestions} tags={recipeFilters} />,
+    9: <TagSuggestions changePage={changePage} page={page} suggestions={suggestions} tags={recipeFilters} />,
   }
 
   const goUp = () => {
