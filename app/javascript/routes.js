@@ -61,6 +61,10 @@ export const book_recipes_book_path = (arg) => {
   return `/qc/livres/${extractParamFromModel(arg)}/recettes`
 }
 
+export const update_tags_recipe_path = (arg) => {
+  return `/recipes/${extractParamFromModel(arg)}/update_tags`
+}
+
 export const recipe_path = (arg) => {
   // FIXME: js paths should not be localized
   return `/${getTranslatedRouteWithLocale("recipes")}/${extractParamFromModel(arg)}`

@@ -449,6 +449,17 @@ const App = () => {
 
   const [recipeFilters, setRecipeFilters] = useState([])
   const [suggestions, setSuggestions] = useState(gon.suggestions)
+
+  const bindSetter = (obj, setter) => {
+    const updateObj = (val) => {
+      console.log("obj.update", obj.update)
+      val.update = obj.update
+      setter(val)
+    }
+    obj.update = updateObj
+  }
+
+  bindSetter(suggestions, setSuggestions)
   const [page, setPage] = useState(getUrlParams())
   //const [page, setPage] = useState({})
   console.log('suggestions', suggestions)

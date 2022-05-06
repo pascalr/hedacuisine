@@ -124,6 +124,13 @@ Rails.application.routes.draw do
   resources :recipe_ratings, only: [:create]
   delete 'recipe_ratings', to: 'recipe_ratings#destroy'
 
+  # NOT LOCALIZED (for js)
+  resources :recipes, param: 'slug', only: [] do
+    member do
+      patch 'update_tags', param: 'slug'
+    end
+  end
+
   localized do
     resources :kinds, param: 'slug'
     resources :foods, param: 'slug'

@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Modal from 'react-bootstrap/Modal'
 
+import {ajax} from '../utils'
 import {mapModels} from '../lib'
+import {update_tags_recipe_path} from '../routes'
 
 //import {ajax} from '../utils'
 
@@ -14,7 +16,7 @@ export const EditUserRecipeModal = ({showModal, setShowModal, recipe, tags, sugg
   let [tagsChecked, setTagsChecked] = useState([])
 
   useEffect(() => {
-    if (tags && suggestions) {
+    if (tags && suggestions && recipe) {
       setTagsChecked(tags.map(tag => isTagChecked(tag)))
     }
   }, [suggestions, tags, recipe])
@@ -23,6 +25,17 @@ export const EditUserRecipeModal = ({showModal, setShowModal, recipe, tags, sugg
     let s = [...tagsChecked]
     s[i] = checked
     setTagsChecked(s)
+  }
+
+  const updateSuggestions = () => {
+    let ts = tags.filter((t,i) => tagsChecked[i]).map(t => t.id)
+    ajax({url: update_tags_recipe_path(recipe), type: 'PATCH', data: {tags: ts}, success: ({created, destroyed}) => {
+      let ss = [...created, ...suggestions]
+      ss = ss.filter(s => !destroyed.includes(s.id))
+      suggestions.update(ss)
+      setShowModal(false)
+    }, error: () => {
+    }})
   }
  
   if (recipe == null) {return ''}
@@ -40,7 +53,7 @@ export const EditUserRecipeModal = ({showModal, setShowModal, recipe, tags, sugg
             })}
           </ul>
           <br/>
-          <button type="button" className="btn btn-primary">Update</button>
+          <button type="button" className="btn btn-primary" onClick={() => updateSuggestions()}>Update</button>
         </Modal.Body>
       </Modal.Dialog>
     </Modal>

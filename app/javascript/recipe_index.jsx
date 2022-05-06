@@ -56,12 +56,13 @@ export const RecipeIndex = ({userRecipes, favoriteRecipes, showPercentCompleted,
       <ul id="recipes" className="list-group">
         {recipes.map((recipe, current) => {
           let header = current == nbUserRecipes ? <h3 key={'hdr-'+current}>Recettes favorites</h3> : ''
+          let recipeTags = suggestions.filter(suggestion => suggestion.recipe_id == recipe.id).map(suggestion => tags.find(t => t.id == suggestion.filter_id))
           return (<span key={recipe.id}>
             {header}
             <li className="list-group-item" key={recipe.id}>
               <a href={recipe_path(recipe)} className={current == selected ? "selected" : undefined}>{recipe.name}</a>
               {!showPercentCompleted ? '' : <span>&nbsp;(<PercentageCompleted recipe={recipe}/>)</span>}
-              <span style={{color: 'gray', fontSize: '0.78em'}}> #RecetteRapide #Végétarien </span>
+              <span style={{color: 'gray', fontSize: '0.78em'}}>{recipeTags.map(tag => ` #${tag.name}`)} </span>
               &nbsp;
               <button type="button" className="btn btn-outline-secondary" style={{fontSize: '0.8em', padding: '0em 0.2em 0em 0.2em'}} onClick={() => editUserRecipe(recipe)}>Modifier</button>
               &nbsp;

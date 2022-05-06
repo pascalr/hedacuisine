@@ -15,6 +15,30 @@ class RecipesController < ApplicationController
     #@items = Item.order(:name).all
   end
 
+  def update_tags
+    @recipe = Recipe.find(params[:slug].split('-')[0])
+    tag_ids = params[:tags] || []
+    current_tag_ids = []
+    current_suggestions = current_user.suggestions.where(recipe_id: @recipe.id)
+    destroyed = []
+    created = []
+    ActiveRecord::Base.transaction do
+      current_suggestions.each do |suggestion|
+        i = tag_ids.index suggestion.filter_id
+        if i.nil?
+          destroyed << suggestion.id
+          suggestion.destroy 
+        end
+        tag_ids.delete_at(i) unless i.nil?
+      end
+      tag_ids.each do |id|
+        s = current_user.suggestions.create(recipe_id: @recipe.id, filter_id: id)
+        created << s
+      end
+    end
+    render json: {created: created, destroyed: destroyed}
+  end
+
   # TODO: Move all these functions elsewhere, inside lib? Inside RecipeIngredient?
   def __trim_between_unit_and_food(line)
     line = line.strip
