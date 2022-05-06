@@ -1,3 +1,5 @@
+EditUserRecipeModal continue....
+
 TODO: Ajouter un modal pour sélectionner les tags. Créer une suggestion pour chaque tag sélectionner. Supprimer les suggestions pour les tags désélectionner.
 
 OK, je crois que Suggestion serait seulement pour les recettes, et FilteredRecipe seulement pour les RecipeKind.

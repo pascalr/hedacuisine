@@ -430,7 +430,7 @@ const MyBooks = () => {
   </>)
 }
 
-const MyRecipes = ({suggestions}) => {
+const MyRecipes = ({suggestions, tags}) => {
 
   const data = useCacheOrFetch(user_recipes_recipes_path())
   const userRecipes = data ? data.userRecipes : null
@@ -441,7 +441,7 @@ const MyRecipes = ({suggestions}) => {
       <h2>Mes recettes</h2>
       <a href={new_recipe_path()} className="btn btn-outline-primary btn-sm">Nouvelle recette</a>
     </div>
-    <RecipeIndex userRecipes={userRecipes} favoriteRecipes={favoriteRecipes} loading={!data} suggestions={suggestions} />
+    <RecipeIndex userRecipes={userRecipes} favoriteRecipes={favoriteRecipes} loading={!data} suggestions={suggestions} tags={tags} />
   </>)
 }
 
@@ -481,7 +481,7 @@ const App = () => {
     3: <EditFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
     4: <EditConfig changePage={changePage} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
     5: <TrainFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
-    6: <MyRecipes changePage={changePage} page={page} suggestions={suggestions} />,
+    6: <MyRecipes changePage={changePage} page={page} suggestions={suggestions} tags={recipeFilters} />,
     7: <MyBooks changePage={changePage} page={page} />,
     8: <SuggestionsOverview changePage={changePage} page={page} recipeFilters={recipeFilters} />,
   }

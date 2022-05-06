@@ -3,12 +3,16 @@ import React, { useState, useEffect, useRef } from 'react'
 import {PercentageCompleted} from './helpers/recipes_helper'
 import { isBlank, normalizeSearchText } from "./utils"
 import { recipe_path } from "./routes"
+import {EditUserRecipeModal} from './modals/edit_user_recipe'
 
-export const RecipeIndex = ({userRecipes, favoriteRecipes, showPercentCompleted, loading, suggestions}) => {
+
+export const RecipeIndex = ({userRecipes, favoriteRecipes, showPercentCompleted, loading, suggestions, tags}) => {
   
   const inputField = useRef(null);
   const [search, setSearch] = useState('')
   const [selected, setSelected] = useState(-1)
+  const [showModal, setShowModal] = useState(true)
+  const [recipeToEdit, setRecipeToEdit] = useState(null)
 
   //useEffect(() => {
   //  // inputField.current.focus() This would be nice for computers, but it's bad for mobile...
@@ -37,7 +41,13 @@ export const RecipeIndex = ({userRecipes, favoriteRecipes, showPercentCompleted,
     if (key == "Enter") {window.location.href = recipe_path(recipes[selected])}
   }
 
+  let editUserRecipe = (recipe) => {
+    setRecipeToEdit(recipe)
+    setShowModal(true)
+  }
+
   return (<>
+    <EditUserRecipeModal showModal={showModal} setShowModal={setShowModal} recipe={recipeToEdit} tags={tags} suggestions={suggestions} />
     <div>
       <input ref={inputField} type="search" placeholder="Filtrer..." onChange={(e) => setSearch(e.target.value)} autoComplete="off" style={{width: "100%"}} onKeyDown={onKeyDown}/>
     </div>
@@ -53,7 +63,7 @@ export const RecipeIndex = ({userRecipes, favoriteRecipes, showPercentCompleted,
               {!showPercentCompleted ? '' : <span>&nbsp;(<PercentageCompleted recipe={recipe}/>)</span>}
               <span style={{color: 'gray', fontSize: '0.78em'}}> #RecetteRapide #Végétarien </span>
               &nbsp;
-              <button type="button" className="btn btn-outline-secondary" style={{fontSize: '0.8em', padding: '0em 0.2em 0em 0.2em'}}>Modifier</button>
+              <button type="button" className="btn btn-outline-secondary" style={{fontSize: '0.8em', padding: '0em 0.2em 0em 0.2em'}} onClick={() => editUserRecipe(recipe)}>Modifier</button>
               &nbsp;
               <button type="button" className="btn btn-outline-secondary" style={{fontSize: '0.8em', padding: '0em 0.2em 0em 0.2em'}}>Retirer</button>
             </li>

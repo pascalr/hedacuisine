@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 export const mapModels = (list, func) => {
-  return list.map(item => <span key={item.id}>{func(item)}</span>)
+  return list.map((item,i) => <span key={item.id}>{func(item,i)}</span>)
 }
 
 export const Show = ({cond, children}) => {
