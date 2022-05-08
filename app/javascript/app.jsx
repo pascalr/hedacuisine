@@ -7,7 +7,7 @@ import Hammer from "react-hammerjs"
 import { useCacheOrFetch } from "./lib"
 import {RecipeIndex} from './recipe_index'
 import { omit, ajax, isBlank, preloadImage, getUrlParams, join, bindSetter } from "./utils"
-import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, batch_create_filtered_recipes_path, batch_destroy_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path } from './routes'
+import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, batch_create_filtered_recipes_path, batch_destroy_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path, recipe_path } from './routes'
 import {TextField} from './form'
 import {PublicImageField} from './modals/public_image'
 import { DeleteConfirmButton } from './components/delete_confirm_button'
@@ -22,6 +22,11 @@ const PAGE_6 = 6 // MyRecipes
 const PAGE_7 = 7 // MyBooks
 const PAGE_8 = 8 // SuggestionsOverview
 const PAGE_9 = 9 // TagSuggestions
+const PAGE_10 = 10
+const PAGE_11 = 11
+const PAGE_12 = 12
+const PAGE_13 = 13
+const PAGE_14 = 14
   
 const encodeRecord = (record) => (`${record.class_name == "recipe_kind" ? '' : '_'}${record.id}`)
 
@@ -52,7 +57,7 @@ const SuggestionsNav = ({page}) => {
   </>)
 }
 
-const RecipeSingleCarrousel = ({suggestions}) => {
+const RecipeSingleCarrousel = ({tag, suggestions}) => {
   
   const [suggestionNb, setSuggestionNb] = useState(0)
   const [maxSuggestionNb, setMaxSuggestionNb] = useState(0)
@@ -92,7 +97,7 @@ const RecipeSingleCarrousel = ({suggestions}) => {
     }
   }
 
-  const selectRecipe = () => {
+  const sendStats = () => {
     let skipped = []
     for (let i = 0; i < suggestionNb; i++) {
       skipped.push(encodeRecord(suggestions[i]))
@@ -100,12 +105,7 @@ const RecipeSingleCarrousel = ({suggestions}) => {
     for (let i = suggestionNb+1; i <= maxSuggestionNb; i++) {
       skipped.push(encodeRecord(suggestions[i]))
     }
-    // send stats, which recipe was skipped, which was selected
-    ajax({url: send_data_suggestions_path(), type: 'PATCH', data: {filterId: filter.id, skipped, selected: encodeRecord(suggestion)}, success: (suggests) => {
-      window.location = recipe_kind_path(suggestion)
-    }, error: () => {
-      window.location = recipe_kind_path(suggestion)
-    }})
+    ajax({url: send_data_suggestions_path(), type: 'PATCH', data: {filterId: tag.id, skipped, selected: encodeRecord(suggestion)}})
   }
   
   //<button type="button" className="btn btn-danger" onClick={() => nextSuggestion()}>Non, pas cette fois</button>
@@ -123,8 +123,9 @@ const RecipeSingleCarrousel = ({suggestions}) => {
             <img src={icon_path("custom-chevron-right.svg")} width="45" height="90" onClick={nextSuggestion} aria-disabled={suggestionNb >= suggestions.length-1} />
           </div>
         </div>
+        <div style={{height: '0.5em'}}></div>
         <div id="choose-btns" className="d-flex flex-column">
-          <button type="button" className="btn btn-primary" onClick={selectRecipe}>Cuisiner!</button>
+          <a type="button" className="btn btn-primary" onClick={sendStats} href={recipe_path({id: suggestion.recipe_id})}>Cuisiner!</a>
         </div>
       </div>
     </Hammer>
@@ -141,7 +142,7 @@ const TagSuggestions = ({tags, suggestions, page, changePage}) => {
   return (<>
     <SuggestionsNav page={page} changePage={changePage} />
     {tag.name ? <h2 style={{textAlign: 'center'}}>{tag.name}</h2> : ''}
-    <RecipeSingleCarrousel suggestions={tagSuggestions}/>
+    <RecipeSingleCarrousel tag={tag} suggestions={tagSuggestions}/>
   </>)
 }
 
