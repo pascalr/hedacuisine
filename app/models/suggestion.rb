@@ -3,6 +3,9 @@ class Suggestion < ApplicationRecord
   belongs_to :recipe, optional: true
   belongs_to :recipe_kind, optional: true
 
+  delegate :name, to: :recipe
+  delegate :image_id, to: :recipe
+
   before_save :update_score
   
   scope :all_valid , -> { where(filtered: [nil, false]) }
@@ -26,5 +29,9 @@ class Suggestion < ApplicationRecord
 
   def to_obj(params={})
     extract_attributes(params, :user_id, :recipe_id, :filter_id, :score)
+  end
+  
+  def to_obj_with_recipe_info(params={})
+    extract_attributes(params, :user_id, :recipe_id, :filter_id, :score, :name, :image_id)
   end
 end

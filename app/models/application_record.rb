@@ -25,13 +25,7 @@ class ApplicationRecord < ActiveRecord::Base
   #end
 
 protected
-  # TODO: Add the parameter variant.
-  # This would allow to define many different ways to serialize and obj.
-  # For example:
-  # extract_attributes(params, :name) # DEFAULT
-  # extract_attributes(params.merge(variant_def: :complete), :name, :long, :list, :attrs)
-  # that you call using record.to_obj(variant: :complete)
-  # I don't know... Why not simply call it to_complete_obj as a completely new method?
+  # called from to_obj or to_whatever_obj
   def extract_attributes(params, *attributes)
     attrs = nil
     if params && params[:only]
@@ -62,7 +56,7 @@ private
     end
     assoc = assoc.to_sym
     assocs = record.class.reflect_on_all_associations
-    raise "Unkown association for #{record}" unless assocs.map(&:name).include? assoc
+    raise "Unkown association #{assoc} for #{record}" unless assocs.map(&:name).include? assoc
     val = record.send(assoc)
     if val.is_a?(Enumerable) # has_many association
       obj[assoc] = val.map {|v| v ? v.to_obj(params.blank? ? nil : {includes: params}) : nil}

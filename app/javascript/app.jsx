@@ -11,6 +11,17 @@ import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send
 import {TextField} from './form'
 import {PublicImageField} from './modals/public_image'
 import { DeleteConfirmButton } from './components/delete_confirm_button'
+
+// The advantage of using this instead of the number is if I need to search and to refactor, I can easy
+const PAGE_1 = 1 // TagIndex
+const PAGE_2 = 2 // TagCategorySuggestions
+const PAGE_3 = 3 // EditFilter
+const PAGE_4 = 4 // EditConfig
+const PAGE_5 = 5 // TrainFilter
+const PAGE_6 = 6 // MyRecipes
+const PAGE_7 = 7 // MyBooks
+const PAGE_8 = 8 // SuggestionsOverview
+const PAGE_9 = 9 // TagSuggestions
   
 const encodeRecord = (record) => (`${record.class_name == "recipe_kind" ? '' : '_'}${record.id}`)
 
@@ -41,84 +52,96 @@ const SuggestionsNav = ({page}) => {
   </>)
 }
 
-const TagSuggestions = ({tags, suggestions, page, changePage}) => {
+const RecipeSingleCarrousel = ({suggestions}) => {
+  
+  const [suggestionNb, setSuggestionNb] = useState(0)
+  const [maxSuggestionNb, setMaxSuggestionNb] = useState(0)
+  
+  let suggestion = suggestions ? suggestions[suggestionNb] : null
+  if (!suggestion) {console.log('no suggestion to show'); return ''}
 
+  console.log('suggestion', suggestion)
+  console.log('suggestions', suggestions)
+  
   //const preloadSuggestion = (suggestion) => {
   //  console.log('preloading suggestion')
   //  if (suggestion.image_id) {
   //    preloadImage(image_variant_path(suggestion.image_id, "medium"))
   //  }
   //}
+
+  const nextSuggestion = () => {
+    if (suggestionNb < suggestions.length-1) {
+      let nb = suggestionNb + 1
+      setSuggestionNb(nb)
+      if (nb > maxSuggestionNb) { setMaxSuggestionNb(nb) }
+    }
+    //if (suggestionNb+2 < suggestions.length-1 && suggestionNb == maxSuggestionNb) {
+    //  preloadSuggestion(suggestions[suggestionNb])
+    //}
+  }
+  const previousSuggestion = () => {
+    setSuggestionNb(suggestionNb <= 0 ? 0 : suggestionNb - 1)
+  }
   
-  const [suggestionNb, setSuggestionNb] = useState(0)
-  const [maxSuggestionNb, setMaxSuggestionNb] = useState(0)
+  let handleSwipe = ({direction}) => {
+    if (direction == 2) { // left
+      nextSuggestion()
+    } else if (direction == 4) { // right
+      previousSuggestion()
+    }
+  }
 
-  const filter = tags.find(f => f.id == page.filterId)
+  const selectRecipe = () => {
+    let skipped = []
+    for (let i = 0; i < suggestionNb; i++) {
+      skipped.push(encodeRecord(suggestions[i]))
+    }
+    for (let i = suggestionNb+1; i <= maxSuggestionNb; i++) {
+      skipped.push(encodeRecord(suggestions[i]))
+    }
+    // send stats, which recipe was skipped, which was selected
+    ajax({url: send_data_suggestions_path(), type: 'PATCH', data: {filterId: filter.id, skipped, selected: encodeRecord(suggestion)}, success: (suggests) => {
+      window.location = recipe_kind_path(suggestion)
+    }, error: () => {
+      window.location = recipe_kind_path(suggestion)
+    }})
+  }
   
-  if (!filter) {return ''}
-
-  //const nextSuggestion = () => {
-  //  if (suggestionNb < suggestions.length-1) {
-  //    let nb = suggestionNb + 1
-  //    setSuggestionNb(nb)
-  //    if (nb > maxSuggestionNb) { setMaxSuggestionNb(nb) }
-  //  }
-  //  if (suggestionNb+2 < suggestions.length-1 && suggestionNb == maxSuggestionNb) {
-  //    preloadSuggestion(suggestions[suggestionNb])
-  //  }
-  //}
-  //const previousSuggestion = () => {
-  //  setSuggestionNb(suggestionNb <= 0 ? 0 : suggestionNb - 1)
-  //}
-
-  //let handleSwipe = ({direction}) => {
-  //  if (direction == 2) { // left
-  //    nextSuggestion()
-  //  } else if (direction == 4) { // right
-  //    previousSuggestion()
-  //  }
-  //}
+  //<button type="button" className="btn btn-danger" onClick={() => nextSuggestion()}>Non, pas cette fois</button>
  
-  //let suggestion = suggestions ? suggestions[suggestionNb] : null
-  //if (!suggestion) {console.log('no suggestion to show'); return filter.name ? <h2 style={{textAlign: 'center'}}>{filter.name}</h2> : ''}
+  return (<>
+    <Hammer onSwipe={handleSwipe}>
+      <div>
+        <div className="over-container" style={{margin: "auto"}}>
+          <img src={suggestion.image_id ? image_variant_path(suggestion.image_id, "medium") : "/default_recipe_01.png"} style={{maxWidth: "100vw"}} width="452" height="304" />
+          <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "2em", padding: "0.2em 0.8em 0 0.2em"}}>{suggestion.name}</h2>
+          <div className="left-center">
+            <img src={icon_path("custom-chevron-left.svg")} width="45" height="90" onClick={previousSuggestion} aria-disabled={suggestionNb <= 0} />
+          </div>
+          <div className="right-center">
+            <img src={icon_path("custom-chevron-right.svg")} width="45" height="90" onClick={nextSuggestion} aria-disabled={suggestionNb >= suggestions.length-1} />
+          </div>
+        </div>
+        <div id="choose-btns" className="d-flex flex-column">
+          <button type="button" className="btn btn-primary" onClick={selectRecipe}>Cuisiner!</button>
+        </div>
+      </div>
+    </Hammer>
+  </>)
+}
 
-  //const selectRecipe = () => {
-  //  let skipped = []
-  //  for (let i = 0; i < suggestionNb; i++) {
-  //    skipped.push(encodeRecord(suggestions[i]))
-  //  }
-  //  for (let i = suggestionNb+1; i <= maxSuggestionNb; i++) {
-  //    skipped.push(encodeRecord(suggestions[i]))
-  //  }
-  //  // send stats, which recipe was skipped, which was selected
-  //  ajax({url: send_data_suggestions_path(), type: 'PATCH', data: {filterId: filter.id, skipped, selected: encodeRecord(suggestion)}, success: (suggests) => {
-  //    window.location = recipe_kind_path(suggestion)
-  //  }, error: () => {
-  //    window.location = recipe_kind_path(suggestion)
-  //  }})
-  //}
-  //
-  ////<button type="button" className="btn btn-danger" onClick={() => nextSuggestion()}>Non, pas cette fois</button>
-    //<Hammer onSwipe={handleSwipe}>
-    //  <div>
-    //    <div className="over-container" style={{margin: "auto"}}>
-    //      <img src={suggestion.image_id ? image_variant_path(suggestion.image_id, "medium") : "/default_recipe_01.png"} style={{maxWidth: "100vw"}} width="452" height="304" />
-    //      <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "2em", padding: "0.2em 0.8em 0 0.2em"}}>{suggestion.name}</h2>
-    //      <div className="left-center">
-    //        <img src={icon_path("custom-chevron-left.svg")} width="45" height="90" onClick={previousSuggestion} aria-disabled={suggestionNb <= 0} />
-    //      </div>
-    //      <div className="right-center">
-    //        <img src={icon_path("custom-chevron-right.svg")} width="45" height="90" onClick={nextSuggestion} aria-disabled={suggestionNb >= suggestions.length-1} />
-    //      </div>
-    //    </div>
-    //    <div id="choose-btns" className="d-flex flex-column">
-    //      <button type="button" className="btn btn-primary" onClick={selectRecipe}>Cuisiner!</button>
-    //    </div>
-    //  </div>
-    //</Hammer>
+const TagSuggestions = ({tags, suggestions, page, changePage}) => {
+
+  const tag = tags.find(f => f.id == page.filterId)
+  if (!tag) {return ''}
+
+  const tagSuggestions = suggestions.filter(suggestion => suggestion.filter_id == tag.id)
+
   return (<>
     <SuggestionsNav page={page} changePage={changePage} />
-    {filter.name ? <h2 style={{textAlign: 'center'}}>{filter.name}</h2> : ''}
+    {tag.name ? <h2 style={{textAlign: 'center'}}>{tag.name}</h2> : ''}
+    <RecipeSingleCarrousel suggestions={tagSuggestions}/>
   </>)
 }
 
@@ -501,7 +524,7 @@ const TagIndex = ({recipeFilters, addRecipeFilter, changePage}) => {
     }})
   }
 
-  const buttons = recipeFilters.map(filter => <TagButton key={filter.id} winWidth={winWidth} image={`/img/${filter.image_src || "question-mark.jpg"}`} title={filter.name || "Sans nom"} handleClick={() => changePage(2, {filterId: filter.id})} />)
+  const buttons = recipeFilters.map(filter => <TagButton key={filter.id} winWidth={winWidth} image={`/img/${filter.image_src || "question-mark.jpg"}`} title={filter.name || "Sans nom"} handleClick={() => changePage(PAGE_9, {filterId: filter.id})} />)
 
   // Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
   //<TagButton winWidth={winWidth} image="/img/recipes.jpg" title="Mes livres" handleClick={() => changePage(7)} />
@@ -571,14 +594,14 @@ const App = () => {
   }, [])
 
   const parentPages = {
-    2: 1,
-    3: 4,
-    4: 1,
-    5: 3,
-    6: 1,
-    7: 1,
-    8: 3, // SuggestionsOverview => EditFilter
-    9: 1,
+    PAGE_2: PAGE_1,
+    PAGE_3: PAGE_4,
+    PAGE_4: PAGE_1,
+    PAGE_5: PAGE_3,
+    PAGE_6: PAGE_1,
+    PAGE_7: PAGE_1,
+    PAGE_8: PAGE_3, // SuggestionsOverview => EditFilter
+    PAGE_9: PAGE_1,
   }
 
   const changePage = (pageNb, args={}) => {
