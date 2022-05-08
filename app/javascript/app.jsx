@@ -438,7 +438,6 @@ const EditUserTags = ({userTags, recipeFilters, changePage, setRecipeFilters}) =
     <ul>
     {userTagsC}
     </ul>
-    <h2>Paramètres généraux</h2>
   </>)
 }
 
