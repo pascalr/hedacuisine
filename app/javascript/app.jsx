@@ -452,7 +452,7 @@ const TagButton = ({winWidth, image, title, handleClick}) => {
     </div>
   )
 }
-const TagIndex = ({recipeFilters, addRecipeFilter, changePage}) => {
+const TagIndex = ({recipeFilters, addRecipeFilter, changePage, userTags}) => {
 
   const [winWidth, setWinWidth] = useState(window.innerWidth)
   useEffect(() => {
@@ -463,14 +463,18 @@ const TagIndex = ({recipeFilters, addRecipeFilter, changePage}) => {
     }
   }, [])
 
-  const createRecipeFilter = () => {
-    ajax({url: recipe_filters_path(), type: 'POST', data: {}, success: (recipe_filter) => {
-      addRecipeFilter(recipe_filter)
-      changePage(3, {filterId: recipe_filter.id})
-    }})
-  }
+  //const createRecipeFilter = () => {
+  //  ajax({url: recipe_filters_path(), type: 'POST', data: {}, success: (recipe_filter) => {
+  //    addRecipeFilter(recipe_filter)
+  //    changePage(3, {filterId: recipe_filter.id})
+  //  }})
+  //}
 
-  const buttons = recipeFilters.map(filter => <TagButton key={filter.id} winWidth={winWidth} image={`/img/${filter.image_src || "question-mark.jpg"}`} title={filter.name || "Sans nom"} handleClick={() => changePage(PAGE_9, {filterId: filter.id})} />)
+  //const buttons = recipeFilters.map(filter => <TagButton key={filter.id} winWidth={winWidth} image={`/img/${filter.image_src || "question-mark.jpg"}`} title={filter.name || "Sans nom"} handleClick={() => changePage(PAGE_9, {filterId: filter.id})} />)
+  const buttons = userTags.map(userTag => {
+    let tag = recipeFilters.find(t => t.id == userTag.tag_id)
+    return <TagButton key={userTag.id} winWidth={winWidth} image={`/img/${tag.image_src || "question-mark.jpg"}`} title={tag.name || "Sans nom"} handleClick={() => changePage(PAGE_9, {filterId: tag.id})} />
+  })
 
   // Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
   //<TagButton winWidth={winWidth} image="/img/recipes.jpg" title="Mes livres" handleClick={() => changePage(7)} />
@@ -479,7 +483,6 @@ const TagIndex = ({recipeFilters, addRecipeFilter, changePage}) => {
       <TagButton winWidth={winWidth} image="/img/cooking.jpg" title="Mes recettes" handleClick={() => changePage(6)} />
       <TagButton winWidth={winWidth} image="/img/recipes.jpg" title="Mes livres" handleClick={() => {window.location.href = my_books_path()}} />
       {buttons}
-      <TagButton winWidth={winWidth} image="/img/plus.jpg" title="Nouveau" handleClick={() => createRecipeFilter()} />
       <TagButton winWidth={winWidth} image="/icons/gear-gray.svg" title="Paramètres" handleClick={() => changePage(4)} />
     </div>
   </>)
