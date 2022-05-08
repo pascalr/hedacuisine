@@ -515,7 +515,6 @@ const App = () => {
 
   bindSetter(suggestions, setSuggestions)
   const [page, setPage] = useState(getUrlParams())
-  bindSetter(page, setPage)
   //const [page, setPage] = useState({})
   
   useEffect(() => {
@@ -525,21 +524,28 @@ const App = () => {
   }, [])
 
   const parentPages = {
-    PAGE_2: PAGE_1,
-    PAGE_3: PAGE_4,
-    PAGE_4: PAGE_1,
-    PAGE_5: PAGE_3,
-    PAGE_6: PAGE_1,
-    PAGE_7: PAGE_1,
-    PAGE_8: PAGE_3, // SuggestionsOverview => EditFilter
-    PAGE_9: PAGE_1,
+    [PAGE_2]: PAGE_1,
+    [PAGE_3]: PAGE_4,
+    [PAGE_4]: PAGE_1,
+    [PAGE_5]: PAGE_3,
+    [PAGE_6]: PAGE_1,
+    [PAGE_7]: PAGE_1,
+    [PAGE_8]: PAGE_3, // SuggestionsOverview => EditFilter
+    [PAGE_9]: PAGE_1,
   }
 
+  // Deprecated, use page.update(newPage) which uses changePageV2
   const changePage = (pageNb, args={}) => {
     let s = {page: pageNb, ...(omit(args, 'update'))}
     window.history.replaceState(s, '', '?'+new URLSearchParams(s).toString())
     setPage(s)
   }
+  const changePageV2 = (page) => {
+    let s = omit(page, 'update')
+    window.history.replaceState(s, '', '?'+new URLSearchParams(s).toString())
+    setPage(s)
+  }
+  bindSetter(page, changePageV2)
 
   const pages = {
     1: <TagIndex changePage={changePage} recipeFilters={recipeFilters} addRecipeFilter={(filter) => setRecipeFilters(recipeFilters.concat([filter]))} />,
