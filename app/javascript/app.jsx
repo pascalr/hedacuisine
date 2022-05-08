@@ -473,7 +473,7 @@ const EditConfig = ({recipeFilters, changePage, setRecipeFilters}) => {
   </>)
 }
 
-const ChooseOccasionButton = ({winWidth, image, title, handleClick}) => {
+const TagButton = ({winWidth, image, title, handleClick}) => {
   return (
     <div style={{width: `${Math.min(200, winWidth/2)}px`, padding: `${Math.min(25, (winWidth-300)/4)}px`, display: "inline-block"}}>
       <button className="plain-btn d-flex p-1 flex-column align-items-center" onClick={handleClick}>
@@ -483,7 +483,7 @@ const ChooseOccasionButton = ({winWidth, image, title, handleClick}) => {
     </div>
   )
 }
-const ChooseOccasion = ({recipeFilters, addRecipeFilter, changePage}) => {
+const TagIndex = ({recipeFilters, addRecipeFilter, changePage}) => {
 
   const [winWidth, setWinWidth] = useState(window.innerWidth)
   useEffect(() => {
@@ -501,17 +501,17 @@ const ChooseOccasion = ({recipeFilters, addRecipeFilter, changePage}) => {
     }})
   }
 
-  const buttons = recipeFilters.map(filter => <ChooseOccasionButton key={filter.id} winWidth={winWidth} image={`/img/${filter.image_src || "question-mark.jpg"}`} title={filter.name || "Sans nom"} handleClick={() => changePage(2, {filterId: filter.id})} />)
+  const buttons = recipeFilters.map(filter => <TagButton key={filter.id} winWidth={winWidth} image={`/img/${filter.image_src || "question-mark.jpg"}`} title={filter.name || "Sans nom"} handleClick={() => changePage(2, {filterId: filter.id})} />)
 
   // Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
-  //<ChooseOccasionButton winWidth={winWidth} image="/img/recipes.jpg" title="Mes livres" handleClick={() => changePage(7)} />
+  //<TagButton winWidth={winWidth} image="/img/recipes.jpg" title="Mes livres" handleClick={() => changePage(7)} />
   return (<>
     <div style={{maxWidth: "100vw", width: "400px", margin: "auto"}}>
-      <ChooseOccasionButton winWidth={winWidth} image="/img/cooking.jpg" title="Mes recettes" handleClick={() => changePage(6)} />
-      <ChooseOccasionButton winWidth={winWidth} image="/img/recipes.jpg" title="Mes livres" handleClick={() => {window.location.href = my_books_path()}} />
+      <TagButton winWidth={winWidth} image="/img/cooking.jpg" title="Mes recettes" handleClick={() => changePage(6)} />
+      <TagButton winWidth={winWidth} image="/img/recipes.jpg" title="Mes livres" handleClick={() => {window.location.href = my_books_path()}} />
       {buttons}
-      <ChooseOccasionButton winWidth={winWidth} image="/img/plus.jpg" title="Nouveau" handleClick={() => createRecipeFilter()} />
-      <ChooseOccasionButton winWidth={winWidth} image="/icons/gear-gray.svg" title="Paramètres" handleClick={() => changePage(4)} />
+      <TagButton winWidth={winWidth} image="/img/plus.jpg" title="Nouveau" handleClick={() => createRecipeFilter()} />
+      <TagButton winWidth={winWidth} image="/icons/gear-gray.svg" title="Paramètres" handleClick={() => changePage(4)} />
     </div>
   </>)
 }
@@ -588,7 +588,7 @@ const App = () => {
   }
 
   const pages = {
-    1: <ChooseOccasion changePage={changePage} recipeFilters={recipeFilters} addRecipeFilter={(filter) => setRecipeFilters(recipeFilters.concat([filter]))} />,
+    1: <TagIndex changePage={changePage} recipeFilters={recipeFilters} addRecipeFilter={(filter) => setRecipeFilters(recipeFilters.concat([filter]))} />,
     2: <TagCategorySuggestions changePage={changePage} page={page} recipeFilters={recipeFilters} />,
     3: <EditFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
     4: <EditConfig changePage={changePage} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
