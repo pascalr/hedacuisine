@@ -6,7 +6,7 @@ import Hammer from "react-hammerjs"
 
 import { useCacheOrFetch } from "./lib"
 import {RecipeIndex} from './recipe_index'
-import { ajax, isBlank, preloadImage, getUrlParams } from "./utils"
+import { omit, ajax, isBlank, preloadImage, getUrlParams } from "./utils"
 import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, batch_create_filtered_recipes_path, batch_destroy_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path } from './routes'
 import {TextField} from './form'
 import {PublicImageField} from './modals/public_image'
@@ -17,10 +17,11 @@ const encodeRecord = (record) => (`${record.class_name == "recipe_kind" ? '' : '
 const LinkToPage = ({page, children, ...props}) => {
   const switchPage = (evt, page) => {
     evt.preventDefault()
-    page.update(page)
+    page.update(omit(page,'update'))
   }
+  const href = '?'+new URLSearchParams(omit(page,'update')).toString()
   // FIXME: The link should be good, so I can right click open in new tab. href="#" is bad...
-  return <a className={"nav-link" + (page.page == 9 ? ' active' : '')} href="#" onClick={(e) => switchPage(e, page)} {...props}>{children}</a>
+  return <a className={"nav-link" + (page.page == 9 ? ' active' : '')} href={href} onClick={(e) => switchPage(e, page)} {...props}>{children}</a>
 }
 
 const SuggestionsNav = ({page}) => {
@@ -591,7 +592,7 @@ const App = () => {
   }
 
   const changePage = (pageNb, args={}) => {
-    let s = {page: pageNb, ...args}
+    let s = {page: pageNb, ...(omit(args, 'update'))}
     window.history.replaceState(s, '', '?'+new URLSearchParams(s).toString())
     setPage(s)
   }

@@ -1,6 +1,12 @@
 import Rails from '@rails/ujs'
 import $ from 'jquery'
 
+export function omit(obj, property) {
+  let o = {...obj}
+  delete o[property]
+  return o
+}
+
 function stringToPrimitive(str) {
   let i = parseInt(str)
   if (i.toString() == str) {return i}
