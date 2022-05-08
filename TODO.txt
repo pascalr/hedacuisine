@@ -1,3 +1,5 @@
+Pouvoir naviguer avec le clavier pour RecipeSingleCarrousel
+
 Modifier la manière de changePage en react. Utiliser toujours des links et pouvoir faire right click open in new tab.
 
 Changer l'image de noël, potluck et plusieurs repas, mes livres aussi tant qu'à faire et recettes rapide aussi peut-être...

@@ -57,7 +57,7 @@ const SuggestionsNav = ({page}) => {
   </>)
 }
 
-const RecipeSingleCarrousel = ({tag, suggestions}) => {
+const RecipeSingleCarrousel = ({tag, suggestions, isCategory}) => {
   
   const [suggestionNb, setSuggestionNb] = useState(0)
   const [maxSuggestionNb, setMaxSuggestionNb] = useState(0)
@@ -65,9 +65,6 @@ const RecipeSingleCarrousel = ({tag, suggestions}) => {
   let suggestion = suggestions ? suggestions[suggestionNb] : null
   if (!suggestion) {console.log('no suggestion to show'); return ''}
 
-  console.log('suggestion', suggestion)
-  console.log('suggestions', suggestions)
-  
   //const preloadSuggestion = (suggestion) => {
   //  console.log('preloading suggestion')
   //  if (suggestion.image_id) {
@@ -110,6 +107,7 @@ const RecipeSingleCarrousel = ({tag, suggestions}) => {
   
   //<button type="button" className="btn btn-danger" onClick={() => nextSuggestion()}>Non, pas cette fois</button>
  
+  const href = isCategory ? recipe_kind_path(suggestion) : recipe_path({id: suggestion.recipe_id})
   return (<>
     <Hammer onSwipe={handleSwipe}>
       <div>
@@ -125,7 +123,7 @@ const RecipeSingleCarrousel = ({tag, suggestions}) => {
         </div>
         <div style={{height: '0.5em'}}></div>
         <div id="choose-btns" className="d-flex flex-column">
-          <a type="button" className="btn btn-primary" onClick={sendStats} href={recipe_path({id: suggestion.recipe_id})}>Cuisiner!</a>
+          <a type="button" className="btn btn-primary" onClick={sendStats} href={href}>Cuisiner!</a>
         </div>
       </div>
     </Hammer>
@@ -148,91 +146,23 @@ const TagSuggestions = ({tags, suggestions, page, changePage}) => {
 
 const TagCategorySuggestions = ({changePage, page, recipeFilters}) => {
 
-  const preloadSuggestion = (suggestion) => {
-    console.log('preloading suggestion')
-    if (suggestion.image_id) {
-      preloadImage(image_variant_path(suggestion.image_id, "medium"))
-    }
-  }
-  
-  const [suggestionNb, setSuggestionNb] = useState(0)
-  const [maxSuggestionNb, setMaxSuggestionNb] = useState(0)
   const suggestions = useCacheOrFetch(suggestions_path({recipe_filter_id: page.filterId}))
-  useEffect(() => {
-    console.log('inside use effect')
-    if (suggestions) {
-      for (let i = 0; i < 3 && i < suggestions.length-1; i++) {
-        preloadSuggestion(suggestions[i])
-      }
-    }
-  }, [suggestions])
+  //useEffect(() => {
+  //  console.log('inside use effect')
+  //  if (suggestions) {
+  //    for (let i = 0; i < 3 && i < suggestions.length-1; i++) {
+  //      preloadSuggestion(suggestions[i])
+  //    }
+  //  }
+  //}, [suggestions])
 
-  const filter = recipeFilters.find(f => f.id == page.filterId)
-  
-  if (!filter) {return ''}
+  const tag = recipeFilters.find(f => f.id == page.filterId)
+  if (!tag) {return ''}
 
-  const nextSuggestion = () => {
-    if (suggestionNb < suggestions.length-1) {
-      let nb = suggestionNb + 1
-      setSuggestionNb(nb)
-      if (nb > maxSuggestionNb) { setMaxSuggestionNb(nb) }
-    }
-    if (suggestionNb+2 < suggestions.length-1 && suggestionNb == maxSuggestionNb) {
-      preloadSuggestion(suggestions[suggestionNb])
-    }
-  }
-  const previousSuggestion = () => {
-    setSuggestionNb(suggestionNb <= 0 ? 0 : suggestionNb - 1)
-  }
-
-  let handleSwipe = ({direction}) => {
-    if (direction == 2) { // left
-      nextSuggestion()
-    } else if (direction == 4) { // right
-      previousSuggestion()
-    }
-  }
- 
-  let suggestion = suggestions ? suggestions[suggestionNb] : null
-  if (!suggestion) {console.log('no suggestion to show'); return filter.name ? <h2 style={{textAlign: 'center'}}>{filter.name}</h2> : ''}
-
-  const selectRecipe = () => {
-    let skipped = []
-    for (let i = 0; i < suggestionNb; i++) {
-      skipped.push(encodeRecord(suggestions[i]))
-    }
-    for (let i = suggestionNb+1; i <= maxSuggestionNb; i++) {
-      skipped.push(encodeRecord(suggestions[i]))
-    }
-    // send stats, which recipe was skipped, which was selected
-    ajax({url: send_data_suggestions_path(), type: 'PATCH', data: {filterId: filter.id, skipped, selected: encodeRecord(suggestion)}, success: (suggests) => {
-      window.location = recipe_kind_path(suggestion)
-    }, error: () => {
-      window.location = recipe_kind_path(suggestion)
-    }})
-  }
-  
-  //<button type="button" className="btn btn-danger" onClick={() => nextSuggestion()}>Non, pas cette fois</button>
   return (<>
     <SuggestionsNav page={page} changePage={changePage} />
-    {filter.name ? <h2 style={{textAlign: 'center'}}>{filter.name}</h2> : ''}
-    <Hammer onSwipe={handleSwipe}>
-      <div>
-        <div className="over-container" style={{margin: "auto"}}>
-          <img src={suggestion.image_id ? image_variant_path(suggestion.image_id, "medium") : "/default_recipe_01.png"} style={{maxWidth: "100vw"}} width="452" height="304" />
-          <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "2em", padding: "0.2em 0.8em 0 0.2em"}}>{suggestion.name}</h2>
-          <div className="left-center">
-            <img src={icon_path("custom-chevron-left.svg")} width="45" height="90" onClick={previousSuggestion} aria-disabled={suggestionNb <= 0} />
-          </div>
-          <div className="right-center">
-            <img src={icon_path("custom-chevron-right.svg")} width="45" height="90" onClick={nextSuggestion} aria-disabled={suggestionNb >= suggestions.length-1} />
-          </div>
-        </div>
-        <div id="choose-btns" className="d-flex flex-column">
-          <button type="button" className="btn btn-primary" onClick={selectRecipe}>Cuisiner!</button>
-        </div>
-      </div>
-    </Hammer>
+    {tag.name ? <h2 style={{textAlign: 'center'}}>{tag.name}</h2> : ''}
+    <RecipeSingleCarrousel tag={tag} suggestions={suggestions} isCategory={true} />
   </>)
 }
 
