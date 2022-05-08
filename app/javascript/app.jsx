@@ -14,6 +14,50 @@ import { DeleteConfirmButton } from './components/delete_confirm_button'
   
 const encodeRecord = (record) => (`${record.class_name == "recipe_kind" ? '' : '_'}${record.id}`)
 
+    //<ul className="nav nav-tabs">
+    //  <li className="nav-item">
+    //    <a className="nav-link" onClick={() => changePage(9, {filterId: page.filterId})} href="#">Mes recettes</a>
+    //  </li>
+    //  <li className="nav-item">
+    //    <a className="nav-link active" aria-current="page" href="#">Autres recettes</a>
+    //  </li>
+    //  <li className="nav-item">
+    //    <a className="nav-link" href="#">Filtres</a>
+    //  </li>
+    //</ul>
+    //<br/>
+const LinkToPage = ({page, changePage, children, ...props}) => {
+  const switchPage = (evt, page) => {
+    evt.preventDefault()
+    changePage(page.page, page)
+  }
+  // TODO: Bind changePage to page...
+  return <a className={"nav-link" + (page.page == 9 ? ' active' : '')} href="#" onClick={(e) => switchPage(e, page)} {...props}>{children}</a>
+}
+
+const SuggestionsNav = ({page, changePage}) => {
+  const switchPage = (pageNb) => {
+    console.log("page.page", page.page)
+    console.log("pageNb", pageNb)
+    if (page.page != pageNb) {changePage(pageNb, page)}
+  }
+  // FIXME: The link should be good, so I can right click open in new tab. href="#" is bad...
+  return (<>
+    <ul className="nav nav-tabs">
+      <li className="nav-item">
+        <LinkToPage page={{...page, page: 9}} changePage={changePage}  className={"nav-link" + (page.page == 9 ? ' active' : '')}>Mes recettes</LinkToPage>
+      </li>
+      <li className="nav-item">
+        <LinkToPage page={{...page, page: 2}} changePage={changePage}  className={"nav-link" + (page.page == 2 ? ' active' : '')}>Autres recettes</LinkToPage>
+      </li>
+      <li className="nav-item">
+        <a className="nav-link" href="#">Filtres</a>
+      </li>
+    </ul>
+    <br/>
+  </>)
+}
+
 const TagSuggestions = ({tags, suggestions, page, changePage}) => {
 
   //const preloadSuggestion = (suggestion) => {
@@ -90,18 +134,7 @@ const TagSuggestions = ({tags, suggestions, page, changePage}) => {
     //  </div>
     //</Hammer>
   return (<>
-    <ul className="nav nav-tabs">
-      <li className="nav-item">
-        <a className="nav-link active" aria-current="page" href="#">Mes recettes</a>
-      </li>
-      <li className="nav-item">
-        <a className="nav-link" onClick={() => changePage(2, {filterId: page.filterId})}>Autres recettes</a>
-      </li>
-      <li className="nav-item">
-        <a className="nav-link" href="#">Filtres</a>
-      </li>
-    </ul>
-    <br/>
+    <SuggestionsNav page={page} changePage={changePage} />
     {filter.name ? <h2 style={{textAlign: 'center'}}>{filter.name}</h2> : ''}
   </>)
 }
@@ -174,18 +207,7 @@ const TagCategorySuggestions = ({changePage, page, recipeFilters}) => {
   
   //<button type="button" className="btn btn-danger" onClick={() => nextSuggestion()}>Non, pas cette fois</button>
   return (<>
-    <ul className="nav nav-tabs">
-      <li className="nav-item">
-        <a className="nav-link" onClick={() => changePage(9, {filterId: page.filterId})}>Mes recettes</a>
-      </li>
-      <li className="nav-item">
-        <a className="nav-link active" aria-current="page" href="#">Autres recettes</a>
-      </li>
-      <li className="nav-item">
-        <a className="nav-link" href="#">Filtres</a>
-      </li>
-    </ul>
-    <br/>
+    <SuggestionsNav page={page} changePage={changePage} />
     {filter.name ? <h2 style={{textAlign: 'center'}}>{filter.name}</h2> : ''}
     <Hammer onSwipe={handleSwipe}>
       <div>

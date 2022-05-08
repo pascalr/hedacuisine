@@ -1,5 +1,7 @@
 Modifier la manière de changePage en react. Utiliser toujours des links et pouvoir faire right click open in new tab.
 
+Changer l'image de noël, potluck et plusieurs repas, mes livres aussi tant qu'à faire et recettes rapide aussi peut-être...
+
 EditUserRecipeModal continue....
 
 TODO: Ajouter un modal pour sélectionner les tags. Créer une suggestion pour chaque tag sélectionner. Supprimer les suggestions pour les tags désélectionner.
