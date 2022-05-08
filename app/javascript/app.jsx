@@ -6,7 +6,7 @@ import Hammer from "react-hammerjs"
 
 import { useCacheOrFetch } from "./lib"
 import {RecipeIndex} from './recipe_index'
-import { omit, ajax, isBlank, preloadImage, getUrlParams } from "./utils"
+import { omit, ajax, isBlank, preloadImage, getUrlParams, join, bindSetter } from "./utils"
 import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, batch_create_filtered_recipes_path, batch_destroy_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path } from './routes'
 import {TextField} from './form'
 import {PublicImageField} from './modals/public_image'
@@ -14,24 +14,24 @@ import { DeleteConfirmButton } from './components/delete_confirm_button'
   
 const encodeRecord = (record) => (`${record.class_name == "recipe_kind" ? '' : '_'}${record.id}`)
 
-const LinkToPage = ({page, children, ...props}) => {
+const LinkToPage = ({page, className, children, active, ...props}) => {
   const switchPage = (evt, page) => {
     evt.preventDefault()
     page.update(omit(page,'update'))
   }
   const href = '?'+new URLSearchParams(omit(page,'update')).toString()
-  // FIXME: The link should be good, so I can right click open in new tab. href="#" is bad...
-  return <a className={"nav-link" + (page.page == 9 ? ' active' : '')} href={href} onClick={(e) => switchPage(e, page)} {...props}>{children}</a>
+
+  return <a className={join(className, active ? 'active' : null)} href={href} onClick={(e) => switchPage(e, page)} {...props}>{children}</a>
 }
 
 const SuggestionsNav = ({page}) => {
   return (<>
     <ul className="nav nav-tabs">
       <li className="nav-item">
-        <LinkToPage page={{...page, page: 9}} className={"nav-link" + (page.page == 9 ? ' active' : '')}>Mes recettes</LinkToPage>
+        <LinkToPage page={{...page, page: 9}} className="nav-link" active={page.page == 9}>Mes recettes</LinkToPage>
       </li>
       <li className="nav-item">
-        <LinkToPage page={{...page, page: 2}} className={"nav-link" + (page.page == 2 ? ' active' : '')}>Autres recettes</LinkToPage>
+        <LinkToPage page={{...page, page: 2}} className="nav-link" active={page.page == 2}>Autres recettes</LinkToPage>
       </li>
       <li className="nav-item">
         <a className="nav-link" href="#">Filtres</a>
@@ -559,20 +559,10 @@ const App = () => {
   const [recipeFilters, setRecipeFilters] = useState([])
   const [suggestions, setSuggestions] = useState(gon.suggestions)
 
-  const bindSetter = (obj, setter) => {
-    const updateObj = (val) => {
-      console.log("obj.update", obj.update)
-      val.update = obj.update
-      setter(val)
-    }
-    obj.update = updateObj
-  }
-
   bindSetter(suggestions, setSuggestions)
   const [page, setPage] = useState(getUrlParams())
   bindSetter(page, setPage)
   //const [page, setPage] = useState({})
-  console.log('suggestions', suggestions)
   
   useEffect(() => {
     if (window.gon && gon.recipe_filters) { setRecipeFilters(gon.recipe_filters) }

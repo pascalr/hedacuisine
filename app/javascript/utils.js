@@ -1,10 +1,26 @@
 import Rails from '@rails/ujs'
 import $ from 'jquery'
 
+
+export function bindSetter(obj, setter) {
+  const updateObj = (val) => {
+    val.update = obj.update
+    setter(val)
+  }
+  obj.update = updateObj
+}
+
 export function omit(obj, property) {
   let o = {...obj}
   delete o[property]
   return o
+}
+
+export function join(str1, str2) {
+  if (str1 && str2) {return `${str1} ${str2}`}
+  if (str1 && !str2) {return str1}
+  if (str2 && !str1) {return str2}
+  return ''
 }
 
 function stringToPrimitive(str) {
