@@ -1,7 +1,7 @@
 class Suggestion < ApplicationRecord
   belongs_to :user
-  belongs_to :recipe, optional: true
-  belongs_to :recipe_kind, optional: true
+  belongs_to :recipe
+  #belongs_to :recipe_kind, optional: true # DEPRECATED, use FilteredRecipe instead
 
   delegate :name, to: :recipe
   delegate :image_id, to: :recipe
