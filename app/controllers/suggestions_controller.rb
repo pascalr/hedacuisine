@@ -56,6 +56,6 @@ class SuggestionsController < ApplicationController
 private
   def decode_record(id, filter_id)
     args = (id.start_with? "_") ? {recipe_id: id[1..-1]} : {recipe_kind_id: id}
-    current_user.suggestions.find_or_create_by(args.merge({filter_id: filter_id}))
+    current_user.suggestions.find_by(args.merge({filter_id: filter_id}))
   end
 end

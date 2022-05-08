@@ -95,14 +95,16 @@ const RecipeSingleCarrousel = ({tag, suggestions, isCategory}) => {
   }
 
   const sendStats = () => {
-    let skipped = []
-    for (let i = 0; i < suggestionNb; i++) {
-      skipped.push(encodeRecord(suggestions[i]))
+    if (!isCategory) {
+      let skipped = []
+      for (let i = 0; i < suggestionNb; i++) {
+        skipped.push(encodeRecord(suggestions[i]))
+      }
+      for (let i = suggestionNb+1; i <= maxSuggestionNb; i++) {
+        skipped.push(encodeRecord(suggestions[i]))
+      }
+      ajax({url: send_data_suggestions_path(), type: 'PATCH', data: {filterId: tag.id, skipped, selected: encodeRecord(suggestion)}})
     }
-    for (let i = suggestionNb+1; i <= maxSuggestionNb; i++) {
-      skipped.push(encodeRecord(suggestions[i]))
-    }
-    ajax({url: send_data_suggestions_path(), type: 'PATCH', data: {filterId: tag.id, skipped, selected: encodeRecord(suggestion)}})
   }
   
   //<button type="button" className="btn btn-danger" onClick={() => nextSuggestion()}>Non, pas cette fois</button>
