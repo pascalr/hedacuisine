@@ -33,7 +33,7 @@ class RecipesController < ApplicationController
       end
       tag_ids.each do |id|
         s = current_user.suggestions.create(recipe_id: @recipe.id, filter_id: id)
-        created << s
+        created << s.to_obj_with_recipe_info
       end
     end
     render json: {created: created, destroyed: destroyed}

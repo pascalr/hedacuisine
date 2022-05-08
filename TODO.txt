@@ -1,3 +1,7 @@
+Pouvoir changer l'ordre des tags.
+
+Pouvoir tagger toutes mes recettes rapidement en choississant un tag.
+
 Pouvoir naviguer avec le clavier pour RecipeSingleCarrousel
 
 Modifier la manière de changePage en react. Utiliser toujours des links et pouvoir faire right click open in new tab.
