@@ -1,4 +1,4 @@
-Pouvoir changer l'ordre des tags.
+Pouvoir changer l'ordre des tags. Créer un nouveau model. UserTag
 
 Pouvoir tagger toutes mes recettes rapidement en choississant un tag.
 

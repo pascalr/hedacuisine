@@ -118,6 +118,12 @@ export const user_books_books_path = (arg) => {
   return `/books/user_books`
 }
 
+export const user_tags_path = (arg) => {
+  return `/user_tags`
+}
+export const user_tag_path = (arg) => {
+  return `/user_tags/${extractParamFromModel(arg)}`
+}
 //export const send_training_data_suggestions_path = (arg) => {
 //  return `/suggestions/send_training_data`
 //}

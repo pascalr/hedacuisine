@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   resources :favorite_recipes, only: [:create, :destroy]
   resources :recipe_filters, only: [:create, :update, :destroy]
   resources :filtered_recipes, only: [:create, :update, :destroy]
+  resources :user_tags, only: [:create, :update, :destroy]
   get 'search/index'
   resources :listings
   resources :ingredients

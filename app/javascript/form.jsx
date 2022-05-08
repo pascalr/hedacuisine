@@ -34,6 +34,8 @@ export const AutocompleteInput = ({name, choices, placeholder, onSelect}) => {
               matches.push(idx);
             }
           }
+          console.log('choices', choices)
+          console.log('suggest', matches)
           suggest(matches);
         },
         renderItem: function (idx, search){

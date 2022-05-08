@@ -23,6 +23,7 @@ class User < ApplicationRecord
   has_many :books
   has_many :suggestions
   has_many :recipe_filters
+  has_many :user_tags
 
   has_many :machine_users
   has_many :machines, through: :machine_users

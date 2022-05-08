@@ -10,15 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_17_044122) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_08_195906) do
   create_table "accounts", force: :cascade do |t|
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "email", limit: 255, default: "", null: false
+    t.string "encrypted_password", limit: 255, default: "", null: false
+    t.string "reset_password_token", limit: 255
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "admin"
     t.index ["email"], name: "index_accounts_on_email", unique: true
     t.index ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true
@@ -213,21 +213,21 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_17_044122) do
   end
 
   create_table "favorite_recipes", force: :cascade do |t|
-    t.integer "recipe_id", null: false
-    t.integer "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.bigint "recipe_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["recipe_id"], name: "index_favorite_recipes_on_recipe_id"
     t.index ["user_id"], name: "index_favorite_recipes_on_user_id"
   end
 
   create_table "filtered_recipes", force: :cascade do |t|
     t.integer "filterable_id"
-    t.string "filterable_type"
+    t.string "filterable_type", limit: 255
     t.boolean "match"
-    t.integer "recipe_filter_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.bigint "recipe_filter_id", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["recipe_filter_id"], name: "index_filtered_recipes_on_recipe_filter_id"
   end
 
@@ -734,6 +734,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_17_044122) do
     t.index ["user_id"], name: "index_user_siblings_on_user_id"
   end
 
+  create_table "user_tags", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "tag_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_tags_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", limit: 255, default: "", null: false
     t.string "encrypted_password", limit: 255, default: "", null: false
@@ -824,6 +832,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_17_044122) do
   add_foreign_key "user_recipes", "user_recipe_categories"
   add_foreign_key "user_recipes", "users"
   add_foreign_key "user_siblings", "users"
+  add_foreign_key "user_tags", "users"
   add_foreign_key "weighings", "foods"
   add_foreign_key "weighings", "machines"
 end
