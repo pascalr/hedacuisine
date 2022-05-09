@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_08_195906) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_09_213928) do
   create_table "accounts", force: :cascade do |t|
     t.string "email", limit: 255, default: "", null: false
     t.string "encrypted_password", limit: 255, default: "", null: false
@@ -739,6 +739,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_08_195906) do
     t.integer "tag_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "position"
     t.index ["user_id"], name: "index_user_tags_on_user_id"
   end
 

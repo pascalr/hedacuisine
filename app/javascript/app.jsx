@@ -4,9 +4,10 @@ import Hammer from "react-hammerjs"
 //var windowHistory = window.history // window.history.back() => same as back in browser
 //import history from 'history/hash'
 
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useCacheOrFetch } from "./lib"
 import {RecipeIndex} from './recipe_index'
-import { omit, ajax, isBlank, preloadImage, getUrlParams, join, bindSetter } from "./utils"
+import { omit, ajax, isBlank, preloadImage, getUrlParams, join, bindSetter, sortBy } from "./utils"
 import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, batch_create_filtered_recipes_path, batch_destroy_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path, recipe_path, user_tags_path, user_tag_path } from './routes'
 import {TextField} from './form'
 import {PublicImageField} from './modals/public_image'
@@ -390,6 +391,8 @@ const TrainFilter = ({changePage, page, recipeFilters, setRecipeFilters}) => {
 
 const EditUserTags = ({userTags, recipeFilters, changePage, setRecipeFilters}) => {
 
+  //userTags = sortBy(userTags, "position") Not necessary, done on server side
+
   const removeUserTag = (userTag) => {
     ajax({url: user_tag_path(userTag), type: 'DELETE', success: () => {
       userTags.update(userTags.filter(f => f.id != userTag.id))
@@ -398,36 +401,35 @@ const EditUserTags = ({userTags, recipeFilters, changePage, setRecipeFilters}) =
   
   const [showAddModal, setShowAddModal] = useState(false)
 
-  //const userFilters = recipeFilters.filter(f => f.user_id)
-  //const defaultFilters = recipeFilters.filter(f => !f.user_id)
-
-  //const editFilters = userFilters.map(filter => (
-  //  <li key={filter.id}>
-  //    <u className="cursor-pointer" onClick={() => changePage(3, {filterId: filter.id})}>{filter.name || "Sans nom"}</u>
-  //    <DeleteConfirmButton id={`del-recipe-filter-${filter.id}`} onDeleteConfirm={() => removeRecipeFilter(filter)} message="Je veux supprimer ce filtre?" />
-  //  </li>))
-  //const defFilters = defaultFilters.map(filter => {
-  //  if (gon.current_user_admin) {
-  //    return (
-  //      <li key={filter.id}>
-  //        <u className="cursor-pointer" onClick={() => changePage(3, {filterId: filter.id})}>{filter.name || "Sans nom"}</u>
-  //        <DeleteConfirmButton id={`del-recipe-filter-${filter.id}`} onDeleteConfirm={() => removeRecipeFilter(filter)} message="Je veux supprimer ce filtre?" />
-  //      </li>
-  //    )
-  //  } else {
-  //    return <li key={filter.id}>{filter.name || "Sans nom"}</li>
-  //  }
-  //})
-    // TODO: Add the ability to remove default filters...
-    // <DeleteConfirmButton id={`del-recipe-filter-${filter.id}`} onDeleteConfirm={() => removeRecipeFilter(filter)} message="Je veux supprimer ce filtre?" />
-
-  const userTagsC = userTags.map((userTag) => {
+  const userTagsC = userTags.map((userTag, index) => {
     let tag = recipeFilters.find(t => t.id == userTag.tag_id)
-    return <li key={tag.id}>
-      <u className="cursor-pointer" onClick={() => page.update({page: 3, filterId: tag.id})}>{tag.name || "Sans nom"}</u>
-      <DeleteConfirmButton id={`del-user-tag-${userTag.id}`} onDeleteConfirm={() => removeUserTag(userTag)} message="Je veux retirer cette étiquette?" />
-    </li>
+    return <Draggable key={`drag-user-tag-${userTag.id}`} draggableId={`drag-user-tag-${userTag.id.toString()}`} index={index}>
+      {(provided) => (<>
+        <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
+          <li>
+            <span className="cursor-pointer" onClick={() => page.update({page: 3, filterId: tag.id})}>{tag.name || "Sans nom"}</span>
+            <DeleteConfirmButton id={`del-user-tag-${userTag.id}`} onDeleteConfirm={() => removeUserTag(userTag)} message="Je veux retirer cette étiquette?" />
+          </li>
+        </div>
+      </>)}
+    </Draggable>
   })
+
+  const handleDrop = ({source, destination, type, draggableId}) => {
+    if (!destination) return; // Ignore drop outside droppable container
+    
+    let userTagId = draggableId.substr(14) // removes "drag-user-tag-"
+
+    var updatedList = [...userTags];
+    const [reorderedItem] = updatedList.splice(source.index, 1);
+    updatedList.splice(destination.index, 0, reorderedItem);
+
+    let data = {position: destination.index+1}
+    ajax({url: user_tag_path({id: userTagId}), type: 'PATCH', data, success: () => {
+      updatedList.forEach((el,i) => {el.position = i+1}) 
+      userTags.update(updatedList)
+    }})
+  }
 
   return (<>
     <AddUserTagModal showModal={showAddModal} setShowModal={setShowAddModal} tags={recipeFilters} userTags={userTags} />
@@ -435,9 +437,18 @@ const EditUserTags = ({userTags, recipeFilters, changePage, setRecipeFilters}) =
       <h2>Étiquettes</h2>
       <button type="button" className="btn btn-outline-primary btn-sm" onClick={() => setShowAddModal(true)}>Ajouter une étiquette</button>
     </div>
-    <ul>
-    {userTagsC}
-    </ul>
+    <DragDropContext onDragEnd={handleDrop}>
+      <Droppable droppableId="user-tags-container">
+        {(provided) => (<>
+          <div className="user-tags-container" {...provided.droppableProps} ref={provided.innerRef}>
+            <ul>
+              {userTagsC}
+            </ul>
+            {provided.placeholder}
+          </div>
+        </>)}
+      </Droppable>
+    </DragDropContext>
   </>)
 }
 

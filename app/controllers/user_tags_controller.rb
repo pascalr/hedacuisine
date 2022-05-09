@@ -10,7 +10,11 @@ class UserTagsController < ApplicationController
   end
 
   def update
-    @user_tag.update!(user_tag_params)
+    if params[:position]
+      @user_tag.insert_at(params[:position].to_i)
+    else
+      @user_tag.update!(user_tag_params)
+    end
     respond_to do |format|
       format.json {render json: @user_tag.to_obj}
     end
