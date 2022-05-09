@@ -19,10 +19,10 @@ const PAGE_1 = 1 // TagIndex
 const PAGE_2 = 2 // TagCategorySuggestions
 const PAGE_3 = 3 // EditFilter
 const PAGE_4 = 4 // EditUserTags
-const PAGE_5 = 5 // TrainFilter
+//const PAGE_5 = 5 // TrainFilter
 const PAGE_6 = 6 // MyRecipes
 const PAGE_7 = 7 // MyBooks
-const PAGE_8 = 8 // SuggestionsOverview
+const PAGE_8 = 8 // TagEditAllCategories
 const PAGE_9 = 9 // TagSuggestions
 const PAGE_10 = 10
 const PAGE_11 = 11
@@ -63,19 +63,9 @@ const RecipeSingleCarrousel = ({tag, suggestions, isCategory}) => {
   
   const [suggestionNb, setSuggestionNb] = useState(0)
   const [maxSuggestionNb, setMaxSuggestionNb] = useState(0)
-  
-  let suggestion = suggestions ? suggestions[suggestionNb] : null
-  if (!suggestion) {console.log('no suggestion to show'); return ''}
-
-  //const preloadSuggestion = (suggestion) => {
-  //  console.log('preloading suggestion')
-  //  if (suggestion.image_id) {
-  //    preloadImage(image_variant_path(suggestion.image_id, "medium"))
-  //  }
-  //}
 
   const nextSuggestion = () => {
-    if (suggestionNb < suggestions.length-1) {
+    if (suggestions && suggestionNb < suggestions.length-1) {
       let nb = suggestionNb + 1
       setSuggestionNb(nb)
       if (nb > maxSuggestionNb) { setMaxSuggestionNb(nb) }
@@ -87,6 +77,28 @@ const RecipeSingleCarrousel = ({tag, suggestions, isCategory}) => {
   const previousSuggestion = () => {
     setSuggestionNb(suggestionNb <= 0 ? 0 : suggestionNb - 1)
   }
+  
+  let onKeyDown = ({key}) => {
+    if (key == "ArrowLeft") {previousSuggestion()}
+    if (key == "ArrowRight") {nextSuggestion()}
+  }
+
+  useEffect(() => {
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+    }
+  }, [])
+  
+  let suggestion = suggestions ? suggestions[suggestionNb] : null
+  if (!suggestion) {console.log('no suggestion to show'); return ''}
+
+  //const preloadSuggestion = (suggestion) => {
+  //  console.log('preloading suggestion')
+  //  if (suggestion.image_id) {
+  //    preloadImage(image_variant_path(suggestion.image_id, "medium"))
+  //  }
+  //}
   
   let handleSwipe = ({direction}) => {
     if (direction == 2) { // left
@@ -183,7 +195,7 @@ const RecipeImageWithTitle = ({record, selected, selectItem}) => {
   </div>
 }
 
-const SuggestionsOverview = ({changePage, page, recipeFilters}) => {
+const TagEditAllCategories = ({changePage, page, recipeFilters}) => {
   const [selected, setSelected] = useState({})
   //const [matching, setMatching] = useState([])
   //const [notMatching, setNotMatching] = useState([])
@@ -286,107 +298,13 @@ const EditFilter = ({changePage, page, recipeFilters, setRecipeFilters}) => {
     <PublicImageField model={filter} field="image_src" defaultSrc={"question-mark.jpg"} url={recipe_filter_path(filter)} getter={recipeFilters} setter={setRecipeFilters} />
     <br/>
     <div>
-      <button type="button" className="btn btn-primary" onClick={() => changePage(5, {filterId: filter.id})}>Filtrer les nouvelles suggestions</button>
+      <button type="button" className="btn btn-primary" onClick={() => {}}>Modifier les recettes correspondantes (not implemented yet)</button>
     </div>
     <br/>
     <div>
-      <button type="button" className="btn btn-primary" onClick={() => {}}>Modifier les filtres</button>
-    </div>
-    <br/>
-    <div>
-      <button type="button" className="btn btn-primary" onClick={() => changePage(8, {filterId: filter.id})}>Voir les suggestions</button>
+      <button type="button" className="btn btn-primary" onClick={() => changePage(8, {filterId: filter.id})}>Modifier les catégories correspondantes</button>
     </div>
   </>)
-}
-
-const TrainFilter = ({changePage, page, recipeFilters, setRecipeFilters}) => {
-
-  const filter = page && page.filterId ? recipeFilters.find(f => f.id == page.filterId) : null
-  if (!filter) {console.log("Can't train filter, did not exist."); return '';}
-  
-  const [dataToTrain, setDataToTrain] = useState([])
-  const [selected, setSelected] = useState({})
-  const [doneFetching, setDoneFetching] = useState(false)
-
-  const fetchBatch = () => {
-    ajax({url: missing_filtered_recipes_path({recipe_filter_id: filter.id}), type: 'GET', success: (data) => {
-      if (!data || data == []) {
-        console.log('done fetching received ', data)
-        setDoneFetching(true)
-      }
-      setSelected({})
-      setDataToTrain(data)
-    }})
-  }
-
-  useEffect(() => {
-    fetchBatch()
-  }, [])
-
-  const submitData = () => {
-    let data = dataToTrain.map((d,i) => ({filterable_type: d.class_name, filterable_id: d.id, selected: selected[i]}))
-    ajax({url: batch_create_filtered_recipes_path(), type: 'POST', data: {recipe_filter_id: filter.id, data: JSON.stringify(data)}, success: () => {
-      console.log('Fetching second batch of data')
-      fetchBatch()
-    }, error: (err) => {
-      console.log('Error sending training data', err)
-    }})
-  }
-              
-  const imageClicked = (nb) => {
-    let s = {...selected}
-    s[nb] = !s[nb]
-    setSelected(s)
-  }
-
-  if (!dataToTrain || dataToTrain.length <= 0) {return <p>Il ne reste plus aucune recette ou catégorie à entrainer.</p>}
-
-  return (<>
-    <h2 style={{textAlign: 'center'}}>Quelle recette correspond à {filter.name} ?</h2>
-    <table>
-      <tbody>
-        {[0,1,2,3,4].map(i => {
-          return (<tr key={i}>
-            {[0,1,2,3].map(j => {
-              let nb = j*5+i
-              let record = dataToTrain[nb]
-              if (!record) {return <td key={j}></td>}
-              return (<td key={j}>
-                <div className="over-container clickable" style={{margin: "auto", border: `4px solid ${selected[nb] ? 'blue' : 'white'}`}} onClick={() => imageClicked(nb)}>
-                  <img src={record.image_id ? image_variant_path(record.image_id, "small") : "/default_recipe_01.png"} width="255" height="171" />
-                  <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "1.2em", padding: "0.2em 0.8em 0 0.2em"}}>{record.name}</h2>
-                </div>
-              </td>)
-            })}
-          </tr>)
-        })}
-      </tbody>
-    </table>
-    <br/>
-    <button type="button" className="btn btn-primary" onClick={submitData}>Soumettre</button>
-  </>)
-  
-  //return (<>
-  //  <div>
-  //    <h2 style={{textAlign: 'center'}}>Entraîner: {filter.name}</h2>
-  //    <div className="over-container" style={{margin: "auto"}}>
-  //      <img src={record.image_id ? image_variant_path(record.image_id, "medium") : "/default_recipe_01.png"} style={{maxWidth: "100vw"}} width="452" height="304" />
-  //      <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "2em", padding: "0.2em 0.8em 0 0.2em"}}>{record.name}</h2>
-  //    </div>
-  //    <div>
-  //      <button type="button" className="btn btn-primary" onClick={() => {}}>1</button>
-  //      <button type="button" className="btn btn-primary" onClick={() => {}}>2</button>
-  //      <button type="button" className="btn btn-primary" onClick={() => {}}>3</button>
-  //      <button type="button" className="btn btn-primary" onClick={() => {}}>4</button>
-  //      <button type="button" className="btn btn-primary" onClick={() => {}}>5</button>
-  //      <button type="button" className="btn btn-primary" onClick={() => {}}>6</button>
-  //      <button type="button" className="btn btn-primary" onClick={() => {}}>7</button>
-  //      <button type="button" className="btn btn-primary" onClick={() => {}}>8</button>
-  //      <button type="button" className="btn btn-primary" onClick={() => {}}>9</button>
-  //      <button type="button" className="btn btn-primary" onClick={() => {}}>10</button>
-  //    </div>
-  //  </div>
-  //</>)
 }
 
 const EditUserTags = ({userTags, recipeFilters, setRecipeFilters, page}) => {
@@ -559,10 +477,10 @@ const App = () => {
     [PAGE_2]: PAGE_1,
     [PAGE_3]: PAGE_4,
     [PAGE_4]: PAGE_1,
-    [PAGE_5]: PAGE_3,
+    //[PAGE_5]: PAGE_3,
     [PAGE_6]: PAGE_1,
     [PAGE_7]: PAGE_1,
-    [PAGE_8]: PAGE_3, // SuggestionsOverview => EditFilter
+    [PAGE_8]: PAGE_3, // TagEditAllCategories => EditFilter
     [PAGE_9]: PAGE_1,
   }
 
@@ -584,10 +502,10 @@ const App = () => {
     2: <TagCategorySuggestions changePage={changePage} page={page} recipeFilters={recipeFilters} />,
     3: <EditFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
     4: <EditUserTags recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} userTags={userTags} page={page} />,
-    5: <TrainFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
+    //5: <TrainFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
     6: <MyRecipes changePage={changePage} page={page} suggestions={suggestions} tags={recipeFilters} />,
     7: <MyBooks changePage={changePage} page={page} />,
-    8: <SuggestionsOverview changePage={changePage} page={page} recipeFilters={recipeFilters} />,
+    8: <TagEditAllCategories changePage={changePage} page={page} recipeFilters={recipeFilters} />,
     9: <TagSuggestions changePage={changePage} page={page} suggestions={suggestions} tags={recipeFilters} />,
   }
 
@@ -622,3 +540,95 @@ document.addEventListener('DOMContentLoaded', () => {
   const root = document.getElementById('app')
   if (root) {ReactDOM.render(<App/>, root)}
 })
+
+
+//const TrainFilter = ({changePage, page, recipeFilters, setRecipeFilters}) => {
+//
+//  const filter = page && page.filterId ? recipeFilters.find(f => f.id == page.filterId) : null
+//  if (!filter) {console.log("Can't train filter, did not exist."); return '';}
+//  
+//  const [dataToTrain, setDataToTrain] = useState([])
+//  const [selected, setSelected] = useState({})
+//  const [doneFetching, setDoneFetching] = useState(false)
+//
+//  const fetchBatch = () => {
+//    ajax({url: missing_filtered_recipes_path({recipe_filter_id: filter.id}), type: 'GET', success: (data) => {
+//      if (!data || data == []) {
+//        console.log('done fetching received ', data)
+//        setDoneFetching(true)
+//      }
+//      setSelected({})
+//      setDataToTrain(data)
+//    }})
+//  }
+//
+//  useEffect(() => {
+//    fetchBatch()
+//  }, [])
+//
+//  const submitData = () => {
+//    let data = dataToTrain.map((d,i) => ({filterable_type: d.class_name, filterable_id: d.id, selected: selected[i]}))
+//    ajax({url: batch_create_filtered_recipes_path(), type: 'POST', data: {recipe_filter_id: filter.id, data: JSON.stringify(data)}, success: () => {
+//      console.log('Fetching second batch of data')
+//      fetchBatch()
+//    }, error: (err) => {
+//      console.log('Error sending training data', err)
+//    }})
+//  }
+//              
+//  const imageClicked = (nb) => {
+//    let s = {...selected}
+//    s[nb] = !s[nb]
+//    setSelected(s)
+//  }
+//
+//  if (!dataToTrain || dataToTrain.length <= 0) {return <p>Il ne reste plus aucune recette ou catégorie à entrainer.</p>}
+//
+//  return (<>
+//    <h2 style={{textAlign: 'center'}}>Quelle recette correspond à {filter.name} ?</h2>
+//    <table>
+//      <tbody>
+//        {[0,1,2,3,4].map(i => {
+//          return (<tr key={i}>
+//            {[0,1,2,3].map(j => {
+//              let nb = j*5+i
+//              let record = dataToTrain[nb]
+//              if (!record) {return <td key={j}></td>}
+//              return (<td key={j}>
+//                <div className="over-container clickable" style={{margin: "auto", border: `4px solid ${selected[nb] ? 'blue' : 'white'}`}} onClick={() => imageClicked(nb)}>
+//                  <img src={record.image_id ? image_variant_path(record.image_id, "small") : "/default_recipe_01.png"} width="255" height="171" />
+//                  <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "1.2em", padding: "0.2em 0.8em 0 0.2em"}}>{record.name}</h2>
+//                </div>
+//              </td>)
+//            })}
+//          </tr>)
+//        })}
+//      </tbody>
+//    </table>
+//    <br/>
+//    <button type="button" className="btn btn-primary" onClick={submitData}>Soumettre</button>
+//  </>)
+//  
+//  //return (<>
+//  //  <div>
+//  //    <h2 style={{textAlign: 'center'}}>Entraîner: {filter.name}</h2>
+//  //    <div className="over-container" style={{margin: "auto"}}>
+//  //      <img src={record.image_id ? image_variant_path(record.image_id, "medium") : "/default_recipe_01.png"} style={{maxWidth: "100vw"}} width="452" height="304" />
+//  //      <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "2em", padding: "0.2em 0.8em 0 0.2em"}}>{record.name}</h2>
+//  //    </div>
+//  //    <div>
+//  //      <button type="button" className="btn btn-primary" onClick={() => {}}>1</button>
+//  //      <button type="button" className="btn btn-primary" onClick={() => {}}>2</button>
+//  //      <button type="button" className="btn btn-primary" onClick={() => {}}>3</button>
+//  //      <button type="button" className="btn btn-primary" onClick={() => {}}>4</button>
+//  //      <button type="button" className="btn btn-primary" onClick={() => {}}>5</button>
+//  //      <button type="button" className="btn btn-primary" onClick={() => {}}>6</button>
+//  //      <button type="button" className="btn btn-primary" onClick={() => {}}>7</button>
+//  //      <button type="button" className="btn btn-primary" onClick={() => {}}>8</button>
+//  //      <button type="button" className="btn btn-primary" onClick={() => {}}>9</button>
+//  //      <button type="button" className="btn btn-primary" onClick={() => {}}>10</button>
+//  //    </div>
+//  //  </div>
+//  //</>)
+//}
+//
