@@ -389,7 +389,7 @@ const TrainFilter = ({changePage, page, recipeFilters, setRecipeFilters}) => {
   //</>)
 }
 
-const EditUserTags = ({userTags, recipeFilters, changePage, setRecipeFilters}) => {
+const EditUserTags = ({userTags, recipeFilters, setRecipeFilters, page}) => {
 
   //userTags = sortBy(userTags, "position") Not necessary, done on server side
 
@@ -583,7 +583,7 @@ const App = () => {
     1: <TagIndex changePage={changePage} recipeFilters={recipeFilters} addRecipeFilter={(filter) => setRecipeFilters(recipeFilters.concat([filter]))} userTags={userTags} />,
     2: <TagCategorySuggestions changePage={changePage} page={page} recipeFilters={recipeFilters} />,
     3: <EditFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
-    4: <EditUserTags changePage={changePage} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} userTags={userTags} />,
+    4: <EditUserTags recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} userTags={userTags} page={page} />,
     5: <TrainFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
     6: <MyRecipes changePage={changePage} page={page} suggestions={suggestions} tags={recipeFilters} />,
     7: <MyBooks changePage={changePage} page={page} />,

@@ -1,5 +1,3 @@
-Pouvoir changer l'ordre des tags. Créer un nouveau model. UserTag
-
 Pouvoir tagger toutes mes recettes rapidement en choississant un tag.
 
 Pouvoir naviguer avec le clavier pour RecipeSingleCarrousel
