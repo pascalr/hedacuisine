@@ -1,6 +1,9 @@
 import {foo} from './nodejs_dependencies'
 
 import {isBlank} from './utils'
+import Quantity from './models/quantity'
+import { Utils } from "./recipe_utils"
+import Ingredient from "./ingredient"
 
 //# Ansi color code variables
 //red="\e[0;91m"
@@ -31,3 +34,43 @@ assertEquals(true, isBlank(null))
 assertEquals(true, isBlank(undefined))
 assertEquals(false, isBlank([1]))
 assertEquals(false, isBlank("1"))
+
+
+
+function testParseQuantity() {
+  //const [qty, foodName] = Quantity.parseQuantityAndFoodName(ingredient)
+  //text = Utils.prettyQuantityFor(qty.raw, foodName)
+  //food = gon.foodList.find(food => food.name == foodName)
+  //name = foodName
+}
+
+//// ingredient can be a number, which is the item nb, or it can be a raw ingredient (quantity separated by food by a semicolon)
+//const parseIngredient = (ingredient) => {
+//  let text = null
+//  let food = null
+//  let name = null
+//  let comment = null
+//  let ing = null
+//  if (ingredient.includes(";")) {
+//    const [qty, foodName] = Quantity.parseQuantityAndFoodName(ingredient)
+//    text = Utils.prettyQuantityFor(qty.raw, foodName)
+//    food = gon.foodList.find(food => food.name == foodName)
+//    name = foodName
+//  } else if (ingredient.startsWith("(")) { // old version
+//    const raw = ingredient.slice(1,-1)
+//    const [qty, foodName] = Quantity.parseQuantityAndFoodName(raw)
+//    text = Utils.prettyQuantityFor(qty.raw, foodName)
+//    food = gon.foodList.find(food => food.name == foodName)
+//    name = foodName
+//  } else {
+//    ing = Object.values(gon.recipe.ingredients || {}).find(ing => ing.item_nb == ingredient)
+//    if (ing) {
+//      let ingredient = new Ingredient({record: ing})
+//      text = ingredient.prettyQty() + " "
+//      food = ingredient.food
+//      comment = ing.comment
+//      name = ing.name
+//    }
+//  }
+//  return ({text, food, name, comment, ing})
+//}

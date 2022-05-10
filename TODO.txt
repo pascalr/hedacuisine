@@ -1,3 +1,9 @@
+FIXME: 2 de banane plantain... 1/4 t huile végétale... Bananes plantains frites
+
+TODO: Remove comment from recipe ingredients
+
+Faire moi comme premier client. Même pas Céline. Est-ce que Pascal veut une application sur le téléphone pour planifier ses repas??? Non... Meal planner. What's for dinner.
+
 Pouvoir tagger toutes mes recettes rapidement en choississant un tag. Faire la même chose que pour les catégories, mais avec les recettes.
 
 Dans l'edit d'une recette pour les tags, seulements les user tags devraient être considéré, et non tous les tags...
