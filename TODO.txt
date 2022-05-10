@@ -1,10 +1,6 @@
-FIXME: Ajouter des userTags ne les ajoutent pas tout de suite, il faut reload la page...
-
 Pouvoir tagger toutes mes recettes rapidement en choississant un tag. Faire la même chose que pour les catégories, mais avec les recettes.
 
 Dans l'edit d'une recette pour les tags, seulements les user tags devraient être considéré, et non tous les tags...
-
-Pouvoir naviguer avec le clavier pour RecipeSingleCarrousel
 
 Modifier la manière de changePage en react. Utiliser toujours des links et pouvoir faire right click open in new tab.
 

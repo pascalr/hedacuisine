@@ -43,6 +43,7 @@ export const AddUserTagModal = ({showModal, setShowModal, tags, userTags}) => {
     if (item.dataset.id) {
       ajax({url: user_tags_path(), type: 'POST', data: {user_tag: {tag_id: item.dataset.id}}, success: (userTag) => {
         userTags.update([...userTags, userTag])
+        setShowModal(false)
       }})
     }
   }
