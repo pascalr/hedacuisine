@@ -18,7 +18,7 @@ export default class Ingredient {
       this.rawFood = args.record.raw_food
     } else if (args.raw) {
       const [qty, rawFood] = Quantity.parseQuantityAndFoodName(args.raw)
-      this.rawQty = qty
+      this.rawQty = qty.raw
       this.rawFood = rawFood
     } else {
       this.rawQty = args.rawQty
@@ -29,12 +29,16 @@ export default class Ingredient {
   }
 
   getQuantity() {
-    if (this.qty) {return this.qty}
-    this.qty = new Quantity({raw: this.rawQty})
+    this.qty ||= new Quantity({raw: this.rawQty})
     return this.qty
   }
 
   getFood() {
+    if (!gon.foodList || !this.foodName) {return null}
+    return gon.foodList.find(food => food.name == this.foodName)
+  }
+  getNb() {
+    getQuantity().nb
     if (!gon.foodList || !this.foodName) {return null}
     return gon.foodList.find(food => food.name == this.foodName)
   }

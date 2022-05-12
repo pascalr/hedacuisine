@@ -44,10 +44,21 @@ assertEquals(false, isBlank("1"))
 
 function testIngredient() {
   header('Testing testIngredient')
+  
+  let test = (str, expected) => {
+    let ing = new Ingredient({raw: str})
+    assertEquals(expected[0], ing.rawQty)
+    assertEquals(expected[1], ing.foodName)
+  }
 
-  let raw = "1/2 t; huile"
-  //let raw = "1/2 t d'huile"
-  //let raw = "250 mL de lait"
+  test("1/2 t; huile", ["1/2 t", "huile"])
+  test("1/2 t d'huile", ["1/2 t", "huile"])
+  test("250 mL de lait", ["250 mL", "lait"])
+  test("4 bananes", ["4", "bananes"])
+    
+  let ing = new Ingredient({raw: "1/2 t d'huile"})
+  assertEquals(0.5, ing.getQuantity().nb)
+  assertEquals("t", ing.getQuantity().label)
 }
 
 function testQuantity() {
