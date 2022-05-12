@@ -42,6 +42,31 @@ assertEquals(false, isBlank("1"))
 
 
 
+function testIngredient() {
+  header('Testing testIngredient')
+
+  let raw = "1/2 t; huile"
+  //let raw = "1/2 t d'huile"
+  //let raw = "250 mL de lait"
+}
+
+function testQuantity() {
+  header('Testing testQuantity')
+
+  let test = (str, expected) => {
+    let qty = new Quantity({raw: str})
+    assertEquals(expected[0], qty.nb)
+    assertEquals(expected[1], qty.label)
+  }
+
+  test("1/2 t", [0.5, "t"])
+  test("1.5 L", [1.5, "L"])
+  test("2,5 L", [2.5, "L"])
+  test("4", [4, ""])
+  test("250 mL", [250, "mL"])
+  test("250 unitDoesNotExist", [250, "unitDoesNotExist"])
+}
+
 function testPrintRecipeIngredient() {
   header('Testing testPrintRecipeIngredient')
 
@@ -60,3 +85,5 @@ function testPrintRecipeIngredient() {
 }
 
 testPrintRecipeIngredient()
+testQuantity()
+testIngredient()

@@ -1,5 +1,12 @@
 import {extractNumberAtBeginning} from "../utils"
 
+// A quantity is a number with an optional label.
+// Used for ingredients and for servings.
+// Examples:
+// 12 muffins
+// 1/2 t
+// 250 mL
+// 4
 export default class Quantity {
 
   constructor(args = {}) {
@@ -52,6 +59,7 @@ export default class Quantity {
   static parseFloatOrFraction(str) {
 
     if (!str) {return null;}
+    str = str.replace(',', '.') // FIXME: Inefficient way of allowing commas instead of dots. Also I believe some country use 2,500,500.00 which does not work with this, but this should not be a problem with recipes...
     var qty_s = str.trim()
     if (qty_s.includes("/")) {
       if (qty_s.includes(" ")) {

@@ -2,6 +2,8 @@ import Quantity from './models/quantity'
 import { Utils } from "./recipe_utils"
 
 // An ingredient has a quantity and a food.
+// The quantity is a number with an optional label (unit in this case).
+// The food can be only a foodName, or it can be a real food from the database.
 //
 // This seems to be a helper class to make things cleaner. The core of the job is done by models/quantity and recipe_utils
 export default class Ingredient {

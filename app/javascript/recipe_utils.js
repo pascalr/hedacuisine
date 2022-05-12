@@ -108,12 +108,10 @@ export const Utils = {
 
   // Very similar to Ingredient.prettyQty which I think is more recent
   prettyQuantityFor(quantity, foodName, scale=1.0) {
-    console.log('quantity', quantity)
     if (!quantity) {return ''}
     if (typeof quantity === 'string' || quantity instanceof String) {
       quantity = new Quantity({raw: quantity})
     }
-    console.log('quantity2', quantity)
     if (quantity.nb == null) {return ''}
     var unit = quantity.unit
     var qty = quantity.nb * scale
@@ -130,12 +128,9 @@ export const Utils = {
       else {r = quantity.raw + " "}
     }
     //if (quantity.unit && (quantity.unit.is_volume || quantity.unit.is_weight)) {
-    console.log("quantity.label", quantity.label)
     if (quantity.label) {
-      console.log("here???")
       r += Utils.prettyPreposition(foodName)
     }
-    console.log("r", r)
     return r
   },
 
