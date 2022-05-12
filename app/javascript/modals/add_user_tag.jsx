@@ -12,6 +12,7 @@ import {user_tags_path} from '../routes'
 
 export const AddUserTagModal = ({showModal, setShowModal, tags, userTags}) => {
   
+  const inputRef = useRef(null);
   const hedaTags = tags.filter(f => !f.user_id)
 
   //let [tagsChecked, setTagsChecked] = useState([])
@@ -47,6 +48,17 @@ export const AddUserTagModal = ({showModal, setShowModal, tags, userTags}) => {
       }})
     }
   }
+  
+  const createTag = () => {
+    let tagName = inputRef.current.value
+    if (tagName) {
+      ajax({url: user_tags_path(), type: 'POST', data: {tag_name: tagName}, success: ({tag, userTag}) => {
+        tags.update([...tags, tag])
+        userTags.update([...userTags, userTag])
+        setShowModal(false)
+      }})
+    }
+  }
  
   //if (recipe == null) {return ''}
   return (<>
@@ -56,10 +68,10 @@ export const AddUserTagModal = ({showModal, setShowModal, tags, userTags}) => {
           <button style={{float: "right"}} type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
           <h5 className="modal-title">Ajouter une étiquette</h5>
           <br/>
-          <AutocompleteInput name="name" choices={hedaTags} onSelect={createUserTag} />
+          <AutocompleteInput name="name" choices={hedaTags} onSelect={createUserTag} inputRef={inputRef} />
           <br/>
           <br/>
-          <button type="button" className="btn btn-primary" onClick={() => {}}>Ajouter</button>
+          <button type="button" className="btn btn-primary" onClick={createTag}>Ajouter</button>
         </Modal.Body>
       </Modal.Dialog>
     </Modal>

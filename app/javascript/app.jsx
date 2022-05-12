@@ -460,6 +460,7 @@ const App = () => {
   const [suggestions, setSuggestions] = useState(gon.suggestions)
   const [userTags, setUserTags] = useState([])
   
+  bindSetter(recipeFilters, setRecipeFilters)
   bindSetter(suggestions, setSuggestions)
   bindSetter(userTags, setUserTags)
 

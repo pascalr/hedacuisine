@@ -16,8 +16,8 @@ export const TextInputField = ({model, field}) => {
   )
 }
 
-export const AutocompleteInput = ({name, choices, placeholder, onSelect}) => {
-  const inputRef = useRef(null);
+export const AutocompleteInput = ({name, choices, placeholder, onSelect, inputRef}) => {
+  inputRef ||= useRef(null);
   useEffect(() => { // Same as componentDidMount
     
     if (inputRef.current) {
