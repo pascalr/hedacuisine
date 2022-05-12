@@ -94,7 +94,7 @@ export const Utils = {
   prettyPreposition(foodName) {
     if (foodName == null || foodName.length <= 0) {return ''}
     if (foodName[0] == 'h' || foodName[0] == 'H') {
-      return gon.contractionList.includes(foodName) ? "d'" : "de "
+      return gon.contractionList ? (gon.contractionList.includes(foodName) ? "d'" : "de ") : "de "
     } else {
       return ['a','e','i','o','u','y','é'].includes(foodName[0]) ? "d'" : "de "// if exp.contract_preposition.nil?
     }
@@ -106,11 +106,14 @@ export const Utils = {
     return qty.pretty() + ' ' + Utils.prettyPreposition(food.name)
   },
 
+  // Very similar to Ingredient.prettyQty which I think is more recent
   prettyQuantityFor(quantity, foodName, scale=1.0) {
+    console.log('quantity', quantity)
     if (!quantity) {return ''}
     if (typeof quantity === 'string' || quantity instanceof String) {
       quantity = new Quantity({raw: quantity})
     }
+    console.log('quantity2', quantity)
     if (quantity.nb == null) {return ''}
     var unit = quantity.unit
     var qty = quantity.nb * scale
@@ -124,10 +127,15 @@ export const Utils = {
     } else {
       r = Utils.prettyFraction(qty) + " "
       if (unit) {r += unit.name + " "}
+      else {r = quantity.raw + " "}
     }
-    if (quantity.unit && (quantity.unit.is_volume || quantity.unit.is_weight)) {
+    //if (quantity.unit && (quantity.unit.is_volume || quantity.unit.is_weight)) {
+    console.log("quantity.label", quantity.label)
+    if (quantity.label) {
+      console.log("here???")
       r += Utils.prettyPreposition(foodName)
     }
+    console.log("r", r)
     return r
   },
 

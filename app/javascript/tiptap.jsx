@@ -475,33 +475,37 @@ const StepNode = Node.create({
 
 // ingredient can be a number, which is the item nb, or it can be a raw ingredient (quantity separated by food by a semicolon)
 const parseIngredient = (ingredient) => {
-  let text = null
+  let prettyQty = null
   let food = null
   let name = null
   let comment = null
   let ing = null
+  // 200 mL; eau
   if (ingredient.includes(";")) {
     const [qty, foodName] = Quantity.parseQuantityAndFoodName(ingredient)
-    text = Utils.prettyQuantityFor(qty.raw, foodName)
+    prettyQty = Utils.prettyQuantityFor(qty.raw, foodName)
     food = gon.foodList.find(food => food.name == foodName)
     name = foodName
+  // (200 mL) deprecated, use ;
   } else if (ingredient.startsWith("(")) { // old version
     const raw = ingredient.slice(1,-1)
     const [qty, foodName] = Quantity.parseQuantityAndFoodName(raw)
-    text = Utils.prettyQuantityFor(qty.raw, foodName)
+    prettyQty = Utils.prettyQuantityFor(qty.raw, foodName)
     food = gon.foodList.find(food => food.name == foodName)
     name = foodName
+    // 1 => ingredient nb 1
   } else {
     ing = Object.values(gon.recipe.ingredients || {}).find(ing => ing.item_nb == ingredient)
     if (ing) {
       let ingredient = new Ingredient({record: ing})
-      text = ingredient.prettyQty() + " "
+      prettyQty = ingredient.prettyQty() + " "
+      console.log("prettyQty", prettyQty)
       food = ingredient.food
       comment = ing.comment
       name = ing.name
     }
   }
-  return ({text, food, name, comment, ing})
+  return ({prettyQty, food, name, comment, ing})
 }
 
 const IngredientNode = Node.create({
@@ -536,9 +540,9 @@ const IngredientNode = Node.create({
   // HTMLAttributes here comes from attributes.renderHTML as defined in addAttributes().
   renderHTML({ node, HTMLAttributes }) {
 
-    const {text, food, name, comment, ing} = parseIngredient(HTMLAttributes['raw'])
+    const {prettyQty, food, name, comment, ing} = parseIngredient(HTMLAttributes['raw'])
     let children = []
-    if (text && text != '') {children.push(text)}
+    if (prettyQty && prettyQty != '') {children.push(prettyQty)}
     children.push(['span', {class: 'food-name'}, (food && food.is_public) ? ['a', {href: food.url}, name] : name])
     if (comment) { children.push(elementFromString(' '+comment)) }
     if (ing) {
@@ -669,9 +673,9 @@ const IngredientListNode = Node.create({
       }
     })
     let list = ings.map(ingredient => {
-      const {text, food, name, comment, ing} = parseIngredient(ingredient)
+      const {prettyQty, food, name, comment, ing} = parseIngredient(ingredient)
       let children = []
-      if (text && text != '') {children.push(text)}
+      if (prettyQty && prettyQty != '') {children.push(prettyQty)}
       if (ing && ing.food && ing.food.is_public) {
         children.push(['span', {class: 'food-name'}, ['a', {href: ing.food.url}, ing.name]])
       } else {

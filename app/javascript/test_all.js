@@ -18,16 +18,21 @@ import Ingredient from "./ingredient"
 //uline="\e[4m"
 //reset="\e[0m"
 
+function header(msg) {
+  console.log('\x1b[0;94m%s\x1b[0m', msg);
+}
+
 function assertEquals(expected, current) {
   let msg = "Expected: "+expected+". Got "+current
   if (expected == current) {
     // https://stackoverflow.com/questions/9781218/how-to-change-node-jss-console-font-color#41407246
     console.log('\x1b[0;92m%s\x1b[0m - %s', 'PASS', msg);
   } else {
-    console.log('\x1b[0;92m%s\x1b[0m - %s', 'FAIL', msg);
+    console.log('\x1b[0;91m%s\x1b[0m - %s', 'FAIL', msg);
   }
 }
 
+header('Testing isBlank')
 assertEquals(true, isBlank([]))
 assertEquals(true, isBlank(""))
 assertEquals(true, isBlank(null))
@@ -37,40 +42,21 @@ assertEquals(false, isBlank("1"))
 
 
 
-function testParseQuantity() {
+function testPrintRecipeIngredient() {
+  header('Testing testPrintRecipeIngredient')
+
+  //prettyQuantityFor('1/4 t', 'huile végétale')
+  assertEquals("1/4 t d'", Utils.prettyQuantityFor('1/4 t', 'huile végétale'))
+  assertEquals("250 mL d'", Utils.prettyQuantityFor('250 mL', 'huile végétale'))
+  assertEquals('2', Utils.prettyQuantityFor('2', 'banane'))
+
+  //test("2", "banane plantain", "2 bananes plantains")
+  //test("1/2 t", "huile végétale", "1/2 t d'huile végétale")
+
   //const [qty, foodName] = Quantity.parseQuantityAndFoodName(ingredient)
   //text = Utils.prettyQuantityFor(qty.raw, foodName)
   //food = gon.foodList.find(food => food.name == foodName)
   //name = foodName
 }
 
-//// ingredient can be a number, which is the item nb, or it can be a raw ingredient (quantity separated by food by a semicolon)
-//const parseIngredient = (ingredient) => {
-//  let text = null
-//  let food = null
-//  let name = null
-//  let comment = null
-//  let ing = null
-//  if (ingredient.includes(";")) {
-//    const [qty, foodName] = Quantity.parseQuantityAndFoodName(ingredient)
-//    text = Utils.prettyQuantityFor(qty.raw, foodName)
-//    food = gon.foodList.find(food => food.name == foodName)
-//    name = foodName
-//  } else if (ingredient.startsWith("(")) { // old version
-//    const raw = ingredient.slice(1,-1)
-//    const [qty, foodName] = Quantity.parseQuantityAndFoodName(raw)
-//    text = Utils.prettyQuantityFor(qty.raw, foodName)
-//    food = gon.foodList.find(food => food.name == foodName)
-//    name = foodName
-//  } else {
-//    ing = Object.values(gon.recipe.ingredients || {}).find(ing => ing.item_nb == ingredient)
-//    if (ing) {
-//      let ingredient = new Ingredient({record: ing})
-//      text = ingredient.prettyQty() + " "
-//      food = ingredient.food
-//      comment = ing.comment
-//      name = ing.name
-//    }
-//  }
-//  return ({text, food, name, comment, ing})
-//}
+testPrintRecipeIngredient()

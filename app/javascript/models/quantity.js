@@ -19,7 +19,7 @@ export default class Quantity {
         let qty_s = s
         this.label = this.raw.substr(qty_s.length).trim()
         this.nb = Quantity.parseFloatOrFraction(qty_s)
-        this.unit = gon.units.find(unit => unit.name == this.label)
+        this.unit = gon.units ? gon.units.find(unit => unit.name == this.label) : null
       }
     }
   }

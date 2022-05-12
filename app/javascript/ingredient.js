@@ -2,6 +2,8 @@ import Quantity from './models/quantity'
 import { Utils } from "./recipe_utils"
 
 // An ingredient has a quantity and a food.
+//
+// This seems to be a helper class to make things cleaner. The core of the job is done by models/quantity and recipe_utils
 export default class Ingredient {
 
   // raw: 1 c. à thé; sucre ou 100 mL d'eau distillée
@@ -40,22 +42,7 @@ export default class Ingredient {
   }
   prettyQty() {
     let quantity = this.getQuantity()
-    let unit = quantity.unit
-    let qty = quantity.nb
-    if (unit) {qty *= unit.value}
-  
-    let r = null 
-    if (unit && unit.is_weight) {
-      r = Utils.prettyWeight(qty) + ' ' + Utils.prettyPreposition(this.foodName)
-    } else if (unit && unit.is_volume) {
-      r = Utils.prettyVolume(qty) + ' ' + Utils.prettyPreposition(this.foodName)
-    } else if (unit && unit.is_unitary) {
-      r = Utils.prettyFraction(qty) + " " + unit.name
-    } else {
-      r = this.rawQty + ' ' + Utils.prettyPreposition(this.foodName)
-    }
-    return r
-
+    return Utils.prettyQuantityFor(quantity, this.foodName)
   }
   prettyFoodHTML() {
   }

@@ -1,6 +1,6 @@
 FIXME: 2 de banane plantain... 1/4 t huile végétale... Bananes plantains frites
 
-TODO: Remove comment from recipe ingredients
+Garder les comments pour les recipe ingredients. C'est pratique pour faire un lien vers une note par exemple...
 
 Faire moi comme premier client. Même pas Céline. Est-ce que Pascal veut une application sur le téléphone pour planifier ses repas??? Non... Meal planner. What's for dinner.
 

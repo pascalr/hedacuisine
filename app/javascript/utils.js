@@ -55,7 +55,12 @@ export function prettyNumber(nb) {
 
 export function extractNumberAtBeginning(str) {
   if (isBlank(str)) {return null}
-  return str.match(/^\d+( \d+\/\d+)?|\d+[,.]\d+/g)[0]
+  //let fraction = /\d+\/\d+/g
+  //let decimal = /\d+[,.]\d+/g
+  //let whole = /\d+/g
+  let number = /\d+([,.]\d+)?/g
+  let fraction_number = /(\d+ )?(\d+\/\d+)/g
+  return (str.match(fraction_number) || str.match(number) || [])[0]
 }
 
 export function isBlank(array) {
