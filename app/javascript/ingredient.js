@@ -15,7 +15,7 @@ export default class Ingredient {
   constructor(args = {}) {
     if (args.record) {
       this.rawQty = args.record.raw
-      this.rawFood = args.record.raw_food
+      this.rawFood = args.record.name || args.record.raw_food
     } else if (args.raw) {
       const [qty, rawFood] = Quantity.parseQuantityAndFoodName(args.raw)
       this.rawQty = qty.raw
@@ -49,6 +49,13 @@ export default class Ingredient {
   prettyQty() {
     let quantity = this.getQuantity()
     return Utils.prettyQuantityFor(quantity, this.foodName)
+  }
+  originalQtyWithPreposition() {
+    if (!this.rawQty) {return ''}
+    let quantity = this.getQuantity()
+    if (quantity.nb == null) {return ''}
+    if (quantity.label) {return this.rawQty + ' ' + Utils.prettyPreposition(this.foodName)}
+    return this.rawQty+' '
   }
   prettyFoodHTML() {
   }

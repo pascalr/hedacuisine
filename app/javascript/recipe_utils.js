@@ -92,7 +92,7 @@ export const Utils = {
   },
 
   prettyPreposition(foodName) {
-    if (foodName == null || foodName.length <= 0) {return ''}
+    if (!foodName) {return ''}
     if (foodName[0] == 'h' || foodName[0] == 'H') {
       return gon.contractionList ? (gon.contractionList.includes(foodName) ? "d'" : "de ") : "de "
     } else {
@@ -106,7 +106,8 @@ export const Utils = {
     return qty.pretty() + ' ' + Utils.prettyPreposition(food.name)
   },
 
-  // Very similar to Ingredient.prettyQty which I think is more recent
+  // Should print the quantity in the locale or user unit system
+  // Not yet this way...
   prettyQuantityFor(quantity, foodName, scale=1.0) {
     if (!quantity) {return ''}
     if (typeof quantity === 'string' || quantity instanceof String) {

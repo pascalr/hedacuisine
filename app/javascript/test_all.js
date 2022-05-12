@@ -77,6 +77,12 @@ function testQuantity() {
   test("250 mL", [250, "mL"])
   test("250 unitDoesNotExist", [250, "unitDoesNotExist"])
 }
+  
+header('Testing prettyPreposition')
+assertEquals('', Utils.prettyPreposition(null))
+assertEquals('', Utils.prettyPreposition(''))
+assertEquals("d'", Utils.prettyPreposition('huile'))
+assertEquals("de", Utils.prettyPreposition('sucre'))
 
 function testPrintRecipeIngredient() {
   header('Testing testPrintRecipeIngredient')

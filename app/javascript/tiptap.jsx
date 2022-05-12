@@ -498,7 +498,9 @@ const parseIngredient = (ingredient) => {
     ing = Object.values(gon.recipe.ingredients || {}).find(ing => ing.item_nb == ingredient)
     if (ing) {
       let ingredient = new Ingredient({record: ing})
-      prettyQty = ingredient.prettyQty() + " "
+      prettyQty = ingredient.originalQtyWithPreposition()
+      console.log("ing", ing)
+      console.log("ingredient", ingredient)
       console.log("prettyQty", prettyQty)
       food = ingredient.food
       comment = ing.comment

@@ -1,3 +1,5 @@
+FIXME: raw_food n'est pas set sur les anciens recipe ingredient. Ça cause des problèmes. Maintenant c'est la base, raw_food devrait toujours être set.
+
 FIXME: 2 de banane plantain... 1/4 t huile végétale... Bananes plantains frites
 
 Garder les comments pour les recipe ingredients. C'est pratique pour faire un lien vers une note par exemple...
