@@ -4,7 +4,7 @@ import {PercentageCompleted} from './helpers/recipes_helper'
 import { ajax, isBlank, normalizeSearchText } from "./utils"
 import { recipe_path, favorite_recipe_path } from "./routes"
 import {EditUserRecipeModal} from './modals/edit_user_recipe'
-
+import { DeleteConfirmButton } from './components/delete_confirm_button'
 
 export const RecipeIndex = ({userRecipes, favoriteRecipes, showPercentCompleted, loading, suggestions, tags}) => {
   
@@ -74,7 +74,9 @@ export const RecipeIndex = ({userRecipes, favoriteRecipes, showPercentCompleted,
               &nbsp;
               <button type="button" className="btn btn-outline-secondary" style={{fontSize: '0.8em', padding: '0em 0.2em 0em 0.2em'}} onClick={() => editUserRecipe(recipe)}>Modifier</button>
               &nbsp;
-              <button type="button" className="btn btn-outline-secondary" style={{fontSize: '0.8em', padding: '0em 0.2em 0em 0.2em'}} onClick={() => removeFavoriteRecipe(recipe)}>Retirer</button>
+              <DeleteConfirmButton id={`remove-recipe-${recipe.id}`} onDeleteConfirm={() => removeFavoriteRecipe(recipe)} message="Je veux enlever ce favori?">
+                <button type="button" className="btn btn-outline-secondary" style={{fontSize: '0.8em', padding: '0em 0.2em 0em 0.2em'}}>Retirer</button>
+              </DeleteConfirmButton>
             </li>
           </span>)
         })}

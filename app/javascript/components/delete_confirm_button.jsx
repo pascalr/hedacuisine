@@ -1,13 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-export const DeleteConfirmButton = ({id, onDeleteConfirm, message}) => {
+export const DeleteConfirmButton = ({id, onDeleteConfirm, message, children}) => {
 
   const [visible, setVisible] = React.useState(false);
 
+  let button = null
+  if (children) {
+    button = React.Children.map(children, child => {
+      if (React.isValidElement(child)) {
+        return React.cloneElement(child, { onClick: (evt) => setVisible(true)})
+      }
+      return child;
+    })
+  } else {
+    button = <button type="button" className="plain-btn" onClick={(evt) => setVisible(true)}>
+               <img src="/icons/x-lg.svg"/>
+             </button>
+  }
+
   return (<>
-    <button type="button" className="plain-btn" onClick={(evt) => setVisible(true)}>
-      <img src="/icons/x-lg.svg"/>
-    </button>
+    {button}
     {!visible ? '' :
       <span className="position-limbo">
         <span style={{transform: "translate(-50%, -30%)", zIndex: 10, padding: "0.5em", backgroundColor: '#fff', border: '1px solid black', borderRadius: '4px'}}>
