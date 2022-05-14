@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 
 import {PercentageCompleted} from './helpers/recipes_helper'
-import { isBlank, normalizeSearchText } from "./utils"
-import { recipe_path } from "./routes"
+import { ajax, isBlank, normalizeSearchText } from "./utils"
+import { recipe_path, favorite_recipe_path } from "./routes"
 import {EditUserRecipeModal} from './modals/edit_user_recipe'
 
 
@@ -30,6 +30,8 @@ export const RecipeIndex = ({userRecipes, favoriteRecipes, showPercentCompleted,
     r.name && ~normalizeSearchText(r.name).indexOf(term)
   )))
 
+  console.log('favRecipes', favoriteRecipes)
+
   let select = (pos) => {
     setSelected(pos)
     inputField.current.value = pos < 0 ? '' : recipes[pos].name
@@ -39,6 +41,14 @@ export const RecipeIndex = ({userRecipes, favoriteRecipes, showPercentCompleted,
     if (key == "ArrowDown") {select(selected >= recipes.length-1 ? -1 : selected+1)}
     if (key == "ArrowUp") {select(selected < 0 ? recipes.length-1 : selected-1)}
     if (key == "Enter") {window.location.href = recipe_path(recipes[selected])}
+  }
+  
+  let removeFavoriteRecipe = (favoriteRecipe) => {
+    if (favoriteRecipe.fav_id) {
+      ajax({url: favorite_recipe_path({id: favoriteRecipe.fav_id}), type: 'DELETE', success: () => {
+        favoriteRecipes.update(favoriteRecipes.filter(f => f.fav_id != favoriteRecipe.fav_id))
+      }})
+    }
   }
 
   let editUserRecipe = (recipe) => {
@@ -66,7 +76,7 @@ export const RecipeIndex = ({userRecipes, favoriteRecipes, showPercentCompleted,
               &nbsp;
               <button type="button" className="btn btn-outline-secondary" style={{fontSize: '0.8em', padding: '0em 0.2em 0em 0.2em'}} onClick={() => editUserRecipe(recipe)}>Modifier</button>
               &nbsp;
-              <button type="button" className="btn btn-outline-secondary" style={{fontSize: '0.8em', padding: '0em 0.2em 0em 0.2em'}}>Retirer</button>
+              <button type="button" className="btn btn-outline-secondary" style={{fontSize: '0.8em', padding: '0em 0.2em 0em 0.2em'}} onClick={() => removeFavoriteRecipe(recipe)}>Retirer</button>
             </li>
           </span>)
         })}

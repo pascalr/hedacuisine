@@ -1,3 +1,7 @@
+Peut-être pouvoir sélectionner une ou plusieurs recettes dans mes recettes et pouvoir faire une action. Par exemple, tag => ...
+
+Peut-être des tags de couleurs au lieu de #tags dans mes recettes.
+
 Faire un lien de Tofu à la vapeur sur la sauce Aioli chinoise sucrée.
 
 UN JOUR: Pouvoir définir l'image src par le user tag, si on en veut un différent que celui du tag, le tag c'est juste un par défault.
