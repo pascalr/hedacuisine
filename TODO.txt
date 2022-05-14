@@ -1,8 +1,8 @@
+Faire un lien de Tofu à la vapeur sur la sauce Aioli chinoise sucrée.
+
 UN JOUR: Pouvoir définir l'image src par le user tag, si on en veut un différent que celui du tag, le tag c'est juste un par défault.
 
 FIXME: raw_food n'est pas set sur les anciens recipe ingredient. Ça cause des problèmes. Maintenant c'est la base, raw_food devrait toujours être set.
-
-FIXME: 2 de banane plantain... 1/4 t huile végétale... Bananes plantains frites
 
 Garder les comments pour les recipe ingredients. C'est pratique pour faire un lien vers une note par exemple...
 
