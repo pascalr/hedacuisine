@@ -30,8 +30,6 @@ export const RecipeIndex = ({userRecipes, favoriteRecipes, showPercentCompleted,
     r.name && ~normalizeSearchText(r.name).indexOf(term)
   )))
 
-  console.log('favRecipes', favoriteRecipes)
-
   let select = (pos) => {
     setSelected(pos)
     inputField.current.value = pos < 0 ? '' : recipes[pos].name

@@ -439,41 +439,38 @@ const MyBooks = () => {
   </>)
 }
 
-const MyRecipes = ({suggestions, tags}) => {
+const MyRecipes = ({suggestions, tags, userRecipes, favoriteRecipes}) => {
 
-  const data = useCacheOrFetch(user_recipes_recipes_path())
-  const userRecipes = data ? data.userRecipes : null
-  const favoriteRecipes = data ? data.favoriteRecipes : null
+  //const data = useCacheOrFetch(user_recipes_recipes_path())
+  //const userRecipes = data ? data.userRecipes : null
+  //const favoriteRecipes = data ? data.favoriteRecipes : null
       //<%= link_to translated("Quoi manger?"), app_path, class: "btn btn-outline-secondary btn-sm" %>
+    //<RecipeIndex userRecipes={userRecipes} favoriteRecipes={favoriteRecipes} loading={!data} suggestions={suggestions} tags={tags} />
   return (<>
     <div className="d-flex gap-20 align-items-center">
       <h2>Mes recettes</h2>
       <a href={new_recipe_path()} className="btn btn-outline-primary btn-sm">Nouvelle recette</a>
     </div>
-    <RecipeIndex userRecipes={userRecipes} favoriteRecipes={favoriteRecipes} loading={!data} suggestions={suggestions} tags={tags} />
+    <RecipeIndex userRecipes={userRecipes} favoriteRecipes={favoriteRecipes} loading={false} suggestions={suggestions} tags={tags} />
   </>)
 }
 
 const App = () => {
 
-  const [recipeFilters, setRecipeFilters] = useState([])
+  const [page, setPage] = useState(getUrlParams())
+
+  const [recipeFilters, setRecipeFilters] = useState(gon.recipe_filters)
   const [suggestions, setSuggestions] = useState(gon.suggestions)
-  const [userTags, setUserTags] = useState([])
+  const [userTags, setUserTags] = useState(gon.user_tags)
+  const [userRecipes, setUserRecipes] = useState(gon.user_recipes)
+  const [favoriteRecipes, setFavoriteRecipes] = useState(gon.favorite_recipes)
   
   bindSetter(recipeFilters, setRecipeFilters)
   bindSetter(suggestions, setSuggestions)
   bindSetter(userTags, setUserTags)
-
-  const [page, setPage] = useState(getUrlParams())
-  //const [page, setPage] = useState({})
+  bindSetter(userRecipes, setUserRecipes)
+  bindSetter(favoriteRecipes, setFavoriteRecipes)
   
-  useEffect(() => {
-    if (window.gon && gon.recipe_filters) { setRecipeFilters(gon.recipe_filters) }
-    if (window.gon && gon.user_tags) { setUserTags(gon.user_tags) }
-
-    //setPage(getUrlParams())
-  }, [])
-
   const parentPages = {
     [PAGE_2]: PAGE_1,
     [PAGE_3]: PAGE_4,
@@ -504,7 +501,7 @@ const App = () => {
     3: <EditFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
     4: <EditUserTags recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} userTags={userTags} page={page} />,
     //5: <TrainFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
-    6: <MyRecipes changePage={changePage} page={page} suggestions={suggestions} tags={recipeFilters} />,
+    6: <MyRecipes changePage={changePage} page={page} suggestions={suggestions} tags={recipeFilters} favoriteRecipes={favoriteRecipes} userRecipes={userRecipes} />,
     7: <MyBooks changePage={changePage} page={page} />,
     8: <TagEditAllCategories changePage={changePage} page={page} recipeFilters={recipeFilters} />,
     9: <TagSuggestions changePage={changePage} page={page} suggestions={suggestions} tags={recipeFilters} />,
