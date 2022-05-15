@@ -1,3 +1,7 @@
+Tofu à la vapeur, marquer ce que Céline fait avec les légumes et le tofu.
+
+Quiche aux épinards. Quiche au jambon. Demander à Céline ce qu'elle a fait.
+
 Peut-être pouvoir sélectionner une ou plusieurs recettes dans mes recettes et pouvoir faire une action. Par exemple, tag => ...
 
 Peut-être des tags de couleurs au lieu de #tags dans mes recettes.

@@ -59,11 +59,13 @@ export const RecipeIndex = ({userRecipes, favoriteRecipes, showPercentCompleted,
     <div>
       <input ref={inputField} type="search" placeholder="Filtrer..." onChange={(e) => setSearch(e.target.value)} autoComplete="off" style={{width: "100%"}} onKeyDown={onKeyDown}/>
     </div>
-    <h3>Recettes personnelles</h3>
+    <h3>À cuisinner prochainement</h3>
+    <h3>À essayer</h3>
+    <h3>Mes recettes personnelles</h3>
     {loading ? 'Loading...' : (
       <ul id="recipes" className="list-group">
         {recipes.map((recipe, current) => {
-          let header = current == nbUserRecipes ? <h3 key={'hdr-'+current}>Recettes favorites</h3> : ''
+          let header = current == nbUserRecipes ? <h3 key={'hdr-'+current}>Mes recettes favorites</h3> : ''
           let recipeTags = suggestions.filter(suggestion => suggestion.recipe_id == recipe.id).map(suggestion => tags.find(t => t.id == suggestion.filter_id))
           return (<span key={recipe.id}>
             {header}
@@ -71,12 +73,21 @@ export const RecipeIndex = ({userRecipes, favoriteRecipes, showPercentCompleted,
               <a href={recipe_path(recipe)} className={current == selected ? "selected" : undefined}>{recipe.name}</a>
               {!showPercentCompleted ? '' : <span>&nbsp;(<PercentageCompleted recipe={recipe}/>)</span>}
               <span style={{color: 'gray', fontSize: '0.78em'}}>{recipeTags.map(tag => ` #${tag.name}`)} </span>
-              &nbsp;
-              <button type="button" className="btn btn-outline-secondary" style={{fontSize: '0.8em', padding: '0em 0.2em 0em 0.2em'}} onClick={() => editUserRecipe(recipe)}>Modifier</button>
-              &nbsp;
-              <DeleteConfirmButton id={`remove-recipe-${recipe.id}`} onDeleteConfirm={() => removeFavoriteRecipe(recipe)} message="Je veux enlever ce favori?">
-                <button type="button" className="btn btn-outline-secondary" style={{fontSize: '0.8em', padding: '0em 0.2em 0em 0.2em'}}>Retirer</button>
-              </DeleteConfirmButton>
+              <span className="dropdown">
+                <button className="plain-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="icons/three-dots.svg"/>
+                </button>
+                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                  <li><a className="dropdown-item" href="#">À essayer</a></li>
+                  <li><a className="dropdown-item" href="#">À cuisiner</a></li>
+                  <li><button type="button" className="dropdown-item" onClick={() => editUserRecipe(recipe)}>Modifier</button></li>
+                  <li>
+                    <DeleteConfirmButton id={`remove-recipe-${recipe.id}`} onDeleteConfirm={() => removeFavoriteRecipe(recipe)} message="Je veux enlever ce favori?">
+                      <button type="button" className="dropdown-item">Retirer</button>
+                    </DeleteConfirmButton>
+                  </li>
+                </ul>
+              </span>
             </li>
           </span>)
         })}
