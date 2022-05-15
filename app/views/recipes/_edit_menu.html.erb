@@ -24,7 +24,7 @@
     <span id="add-to-book-btn" class="dropdown-item" style="cursor: pointer;">Ajouter à mon livre</span>
     <% fav = recipe.user_favorite(current_user) %>
     <% if fav.blank? %>
-      <%= button_to "Ajouter à mes favoris", favorite_recipes_path(recipe_id: recipe.id), method: :post, class: "dropdown-item clickable" %>
+      <%= button_to "Ajouter à mes favoris", favorite_recipes_path(favorite_recipe: {recipe_id: recipe.id}), method: :post, class: "dropdown-item clickable" %>
     <% else %>
       <%= button_to "Retirer de mes favoris", favorite_recipe_path(fav), method: :delete, class: "dropdown-item clickable" %>
     <% end %>
