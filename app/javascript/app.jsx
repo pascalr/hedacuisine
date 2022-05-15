@@ -42,11 +42,11 @@ const LinkToPage = ({page, className, children, active, ...props}) => {
   return <a className={join(className, active ? 'active' : null)} href={href} onClick={(e) => switchPage(e, page)} {...props}>{children}</a>
 }
 
-const SuggestionsNav = ({page}) => {
+const SuggestionsNav = ({page, tagSuggestions}) => {
   return (<>
     <ul className="nav nav-tabs">
       <li className="nav-item">
-        <LinkToPage page={{...page, page: 9}} className="nav-link" active={page.page == 9}>Mes recettes</LinkToPage>
+        <LinkToPage page={{...page, page: 9}} className="nav-link" active={page.page == 9}>Mes recettes ({tagSuggestions.length})</LinkToPage>
       </li>
       <li className="nav-item">
         <LinkToPage page={{...page, page: 2}} className="nav-link" active={page.page == 2}>Autres recettes</LinkToPage>
@@ -154,15 +154,17 @@ const TagSuggestions = ({tags, suggestions, page, changePage}) => {
   const tagSuggestions = suggestions.filter(suggestion => suggestion.filter_id == tag.id)
 
   return (<>
-    <SuggestionsNav page={page} changePage={changePage} />
+    <SuggestionsNav {...{page, changePage, tagSuggestions}} />
     {tag.name ? <h2 style={{textAlign: 'center'}}>{tag.name}</h2> : ''}
     <RecipeSingleCarrousel tag={tag} suggestions={tagSuggestions}/>
   </>)
 }
 
-const TagCategorySuggestions = ({changePage, page, recipeFilters}) => {
+const TagCategorySuggestions = ({changePage, page, recipeFilters, suggestions}) => {
 
-  const suggestions = useCacheOrFetch(suggestions_path({recipe_filter_id: page.filterId}))
+  const categorySuggestions = useCacheOrFetch(suggestions_path({recipe_filter_id: page.filterId}))
+  const tagSuggestions = suggestions.filter(suggestion => suggestion.filter_id == tag.id)
+
   //useEffect(() => {
   //  console.log('inside use effect')
   //  if (suggestions) {
@@ -176,9 +178,9 @@ const TagCategorySuggestions = ({changePage, page, recipeFilters}) => {
   if (!tag) {return ''}
 
   return (<>
-    <SuggestionsNav page={page} changePage={changePage} />
+    <SuggestionsNav {...{page, changePage, tagSuggestions}} />
     {tag.name ? <h2 style={{textAlign: 'center'}}>{tag.name}</h2> : ''}
-    <RecipeSingleCarrousel tag={tag} suggestions={suggestions} isCategory={true} />
+    <RecipeSingleCarrousel tag={tag} suggestions={categorySuggestions} isCategory={true} />
   </>)
 }
 
@@ -497,7 +499,7 @@ const App = () => {
 
   const pages = {
     1: <TagIndex changePage={changePage} recipeFilters={recipeFilters} addRecipeFilter={(filter) => setRecipeFilters(recipeFilters.concat([filter]))} userTags={userTags} />,
-    2: <TagCategorySuggestions changePage={changePage} page={page} recipeFilters={recipeFilters} />,
+    2: <TagCategorySuggestions {...{page, changePage, recipeFilters, suggestions}} />,
     3: <EditFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
     4: <EditUserTags recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} userTags={userTags} page={page} />,
     //5: <TrainFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
