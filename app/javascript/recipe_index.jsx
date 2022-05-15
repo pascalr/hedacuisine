@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 
 import {PercentageCompleted} from './helpers/recipes_helper'
 import { ajax, isBlank, normalizeSearchText } from "./utils"
-import { recipe_path, favorite_recipe_path } from "./routes"
+import { recipe_path, favorite_recipe_path, favorite_recipes_path } from "./routes"
 import {EditUserRecipeModal} from './modals/edit_user_recipe'
 import { DeleteConfirmButton } from './components/delete_confirm_button'
 
@@ -27,10 +27,10 @@ const RecipeList = ({list, original, selected, suggestions, tags, editUserRecipe
         let recipe = recipeForItem(item)
         let recipeTags = suggestions.filter(suggestion => suggestion.recipe_id == recipe.id).map(suggestion => tags.find(t => t.id == suggestion.filter_id))
 
-        let toCook = <li><button type="button" className="dropdown-item" onClick={() => updateFavoriteRecipe(item, 1)}>À cuisiner</button></li>
-        let toTry = <li><button type="button" className="dropdown-item" onClick={() => updateFavoriteRecipe(item, 2)}>À essayer</button></li>
-        let toNotCook = <li><button type="button" className="dropdown-item" onClick={() => updateFavoriteRecipe(item, 0)}>Ne plus cuisiner</button></li>
-        let toNotTry = <li><button type="button" className="dropdown-item" onClick={() => updateFavoriteRecipe(item, 0)}>Ne plus essayer</button></li>
+        let toCook = <button type="button" className="dropdown-item" onClick={() => updateFavoriteRecipe(item, 1)}>À cuisiner</button>
+        let toTry = <button type="button" className="dropdown-item" onClick={() => updateFavoriteRecipe(item, 2)}>À essayer</button>
+        let toNotCook = <button type="button" className="dropdown-item" onClick={() => updateFavoriteRecipe(item, 0)}>Ne plus cuisiner</button>
+        let toNotTry = <button type="button" className="dropdown-item" onClick={() => updateFavoriteRecipe(item, 0)}>Ne plus essayer</button>
         return (<span key={recipe.id}>
           <li className="list-group-item" key={recipe.id}>
             <a href={recipe_path(recipe)} className={current == selected ? "selected" : undefined}>{recipe.name}</a>
@@ -74,7 +74,8 @@ export const RecipeIndex = ({userRecipes, favoriteRecipes, suggestions, tags}) =
     ))
   }
 
-  let filteredUserRecipes = filterList(userRecipes)
+  let ids = favoriteRecipes.map(f => f.recipe_id)
+  let filteredUserRecipes = filterList(userRecipes.filter(r => !ids.includes(r.id)))
   let toCookList = filterList(favoriteRecipes.filter(r => r.list_id == 1))
   let toTryList = filterList(favoriteRecipes.filter(r => r.list_id == 2))
   let otherList = filterList(favoriteRecipes.filter(r => !r.list_id || r.list_id >= 3))
@@ -91,16 +92,18 @@ export const RecipeIndex = ({userRecipes, favoriteRecipes, suggestions, tags}) =
     if (key == "Enter") {window.location.href = recipe_path(recipeForItem(all[selected]))}
   }
   
-  let updateFavoriteRecipe = (fav, list_id) =>{
-    ajax({url: favorite_recipe_path(fav), type: 'PATCH', data: {favorite_recipe: {list_id}}, success: (updated) => {
-      favoriteRecipes.update(favoriteRecipes.map(f => f.id == fav.id ? updated : f))
-    }, error: () => {
-    }})
-  }
-  let createFavoriteRecipe = (fav) =>{
-    ajax({url: favorite_recipe_path(recipe), type: 'PATCH', data: {}, success: () => {
-    }, error: () => {
-    }})
+  let updateFavoriteRecipe = (item, list_id) =>{
+    if (item.class_name == "favorite_recipe") {
+      ajax({url: favorite_recipe_path(item), type: 'PATCH', data: {favorite_recipe: {list_id}}, success: (updated) => {
+        favoriteRecipes.update(favoriteRecipes.map(f => f.id == item.id ? updated : f))
+      }, error: () => {
+      }})
+    } else if (item.class_name == "recipe") {
+      ajax({url: favorite_recipes_path(), type: 'POST', data: {favorite_recipe: {list_id, recipe_id: item.id}}, success: (created) => {
+        favoriteRecipes.update([...favoriteRecipes, created])
+      }, error: () => {
+      }})
+    }
   }
 
   let editUserRecipe = (recipe) => {

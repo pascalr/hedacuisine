@@ -121,6 +121,9 @@ export const user_books_books_path = (arg) => {
 export const favorite_recipe_path = (arg) => {
   return `/favorite_recipes/${extractParamFromModel(arg)}`
 }
+export const favorite_recipes_path = (arg) => {
+  return `/favorite_recipes`
+}
 
 export const user_tags_path = (arg) => {
   return `/user_tags`

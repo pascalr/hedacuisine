@@ -3,9 +3,9 @@ class FavoriteRecipesController < ApplicationController
   before_action :set_favorite_recipe, only: [:update, :destroy, :move]
 
   def create
-    fav = current_user.favorite_recipes.create!(recipe_id: params[:recipe_id])
+    fav = current_user.favorite_recipes.create!(favorite_recipe_params)
     respond_to do |format|
-      format.json {render json: favorite_recipe_to_obj(fav)}
+      format.json {render json: fav.to_obj}
       format.html {redirect_back fallback_location: recipe_path(fav.recipe)}
     end
   end
@@ -27,7 +27,7 @@ class FavoriteRecipesController < ApplicationController
 
   private
     def favorite_recipe_params 
-      params.require(:favorite_recipe).permit(:list_id)
+      params.require(:favorite_recipe).permit(:recipe_id, :list_id)
     end
 
     def set_favorite_recipe
