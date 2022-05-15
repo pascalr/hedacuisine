@@ -25,7 +25,7 @@ Rails.application.routes.draw do
   get 'suggestions', to: 'suggestions#index'
   get 'all_recipe_kinds', to: 'recipe_filters#all_recipe_kinds'
   resources :food_tags
-  resources :favorite_recipes, only: [:create, :destroy]
+  resources :favorite_recipes, only: [:create, :update, :destroy]
   resources :recipe_filters, only: [:create, :update, :destroy]
   resources :filtered_recipes, only: [:create, :update, :destroy]
   resources :user_tags, only: [:create, :update, :destroy]

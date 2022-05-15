@@ -464,7 +464,7 @@ const App = () => {
   const [userTags, setUserTags] = useState(gon.user_tags)
   const [userRecipes, setUserRecipes] = useState(gon.user_recipes)
   const [favoriteRecipes, setFavoriteRecipes] = useState(gon.favorite_recipes)
-  
+
   bindSetter(recipeFilters, setRecipeFilters)
   bindSetter(suggestions, setSuggestions)
   bindSetter(userTags, setUserTags)

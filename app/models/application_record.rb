@@ -56,7 +56,11 @@ private
     end
     assoc = assoc.to_sym
     assocs = record.class.reflect_on_all_associations
-    raise "Unkown association #{assoc} for #{record}" unless assocs.map(&:name).include? assoc
+    unless assocs.map(&:name).include? assoc
+      raise "Unkown association or attribute #{assoc} for #{record}" unless record.class.attribute_names.include? assoc.to_s
+      obj[assoc] = self.send(assoc)
+      return obj
+    end
     val = record.send(assoc)
     if val.is_a?(Enumerable) # has_many association
       obj[assoc] = val.map {|v| v ? v.to_obj(params.blank? ? nil : {includes: params}) : nil}

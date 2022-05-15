@@ -1,14 +1,13 @@
-class FavoriteRecipeValidator < ActiveModel::Validator
-  def validate(record)
-    if record.recipe.user_id == record.user_id
-      record.errors.add :base, "A user can't have his own recipe as a favorite"
-    end
-  end
-end
-
 class FavoriteRecipe < ApplicationRecord
   belongs_to :recipe
   belongs_to :user
-  validates_with FavoriteRecipeValidator
   validates :recipe_id, uniqueness: {scope: :user_id}
+
+  def name
+    self.recipe.name
+  end
+
+  def to_obj(params={})
+    extract_attributes(params, :name, :list_id, :recipe_id)
+  end
 end

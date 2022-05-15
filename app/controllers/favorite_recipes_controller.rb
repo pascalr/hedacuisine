@@ -10,13 +10,12 @@ class FavoriteRecipesController < ApplicationController
     end
   end
 
-  #def update
-  #  @favorite_recipe.update!(favorite_recipe_params)
-  #  respond_to do |format|
-  #    format.json {render json: to_obj(@favorite_recipe)}
-  #    format.html {redirect_back fallback_location: recipe_path(@favorite_recipe.recipe)}
-  #  end
-  #end
+  def update
+    @favorite_recipe.update!(favorite_recipe_params)
+    respond_to do |format|
+      format.json {render json: @favorite_recipe.to_obj}
+    end
+  end
 
   def destroy
     @favorite_recipe.destroy!
@@ -27,6 +26,9 @@ class FavoriteRecipesController < ApplicationController
   end
 
   private
+    def favorite_recipe_params 
+      params.require(:favorite_recipe).permit(:list_id)
+    end
 
     def set_favorite_recipe
       @favorite_recipe = current_user.favorite_recipes.find(params[:id] || params[:favorite_recipe_id])
