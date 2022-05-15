@@ -42,17 +42,14 @@ const LinkToPage = ({page, className, children, active, ...props}) => {
   return <a className={join(className, active ? 'active' : null)} href={href} onClick={(e) => switchPage(e, page)} {...props}>{children}</a>
 }
 
-const SuggestionsNav = ({page, tagSuggestions}) => {
+const SuggestionsNav = ({page, tagSuggestions, categorySuggestions}) => {
   return (<>
     <ul className="nav nav-tabs">
       <li className="nav-item">
-        <LinkToPage page={{...page, page: 9}} className="nav-link" active={page.page == 9}>Mes recettes ({tagSuggestions.length})</LinkToPage>
+        <LinkToPage page={{...page, page: 9}} className="nav-link" active={page.page == 9}>Mes recettes{tagSuggestions ? ` (${tagSuggestions.length})` : ''}</LinkToPage>
       </li>
       <li className="nav-item">
-        <LinkToPage page={{...page, page: 2}} className="nav-link" active={page.page == 2}>Autres recettes</LinkToPage>
-      </li>
-      <li className="nav-item">
-        <a className="nav-link" href="#">Filtres</a>
+        <LinkToPage page={{...page, page: 2}} className="nav-link" active={page.page == 2}>Autres recettes{categorySuggestions ? ` (${categorySuggestions.length})` : ''}</LinkToPage>
       </li>
     </ul>
     <br/>
@@ -162,6 +159,9 @@ const TagSuggestions = ({tags, suggestions, page, changePage}) => {
 
 const TagCategorySuggestions = ({changePage, page, recipeFilters, suggestions}) => {
 
+  const tag = recipeFilters.find(f => f.id == page.filterId)
+  if (!tag) {return ''}
+
   const categorySuggestions = useCacheOrFetch(suggestions_path({recipe_filter_id: page.filterId}))
   const tagSuggestions = suggestions.filter(suggestion => suggestion.filter_id == tag.id)
 
@@ -174,11 +174,8 @@ const TagCategorySuggestions = ({changePage, page, recipeFilters, suggestions}) 
   //  }
   //}, [suggestions])
 
-  const tag = recipeFilters.find(f => f.id == page.filterId)
-  if (!tag) {return ''}
-
   return (<>
-    <SuggestionsNav {...{page, changePage, tagSuggestions}} />
+    <SuggestionsNav {...{page, changePage, tagSuggestions, categorySuggestions}} />
     {tag.name ? <h2 style={{textAlign: 'center'}}>{tag.name}</h2> : ''}
     <RecipeSingleCarrousel tag={tag} suggestions={categorySuggestions} isCategory={true} />
   </>)
