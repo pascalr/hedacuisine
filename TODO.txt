@@ -1,3 +1,9 @@
+CRÉER UN UTILISATEUR DÉMO??? Comment faire une démo?
+
+Un icon pour pin les recettes au lieu d'un étoile. Donc je pin les recettes au lieu de les mettre en favoris.
+
+Un message d'erreur correct quand ce n'est pas le bon mot de passe...
+
 Tofu à la vapeur, marquer ce que Céline fait avec les légumes et le tofu.
 
 Quiche aux épinards. Quiche au jambon. Demander à Céline ce qu'elle a fait.
