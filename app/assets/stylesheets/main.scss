@@ -747,10 +747,10 @@ input[type="radio"] {
 }
 
 /* gap in flex does not work on my old smartphone */
-.gap-pad-20 > * {padding-right: 20px;} .gap-pad-20:last-child {padding-right: 0px;}
-.gap-20 > * {margin-right: 20px;} .gap-20:last-child {margin-right: 0px;}
-.gap-15 > * {margin-right: 15px;} .gap-l5:last-child {margin-right: 0px;}
-.gap-30 > * {margin-right: 30px;} .gap-30:last-child {margin-right: 0px;}
+.gap-pad-20 > * {padding-right: 20px;} .gap-pad-20 > *:last-child {padding-right: 0px;}
+.gap-20 > * {margin-right: 20px;} .gap-20 > *:last-child {margin-right: 0px;}
+.gap-15 > * {margin-right: 15px;} .gap-l5 > *:last-child {margin-right: 0px;}
+.gap-30 > * {margin-right: 30px;} .gap-30 > *:last-child {margin-right: 0px;}
 /*.gap-20 > * + * {
   margin-left: 20px;
   }*/

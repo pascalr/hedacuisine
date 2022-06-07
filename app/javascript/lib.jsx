@@ -30,6 +30,20 @@ export const useCacheOrFetch = (url, args={}) => {
   return data;
 };
 
+export const useWindowWidth = (args={}) => {
+
+  const [winWidth, setWinWidth] = useState(window.innerWidth)
+  useEffect(() => {
+    const f = () => setWinWidth(window.innerWidth)
+    window.addEventListener('resize', f)
+    return () => {
+      window.removeEventListener('resize', f)
+    }
+  }, [])
+
+  return winWidth
+};
+
 export const useFetch = (url, args={}) => {
   const {waitFor} = args
   const [data, setData] = useState(null);

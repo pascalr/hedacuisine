@@ -1,3 +1,7 @@
+Ce qui serait nice serait une app qui fait juste de login puis te rediriger vers le browser logged in. Tu cliques sur ton nom (comme netflix).
+
+Trouver un remplacement à Heroku...
+
 CRÉER UN UTILISATEUR DÉMO??? Comment faire une démo?
 
 Un icon pour pin les recettes au lieu d'un étoile. Donc je pin les recettes au lieu de les mettre en favoris.

@@ -5,7 +5,7 @@ import Hammer from "react-hammerjs"
 //import history from 'history/hash'
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { useCacheOrFetch } from "./lib"
+import { useCacheOrFetch, useWindowWidth } from "./lib"
 import {RecipeIndex} from './recipe_index'
 import { omit, ajax, isBlank, preloadImage, getUrlParams, join, bindSetter, sortBy } from "./utils"
 import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, batch_create_filtered_recipes_path, batch_destroy_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path, recipe_path, user_tags_path, user_tag_path } from './routes'
@@ -24,7 +24,7 @@ const PAGE_6 = 6 // MyRecipes
 const PAGE_7 = 7 // MyBooks
 const PAGE_8 = 8 // TagEditAllCategories
 const PAGE_9 = 9 // TagSuggestions
-const PAGE_10 = 10
+const PAGE_10 = 10 // HedaIndex
 const PAGE_11 = 11
 const PAGE_12 = 12
 const PAGE_13 = 13
@@ -381,14 +381,7 @@ const TagButton = ({winWidth, image, title, handleClick}) => {
 }
 const TagIndex = ({recipeFilters, addRecipeFilter, changePage, userTags}) => {
 
-  const [winWidth, setWinWidth] = useState(window.innerWidth)
-  useEffect(() => {
-    const f = () => setWinWidth(window.innerWidth)
-    window.addEventListener('resize', f)
-    return () => {
-      window.removeEventListener('resize', f)
-    }
-  }, [])
+  const winWidth = useWindowWidth()
 
   //const createRecipeFilter = () => {
   //  ajax({url: recipe_filters_path(), type: 'POST', data: {}, success: (recipe_filter) => {
@@ -409,12 +402,45 @@ const TagIndex = ({recipeFilters, addRecipeFilter, changePage, userTags}) => {
     <div style={{maxWidth: "100vw", width: "400px", margin: "auto"}}>
       <TagButton winWidth={winWidth} image="/img/cooking.jpg" title="Mes recettes" handleClick={() => changePage(6)} />
       <TagButton winWidth={winWidth} image="/img/recipes.jpg" title="Mes livres" handleClick={() => {window.location.href = my_books_path()}} />
+      <TagButton winWidth={winWidth} image="/img/robot.jpg" title="Heda" handleClick={() => {changePage(PAGE_10)}} />
       {buttons}
       <TagButton winWidth={winWidth} image="/icons/gear-gray.svg" title="Paramètres" handleClick={() => changePage(4)} />
     </div>
   </>)
 }
 
+const HedaIndex = ({page}) => {
+
+  const winWidth = useWindowWidth()
+  console.log('window width', winWidth)
+
+  return ''
+
+  //const createRecipeFilter = () => {
+  //  ajax({url: recipe_filters_path(), type: 'POST', data: {}, success: (recipe_filter) => {
+  //    addRecipeFilter(recipe_filter)
+  //    changePage(3, {filterId: recipe_filter.id})
+  //  }})
+  //}
+
+  //const buttons = recipeFilters.map(filter => <TagButton key={filter.id} winWidth={winWidth} image={`/img/${filter.image_src || "question-mark.jpg"}`} title={filter.name || "Sans nom"} handleClick={() => changePage(PAGE_9, {filterId: filter.id})} />)
+  //const buttons = userTags.map(userTag => {
+  //  let tag = recipeFilters.find(t => t.id == userTag.tag_id)
+  //  return <TagButton key={userTag.id} winWidth={winWidth} image={`/img/${tag.image_src || "question-mark.jpg"}`} title={tag.name || "Sans nom"} handleClick={() => changePage(PAGE_9, {filterId: tag.id})} />
+  //})
+
+  //// Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
+  ////<TagButton winWidth={winWidth} image="/img/recipes.jpg" title="Mes livres" handleClick={() => changePage(7)} />
+  //return (<>
+  //  <div style={{maxWidth: "100vw", width: "400px", margin: "auto"}}>
+  //    <TagButton winWidth={winWidth} image="/img/cooking.jpg" title="Mes recettes" handleClick={() => changePage(6)} />
+  //    <TagButton winWidth={winWidth} image="/img/recipes.jpg" title="Mes livres" handleClick={() => {window.location.href = my_books_path()}} />
+  //    <TagButton winWidth={winWidth} image="/img/robot.jpg" title="Heda" handleClick={() => {window.location.href = my_books_path()}} />
+  //    {buttons}
+  //    <TagButton winWidth={winWidth} image="/icons/gear-gray.svg" title="Paramètres" handleClick={() => changePage(4)} />
+  //  </div>
+  //</>)
+}
 const MyBooks = () => {
 
   const books = useCacheOrFetch(user_books_books_path())
@@ -479,6 +505,7 @@ const App = () => {
     [PAGE_7]: PAGE_1,
     [PAGE_8]: PAGE_3, // TagEditAllCategories => EditFilter
     [PAGE_9]: PAGE_1,
+    [PAGE_10]: PAGE_1,
   }
 
   // Deprecated, use page.update(newPage) which uses changePageV2
@@ -495,15 +522,16 @@ const App = () => {
   bindSetter(page, changePageV2)
 
   const pages = {
-    1: <TagIndex changePage={changePage} recipeFilters={recipeFilters} addRecipeFilter={(filter) => setRecipeFilters(recipeFilters.concat([filter]))} userTags={userTags} />,
-    2: <TagCategorySuggestions {...{page, changePage, recipeFilters, suggestions}} />,
-    3: <EditFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
-    4: <EditUserTags recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} userTags={userTags} page={page} />,
+    [PAGE_1]: <TagIndex changePage={changePage} recipeFilters={recipeFilters} addRecipeFilter={(filter) => setRecipeFilters(recipeFilters.concat([filter]))} userTags={userTags} />,
+    [PAGE_2]: <TagCategorySuggestions {...{page, changePage, recipeFilters, suggestions}} />,
+    [PAGE_3]: <EditFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
+    [PAGE_4]: <EditUserTags recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} userTags={userTags} page={page} />,
     //5: <TrainFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
-    6: <MyRecipes changePage={changePage} page={page} suggestions={suggestions} tags={recipeFilters} favoriteRecipes={favoriteRecipes} userRecipes={userRecipes} />,
-    7: <MyBooks changePage={changePage} page={page} />,
-    8: <TagEditAllCategories changePage={changePage} page={page} recipeFilters={recipeFilters} />,
-    9: <TagSuggestions changePage={changePage} page={page} suggestions={suggestions} tags={recipeFilters} />,
+    [PAGE_6]: <MyRecipes changePage={changePage} page={page} suggestions={suggestions} tags={recipeFilters} favoriteRecipes={favoriteRecipes} userRecipes={userRecipes} />,
+    [PAGE_7]: <MyBooks changePage={changePage} page={page} />,
+    [PAGE_8]: <TagEditAllCategories changePage={changePage} page={page} recipeFilters={recipeFilters} />,
+    [PAGE_9]: <TagSuggestions changePage={changePage} page={page} suggestions={suggestions} tags={recipeFilters} />,
+    [PAGE_10]: <HedaIndex {...{page}} />,
   }
 
   const goUp = () => {
