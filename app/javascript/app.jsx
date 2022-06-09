@@ -476,9 +476,9 @@ const HedaIndex = ({page, machines}) => {
     <div style={{maxWidth: "100vw", width: "400px", margin: "auto"}}>
       <TagButton winWidth={winWidth} image="/img/calendar.jpg" title="Calendrier" handleClick={() => window.location.href = calendar_path(machine)} />
       <TagButton winWidth={winWidth} image="/img/cooking.jpg" title="Mélanges" handleClick={() => changePage(6)} />
-      <TagButton winWidth={winWidth} image="/img/bar_code.jpg" title="Inventaire" handleClick={() => page.update({...omit(page,'update'), page: PAGE_11, machineId: machine.id})} />
+      <TagButton winWidth={winWidth} image="/img/bar_code.jpg" title="Inventaire" handleClick={() => page.update({page: PAGE_11, machineId: machine.id})} />
     
-      <TagButton winWidth={winWidth} image="/img/filled-jar.jpg" title="Pots" handleClick={() => window.location.href = containers_path(machine)} />
+      <TagButton winWidth={winWidth} image="/img/jar.svg" title="Pots" handleClick={() => window.location.href = containers_path(machine)} />
       <TagButton winWidth={winWidth} image="/img/shopping_cart.jpg" title="Liste d'épicerie" handleClick={() => window.location.href = grocery_list_path(machine)} />
     </div>
   </>)
@@ -587,11 +587,12 @@ const App = () => {
     [PAGE_11]: <Inventory {...{page, machines, machineFoods, containerQuantities}} />,
   }
 
+  // I don't want a back system, I want a up system. So if you are given a nested link, you can go up.
   const goUp = () => {
     if (page.page && parentPages[page.page]) {
-      let s = {page: parentPages[page.page]}
+      let s = {...omit(page, 'update'), page: parentPages[page.page]}
       window.history.replaceState(s, '', '?'+new URLSearchParams(s).toString())
-      setPage({page: parentPages[page.page]})
+      setPage(s)
     }
   }
 
