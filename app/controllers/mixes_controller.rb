@@ -27,6 +27,7 @@ private
       @mix = current_user.mixes.find(params[:id])
     end
     def mix_params
+      return {} if params[:mix].blank?
       params.require(:mix).permit(:name, :instructions)
     end
 end

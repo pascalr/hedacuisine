@@ -52,6 +52,13 @@ export const paste_ingredients_recipes_path = (arg) => {
   return `/qc/recettes/${extractParamFromModel(arg)}/paste_ingredients`
 }
 
+export const mixes_path = (arg) => {
+  return `/mixes`
+}
+export const mix_path = (arg) => {
+  return `/mixes/${extractParamFromModel(arg)}`
+}
+
 export const create_new_recipe_book_path = (arg) => {
   return `/books/${extractParamFromModel(arg)}/create_new_recipe`
 }

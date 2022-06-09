@@ -8,7 +8,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useCacheOrFetch, useWindowWidth } from "./lib"
 import {RecipeIndex} from './recipe_index'
 import { omit, ajax, isBlank, preloadImage, getUrlParams, join, bindSetter, sortBy, capitalize } from "./utils"
-import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, batch_create_filtered_recipes_path, batch_destroy_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path, recipe_path, user_tags_path, user_tag_path, containers_path, grocery_list_path, calendar_path, inventory_path } from './routes'
+import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, batch_create_filtered_recipes_path, batch_destroy_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path, recipe_path, user_tags_path, user_tag_path, containers_path, grocery_list_path, calendar_path, inventory_path, mixes_path, mix_path } from './routes'
 import {TextField} from './form'
 import {PublicImageField} from './modals/public_image'
 import { DeleteConfirmButton } from './components/delete_confirm_button'
@@ -26,8 +26,8 @@ const PAGE_8 = 8 // TagEditAllCategories
 const PAGE_9 = 9 // TagSuggestions
 const PAGE_10 = 10 // HedaIndex
 const PAGE_11 = 11 // Inventory
-const PAGE_12 = 12 // MyMixes
-const PAGE_13 = 13
+const PAGE_12 = 12 // MixIndex
+const PAGE_13 = 13 // ShowMix
 const PAGE_14 = 14
   
 const encodeRecord = (record) => (`${record.class_name == "recipe_kind" ? '' : '_'}${record.id}`)
@@ -413,12 +413,91 @@ const TagIndex = ({machines, recipeFilters, addRecipeFilter, changePage, userTag
   </>)
 }
 
+const ShowMix = ({page, machines, mixes, ...args}) => {
+
+  const machine = machines.find(m => m.id == page.machineId)
+  const machineFoods = args.machineFoods.filter(m => m.machine_id == page.machineId)
+  const mix = mixes.find(m => m.id == page.mixId)
+  console.log('mix', mix)
+
+  const update = () => {
+    ajax({url: mix_path(mix), type: 'PATCH', data: {mix: {name: mix.name, instructions: mix.instructions}}, success: (mix) => {
+      mixes.update(mixes.map(e => e.id == mix.id ? mix : e))
+    }})
+  }
+  
+  const instructions = (mix.instructions||'').split(';')
+
+  const addInstruction = () => {
+    mix.instructions = (mix.instructions||'')+';'
+    update()
+  }
+  const changeInstruction = (cmd,line) => {
+    instructions[line] = cmd
+    mix.instructions = instructions.join(';')
+    update()
+  }
+
+  const INSTRUCTION_LIST = ["ADD", "CONTAINER"]
+
+  const eInstructions = instructions.map((instruction,line) => {
+
+    let args = instruction.split(',')
+    let cmd = args[0]||'ADD'
+
+    return (<li key={`${line}-${instruction}`} className="list-group-item">
+        <div className="dropdown">
+          <button className="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {cmd}
+          </button>
+          <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            {INSTRUCTION_LIST.filter(e => e != cmd).map((e,i) => (
+              <span key={i} className="dropdown-item" onClick={() => changeInstruction(e, line)}>{e}</span>
+            ))}
+          </div>
+        </div>
+      </li>
+    )
+  })
+
+  return (<>
+    <h1>{mix.name || 'Sans nom'}</h1>
+    <h2>Instructions</h2>
+    <ul className="list-group">{eInstructions}</ul>
+    <div style={{height: '0.5em'}}></div>
+    <img className="clickable" src="/icons/plus-circle.svg" width="24" height="24" onClick={addInstruction}></img>
+  </>)
+}
+
 const MixIndex = ({page, machines, mixes, ...args}) => {
 
   const machine = machines.find(m => m.id == page.machineId)
   const machineFoods = args.machineFoods.filter(m => m.machine_id == page.machineId)
 
-  return 'TODO'
+  const createMix = () => {
+    ajax({url: mixes_path(), type: 'POST', data: {}, success: (mix) => {
+      mixes.update([...mixes, mix])
+    }})
+  }
+  const destroyMix = (mix) => {
+    ajax({url: mix_path(mix), type: 'DELETE', success: () => {
+      mixes.update(mixes.filter(e => e.id != mix.id))
+    }})
+  }
+
+  const eMixes = mixes.map(mix => {
+    return <li key={mix.id} className="list-group-item">
+      <span className="clickable" onClick={() => page.update({page: PAGE_13, machineId: machine.id, mixId: mix.id})}>{mix.name || 'Sans nom'}</span>
+      <img className="clickable float-end" src="/icons/x-lg.svg" width="18" height="18" onClick={() => destroyMix(mix)}></img>
+    </li>
+  })
+
+  return (<>
+    <h1>Mes mélanges</h1>
+    <ul className="list-group">{eMixes}</ul>
+    <div style={{height: '0.5em'}}></div>
+    <img className="clickable" src="/icons/plus-circle.svg" width="24" height="24" onClick={createMix}></img>
+  </>)
 }
 
 const Inventory = ({page, machines, containerQuantities, ...args}) => {
@@ -569,6 +648,7 @@ const App = () => {
     [PAGE_10]: PAGE_1,
     [PAGE_11]: PAGE_10,
     [PAGE_12]: PAGE_10,
+    [PAGE_13]: PAGE_12,
   }
 
   // Deprecated, use page.update(newPage) which uses changePageV2
@@ -597,6 +677,7 @@ const App = () => {
     [PAGE_10]: <HedaIndex {...{page, machines}} />,
     [PAGE_11]: <Inventory {...{page, machines, machineFoods, containerQuantities}} />,
     [PAGE_12]: <MixIndex {...{page, machines, machineFoods, mixes}} />,
+    [PAGE_13]: <ShowMix {...{page, machines, machineFoods, mixes}} />,
   }
 
   // I don't want a back system, I want a up system. So if you are given a nested link, you can go up.
