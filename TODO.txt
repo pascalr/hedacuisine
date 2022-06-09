@@ -1,3 +1,5 @@
+WEB ANALYTICS (https://counter.dev/, https://plausible.io/, https://umami.is/, ou autre)
+
 Ce qui serait nice serait une app qui fait juste de login puis te rediriger vers le browser logged in. Tu cliques sur ton nom (comme netflix).
 
 Trouver un remplacement à Heroku...
