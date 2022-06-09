@@ -18,6 +18,10 @@ export function omit(obj, property) {
   return o
 }
 
+export function capitalize(str) {
+  return str.replace(/^\w/, c => c.toUpperCase())
+}
+
 export function join(str1, str2) {
   if (str1 && str2) {return `${str1} ${str2}`}
   if (str1 && !str2) {return str1}

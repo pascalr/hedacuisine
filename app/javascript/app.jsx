@@ -7,7 +7,7 @@ import Hammer from "react-hammerjs"
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useCacheOrFetch, useWindowWidth } from "./lib"
 import {RecipeIndex} from './recipe_index'
-import { omit, ajax, isBlank, preloadImage, getUrlParams, join, bindSetter, sortBy } from "./utils"
+import { omit, ajax, isBlank, preloadImage, getUrlParams, join, bindSetter, sortBy, capitalize } from "./utils"
 import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, batch_create_filtered_recipes_path, batch_destroy_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path, recipe_path, user_tags_path, user_tag_path, containers_path, grocery_list_path, calendar_path, inventory_path } from './routes'
 import {TextField} from './form'
 import {PublicImageField} from './modals/public_image'
@@ -421,16 +421,17 @@ const Inventory = ({page, machines, containerQuantities, ...args}) => {
   const items = machineFoods.map(machineFood => {
     let qties = containerQuantities.filter(c => c.machine_food_id == machineFood.id)
 
+    //<img src={`JarIcon${containerQuantity.container_format_name}.png`} width="42" height="42"></img>
     let containers = qties.map(containerQuantity =>{
       return (<span key={containerQuantity.id}>
         <span>{containerQuantity.full_qty}</span>
-        <img src={`JarIcon${containerQuantity.container_format_name}.png`} size="48x48"></img>
+        <img src={`jar-${containerQuantity.container_format_name}.svg`} width="42" height="42"></img>
       </span>)
     })
 
     return (
       <tr key={machineFood.id}>
-        <td>{machineFood.food_id}</td>
+        <td>{capitalize(machineFood.name)}</td>
         <td>
           <div className="containers d-flex">
             <div>

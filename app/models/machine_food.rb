@@ -61,7 +61,7 @@ class MachineFood < ApplicationRecord
   end
 
   def to_obj(params={})
-    extract_attributes(params, :machine_id, :food_id)
+    extract_attributes(params, :machine_id, :food_id, :name)
   end
 
 end
