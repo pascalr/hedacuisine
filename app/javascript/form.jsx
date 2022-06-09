@@ -6,6 +6,14 @@ import { DeleteConfirmButton } from './components/delete_confirm_button'
 
 import autocomplete from 'js-autocomplete';
 
+export const TextInput = ({defaultValue, onBlur}) => {
+  const [value, setValue] = useState(defaultValue)
+
+  return (
+    <input type="text" value={value||''} onChange={(e) => setValue(e.target.value)} onBlur={() => onBlur(value)} />
+  )
+}
+
 export const TextInputField = ({model, field}) => {
   const [value, setValue] = useState(model.currentValue(field))
 
@@ -16,15 +24,15 @@ export const TextInputField = ({model, field}) => {
   )
 }
 
-export const AutocompleteInput = ({name, defaultValue, choices, placeholder, onSelect, inputRef}) => {
+export const AutocompleteInput = ({minChars, name, defaultValue, choices, placeholder, onSelect, inputRef}) => {
   inputRef ||= useRef(null);
   useEffect(() => { // Same as componentDidMount
-    
+
     if (inputRef.current) {
       console.log('new autocomplete')
       let my_autocomplete = new autocomplete({
         selector: inputRef.current,
-        minChars: 1,
+        minChars: minChars == null ? 1 : minChars,
         source: function(term, suggest){
           term = normalizeSearchText(term)
           const matches = [];

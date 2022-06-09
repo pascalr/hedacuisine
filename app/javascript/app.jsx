@@ -9,7 +9,7 @@ import { useCacheOrFetch, useWindowWidth } from "./lib"
 import {RecipeIndex} from './recipe_index'
 import { omit, ajax, isBlank, preloadImage, getUrlParams, join, bindSetter, sortBy, capitalize } from "./utils"
 import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, batch_create_filtered_recipes_path, batch_destroy_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path, recipe_path, user_tags_path, user_tag_path, containers_path, grocery_list_path, calendar_path, inventory_path, mixes_path, mix_path } from './routes'
-import {TextField, AutocompleteInput} from './form'
+import {TextField, AutocompleteInput, TextInput} from './form'
 import {PublicImageField} from './modals/public_image'
 import { DeleteConfirmButton } from './components/delete_confirm_button'
 import {AddUserTagModal} from './modals/add_user_tag'
@@ -429,8 +429,10 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
   const instructions = (mix.instructions||'').split(';')
 
   const addInstruction = () => {
-    mix.instructions = (mix.instructions||'')+';'
-    update()
+    mix.instructions = (mix.instructions||'')+';'; update()
+  }
+  const updateName = (newName) => {
+    mix.name = newName; update()
   }
   const changeInstruction = (cmd,line) => {
     instructions[line] = cmd
@@ -445,7 +447,7 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
     update()
   }
 
-  const INSTRUCTION_LIST = ["ADD", "CONTAINER"]
+  const INSTRUCTION_LIST = ["ADD", "CONTAINER", "MIX"]
 
   const eInstructions = instructions.map((instruction,line) => {
 
@@ -454,10 +456,13 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
 
     let eArgs = ''
     if (cmd == 'ADD') {
-      let machineFoodId = args[1]
+      let machineFoodId = args[2]
       let machineFood = machineFoods.find(e => e.id == machineFoodId)
       let machineFoodName = machineFood ? machineFood.name : null
-      eArgs = <AutocompleteInput name="food" choices={machineFoods} defaultValue={machineFoodName} onSelect={(e, term, item) => updateArg(1, item.dataset.id, line)} />
+      eArgs = (<>
+        <TextInput defaultValue={args[1]} onBlur={(qty) => updateArg(1, qty, line)} />
+        <AutocompleteInput name="food" choices={machineFoods} defaultValue={machineFoodName} onSelect={(e, term, item) => updateArg(2, item.dataset.id, line)} minChars={0} />
+      </>)
     }
 
     return (<li key={`${line}-${instruction}`} className="list-group-item d-flex gap-10">
@@ -477,7 +482,9 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
   })
 
   return (<>
-    <h1>{mix.name || 'Sans nom'}</h1>
+    <h1 contentEditable suppressContentEditableWarning={true} onBlur={(e) => {updateName(e.target.innerText)}}>
+      {mix.name || 'Sans nom'}
+    </h1>
     <h2>Instructions</h2>
     <ul className="list-group">{eInstructions}</ul>
     <div style={{height: '0.5em'}}></div>
