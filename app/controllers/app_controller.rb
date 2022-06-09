@@ -8,6 +8,8 @@ class AppController < ApplicationController
     gon.user_recipes = current_user.recipes.order(:name).map {|r| r.to_obj(only: :name)}
     gon.machines = current_user.machines.map {|m| m.to_obj}
     gon.containers = current_user.containers.map {|c| c.to_obj}
+    gon.machine_foods = current_user.machine_foods.map {|f| f.to_obj}
+    gon.container_quantities = current_user.container_quantities.map {|c| c.to_obj}
     #gon.user_recipes = current_user.recipes.order(:name).map {|r| r.to_obj(only: :name)}
     #gon.favorite_recipes = current_user.favorite_recipes.includes(:recipe).sort_by {|fav| fav.recipe.name}.map {|fav| o = fav.recipe.to_obj(only: :name); o[:fav_id] = fav.id; o}
   end

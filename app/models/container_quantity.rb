@@ -33,4 +33,12 @@ class ContainerQuantity < ApplicationRecord
   def update_full_weight
     machine_food.update_full_weight
   end
+
+  def container_format_name
+    container_format.name
+  end
+
+  def to_obj(params={})
+    extract_attributes(params, :container_format_id, :machine_food_id, :full_qty, :container_format_name)
+  end
 end

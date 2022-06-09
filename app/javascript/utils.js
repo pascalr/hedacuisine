@@ -7,7 +7,9 @@ export function bindSetter(obj, setter) {
     val.update = obj.update
     setter(val)
   }
-  obj.update = updateObj
+  if (obj) {
+    obj.update = updateObj
+  }
 }
 
 export function omit(obj, property) {

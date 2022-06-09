@@ -765,3 +765,8 @@ input[type="radio"] {
 /* By combining those two, it works. */
 .position-limbo {position: relative;}
 .position-limbo > * {position: absolute;}
+
+#inventory {
+  font-size: 1.3em;
+  vertical-align: middle;
+}

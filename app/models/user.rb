@@ -28,6 +28,8 @@ class User < ApplicationRecord
   has_many :machine_users
   has_many :machines, through: :machine_users
   has_many :containers, through: :machines
+  has_many :machine_foods, through: :machines
+  has_many :container_quantities, through: :machine_foods
 
   belongs_to :account
 

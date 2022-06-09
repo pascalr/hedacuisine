@@ -25,7 +25,7 @@ const PAGE_7 = 7 // MyBooks
 const PAGE_8 = 8 // TagEditAllCategories
 const PAGE_9 = 9 // TagSuggestions
 const PAGE_10 = 10 // HedaIndex
-const PAGE_11 = 11
+const PAGE_11 = 11 // Inventory
 const PAGE_12 = 12
 const PAGE_13 = 13
 const PAGE_14 = 14
@@ -413,6 +413,60 @@ const TagIndex = ({machines, recipeFilters, addRecipeFilter, changePage, userTag
   </>)
 }
 
+const Inventory = ({page, machines, containerQuantities, ...args}) => {
+
+  const machine = machines.find(m => m.id == page.machineId)
+  const machineFoods = args.machineFoods.filter(m => m.machine_id == page.machineId)
+
+  const items = machineFoods.map(machineFood => {
+    let qties = containerQuantities.filter(c => c.machine_food_id == machineFood.id)
+
+    let containers = qties.map(containerQuantity =>{
+      return (<span key={containerQuantity.id}>
+        <span>{containerQuantity.full_qty}</span>
+        <img src={`JarIcon${containerQuantity.container_format_name}.png`} size="48x48"></img>
+      </span>)
+    })
+
+    return (
+      <tr key={machineFood.id}>
+        <td>{machineFood.food_id}</td>
+        <td>
+          <div className="containers d-flex">
+            <div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+        </td>
+        <td>
+        </td>
+        <td>{containers}</td>
+        <td>Modifier</td>
+      </tr>
+    )
+  })
+
+  return (<>
+    <p>Chaque aliment est assigné une quantité souhaitée. Par exemple, je veux avoir 2 gros pots de sucre et 1 gros pot de flocons d'avoine. L'IA va alors ajouté à la liste d'épicerie le sucre lorsqu'il reste 0.999 gros pots de sucre et moins, et 0.333 gros pots de flocons d'avoine (approximatif). L'IA regarde les habitudes alimentaire et les prochains repas à être cuisiner pour déterminer cela.</p>
+
+    <table id="inventory" className="table table-striped table-sm">
+      <thead className="thead-dark">
+        <tr>
+          <th>Food</th>
+          <th>Pot utilisé</th>
+          <th>Quantité</th>
+          <th>Souhaitée</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>{items}</tbody>
+    </table>
+
+    <h3>Add a food</h3>
+  </>)
+}
+
 const HedaIndex = ({page, machines}) => {
 
   const machine = machines.find(m => m.id == page.machineId)
@@ -422,7 +476,8 @@ const HedaIndex = ({page, machines}) => {
     <div style={{maxWidth: "100vw", width: "400px", margin: "auto"}}>
       <TagButton winWidth={winWidth} image="/img/calendar.jpg" title="Calendrier" handleClick={() => window.location.href = calendar_path(machine)} />
       <TagButton winWidth={winWidth} image="/img/cooking.jpg" title="Mélanges" handleClick={() => changePage(6)} />
-      <TagButton winWidth={winWidth} image="/img/bar_code.jpg" title="Inventaire" handleClick={() => window.location.href = inventory_path(machine)} />
+      <TagButton winWidth={winWidth} image="/img/bar_code.jpg" title="Inventaire" handleClick={() => page.update({...omit(page,'update'), page: PAGE_11, machineId: machine.id})} />
+    
       <TagButton winWidth={winWidth} image="/img/filled-jar.jpg" title="Pots" handleClick={() => window.location.href = containers_path(machine)} />
       <TagButton winWidth={winWidth} image="/img/shopping_cart.jpg" title="Liste d'épicerie" handleClick={() => window.location.href = grocery_list_path(machine)} />
     </div>
@@ -483,6 +538,8 @@ const App = () => {
   const [userRecipes, setUserRecipes] = useState(gon.user_recipes)
   const [favoriteRecipes, setFavoriteRecipes] = useState(gon.favorite_recipes)
   const machines = useUpdatableState(gon.machines)
+  const machineFoods = useUpdatableState(gon.machine_foods)
+  const containerQuantities = useUpdatableState(gon.container_quantities)
 
   bindSetter(recipeFilters, setRecipeFilters)
   bindSetter(suggestions, setSuggestions)
@@ -500,6 +557,7 @@ const App = () => {
     [PAGE_8]: PAGE_3, // TagEditAllCategories => EditFilter
     [PAGE_9]: PAGE_1,
     [PAGE_10]: PAGE_1,
+    [PAGE_11]: PAGE_10,
   }
 
   // Deprecated, use page.update(newPage) which uses changePageV2
@@ -526,6 +584,7 @@ const App = () => {
     [PAGE_8]: <TagEditAllCategories changePage={changePage} page={page} recipeFilters={recipeFilters} />,
     [PAGE_9]: <TagSuggestions changePage={changePage} page={page} suggestions={suggestions} tags={recipeFilters} />,
     [PAGE_10]: <HedaIndex {...{page, machines}} />,
+    [PAGE_11]: <Inventory {...{page, machines, machineFoods, containerQuantities}} />,
   }
 
   const goUp = () => {
