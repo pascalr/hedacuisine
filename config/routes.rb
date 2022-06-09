@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   resources :recipe_filters, only: [:create, :update, :destroy]
   resources :filtered_recipes, only: [:create, :update, :destroy]
   resources :user_tags, only: [:create, :update, :destroy]
+  resources :mixes
   get 'search/index'
   resources :listings
   resources :ingredients

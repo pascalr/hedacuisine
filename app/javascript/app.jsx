@@ -26,7 +26,7 @@ const PAGE_8 = 8 // TagEditAllCategories
 const PAGE_9 = 9 // TagSuggestions
 const PAGE_10 = 10 // HedaIndex
 const PAGE_11 = 11 // Inventory
-const PAGE_12 = 12
+const PAGE_12 = 12 // MyMixes
 const PAGE_13 = 13
 const PAGE_14 = 14
   
@@ -413,6 +413,14 @@ const TagIndex = ({machines, recipeFilters, addRecipeFilter, changePage, userTag
   </>)
 }
 
+const MixIndex = ({page, machines, mixes, ...args}) => {
+
+  const machine = machines.find(m => m.id == page.machineId)
+  const machineFoods = args.machineFoods.filter(m => m.machine_id == page.machineId)
+
+  return 'TODO'
+}
+
 const Inventory = ({page, machines, containerQuantities, ...args}) => {
 
   const machine = machines.find(m => m.id == page.machineId)
@@ -476,7 +484,7 @@ const HedaIndex = ({page, machines}) => {
   return (<>
     <div style={{maxWidth: "100vw", width: "400px", margin: "auto"}}>
       <TagButton winWidth={winWidth} image="/img/calendar.jpg" title="Calendrier" handleClick={() => window.location.href = calendar_path(machine)} />
-      <TagButton winWidth={winWidth} image="/img/cooking.jpg" title="Mélanges" handleClick={() => changePage(6)} />
+      <TagButton winWidth={winWidth} image="/img/blender.jpg" title="Mélanges" handleClick={() => page.update({page: PAGE_12, machineId: machine.id})} />
       <TagButton winWidth={winWidth} image="/img/bar_code.jpg" title="Inventaire" handleClick={() => page.update({page: PAGE_11, machineId: machine.id})} />
     
       <TagButton winWidth={winWidth} image="/img/jar.svg" title="Pots" handleClick={() => window.location.href = containers_path(machine)} />
@@ -541,6 +549,7 @@ const App = () => {
   const machines = useUpdatableState(gon.machines)
   const machineFoods = useUpdatableState(gon.machine_foods)
   const containerQuantities = useUpdatableState(gon.container_quantities)
+  const mixes = useUpdatableState(gon.mixes)
 
   bindSetter(recipeFilters, setRecipeFilters)
   bindSetter(suggestions, setSuggestions)
@@ -559,6 +568,7 @@ const App = () => {
     [PAGE_9]: PAGE_1,
     [PAGE_10]: PAGE_1,
     [PAGE_11]: PAGE_10,
+    [PAGE_12]: PAGE_10,
   }
 
   // Deprecated, use page.update(newPage) which uses changePageV2
@@ -586,6 +596,7 @@ const App = () => {
     [PAGE_9]: <TagSuggestions changePage={changePage} page={page} suggestions={suggestions} tags={recipeFilters} />,
     [PAGE_10]: <HedaIndex {...{page, machines}} />,
     [PAGE_11]: <Inventory {...{page, machines, machineFoods, containerQuantities}} />,
+    [PAGE_12]: <MixIndex {...{page, machines, machineFoods, mixes}} />,
   }
 
   // I don't want a back system, I want a up system. So if you are given a nested link, you can go up.

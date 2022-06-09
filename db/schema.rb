@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_15_153323) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_09_170301) do
   create_table "accounts", force: :cascade do |t|
     t.string "email", limit: 255, default: "", null: false
     t.string "encrypted_password", limit: 255, default: "", null: false
@@ -213,8 +213,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_15_153323) do
   end
 
   create_table "favorite_recipes", force: :cascade do |t|
-    t.integer "recipe_id", null: false
-    t.integer "user_id", null: false
+    t.bigint "recipe_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.integer "list_id"
@@ -431,6 +431,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_15_153323) do
     t.string "content", limit: 255
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+  end
+
+  create_table "mixes", force: :cascade do |t|
+    t.string "name"
+    t.string "instructions"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_mixes_on_user_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -806,6 +815,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_15_153323) do
   add_foreign_key "machine_users", "users"
   add_foreign_key "meals", "machines"
   add_foreign_key "meals", "recipes"
+  add_foreign_key "mixes", "users"
   add_foreign_key "page_texts", "pages"
   add_foreign_key "pages", "books"
   add_foreign_key "recipe_comments", "recipes"
