@@ -9,7 +9,7 @@ import { useCacheOrFetch, useWindowWidth } from "./lib"
 import {RecipeIndex} from './recipe_index'
 import { omit, ajax, isBlank, preloadImage, getUrlParams, join, bindSetter, sortBy, capitalize } from "./utils"
 import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, batch_create_filtered_recipes_path, batch_destroy_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path, recipe_path, user_tags_path, user_tag_path, containers_path, grocery_list_path, calendar_path, inventory_path, mixes_path, mix_path } from './routes'
-import {TextField} from './form'
+import {TextField, AutocompleteInput} from './form'
 import {PublicImageField} from './modals/public_image'
 import { DeleteConfirmButton } from './components/delete_confirm_button'
 import {AddUserTagModal} from './modals/add_user_tag'
@@ -437,6 +437,13 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
     mix.instructions = instructions.join(';')
     update()
   }
+  const updateArg = (argNb, value, line) => {
+    let args = instructions[line].split(',')
+    args[argNb] = value
+    instructions[line] = args.join(',')
+    mix.instructions = instructions.join(';')
+    update()
+  }
 
   const INSTRUCTION_LIST = ["ADD", "CONTAINER"]
 
@@ -445,7 +452,15 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
     let args = instruction.split(',')
     let cmd = args[0]||'ADD'
 
-    return (<li key={`${line}-${instruction}`} className="list-group-item">
+    let eArgs = ''
+    if (cmd == 'ADD') {
+      let machineFoodId = args[1]
+      let machineFood = machineFoods.find(e => e.id == machineFoodId)
+      let machineFoodName = machineFood ? machineFood.name : null
+      eArgs = <AutocompleteInput name="food" choices={machineFoods} defaultValue={machineFoodName} onSelect={(e, term, item) => updateArg(1, item.dataset.id, line)} />
+    }
+
+    return (<li key={`${line}-${instruction}`} className="list-group-item d-flex gap-10">
         <div className="dropdown">
           <button className="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             {cmd}
@@ -456,6 +471,7 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
             ))}
           </div>
         </div>
+        {eArgs}
       </li>
     )
   })
