@@ -23,7 +23,7 @@
     <%= hidden_field_tag :month, nil, id: "new_meal_form_month" %>
     <%= hidden_field_tag :day, nil, id: "new_meal_form_day" %>
   <% end %>
-  <%= javascript_pack_tag "calendar_add_recipe" %>
+  <%= js_import_tag "calendar_add_recipe" %>
 <% else %>
-  <%= javascript_pack_tag "calendar" %>
+  <%= js_import_tag "calendar" %>
 <% end %>

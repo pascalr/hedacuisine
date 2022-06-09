@@ -4,6 +4,8 @@
 <% @container_formats = ContainerFormat.all %>
 <% @foods = Food.where(in_pantry: true).all %>
 
+<p>Les contenants sont identifiés par une étiquette sur le pot et non sur le couvercle. L'étiquette devrait être résistante à l'eau. L'écriture du numéro de pot devrait devrait toujours rester. L'écriture du contenu devrait être effaçable, mais pas avec de l'eau. Ex: «1 - Farine de manioc» Le poids du contenant avec couvercle vide serait sur une autre étiquette. Idéalement, les contenants ne serait pas attittré un aliment en particulier pour être plus efficace avec les pots vides. Sinon, le sucre par exemple nécessiterait d'avoir 2 contenants d'attitré, mais un seul suffit lorsqu'il est plein. 2 lorsque que le premier est presque vide.</p>
+
 <h3>Add a container</h3>
 <%= form_with(model: [@machine, Container.new], local: true) do |form| %>
   <%= form.label :jar_id %>
@@ -19,9 +21,8 @@
     <tr>
       <th>#</th>
       <th>Jar format</th>
-      <th>Food</th>
       <th>Content</th>
-      <th>Filled</th>
+      <th>% Filled</th>
       <th>Position</th>
       <th colspan="3"></th>
     </tr>
@@ -33,8 +34,6 @@
         <tr>
           <td><%= link_to container.jar_id, [@machine, container] %></td>
           <td><%= form.collection_select :container_format_id, @container_formats, :id, :name, include_blank: true %></td>
-          <td><%= form.collection_select :food_id, @foods, :id, :name, include_blank: true %></td>
-          <td><%= container.food.name if container.food %></td>
           <td><%= container.ingredients.map(&:food).map(&:name).join(", ") %></td>
           <td></td>
           <td><%= container.pretty_position %></td>

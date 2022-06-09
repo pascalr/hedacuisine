@@ -1,5 +1,5 @@
 <ul class="nav nav-tabs" style="margin-bottom: 10px;">
-  <span class="nav-item navbar-brand"><b><%= @machine.name %></b></span>
+  <%= link_to @machine.name, app_path(page: 10, machineId: @machine.id), class: "nav-item navbar-brand", style: "color: black;" %>
   <%= link_to_active_if controller_name == "machines" && action_name == "inventory", translated("Inventaire"), inventory_machine_path(@machine), class: "nav-item nav-link" %>
   <%= link_to_active_if controller_name == "meals" && action_name == "index", translated("Calendrier"), machine_meals_path(machine_id: @machine.id), class: "nav-item nav-link" %>
   <%= link_to_active_if controller_name == "machines" && action_name == "grocery_list", translated("Liste d'épicerie"), grocery_list_machine_path(@machine), class: "nav-item nav-link" %>

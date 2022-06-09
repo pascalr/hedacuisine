@@ -1,1 +1,9 @@
-<h1>Heda robot</h1>
+<h1>Mes machines</h1>
+
+<% @machines.each do |machine| %>
+  <%= machine.name %>
+<% end %>
+
+<br>
+
+<%= link_to 'New Machine', new_machine_path %>

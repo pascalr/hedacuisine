@@ -41,4 +41,9 @@ class Machine < ApplicationRecord
       end
     end
   end
+
+  def to_obj(params={})
+    extract_attributes(params, :name)
+  end
+
 end

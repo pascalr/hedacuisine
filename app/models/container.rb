@@ -37,4 +37,8 @@ class Container < ApplicationRecord
 
   alias ingredients container_ingredients
   alias format container_format
+
+  def to_obj(params={})
+    extract_attributes(params, :jar_id, :machine_id, :container_format_id, :pos_x, :pos_y, :pos_z, :food_id)
+  end
 end

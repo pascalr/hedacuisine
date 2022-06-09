@@ -125,6 +125,19 @@ export const favorite_recipes_path = (arg) => {
   return `/favorite_recipes`
 }
 
+export const containers_path = (machine) => {
+  return `/machines/${extractParamFromModel(machine)}/containers`
+}
+export const grocery_list_path = (machine) => {
+  return `/machines/${extractParamFromModel(machine)}/grocery_list`
+}
+export const calendar_path = (machine) => {
+  return `/machines/${extractParamFromModel(machine)}/meals`
+}
+export const inventory_path = (machine) => {
+  return `/machines/${extractParamFromModel(machine)}/inventory`
+}
+
 export const user_tags_path = (arg) => {
   return `/user_tags`
 }

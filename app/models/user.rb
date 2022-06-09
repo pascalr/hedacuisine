@@ -27,6 +27,7 @@ class User < ApplicationRecord
 
   has_many :machine_users
   has_many :machines, through: :machine_users
+  has_many :containers, through: :machines
 
   belongs_to :account
 

@@ -5,7 +5,8 @@ class MachinesController < ApplicationController
 
   # GET /machines or /machines.json
   def index
-    if current_user and current_user.machines.first
+    @machines = current_user.machines
+    if current_user and @machines.first
       @machine = current_user.machines.first
       redirect_to inventory_machine_path(@machine)
     end

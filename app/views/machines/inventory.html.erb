@@ -1,5 +1,7 @@
 <%= render partial: "machines/tabs" %>
 
+<p>Chaque aliment est assigné une quantité souhaitée. Par exemple, je veux avoir 2 gros pots de sucre et 1 gros pot de flocons d'avoine. L'IA va alors ajouté à la liste d'épicerie le sucre lorsqu'il reste 0.999 gros pots de sucre et moins, et 0.333 gros pots de flocons d'avoine (approximatif). L'IA regarde les habitudes alimentaire et les prochains repas à être cuisiner pour déterminer cela.</p>
+
 <style>
 .containers {
   height: 48px;
@@ -16,9 +18,10 @@
   <thead class="thead-dark">
     <tr>
       <th>Food</th>
-      <th>Containers</th>
-      <th>In inventory</th>
-      <th>Assigned</th>
+      <th>Pot utilisé</th>
+      <th>Quantité</th>
+      <th>Souhaitée</th>
+      <th></th>
     </tr>
   </thead>
 
@@ -36,7 +39,7 @@
           <% end %>
         </td>
         <td style="vertical-align: middle; font-size: 1.3rem;">
-          <%= pretty_volume_and_weight(Ingredient.food_grams(machine_food.food, machine_food.current_weight)) %>
+          <%= machine_food.current_weight ? machine_food.current_weight + " g" : nil %>
         </td>
         <td>
           <% machine_food.container_quantities.each do |container_quantity| %>
@@ -44,71 +47,15 @@
             <%= image_tag "JarIcon#{container_quantity.container_format.name}.png", size: "48x48" %>
           <% end %>
         </td>
+        <td style="vertical-align: middle; font-size: 1.3rem;">Modifier</td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<!--Ordre: Alphabétique HAUT/BAS, Temps prochaine épicerie HAUT/BAS<br>
-Filtrer catégories<br>
-Rechercher...
-
-<ul class="nav nav-pills" style="margin-bottom: 0.5rem; margin-top: 0.5rem;">
-  <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="#">Prochaine épicerie</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Catégories</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Link</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-  </li>
-</ul>
-
-<table class="table table-sm">
-  <thead class="thead-dark">
-    <tr>
-      <th>Ingredient</th>
-      <th>Jars</th>
-      <th>Filled</th>
-      <th>Inventory</th>
-      <th>Full volume</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th colspan="6" style="color: #fff; background-color: #343a40; border-color: #454d55;">
-        <%# form_with(url: 'TODO') do |form| %>
-          <%# form.text_field :search_food, style: "background-color: #454d55; color: #fff;", size: 60, placeholder: 'Rechercher...' %>
-        <%# end %>
-      </th>
-    </tr>
-    <%# foods_by_tag_id = {} %>
-    <%# machine.containers_by_food_id.each do |food_id, containers| %>
-      <%# f = Food.find(food_id) %>
-      <%# foods_by_tag_id[f.food_tag_id] = (foods_by_tag_id[f.food_tag_id] || []) + [f.id] %>
-    <%# end %>
-    <%# FoodTag.all.each do |food_tag| %>
-      <%# foods = foods_by_tag_id[food_tag.id] %>
-      <%# unless foods.blank? %>
-        <tr>
-          <th colspan="6" style="color: #fff; background-color: #343a40; border-color: #454d55;"><%# food_tag.name %></th>
-        </tr>
-        <%# (foods_by_tag_id[food_tag.id] || []).each do |food_id| %>
-          <%# containers = machine.containers_by_food_id[food_id] %>
-          <%# render partial: 'inventory_food_item', locals: {containers: containers, food_id: food_id} %>
-        <%# end %>
-      <%# end %>
-    <%# end %>
-    <tr>
-      <th colspan="5" style="color: #fff; background-color: #343a40; border-color: #454d55;">Autres</th>
-    </tr>
-    <%# (foods_by_tag_id[nil] || []).each do |food_id| %>
-      <%# containers = machine.containers_by_food_id[food_id] %>
-      <%# render partial: 'inventory_food_item', locals: {containers: containers, food_id: food_id} %>
-    <%# end %>
-  </tbody>
-</table>-->
+<h3>Add a food</h3>
+<%= form_with(model: [@machine, MachineFood.new], local: true) do |form| %>
+  <%= form.label :food_id %>
+  <%= form.collection_select :food_id, Food.where(in_pantry: true), :id, :name %>
+  <%= form.submit %>
+<% end %>

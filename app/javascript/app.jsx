@@ -8,7 +8,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useCacheOrFetch, useWindowWidth } from "./lib"
 import {RecipeIndex} from './recipe_index'
 import { omit, ajax, isBlank, preloadImage, getUrlParams, join, bindSetter, sortBy } from "./utils"
-import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, batch_create_filtered_recipes_path, batch_destroy_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path, recipe_path, user_tags_path, user_tag_path } from './routes'
+import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, batch_create_filtered_recipes_path, batch_destroy_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path, recipe_path, user_tags_path, user_tag_path, containers_path, grocery_list_path, calendar_path, inventory_path } from './routes'
 import {TextField} from './form'
 import {PublicImageField} from './modals/public_image'
 import { DeleteConfirmButton } from './components/delete_confirm_button'
@@ -379,7 +379,7 @@ const TagButton = ({winWidth, image, title, handleClick}) => {
     </div>
   )
 }
-const TagIndex = ({recipeFilters, addRecipeFilter, changePage, userTags}) => {
+const TagIndex = ({machines, recipeFilters, addRecipeFilter, changePage, userTags}) => {
 
   const winWidth = useWindowWidth()
 
@@ -396,41 +396,35 @@ const TagIndex = ({recipeFilters, addRecipeFilter, changePage, userTags}) => {
     return <TagButton key={userTag.id} winWidth={winWidth} image={`/img/${tag.image_src || "question-mark.jpg"}`} title={tag.name || "Sans nom"} handleClick={() => changePage(PAGE_9, {filterId: tag.id})} />
   })
 
+  const machineButtons = machines.map(machine => {
+    return <TagButton key={`machine-${machine.id}`} winWidth={winWidth} image='/img/robot.jpg' title={machine.name || "Heda"} handleClick={() => changePage(PAGE_10, {machineId: machine.id})} />
+  })
+
   // Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
   //<TagButton winWidth={winWidth} image="/img/recipes.jpg" title="Mes livres" handleClick={() => changePage(7)} />
   return (<>
     <div style={{maxWidth: "100vw", width: "400px", margin: "auto"}}>
-      <TagButton winWidth={winWidth} image="/img/cooking.jpg" title="Mes recettes" handleClick={() => changePage(6)} />
+      <TagButton winWidth={winWidth} image="/img/cooking.jpg" title="Mes recettes" handleClick={() => changePage(PAGE_6)} />
       <TagButton winWidth={winWidth} image="/img/recipes.jpg" title="Mes livres" handleClick={() => {window.location.href = my_books_path()}} />
-      <TagButton winWidth={winWidth} image="/img/robot.jpg" title="Heda" handleClick={() => {changePage(PAGE_10)}} />
+      {machineButtons}
       {buttons}
-      <TagButton winWidth={winWidth} image="/icons/gear-gray.svg" title="Paramètres" handleClick={() => changePage(4)} />
+      <TagButton winWidth={winWidth} image="/icons/gear-gray.svg" title="Paramètres" handleClick={() => changePage(PAGE_4)} />
     </div>
   </>)
 }
 
-const HedaIndex = ({page}) => {
+const HedaIndex = ({page, machines}) => {
 
+  const machine = machines.find(m => m.id == page.machineId)
   const winWidth = useWindowWidth()
 
-  //const buttons = recipeFilters.map(filter => <TagButton key={filter.id} winWidth={winWidth} image={`/img/${filter.image_src || "question-mark.jpg"}`} title={filter.name || "Sans nom"} handleClick={() => changePage(PAGE_9, {filterId: filter.id})} />)
-  //const buttons = userTags.map(userTag => {
-  //  let tag = recipeFilters.find(t => t.id == userTag.tag_id)
-  //  return <TagButton key={userTag.id} winWidth={winWidth} image={`/img/${tag.image_src || "question-mark.jpg"}`} title={tag.name || "Sans nom"} handleClick={() => changePage(PAGE_9, {filterId: tag.id})} />
-  //})
-
-  //// Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
-  ////<TagButton winWidth={winWidth} image="/img/recipes.jpg" title="Mes livres" handleClick={() => changePage(7)} />
-  //    <TagButton winWidth={winWidth} image="/img/recipes.jpg" title="Mes livres" handleClick={() => {window.location.href = my_books_path()}} />
-  //    <TagButton winWidth={winWidth} image="/img/robot.jpg" title="Heda" handleClick={() => {window.location.href = my_books_path()}} />
-  //    {buttons}
-  //    <TagButton winWidth={winWidth} image="/icons/gear-gray.svg" title="Paramètres" handleClick={() => changePage(4)} />
   return (<>
     <div style={{maxWidth: "100vw", width: "400px", margin: "auto"}}>
-      <TagButton winWidth={winWidth} image="/img/calendar.jpg" title="Calendrier" handleClick={() => changePage(6)} />
+      <TagButton winWidth={winWidth} image="/img/calendar.jpg" title="Calendrier" handleClick={() => window.location.href = calendar_path(machine)} />
       <TagButton winWidth={winWidth} image="/img/cooking.jpg" title="Mélanges" handleClick={() => changePage(6)} />
-      <TagButton winWidth={winWidth} image="/img/bar_code.jpg" title="Inventaire" handleClick={() => changePage(6)} />
-      <TagButton winWidth={winWidth} image="/img/filled-jar.jpg" title="Pots" handleClick={() => changePage(6)} />
+      <TagButton winWidth={winWidth} image="/img/bar_code.jpg" title="Inventaire" handleClick={() => window.location.href = inventory_path(machine)} />
+      <TagButton winWidth={winWidth} image="/img/filled-jar.jpg" title="Pots" handleClick={() => window.location.href = containers_path(machine)} />
+      <TagButton winWidth={winWidth} image="/img/shopping_cart.jpg" title="Liste d'épicerie" handleClick={() => window.location.href = grocery_list_path(machine)} />
     </div>
   </>)
 }
@@ -473,6 +467,12 @@ const MyRecipes = ({suggestions, tags, userRecipes, favoriteRecipes}) => {
   </>)
 }
 
+const useUpdatableState = (initial) => {
+  const [state, setState] = useState(initial)
+  bindSetter(state, setState)
+  return state
+}
+
 const App = () => {
 
   const [page, setPage] = useState(getUrlParams())
@@ -482,6 +482,7 @@ const App = () => {
   const [userTags, setUserTags] = useState(gon.user_tags)
   const [userRecipes, setUserRecipes] = useState(gon.user_recipes)
   const [favoriteRecipes, setFavoriteRecipes] = useState(gon.favorite_recipes)
+  const machines = useUpdatableState(gon.machines)
 
   bindSetter(recipeFilters, setRecipeFilters)
   bindSetter(suggestions, setSuggestions)
@@ -515,7 +516,7 @@ const App = () => {
   bindSetter(page, changePageV2)
 
   const pages = {
-    [PAGE_1]: <TagIndex changePage={changePage} recipeFilters={recipeFilters} addRecipeFilter={(filter) => setRecipeFilters(recipeFilters.concat([filter]))} userTags={userTags} />,
+    [PAGE_1]: <TagIndex {...{changePage, recipeFilters, userTags, machines}} addRecipeFilter={(filter) => setRecipeFilters(recipeFilters.concat([filter]))} />,
     [PAGE_2]: <TagCategorySuggestions {...{page, changePage, recipeFilters, suggestions}} />,
     [PAGE_3]: <EditFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
     [PAGE_4]: <EditUserTags recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} userTags={userTags} page={page} />,
@@ -524,7 +525,7 @@ const App = () => {
     [PAGE_7]: <MyBooks changePage={changePage} page={page} />,
     [PAGE_8]: <TagEditAllCategories changePage={changePage} page={page} recipeFilters={recipeFilters} />,
     [PAGE_9]: <TagSuggestions changePage={changePage} page={page} suggestions={suggestions} tags={recipeFilters} />,
-    [PAGE_10]: <HedaIndex {...{page}} />,
+    [PAGE_10]: <HedaIndex {...{page, machines}} />,
   }
 
   const goUp = () => {
