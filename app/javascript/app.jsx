@@ -423,11 +423,15 @@ const CmdAdd = {
     {name: 'qty', type: 'STRING'},
     {name: 'food', type: 'FOOD'},
   ],
+  // ADD,qty,machineFoodId,foodName
   parse: (args, context, obj={}) => {
     obj.qty = args[1]
     obj.machineFoodId = args[2]
     obj.machineFood = context.machineFoods.find(e => e.id == obj.machineFoodId)
     obj.machineFoodName = obj.machineFood ? obj.machineFood.name : null
+    if (!obj.machineFood) {
+      obj.errors = [`Unable to find food with name = ${args[2]}`]
+    }
     return obj
   },
 }
@@ -522,7 +526,7 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
     if (obj && obj.type.id == "ADD") {
       eArgs = (<>
         <TextInput defaultValue={obj.qty} onBlur={(qty) => updateArg(1, qty, line)} />
-        <AutocompleteInput name="food" choices={machineFoods} defaultValue={obj.machineFoodName} onSelect={(e, term, item) => updateArg(2, item.dataset.id, line)} minChars={0} />
+        <AutocompleteInput name="food" choices={machineFoods} defaultValue={obj.machineFoodName} onSelect={(e, term, item) => updateArg(2, item.dataset.id, line)} onBlur={(val) => updateArg(2, val, line)} minChars={0} />
       </>)
     } else if (obj && obj.type.id == "CONTAINER") {
       eArgs = (<>
@@ -530,8 +534,9 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
       </>)
     }
 
-    return (<li key={`${line}-${instruction}`} className={`list-group-item${!obj ? ' cmd-error' : ''}`}>
+    return (<li key={`${line}-${instruction}`} className={`list-group-item${!obj || obj.errors ? ' cmd-error' : ''}`}>
       <img className="clickable float-end" style={{marginTop: '0.4em'}} src="/icons/x-lg.svg" width="18" height="18" onClick={() => removeInstruction(line)}></img>
+      {!obj || obj.errors ? <img className="float-end" style={{marginRight: '0.4em', marginTop: '0.4em'}} src="/icons/info-circle.svg" width="18" height="18"></img> : ''}
       <div className='d-flex gap-10'>
         <div className="dropdown">
           <button className="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

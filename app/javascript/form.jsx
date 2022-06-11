@@ -24,7 +24,7 @@ export const TextInputField = ({model, field}) => {
   )
 }
 
-export const AutocompleteInput = ({minChars, name, defaultValue, choices, placeholder, onSelect, inputRef}) => {
+export const AutocompleteInput = ({minChars, name, defaultValue, choices, placeholder, onSelect, inputRef, onBlur}) => {
   inputRef ||= useRef(null);
   useEffect(() => { // Same as componentDidMount
 
@@ -61,7 +61,7 @@ export const AutocompleteInput = ({minChars, name, defaultValue, choices, placeh
     }
   }, [])
   return <>
-    <input type="search" name={name} id={name} placeholder={placeholder} defaultValue={defaultValue} aria-label="Search" autoComplete="off" ref={inputRef} />
+    <input type="search" name={name} id={name} placeholder={placeholder} defaultValue={defaultValue} aria-label="Search" autoComplete="off" ref={inputRef} onBlur={() => onBlur ? onBlur(inputRef.current.value) : null}/>
   </>
 }
 
