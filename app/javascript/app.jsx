@@ -500,6 +500,7 @@ const MixIndex = ({page, machines, mixes, ...args}) => {
   const createMix = () => {
     ajax({url: mixes_path(), type: 'POST', data: {}, success: (mix) => {
       mixes.update([...mixes, mix])
+      page.update({page: PAGE_13, machineId: machine.id, mixId: mix.id})
     }})
   }
   const destroyMix = (mix) => {
@@ -508,7 +509,8 @@ const MixIndex = ({page, machines, mixes, ...args}) => {
     }})
   }
 
-  const eMixes = mixes.map(mix => {
+  const sorted = sortBy(mixes, "name") // Sorting client side so newly created are sorted
+  const eMixes = sorted.map(mix => {
     return <li key={mix.id} className="list-group-item">
       <span className="clickable" onClick={() => page.update({page: PAGE_13, machineId: machine.id, mixId: mix.id})}>{mix.name || 'Sans nom'}</span>
       <img className="clickable float-end" src="/icons/x-lg.svg" width="18" height="18" onClick={() => destroyMix(mix)}></img>

@@ -82,7 +82,13 @@ export function hexStringToColor(hex) {
 }
 
 export function sortBy(list, attr) {
-  return list.sort((a,b) => a[attr] - b[attr])
+  return list.sort((a,b) => {
+    if (typeof a[attr] === 'string') {
+      return a[attr].localeCompare(b[attr])
+    } else {
+      return a[attr] - b[attr]
+    }
+  })
 
 }
 
