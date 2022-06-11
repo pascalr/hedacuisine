@@ -421,14 +421,17 @@ const CmdAdd = {
   },
   args: [ // unused
     {name: 'qty', type: 'STRING'},
-    {name: 'food', type: 'FOOD'},
+    {name: 'food', type: 'REFERENCE'}, // 'idNumber-name'
   ],
   // ADD,qty,machineFoodId,foodName
   parse: (args, context, obj={}) => {
     obj.qty = args[1]
-    obj.machineFoodId = args[2]
-    obj.machineFood = context.machineFoods.find(e => e.id == obj.machineFoodId)
-    obj.machineFoodName = obj.machineFood ? obj.machineFood.name : null
+    if (args[2]) {
+      let i = args[2].indexOf('-')
+      obj.machineFoodId = args[2].substr(0,i)
+      obj.machineFoodName = args[2].substr(i+1)
+      obj.machineFood = context.machineFoods.find(e => e.id == obj.machineFoodId)
+    }
     if (!obj.machineFood) {
       obj.errors = [`Unable to find food with name = ${args[2]}`]
     }
@@ -464,7 +467,7 @@ const labelForCmdType = (cmdType) => {
   return t ? t.label.fr : cmdType.id
 }
   
-  const DEFAULT_CMD = "ADD"
+const DEFAULT_CMD = "ADD"
 
 const ShowMix = ({page, machines, mixes, ...args}) => {
 
@@ -474,6 +477,7 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
   console.log('mix', mix)
 
   const update = () => {
+    console.log('UPDATING')
     ajax({url: mix_path(mix), type: 'PATCH', data: {mix: {name: mix.name, instructions: mix.instructions}}, success: (mix) => {
       mixes.update(mixes.map(e => e.id == mix.id ? mix : e))
     }})
@@ -482,7 +486,7 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
   const instructions = (mix.instructions||'').split(';')
 
   const addInstruction = () => {
-    mix.instructions = (mix.instructions||'')+';'; update()
+    mix.instructions = (mix.instructions||'')+';'+DEFAULT_CMD; update()
   }
   const updateName = (newName) => {
     mix.name = newName; update()
@@ -502,7 +506,7 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
     args[argNb] = value
     instructions[line] = args.join(',')
     mix.instructions = instructions.join(';')
-    update()
+    console.log('calling update 01'); update()
   }
 
   let context = {machineFoods}
@@ -510,7 +514,7 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
   const eInstructions = instructions.map((instruction,line) => {
 
     let args = instruction.split(',')
-    let cmd = args[0]||DEFAULT_CMD
+    let cmd = args[0]
 
     let obj = (function () {
       for (let i = 0; i < CMD_TYPES.length; i++) {
@@ -526,7 +530,15 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
     if (obj && obj.type.id == "ADD") {
       eArgs = (<>
         <TextInput defaultValue={obj.qty} onBlur={(qty) => updateArg(1, qty, line)} />
-        <AutocompleteInput name="food" choices={machineFoods} defaultValue={obj.machineFoodName} onSelect={(e, term, item) => updateArg(2, item.dataset.id, line)} onBlur={(val) => updateArg(2, val, line)} minChars={0} />
+        <AutocompleteInput name="food" choices={machineFoods} defaultValue={obj.machineFoodName}
+          onSelect={(e, term, item) => {
+            f = machineFoods.find(e => e.id == item.dataset.id);
+            updateArg(2, `${item.dataset.id}-${f ? f.name : ''}`, line)
+          }} onBlur={(name) => {
+            f = machineFoods.find(e => e.name  == name);
+            updateArg(2, `${f ? f.id : ''}-${name}`, line)
+          }} minChars={0}
+        />
       </>)
     } else if (obj && obj.type.id == "CONTAINER") {
       eArgs = (<>

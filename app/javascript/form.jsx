@@ -25,6 +25,9 @@ export const TextInputField = ({model, field}) => {
 }
 
 export const AutocompleteInput = ({minChars, name, defaultValue, choices, placeholder, onSelect, inputRef, onBlur}) => {
+
+  let selected = false
+
   inputRef ||= useRef(null);
   useEffect(() => { // Same as componentDidMount
 
@@ -53,7 +56,7 @@ export const AutocompleteInput = ({minChars, name, defaultValue, choices, placeh
           r += item.name.replace(re, "<b>$1</b>") + '</a>';
           return r
         },
-        onSelect: onSelect,
+        onSelect: (e, term, item) => {selected=true; onSelect(e, term, item)},
       })
       return () => {
         my_autocomplete.destroy()
@@ -61,7 +64,10 @@ export const AutocompleteInput = ({minChars, name, defaultValue, choices, placeh
     }
   }, [])
   return <>
-    <input type="search" name={name} id={name} placeholder={placeholder} defaultValue={defaultValue} aria-label="Search" autoComplete="off" ref={inputRef} onBlur={() => onBlur ? onBlur(inputRef.current.value) : null}/>
+    <input type="search" name={name} id={name} placeholder={placeholder} defaultValue={defaultValue} aria-label="Search" autoComplete="off" ref={inputRef} onBlur={() => {
+      if (selected) {selected = false; return}
+      onBlur ? onBlur(inputRef.current.value) : null}
+    }/>
   </>
 }
 
