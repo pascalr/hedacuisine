@@ -419,6 +419,10 @@ const CmdAdd = {
   label: {
     fr: 'AJOUTER'
   },
+  args: [ // unused
+    {name: 'qty', type: 'STRING'},
+    {name: 'food', type: 'FOOD'},
+  ],
   parse: (args, context, obj={}) => {
     obj.qty = args[1]
     obj.machineFoodId = args[2]
@@ -441,7 +445,11 @@ const CmdContainer = {
   label: {
     fr: 'CONTENANT'
   },
+  args: [ // unused
+    {name: 'id', type: 'STRING'},
+  ],
   parse: (args, context, obj={}) => {
+    obj.id = args[1]
     return obj
   },
 }
@@ -459,6 +467,7 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
   const machine = machines.find(m => m.id == page.machineId)
   const machineFoods = args.machineFoods.filter(m => m.machine_id == page.machineId)
   const mix = mixes.find(m => m.id == page.mixId)
+  console.log('mix', mix)
 
   const update = () => {
     ajax({url: mix_path(mix), type: 'PATCH', data: {mix: {name: mix.name, instructions: mix.instructions}}, success: (mix) => {
@@ -473,6 +482,11 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
   }
   const updateName = (newName) => {
     mix.name = newName; update()
+  }
+  const removeInstruction = (line) => {
+    let e = [...instructions]
+    e.splice(line, 1)
+    mix.instructions = e.join(';'); update()
   }
   const changeInstruction = (cmd,line) => {
     instructions[line] = cmd
@@ -510,24 +524,30 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
         <TextInput defaultValue={obj.qty} onBlur={(qty) => updateArg(1, qty, line)} />
         <AutocompleteInput name="food" choices={machineFoods} defaultValue={obj.machineFoodName} onSelect={(e, term, item) => updateArg(2, item.dataset.id, line)} minChars={0} />
       </>)
+    } else if (obj && obj.type.id == "CONTAINER") {
+      eArgs = (<>
+        <TextInput defaultValue={obj.id} onBlur={(id) => updateArg(1, id, line)} />
+      </>)
     }
 
-    return (<li key={`${line}-${instruction}`} className={`list-group-item d-flex gap-10${!obj ? ' cmd-error' : ''}`}>
+    return (<li key={`${line}-${instruction}`} className={`list-group-item${!obj ? ' cmd-error' : ''}`}>
+      <img className="clickable float-end" style={{marginTop: '0.4em'}} src="/icons/x-lg.svg" width="18" height="18" onClick={() => removeInstruction(line)}></img>
+      <div className='d-flex gap-10'>
         <div className="dropdown">
           <button className="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             {obj ? obj.type.label.fr : cmd}
           </button>
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
             {CMD_TYPES.filter(e => e != cmd).map((cmdType,i) => (
-              <span key={i} className="dropdown-item" onClick={() => changeInstruction(cmdType, line)}>
+              <span key={i} className="dropdown-item" onClick={() => changeInstruction(cmdType.id, line)}>
                 {labelForCmdType(cmdType)}
               </span>
             ))}
           </div>
         </div>
-        {eArgs}
-      </li>
-    )
+        {eArgs}
+      </div>
+    </li>)
   })
 
   return (<>
