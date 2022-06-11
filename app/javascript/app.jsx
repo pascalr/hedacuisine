@@ -413,12 +413,52 @@ const TagIndex = ({machines, recipeFilters, addRecipeFilter, changePage, userTag
   </>)
 }
 
+// I do something similar to Tiptap to serialize and deserialize
+const CmdAdd = {
+  id: 'ADD',
+  label: {
+    fr: 'AJOUTER'
+  },
+  parse: (args, context, obj={}) => {
+    obj.qty = args[1]
+    obj.machineFoodId = args[2]
+    obj.machineFood = context.machineFoods.find(e => e.id == obj.machineFoodId)
+    obj.machineFoodName = obj.machineFood ? obj.machineFood.name : null
+    return obj
+  },
+}
+const CmdMix = {
+  id: 'MIX',
+  label: {
+    fr: 'MÉLANGER'
+  },
+  parse: (args, context, obj={}) => {
+    return obj
+  },
+}
+const CmdContainer = {
+  id: 'CONTAINER',
+  label: {
+    fr: 'CONTENANT'
+  },
+  parse: (args, context, obj={}) => {
+    return obj
+  },
+}
+
+const CMD_TYPES = [CmdAdd, CmdMix, CmdContainer]
+const labelForCmdType = (cmdType) => {
+  let t = CMD_TYPES.find(e => e.id == cmdType.id)
+  return t ? t.label.fr : cmdType.id
+}
+  
+  const DEFAULT_CMD = "ADD"
+
 const ShowMix = ({page, machines, mixes, ...args}) => {
 
   const machine = machines.find(m => m.id == page.machineId)
   const machineFoods = args.machineFoods.filter(m => m.machine_id == page.machineId)
   const mix = mixes.find(m => m.id == page.mixId)
-  console.log('mix', mix)
 
   const update = () => {
     ajax({url: mix_path(mix), type: 'PATCH', data: {mix: {name: mix.name, instructions: mix.instructions}}, success: (mix) => {
@@ -447,32 +487,41 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
     update()
   }
 
-  const INSTRUCTION_LIST = ["ADD", "CONTAINER", "MIX"]
+  let context = {machineFoods}
 
   const eInstructions = instructions.map((instruction,line) => {
 
     let args = instruction.split(',')
-    let cmd = args[0]||'ADD'
+    let cmd = args[0]||DEFAULT_CMD
 
+    let obj = (function () {
+      for (let i = 0; i < CMD_TYPES.length; i++) {
+        if (cmd == CMD_TYPES[i].id) {
+          let obj = CMD_TYPES[i].parse(args, context)
+          obj.type = CMD_TYPES[i]
+          return obj
+        }
+      }
+      return null
+    })()
     let eArgs = ''
-    if (cmd == 'ADD') {
-      let machineFoodId = args[2]
-      let machineFood = machineFoods.find(e => e.id == machineFoodId)
-      let machineFoodName = machineFood ? machineFood.name : null
+    if (obj && obj.type.id == "ADD") {
       eArgs = (<>
-        <TextInput defaultValue={args[1]} onBlur={(qty) => updateArg(1, qty, line)} />
-        <AutocompleteInput name="food" choices={machineFoods} defaultValue={machineFoodName} onSelect={(e, term, item) => updateArg(2, item.dataset.id, line)} minChars={0} />
+        <TextInput defaultValue={obj.qty} onBlur={(qty) => updateArg(1, qty, line)} />
+        <AutocompleteInput name="food" choices={machineFoods} defaultValue={obj.machineFoodName} onSelect={(e, term, item) => updateArg(2, item.dataset.id, line)} minChars={0} />
       </>)
     }
 
-    return (<li key={`${line}-${instruction}`} className="list-group-item d-flex gap-10">
+    return (<li key={`${line}-${instruction}`} className={`list-group-item d-flex gap-10${!obj ? ' cmd-error' : ''}`}>
         <div className="dropdown">
           <button className="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {cmd}
+            {obj ? obj.type.label.fr : cmd}
           </button>
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            {INSTRUCTION_LIST.filter(e => e != cmd).map((e,i) => (
-              <span key={i} className="dropdown-item" onClick={() => changeInstruction(e, line)}>{e}</span>
+            {CMD_TYPES.filter(e => e != cmd).map((cmdType,i) => (
+              <span key={i} className="dropdown-item" onClick={() => changeInstruction(cmdType, line)}>
+                {labelForCmdType(cmdType)}
+              </span>
             ))}
           </div>
         </div>
