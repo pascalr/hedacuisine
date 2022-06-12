@@ -170,6 +170,7 @@ Rails.application.routes.draw do
         get 'validate'#, param: 'slug'
         patch 'move_ing', param: 'slug'
         patch 'update_image', param: 'slug'
+        post 'duplicate'
       end
 
       collection do

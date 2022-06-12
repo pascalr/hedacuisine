@@ -683,8 +683,8 @@ const IngredientListNode = Node.create({
       } else {
         children.push(['span', {class: 'food-name'}, name])
       }
-      if (ing.comment) {children.push(elementFromString(' '+ing.comment))}
       if (ing) {
+        if (ing.comment) {children.push(elementFromString(' '+ing.comment))}
         return ['li', {'data-ingredient-id': ing.id}, ...children]
       } else {
         return ['li', {'data-ingredient': ingredient}, ...children]

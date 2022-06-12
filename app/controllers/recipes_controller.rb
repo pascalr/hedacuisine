@@ -176,11 +176,20 @@ class RecipesController < ApplicationController
     gon.jbuilder
   end
 
+  def duplicate
+    # FIXME: WARNING: This allows any user to duplicate any recipe even private ones
+    cloned = Recipe.find(params[:slug].split('-')[0])
+    @recipe = cloned.dup
+    @recipe.user = current_user
+    @recipe.save!
+    redirect_to edit_recipe_path(@recipe)
+  end
+
   def create
     @recipe = Recipe.new(recipe_params)
     @recipe.recipe_kind = @recipe.match_category
     @recipe.user = current_user
-    if @recipe.base_recipe
+    if @recipe.base_recipe # deprecated, use duplicate
       @recipe.complete_instructions = @recipe.base_recipe.complete_instructions if @recipe.complete_instructions.blank?
       @recipe.preparation_time = @recipe.base_recipe.preparation_time
       @recipe.cooking_time = @recipe.base_recipe.cooking_time
