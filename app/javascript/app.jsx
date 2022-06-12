@@ -506,6 +506,16 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
     mix.instructions = instructions.join(';')
     console.log('calling update 01'); update()
   }
+  const handleDrop = ({source, destination, type, draggableId}) => {
+    if (!destination) return; // Ignore drop outside droppable container
+    
+    var updatedList = [...instructions];
+    const [reorderedItem] = updatedList.splice(source.index, 1);
+    updatedList.splice(destination.index, 0, reorderedItem);
+
+    mix.instructions = updatedList.join(';')
+    update()
+  }
 
   let context = {machineFoods}
 
@@ -544,25 +554,33 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
       </>)
     }
 
-    return (<li key={`${line}-${instruction}`} className={`list-group-item${!obj || obj.errors ? ' cmd-error' : ''}`}>
-      <img className="clickable float-end" style={{marginTop: '0.4em'}} src="/icons/x-lg.svg" width="18" height="18" onClick={() => removeInstruction(line)}></img>
-      {!obj || obj.errors ? <img className="float-end" style={{marginRight: '0.4em', marginTop: '0.4em'}} src="/icons/info-circle.svg" width="18" height="18"></img> : ''}
-      <div className='d-flex gap-10'>
-        <div className="dropdown">
-          <button className="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {obj ? obj.type.label.fr : cmd}
-          </button>
-          <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            {CMD_TYPES.filter(e => e != cmd).map((cmdType,i) => (
-              <span key={i} className="dropdown-item" onClick={() => changeInstruction(cmdType.id, line)}>
-                {labelForCmdType(cmdType)}
-              </span>
-            ))}
+    return (
+      <Draggable key={`drag-instruction-${line}-${args}`} draggableId={`drag-instruction-${line}-${args}`} index={line}>
+        {(provided) => (<>
+          <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
+            <li key={`${line}-${instruction}`} className={`list-group-item${!obj || obj.errors ? ' cmd-error' : ''}`}>
+              <img className="clickable float-end" style={{marginTop: '0.4em'}} src="/icons/x-lg.svg" width="18" height="18" onClick={() => removeInstruction(line)}></img>
+              {!obj || obj.errors ? <img className="float-end" style={{marginRight: '0.4em', marginTop: '0.4em'}} src="/icons/info-circle.svg" width="18" height="18"></img> : ''}
+              <div className='d-flex gap-10'>
+                <div className="dropdown">
+                  <button className="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {obj ? obj.type.label.fr : cmd}
+                  </button>
+                  <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    {CMD_TYPES.filter(e => e != cmd).map((cmdType,i) => (
+                      <span key={i} className="dropdown-item" onClick={() => changeInstruction(cmdType.id, line)}>
+                        {labelForCmdType(cmdType)}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                {eArgs}
+              </div>
+            </li>
           </div>
-        </div>
-        {eArgs}
-      </div>
-    </li>)
+        </>)}
+      </Draggable>
+    )
   })
 
   return (<>
@@ -570,7 +588,16 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
       {mix.name || 'Sans nom'}
     </h1>
     <h2>Instructions</h2>
-    <ul className="list-group">{eInstructions}</ul>
+    <DragDropContext onDragEnd={handleDrop}>
+      <Droppable droppableId="instructions-container">
+        {(provided) => (<>
+          <div className="instructions-container" {...provided.droppableProps} ref={provided.innerRef}>
+            <ul className="list-group">{eInstructions}</ul>
+            {provided.placeholder}
+          </div>
+        </>)}
+      </Droppable>
+    </DragDropContext>
     <div style={{height: '0.5em'}}></div>
     <img className="clickable" src="/icons/plus-circle.svg" width="24" height="24" onClick={addInstruction}></img>
   </>)
