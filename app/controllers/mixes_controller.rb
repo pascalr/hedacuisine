@@ -28,6 +28,6 @@ private
     end
     def mix_params
       return {} if params[:mix].blank?
-      params.require(:mix).permit(:name, :instructions)
+      params.require(:mix).permit(:name, :instructions, :recipe_id)
     end
 end

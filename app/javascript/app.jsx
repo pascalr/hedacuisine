@@ -9,7 +9,7 @@ import { useCacheOrFetch, useWindowWidth } from "./lib"
 import {RecipeIndex} from './recipe_index'
 import { omit, ajax, isBlank, preloadImage, getUrlParams, join, bindSetter, sortBy, capitalize } from "./utils"
 import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, batch_create_filtered_recipes_path, batch_destroy_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path, recipe_path, user_tags_path, user_tag_path, containers_path, grocery_list_path, calendar_path, inventory_path, mixes_path, mix_path } from './routes'
-import {TextField, AutocompleteInput, TextInput} from './form'
+import {TextField, AutocompleteInput, TextInput, CollectionSelect} from './form'
 import {PublicImageField} from './modals/public_image'
 import { DeleteConfirmButton } from './components/delete_confirm_button'
 import {AddUserTagModal} from './modals/add_user_tag'
@@ -467,7 +467,9 @@ const labelForCmdType = (cmdType) => {
   return t ? t.label.fr : cmdType.id
 }
   
-const ShowMix = ({page, machines, mixes, ...args}) => {
+const ShowMix = ({page, context}) => {
+
+  const {userRecipes, favoriteRecipes, machines, mixes, ...args} = context
 
   const machine = machines.find(m => m.id == page.machineId)
   const machineFoods = args.machineFoods.filter(m => m.machine_id == page.machineId)
@@ -476,7 +478,7 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
 
   const update = () => {
     console.log('UPDATING')
-    ajax({url: mix_path(mix), type: 'PATCH', data: {mix: {name: mix.name, instructions: mix.instructions}}, success: (mix) => {
+    ajax({url: mix_path(mix), type: 'PATCH', data: {mix: {recipe_id: mix.recipe_id, name: mix.name, instructions: mix.instructions}}, success: (mix) => {
       mixes.update(mixes.map(e => e.id == mix.id ? mix : e))
     }})
   }
@@ -516,8 +518,6 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
     mix.instructions = updatedList.join(';')
     update()
   }
-
-  let context = {machineFoods}
 
   const eInstructions = instructions.map((instruction,line) => {
 
@@ -583,11 +583,16 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
     )
   })
 
+  const recipeIds = context.favoriteRecipes.map(r => r.recipe_id).concat(context.userRecipes.map(r => r.id))
+  const recipeNames = {}
+  context.favoriteRecipes.forEach(r => {recipeNames[r.recipe_id] = r.name})
+  context.userRecipes.forEach(r => {recipeNames[r.id] = r.name})
+
   return (<>
     <h1 contentEditable suppressContentEditableWarning={true} onBlur={(e) => {updateName(e.target.innerText)}}>
       {mix.name || 'Sans nom'}
     </h1>
-    <h2>Instructions</h2>
+    <h2>Instructions automatisées</h2>
     <DragDropContext onDragEnd={handleDrop}>
       <Droppable droppableId="instructions-container">
         {(provided) => (<>
@@ -600,6 +605,10 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
     </DragDropContext>
     <div style={{height: '0.5em'}}></div>
     <img className="clickable" src="/icons/plus-circle.svg" width="24" height="24" onClick={addInstruction}></img>
+    <br/><br/>
+    <h2>Instructions manuelles</h2>
+    <h3>Lier avec une recette existante:</h3>
+    <CollectionSelect model={mix} field="recipe_id" options={recipeIds} showOption={(id) => recipeNames[id]} includeBlank="true" onChange={id => {mix.recipe_id = id; update()}} />
   </>)
 }
 
@@ -766,6 +775,8 @@ const App = () => {
   const containerQuantities = useUpdatableState(gon.container_quantities)
   const mixes = useUpdatableState(gon.mixes)
 
+  const context = {recipeFilters, suggestions, userTags, userRecipes, favoriteRecipes, machines, machineFoods, containerQuantities, mixes}
+
   bindSetter(recipeFilters, setRecipeFilters)
   bindSetter(suggestions, setSuggestions)
   bindSetter(userTags, setUserTags)
@@ -813,7 +824,7 @@ const App = () => {
     [PAGE_10]: <HedaIndex {...{page, machines}} />,
     [PAGE_11]: <Inventory {...{page, machines, machineFoods, containerQuantities}} />,
     [PAGE_12]: <MixIndex {...{page, machines, machineFoods, mixes}} />,
-    [PAGE_13]: <ShowMix {...{page, machines, machineFoods, mixes}} />,
+    [PAGE_13]: <ShowMix {...{page, context}} />,
   }
 
   // I don't want a back system, I want a up system. So if you are given a nested link, you can go up.
