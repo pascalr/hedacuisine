@@ -443,6 +443,9 @@ const CmdAdd = {
     }
     return obj
   },
+  print: (obj) => {
+      return <div className="instruction"><span>{obj.type.label.fr}</span><span>{obj.qty}</span><span>{obj.machineFoodName}</span></div>
+  },
 }
 const CmdMix = {
   id: 'MIX',
@@ -451,6 +454,9 @@ const CmdMix = {
   },
   parse: (args, context, obj={}) => {
     return obj
+  },
+  print: (obj) => {
+    return <div className="instruction"><span>{obj.type.label.fr}</span></div>
   },
 }
 const CmdContainer = {
@@ -464,6 +470,9 @@ const CmdContainer = {
   parse: (args, context, obj={}) => {
     obj.id = args[1]
     return obj
+  },
+  print: (obj) => {
+    return <div className="instruction"><span>{obj.type.label.fr}</span><span>{obj.id}</span></div>
   },
 }
 
@@ -533,16 +542,10 @@ const EditMix = ({page, context}) => {
     let args = instruction.split(',')
     let cmd = args[0]
 
-    let obj = (function () {
-      for (let i = 0; i < CMD_TYPES.length; i++) {
-        if (cmd == CMD_TYPES[i].id) {
-          let obj = CMD_TYPES[i].parse(args, context)
-          obj.type = CMD_TYPES[i]
-          return obj
-        }
-      }
-      return null
-    })()
+    let cmdType = CMD_TYPES.find(e => e.id == cmd)
+    let obj = cmdType ? cmdType.parse(args, context) : null
+    if (obj) {obj.type = cmdType}
+
     let eArgs = ''
     if (obj && obj.type.id == "ADD") {
       eArgs = (<>
@@ -649,53 +652,37 @@ const ShowMix = ({page, context}) => {
     let args = instruction.split(',')
     let cmd = args[0]
 
-    let obj = (function () {
-      for (let i = 0; i < CMD_TYPES.length; i++) {
-        if (cmd == CMD_TYPES[i].id) {
-          let obj = CMD_TYPES[i].parse(args, context)
-          obj.type = CMD_TYPES[i]
-          return obj
-        }
-      }
-      return null
-    })()
+    let cmdType = CMD_TYPES.find(e => e.id == cmd)
+    let obj = cmdType ? cmdType.parse(args, context) : null
+    if (obj) {obj.type = cmdType}
+
     let eArgs = ''
-    if (obj && obj.type.id == "ADD") {
-      eArgs = (<>
-        <TextInput defaultValue={obj.qty} onBlur={(qty) => updateArg(1, qty, line)} />
-        <AutocompleteInput name="food" choices={machineFoods} defaultValue={obj.machineFoodName}
-          onSelect={(e, term, item) => {
-            f = machineFoods.find(e => e.id == item.dataset.id);
-            updateArg(2, `${item.dataset.id}-${f ? f.name : ''}`, line)
-          }} onBlur={(name) => {
-            f = machineFoods.find(e => e.name  == name);
-            updateArg(2, `${f ? f.id : ''}-${name}`, line)
-          }} minChars={0}
-        />
-      </>)
-    } else if (obj && obj.type.id == "CONTAINER") {
-      eArgs = (<>
-        <TextInput defaultValue={obj.id} onBlur={(id) => updateArg(1, id, line)} />
-      </>)
+    if (obj) {
+      eArgs = cmdType.print(obj)
     }
+    //if (obj && obj.type.id == "ADD") {
+    //  eArgs = (<>
+    //    <TextInput defaultValue={obj.qty} onBlur={(qty) => updateArg(1, qty, line)} />
+    //    <AutocompleteInput name="food" choices={machineFoods} defaultValue={obj.machineFoodName}
+    //      onSelect={(e, term, item) => {
+    //        f = machineFoods.find(e => e.id == item.dataset.id);
+    //        updateArg(2, `${item.dataset.id}-${f ? f.name : ''}`, line)
+    //      }} onBlur={(name) => {
+    //        f = machineFoods.find(e => e.name  == name);
+    //        updateArg(2, `${f ? f.id : ''}-${name}`, line)
+    //      }} minChars={0}
+    //    />
+    //  </>)
+    //} else if (obj && obj.type.id == "CONTAINER") {
+    //  eArgs = (<>
+    //    <TextInput defaultValue={obj.id} onBlur={(id) => updateArg(1, id, line)} />
+    //  </>)
+    //}
 
     return (
       <li key={`${line}-${instruction}`} className={`list-group-item${!obj || obj.errors ? ' cmd-error' : ''}`}>
-        <img className="clickable float-end" style={{marginTop: '0.4em'}} src="/icons/x-lg.svg" width="18" height="18" onClick={() => removeInstruction(line)}></img>
         {!obj || obj.errors ? <img className="float-end" style={{marginRight: '0.4em', marginTop: '0.4em'}} src="/icons/info-circle.svg" width="18" height="18"></img> : ''}
         <div className='d-flex gap-10'>
-          <div className="dropdown">
-            <button className="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {obj ? obj.type.label.fr : cmd}
-            </button>
-            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              {CMD_TYPES.filter(e => e != cmd).map((cmdType,i) => (
-                <span key={i} className="dropdown-item" onClick={() => changeInstruction(cmdType.id, line)}>
-                  {labelForCmdType(cmdType)}
-                </span>
-              ))}
-            </div>
-          </div>
           {eArgs}
         </div>
       </li>
