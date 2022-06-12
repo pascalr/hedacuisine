@@ -161,6 +161,7 @@ Rails.application.routes.draw do
       resources :references, only: [:create, :update, :destroy]
 
       member do
+        get 'inline'
         get 'page'
         get 'old_edit'
         patch 'paste_ingredients', param: 'slug'

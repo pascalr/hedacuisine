@@ -81,7 +81,9 @@ export const recipe_path = (arg, params={}) => {
   // FIXME: js paths should not be localized
   return `/${getTranslatedRouteWithLocale("recipes")}/${extractParamFromModel(arg)}${printParams(params)}`
 }
-
+export const inline_recipe_path = (arg, params={}) => {
+  return `/${getTranslatedRouteWithLocale("recipes")}/${extractParamFromModel(arg)}/inline`
+}
 export const new_recipe_path = (arg) => {
   return `/${getTranslatedRouteWithLocale("recipes")}/${getTranslatedRoute("new")}`
 }

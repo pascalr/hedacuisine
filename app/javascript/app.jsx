@@ -8,7 +8,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useCacheOrFetch, useCacheOrFetchHTML, useWindowWidth } from "./lib"
 import {RecipeIndex} from './recipe_index'
 import { omit, ajax, isBlank, preloadImage, getUrlParams, join, bindSetter, sortBy, capitalize } from "./utils"
-import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, batch_create_filtered_recipes_path, batch_destroy_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path, recipe_path, user_tags_path, user_tag_path, containers_path, grocery_list_path, calendar_path, inventory_path, mixes_path, mix_path } from './routes'
+import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, batch_create_filtered_recipes_path, batch_destroy_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path, recipe_path, user_tags_path, user_tag_path, containers_path, grocery_list_path, calendar_path, inventory_path, mixes_path, mix_path, inline_recipe_path } from './routes'
 import {TextField, AutocompleteInput, TextInput, CollectionSelect} from './form'
 import {PublicImageField} from './modals/public_image'
 import { DeleteConfirmButton } from './components/delete_confirm_button'
@@ -490,7 +490,7 @@ const EditMix = ({page, context}) => {
   const machineFoods = args.machineFoods.filter(m => m.machine_id == page.machineId)
   const mix = mixes.find(m => m.id == page.mixId)
 
-  const recipeHTML = useCacheOrFetchHTML(recipe_path({id: mix.recipe_id}, {layout: 'false'}), {waitFor: mix.recipe_id})
+  const recipeHTML = useCacheOrFetchHTML(inline_recipe_path({id: mix.recipe_id}), {waitFor: mix.recipe_id})
 
   console.log('mix', mix)
 
@@ -600,21 +600,11 @@ const EditMix = ({page, context}) => {
   context.favoriteRecipes.forEach(r => {recipeNames[r.recipe_id] = r.name})
   context.userRecipes.forEach(r => {recipeNames[r.id] = r.name})
 
-  let recipe = null
-  if (recipeHTML) {
-    recipe = <div dangerouslySetInnerHTML={{__html: recipeHTML}} />
-  } else {
-    recipe = (<>
-      <h3>Lier avec une recette existante:</h3>
-      <CollectionSelect model={mix} field="recipe_id" options={recipeIds} showOption={(id) => recipeNames[id]} includeBlank="true" onChange={id => {mix.recipe_id = id; update()}} />
-    </>)
-  }
-
   return (<>
     <h1 contentEditable suppressContentEditableWarning={true} onBlur={(e) => {updateName(e.target.innerText)}}>
       {mix.name || 'Sans nom'}
     </h1>
-    <h2>Instructions automatisées</h2>
+    <h2>Commandes</h2>
     <DragDropContext onDragEnd={handleDrop}>
       <Droppable droppableId="instructions-container">
         {(provided) => (<>
@@ -628,8 +618,13 @@ const EditMix = ({page, context}) => {
     <div style={{height: '0.5em'}}></div>
     <img className="clickable" src="/icons/plus-circle.svg" width="24" height="24" onClick={addInstruction}></img>
     <br/><br/>
-    <h2>Instructions manuelles</h2>
-    {recipe}
+    <h2>Recette</h2>
+    <h3>Lier avec une recette existante:</h3>
+    <CollectionSelect model={mix} field="recipe_id" options={recipeIds} showOption={(id) => recipeNames[id]} includeBlank="true" onChange={id => {mix.recipe_id = id; update()}} />
+    <h3>Lier en clonant une recette existante:</h3>
+    <h3>Créer une nouvelle recette:</h3>
+    <h3>Aperçu</h3>
+    {recipeHTML ? <div dangerouslySetInnerHTML={{__html: recipeHTML}} /> : ''}
   </>)
 }
   
@@ -641,80 +636,39 @@ const ShowMix = ({page, context}) => {
   const machineFoods = args.machineFoods.filter(m => m.machine_id == page.machineId)
   const mix = mixes.find(m => m.id == page.mixId)
 
-  const recipeHTML = useCacheOrFetchHTML(recipe_path({id: mix.recipe_id}, {layout: 'false'}), {waitFor: mix.recipe_id})
-
-  console.log('mix', mix)
+  const recipeHTML = useCacheOrFetchHTML(inline_recipe_path({id: mix.recipe_id}), {waitFor: mix.recipe_id})
 
   const instructions = (mix.instructions||'').split(';')
-
   const eInstructions = instructions.map((instruction,line) => {
 
     let args = instruction.split(',')
-    let cmd = args[0]
-
-    let cmdType = CMD_TYPES.find(e => e.id == cmd)
+    let cmdType = CMD_TYPES.find(e => e.id == args[0])
     let obj = cmdType ? cmdType.parse(args, context) : null
     if (obj) {obj.type = cmdType}
-
-    let eArgs = ''
-    if (obj) {
-      eArgs = cmdType.print(obj)
-    }
-    //if (obj && obj.type.id == "ADD") {
-    //  eArgs = (<>
-    //    <TextInput defaultValue={obj.qty} onBlur={(qty) => updateArg(1, qty, line)} />
-    //    <AutocompleteInput name="food" choices={machineFoods} defaultValue={obj.machineFoodName}
-    //      onSelect={(e, term, item) => {
-    //        f = machineFoods.find(e => e.id == item.dataset.id);
-    //        updateArg(2, `${item.dataset.id}-${f ? f.name : ''}`, line)
-    //      }} onBlur={(name) => {
-    //        f = machineFoods.find(e => e.name  == name);
-    //        updateArg(2, `${f ? f.id : ''}-${name}`, line)
-    //      }} minChars={0}
-    //    />
-    //  </>)
-    //} else if (obj && obj.type.id == "CONTAINER") {
-    //  eArgs = (<>
-    //    <TextInput defaultValue={obj.id} onBlur={(id) => updateArg(1, id, line)} />
-    //  </>)
-    //}
 
     return (
       <li key={`${line}-${instruction}`} className={`list-group-item${!obj || obj.errors ? ' cmd-error' : ''}`}>
         {!obj || obj.errors ? <img className="float-end" style={{marginRight: '0.4em', marginTop: '0.4em'}} src="/icons/info-circle.svg" width="18" height="18"></img> : ''}
         <div className='d-flex gap-10'>
-          {eArgs}
+          {obj ? cmdType.print(obj) : ''}
         </div>
       </li>
     )
   })
-
-  const recipeIds = context.favoriteRecipes.map(r => r.recipe_id).concat(context.userRecipes.map(r => r.id))
-  const recipeNames = {}
-  context.favoriteRecipes.forEach(r => {recipeNames[r.recipe_id] = r.name})
-  context.userRecipes.forEach(r => {recipeNames[r.id] = r.name})
-
-  let recipe = null
-  if (recipeHTML) {
-    recipe = <div dangerouslySetInnerHTML={{__html: recipeHTML}} />
-  } else {
-    recipe = (<>
-      <h3>Lier avec une recette existante:</h3>
-      <CollectionSelect model={mix} field="recipe_id" options={recipeIds} showOption={(id) => recipeNames[id]} includeBlank="true" onChange={id => {mix.recipe_id = id; update()}} />
-    </>)
-  }
 
   return (<>
     <div className="d-flex gap-20 align-items-center">
       <h1>{mix.name || 'Sans nom'}</h1>
       <button type="button" className="btn btn-outline-primary btn-sm" onClick={() => page.update({page: PAGE_14, machineId: machine.id, mixId: mix.id})}>Modifier</button>
     </div>
-    <h2>Instructions automatisées</h2>
-      <ul className="list-group">{eInstructions}</ul>
+    <ul className="list-group">{eInstructions}</ul>
     <div style={{height: '0.5em'}}></div>
-    <br/><br/>
-    <h2>Instructions manuelles</h2>
-    {recipe}
+    <div className="d-flex gap-10">
+      <button type="button" className="btn btn-small btn-primary">Cuisiner</button>
+      <button type="button" className="btn btn-small btn-secondary">Ajouter à mon calendrier</button>
+    </div>
+    <div style={{height: '1em'}}></div>
+    {recipeHTML ? <div dangerouslySetInnerHTML={{__html: recipeHTML}} /> : ''}
   </>)
 }
 
