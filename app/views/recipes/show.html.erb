@@ -9,7 +9,7 @@
   <meta property="og:description" content="<%= description %>">
 <% end %>
 
-<% if @recipe.recipe_kind %>
+<% if @recipe.recipe_kind && params[:layout] != false %>
   <%= render partial: "kinds/breadcrumbs", locals: {leaf: @recipe.recipe_kind} %>
 <% end %>
 

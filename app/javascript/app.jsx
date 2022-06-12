@@ -28,7 +28,13 @@ const PAGE_10 = 10 // HedaIndex
 const PAGE_11 = 11 // Inventory
 const PAGE_12 = 12 // MixIndex
 const PAGE_13 = 13 // ShowMix
-const PAGE_14 = 14
+const PAGE_14 = 14 // EditMix
+const PAGE_15 = 15
+const PAGE_16 = 16
+const PAGE_17 = 17
+const PAGE_18 = 18
+const PAGE_19 = 19
+const PAGE_20 = 20
   
 const encodeRecord = (record) => (`${record.class_name == "recipe_kind" ? '' : '_'}${record.id}`)
 
@@ -466,8 +472,8 @@ const labelForCmdType = (cmdType) => {
   let t = CMD_TYPES.find(e => e.id == cmdType.id)
   return t ? t.label.fr : cmdType.id
 }
-  
-const ShowMix = ({page, context}) => {
+
+const EditMix = ({page, context}) => {
 
   const {userRecipes, favoriteRecipes, machines, mixes, ...args} = context
 
@@ -618,6 +624,107 @@ const ShowMix = ({page, context}) => {
     </DragDropContext>
     <div style={{height: '0.5em'}}></div>
     <img className="clickable" src="/icons/plus-circle.svg" width="24" height="24" onClick={addInstruction}></img>
+    <br/><br/>
+    <h2>Instructions manuelles</h2>
+    {recipe}
+  </>)
+}
+  
+const ShowMix = ({page, context}) => {
+
+  const {userRecipes, favoriteRecipes, machines, mixes, ...args} = context
+
+  const machine = machines.find(m => m.id == page.machineId)
+  const machineFoods = args.machineFoods.filter(m => m.machine_id == page.machineId)
+  const mix = mixes.find(m => m.id == page.mixId)
+
+  const recipeHTML = useCacheOrFetchHTML(recipe_path({id: mix.recipe_id}, {layout: 'false'}), {waitFor: mix.recipe_id})
+
+  console.log('mix', mix)
+
+  const instructions = (mix.instructions||'').split(';')
+
+  const eInstructions = instructions.map((instruction,line) => {
+
+    let args = instruction.split(',')
+    let cmd = args[0]
+
+    let obj = (function () {
+      for (let i = 0; i < CMD_TYPES.length; i++) {
+        if (cmd == CMD_TYPES[i].id) {
+          let obj = CMD_TYPES[i].parse(args, context)
+          obj.type = CMD_TYPES[i]
+          return obj
+        }
+      }
+      return null
+    })()
+    let eArgs = ''
+    if (obj && obj.type.id == "ADD") {
+      eArgs = (<>
+        <TextInput defaultValue={obj.qty} onBlur={(qty) => updateArg(1, qty, line)} />
+        <AutocompleteInput name="food" choices={machineFoods} defaultValue={obj.machineFoodName}
+          onSelect={(e, term, item) => {
+            f = machineFoods.find(e => e.id == item.dataset.id);
+            updateArg(2, `${item.dataset.id}-${f ? f.name : ''}`, line)
+          }} onBlur={(name) => {
+            f = machineFoods.find(e => e.name  == name);
+            updateArg(2, `${f ? f.id : ''}-${name}`, line)
+          }} minChars={0}
+        />
+      </>)
+    } else if (obj && obj.type.id == "CONTAINER") {
+      eArgs = (<>
+        <TextInput defaultValue={obj.id} onBlur={(id) => updateArg(1, id, line)} />
+      </>)
+    }
+
+    return (
+      <li key={`${line}-${instruction}`} className={`list-group-item${!obj || obj.errors ? ' cmd-error' : ''}`}>
+        <img className="clickable float-end" style={{marginTop: '0.4em'}} src="/icons/x-lg.svg" width="18" height="18" onClick={() => removeInstruction(line)}></img>
+        {!obj || obj.errors ? <img className="float-end" style={{marginRight: '0.4em', marginTop: '0.4em'}} src="/icons/info-circle.svg" width="18" height="18"></img> : ''}
+        <div className='d-flex gap-10'>
+          <div className="dropdown">
+            <button className="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {obj ? obj.type.label.fr : cmd}
+            </button>
+            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              {CMD_TYPES.filter(e => e != cmd).map((cmdType,i) => (
+                <span key={i} className="dropdown-item" onClick={() => changeInstruction(cmdType.id, line)}>
+                  {labelForCmdType(cmdType)}
+                </span>
+              ))}
+            </div>
+          </div>
+          {eArgs}
+        </div>
+      </li>
+    )
+  })
+
+  const recipeIds = context.favoriteRecipes.map(r => r.recipe_id).concat(context.userRecipes.map(r => r.id))
+  const recipeNames = {}
+  context.favoriteRecipes.forEach(r => {recipeNames[r.recipe_id] = r.name})
+  context.userRecipes.forEach(r => {recipeNames[r.id] = r.name})
+
+  let recipe = null
+  if (recipeHTML) {
+    recipe = <div dangerouslySetInnerHTML={{__html: recipeHTML}} />
+  } else {
+    recipe = (<>
+      <h3>Lier avec une recette existante:</h3>
+      <CollectionSelect model={mix} field="recipe_id" options={recipeIds} showOption={(id) => recipeNames[id]} includeBlank="true" onChange={id => {mix.recipe_id = id; update()}} />
+    </>)
+  }
+
+  return (<>
+    <div className="d-flex gap-20 align-items-center">
+      <h1>{mix.name || 'Sans nom'}</h1>
+      <button type="button" className="btn btn-outline-primary btn-sm" onClick={() => page.update({page: PAGE_14, machineId: machine.id, mixId: mix.id})}>Modifier</button>
+    </div>
+    <h2>Instructions automatisées</h2>
+      <ul className="list-group">{eInstructions}</ul>
+    <div style={{height: '0.5em'}}></div>
     <br/><br/>
     <h2>Instructions manuelles</h2>
     {recipe}
@@ -808,6 +915,7 @@ const App = () => {
     [PAGE_11]: PAGE_10,
     [PAGE_12]: PAGE_10,
     [PAGE_13]: PAGE_12,
+    [PAGE_14]: PAGE_13,
   }
 
   // Deprecated, use page.update(newPage) which uses changePageV2
@@ -837,6 +945,7 @@ const App = () => {
     [PAGE_11]: <Inventory {...{page, machines, machineFoods, containerQuantities}} />,
     [PAGE_12]: <MixIndex {...{page, machines, machineFoods, mixes}} />,
     [PAGE_13]: <ShowMix {...{page, context}} />,
+    [PAGE_14]: <EditMix {...{page, context}} />,
   }
 
   // I don't want a back system, I want a up system. So if you are given a nested link, you can go up.
