@@ -5,7 +5,7 @@ import Hammer from "react-hammerjs"
 //import history from 'history/hash'
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { useCacheOrFetch, useWindowWidth } from "./lib"
+import { useCacheOrFetch, useCacheOrFetchHTML, useWindowWidth } from "./lib"
 import {RecipeIndex} from './recipe_index'
 import { omit, ajax, isBlank, preloadImage, getUrlParams, join, bindSetter, sortBy, capitalize } from "./utils"
 import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, batch_create_filtered_recipes_path, batch_destroy_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path, recipe_path, user_tags_path, user_tag_path, containers_path, grocery_list_path, calendar_path, inventory_path, mixes_path, mix_path } from './routes'
@@ -474,6 +474,9 @@ const ShowMix = ({page, context}) => {
   const machine = machines.find(m => m.id == page.machineId)
   const machineFoods = args.machineFoods.filter(m => m.machine_id == page.machineId)
   const mix = mixes.find(m => m.id == page.mixId)
+
+  const recipeHTML = useCacheOrFetchHTML(recipe_path({id: mix.recipe_id}, {layout: 'false'}), {waitFor: mix.recipe_id})
+
   console.log('mix', mix)
 
   const update = () => {
@@ -588,6 +591,16 @@ const ShowMix = ({page, context}) => {
   context.favoriteRecipes.forEach(r => {recipeNames[r.recipe_id] = r.name})
   context.userRecipes.forEach(r => {recipeNames[r.id] = r.name})
 
+  let recipe = null
+  if (recipeHTML) {
+    recipe = <div dangerouslySetInnerHTML={{__html: recipeHTML}} />
+  } else {
+    recipe = (<>
+      <h3>Lier avec une recette existante:</h3>
+      <CollectionSelect model={mix} field="recipe_id" options={recipeIds} showOption={(id) => recipeNames[id]} includeBlank="true" onChange={id => {mix.recipe_id = id; update()}} />
+    </>)
+  }
+
   return (<>
     <h1 contentEditable suppressContentEditableWarning={true} onBlur={(e) => {updateName(e.target.innerText)}}>
       {mix.name || 'Sans nom'}
@@ -607,8 +620,7 @@ const ShowMix = ({page, context}) => {
     <img className="clickable" src="/icons/plus-circle.svg" width="24" height="24" onClick={addInstruction}></img>
     <br/><br/>
     <h2>Instructions manuelles</h2>
-    <h3>Lier avec une recette existante:</h3>
-    <CollectionSelect model={mix} field="recipe_id" options={recipeIds} showOption={(id) => recipeNames[id]} includeBlank="true" onChange={id => {mix.recipe_id = id; update()}} />
+    {recipe}
   </>)
 }
 

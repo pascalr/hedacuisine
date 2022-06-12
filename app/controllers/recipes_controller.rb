@@ -142,6 +142,9 @@ class RecipesController < ApplicationController
     # FIXME: This allows any user to read any recipe. Ensure permission
     # if I allow private recipes.
     #redirect_to group_path(id: @recipe.group.id, recipe_id: @recipe.id) if @recipe.group
+    respond_to do |format|
+      format.html { render "recipes/show", :layout => !(params[:layout] == 'false') }
+    end
   end
 
   def new_variant

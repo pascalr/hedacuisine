@@ -11,6 +11,11 @@ const appendParams = (arg) => {
   return ''
 }
 
+const printParams = (params) => {
+  if (!params) {return ''}
+  return '?' + new URLSearchParams(params).toString();
+}
+
 const getTranslatedRoute = (route,locale=null) => {
   if (!locale) {locale = getLocale()}
   if (route == "recipes") {
@@ -72,9 +77,9 @@ export const update_tags_recipe_path = (arg) => {
   return `/recipes/${extractParamFromModel(arg)}/update_tags`
 }
 
-export const recipe_path = (arg) => {
+export const recipe_path = (arg, params={}) => {
   // FIXME: js paths should not be localized
-  return `/${getTranslatedRouteWithLocale("recipes")}/${extractParamFromModel(arg)}`
+  return `/${getTranslatedRouteWithLocale("recipes")}/${extractParamFromModel(arg)}${printParams(params)}`
 }
 
 export const new_recipe_path = (arg) => {

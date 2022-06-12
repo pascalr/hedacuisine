@@ -8,6 +8,32 @@ export const Show = ({cond, children}) => {
   return cond ? children : ''
 }
 
+export const useCacheOrFetchHTML = (url, args={}) => {
+  const {waitFor, cache} = args
+  const [data, setData] = useState(window[`fetched_${url}`]);
+
+  useEffect(() => {
+    if (!window[`fetching_${url}`] && waitFor != false) {
+      console.log('FETCHING',url)
+      fetch(url)
+        .then(result => result.text())
+        .then(content => setData(content));
+      //async function fetchData() {
+      //  console.log(`Fetching data at ${url}`)
+      //  const response = await fetch(url);
+      //  console.log('response', response)
+      //  const html = await response.html();
+      //  window[`fetched_${url}`] = json
+      //  setData(html);
+      //}
+      window[`fetching_${url}`] = true
+      //fetchData();
+    }
+  }, [url, waitFor]);
+
+  return data;
+};
+
 // FIXME: Badly implemented I believe...
 export const useCacheOrFetch = (url, args={}) => {
   const {waitFor, cache} = args
