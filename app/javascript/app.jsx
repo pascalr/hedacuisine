@@ -467,8 +467,6 @@ const labelForCmdType = (cmdType) => {
   return t ? t.label.fr : cmdType.id
 }
   
-const DEFAULT_CMD = "ADD"
-
 const ShowMix = ({page, machines, mixes, ...args}) => {
 
   const machine = machines.find(m => m.id == page.machineId)
@@ -486,7 +484,7 @@ const ShowMix = ({page, machines, mixes, ...args}) => {
   const instructions = (mix.instructions||'').split(';')
 
   const addInstruction = () => {
-    mix.instructions = (mix.instructions||'')+';'+DEFAULT_CMD; update()
+    mix.instructions = (mix.instructions||'')+';'; update()
   }
   const updateName = (newName) => {
     mix.name = newName; update()
