@@ -1,4 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { omit, join } from "./utils"
+
+export const LinkToPage = ({page, className, children, active, ...props}) => {
+  const switchPage = (evt, page) => {
+    evt.preventDefault()
+    page.update(omit(page,'update'))
+  }
+  const href = '?'+new URLSearchParams(omit(page,'update')).toString()
+
+  return <a className={join(className, active ? 'active' : null)} href={href} onClick={(e) => switchPage(e, page)} {...props}>{children}</a>
+}
+
 
 export const mapModels = (list, func) => {
   return list.map((item,i) => <span key={item.id}>{func(item,i)}</span>)

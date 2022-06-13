@@ -5,7 +5,7 @@ import Hammer from "react-hammerjs"
 //import history from 'history/hash'
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { useCacheOrFetch, useCacheOrFetchHTML, useWindowWidth } from "./lib"
+import { useCacheOrFetch, useCacheOrFetchHTML, useWindowWidth, LinkToPage } from "./lib"
 import {RecipeIndex} from './recipe_index'
 import { omit, ajax, isBlank, preloadImage, getUrlParams, join, bindSetter, sortBy, capitalize } from "./utils"
 import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, batch_create_filtered_recipes_path, batch_destroy_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path, recipe_path, user_tags_path, user_tag_path, containers_path, grocery_list_path, calendar_path, inventory_path, mixes_path, mix_path, inline_recipe_path } from './routes'
@@ -29,24 +29,14 @@ const PAGE_11 = 11 // Inventory
 const PAGE_12 = 12 // MixIndex
 const PAGE_13 = 13 // ShowMix
 const PAGE_14 = 14 // EditMix
-const PAGE_15 = 15
-const PAGE_16 = 16
+const PAGE_15 = 15 // ShowRecipe
+const PAGE_16 = 16 // EditRecipe
 const PAGE_17 = 17
 const PAGE_18 = 18
 const PAGE_19 = 19
 const PAGE_20 = 20
   
 const encodeRecord = (record) => (`${record.class_name == "recipe_kind" ? '' : '_'}${record.id}`)
-
-const LinkToPage = ({page, className, children, active, ...props}) => {
-  const switchPage = (evt, page) => {
-    evt.preventDefault()
-    page.update(omit(page,'update'))
-  }
-  const href = '?'+new URLSearchParams(omit(page,'update')).toString()
-
-  return <a className={join(className, active ? 'active' : null)} href={href} onClick={(e) => switchPage(e, page)} {...props}>{children}</a>
-}
 
 const SuggestionsNav = ({page, tagSuggestions, categorySuggestions}) => {
   return (<>
@@ -627,6 +617,15 @@ const EditMix = ({page, context}) => {
     {recipeHTML ? <div dangerouslySetInnerHTML={{__html: recipeHTML}} /> : ''}
   </>)
 }
+
+const ShowRecipe = ({page, context}) => {
+  const recipeHTML = useCacheOrFetchHTML(inline_recipe_path({id: page.recipeId}), {waitFor: page.recipeId})
+  return recipeHTML ? <div dangerouslySetInnerHTML={{__html: recipeHTML}} /> : ''
+}
+
+const EditRecipe = ({page, context}) => {
+  return ''
+}
   
 const ShowMix = ({page, context}) => {
 
@@ -800,7 +799,7 @@ const MyBooks = () => {
   </>)
 }
 
-const MyRecipes = ({suggestions, tags, userRecipes, favoriteRecipes}) => {
+const MyRecipes = ({page, suggestions, tags, userRecipes, favoriteRecipes}) => {
 
   //const data = useCacheOrFetch(user_recipes_recipes_path())
   //const userRecipes = data ? data.userRecipes : null
@@ -812,7 +811,7 @@ const MyRecipes = ({suggestions, tags, userRecipes, favoriteRecipes}) => {
       <h2>Mes recettes</h2>
       <a href={new_recipe_path()} className="btn btn-outline-primary btn-sm">Nouvelle recette</a>
     </div>
-    <RecipeIndex userRecipes={userRecipes} favoriteRecipes={favoriteRecipes} loading={false} suggestions={suggestions} tags={tags} />
+    <RecipeIndex page={page} userRecipes={userRecipes} favoriteRecipes={favoriteRecipes} loading={false} suggestions={suggestions} tags={tags} />
   </>)
 }
 
@@ -858,6 +857,8 @@ const App = () => {
     [PAGE_12]: PAGE_10,
     [PAGE_13]: PAGE_12,
     [PAGE_14]: PAGE_13,
+    [PAGE_15]: PAGE_6,
+    [PAGE_16]: PAGE_15,
   }
 
   // Deprecated, use page.update(newPage) which uses changePageV2
@@ -888,6 +889,8 @@ const App = () => {
     [PAGE_12]: <MixIndex {...{page, machines, machineFoods, mixes}} />,
     [PAGE_13]: <ShowMix {...{page, context}} />,
     [PAGE_14]: <EditMix {...{page, context}} />,
+    [PAGE_15]: <ShowRecipe {...{page, context}} />,
+    [PAGE_16]: <ShowRecipe {...{page, context}} />,
   }
 
   // I don't want a back system, I want a up system. So if you are given a nested link, you can go up.
