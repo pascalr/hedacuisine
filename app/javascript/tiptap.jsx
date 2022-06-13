@@ -170,41 +170,6 @@ const FloatingText = Node.create({
   //},
 })
 
-export const BookExtensions = [
-  Book, Page, Bold, Italic, FloatingText, Strike, Text, History, // Subscript, Superscript,
-]
-export class BookTiptap extends React.Component {
-  constructor(props) {
-    super(props)
-    this.editor = null
-  }
-  componentDidMount() {
-    // custom way to replace useEditor so it works with a react class instead of a react function component.
-    this.editor = new Editor({
-      extensions: BookExtensions,
-      content: JSON.parse(gon[this.props.model][this.props.json_field]),
-    })
-    this.editor.on('transaction', () => {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          this.forceUpdate()
-        })
-      })
-    })
-    window.registerEditor(this.editor, this.props.model, this.props.json_field, this.props.html_field, this.props.url)
-  }
-  componentWillUnmount() {
-    this.editor.destroy()
-  }
-  render() {
-    return (
-      <div className="book-editor">
-        <EditorContent className="book-editor" editor={this.editor} />
-      </div>
-    )
-  }
-}
-
 export const InlineDocument = Node.create({
   name: 'idoc',
   topNode: true,
