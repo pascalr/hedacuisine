@@ -890,7 +890,7 @@ const App = () => {
     [PAGE_13]: <ShowMix {...{page, context}} />,
     [PAGE_14]: <EditMix {...{page, context}} />,
     [PAGE_15]: <ShowRecipe {...{page, context}} />,
-    [PAGE_16]: <ShowRecipe {...{page, context}} />,
+    [PAGE_16]: <EditRecipe {...{page, context}} />,
   }
 
   // I don't want a back system, I want a up system. So if you are given a nested link, you can go up.

@@ -142,6 +142,7 @@ class RecipesController < ApplicationController
   end
 
   def inline
+    @inline = true # FIXME: Using this for _edit_menu. This may cause issue because of caching partials?
     @recipe = Recipe.includes(recipe_ingredients: {food: [:direct_substitutions, :indirect_substitutions]}).find(params[:slug].split('-')[0])
     if current_user
       # Send books data in order to be able to add the recipe to the current user books.
