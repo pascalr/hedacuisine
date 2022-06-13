@@ -13,7 +13,7 @@ export const useCacheOrFetchHTML = (url, args={}) => {
   const [data, setData] = useState(window[`fetched_${url}`]);
 
   useEffect(() => {
-    if (!window[`fetching_${url}`] && waitFor != false) {
+    if (!window[`fetching_${url}`] && !!waitFor) {
       console.log('FETCHING',url)
       fetch(url)
         .then(result => result.text())

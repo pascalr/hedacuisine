@@ -499,12 +499,11 @@ const parseIngredient = (ingredient) => {
     if (ing) {
       let ingredient = new Ingredient({record: ing})
       prettyQty = ingredient.originalQtyWithPreposition()
-      console.log("ing", ing)
-      console.log("ingredient", ingredient)
-      console.log("prettyQty", prettyQty)
       food = ingredient.food
       comment = ing.comment
       name = ing.name
+    } else {
+      console.log('ERROR MISSING INGREDIENT', ingredient)
     }
   }
   return ({prettyQty, food, name, comment, ing})

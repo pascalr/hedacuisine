@@ -1,50 +1,14 @@
-Mélanges:
-["Pain blanc",
- "Crêpe mince",
- "Biscuits tendres aux brisures de chocolat",
- "Biscuits à l'avoine et aux raisins secs",
- "Gâteau aux carottes",
- "Tortillas de blé",
- "Moutarde maison",
- "Quiche",
- "Pain à hamburger",
- "Pain à hotdog",
- "Gâteau au gruau et au sucre à la crème",
- "Lait d’avoine",
- "Gruau",
- "Pâte à pizza",
- "Sauce à pizza",
- "Tofu général tao",
- "Mélange pour crêpe mince",
- "Pâte à crêpe",
- "Petit gâteaux au chocolat sans gluten",
- "Biscuits aux graines de sésame",
- "Tofu magique selon Loounie",
- "Tofu au beurre",
- "Tofu caramélisé à l'érable",
- "Curry de tofu à l'ancienne",
- "Tofu parmentier",
- "Tofu mariné au balsamique",
- "Mapo tofu",
- "Tofu sichuan",
- "Tofu milanais",
- "Doigts de tofu avec sauce moutarde et miel",
- "Penne à Pascal",
- "Lait de soya maison",
- "Mayonnaise maison",
- "Moutarde de Dijon maison",
- "Biscuits aux pain d'épices",
- "Tofu général tao",
- "Biscuits tendres et moelleux aux brisures de chocolat",
- "Biscuits aux brisures de chocolat",
- "Boulettes de pois chiches",
- "Pain à hotdog",
- "Tofu coco reunionais",
- "Muffins déjeuner aux patates douces",
- "Seitan maison",
- "Pois chiches cuits",
- "Quatre quart aux bananes",
- "Tarte au sucre"]
+TOFU GÉNÉRAL TAO
+
+TODO: Recipe show dans l'app (Simplement fetch HTML pour l'instant...)
+TODO: Recipe edit dans l'app (C'est déjà en react ça ne devrait pas trop être compliqué...)
+Qu'est ce que je veux à la fin?
+Dans la liste des ingrédients, ajouter un header par contenant, avec son contenu.
+Un bouton pour déplacer un ingrédient de la liste vers le mix? Et vice et versa.
+TODO: Ajouter une validation un seul Mix par Recipe.
+TODO: Mettre l'éditeur de recette dans l'app.
+TODO: Mettre l'éditeur de Mix dans l'éditeur de recette.
+TODO: Recipe has_one Mix
 
 WEB ANALYTICS (https://counter.dev/, https://plausible.io/, https://umami.is/, ou autre)
 

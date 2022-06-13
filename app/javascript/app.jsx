@@ -636,6 +636,7 @@ const ShowMix = ({page, context}) => {
   const machineFoods = args.machineFoods.filter(m => m.machine_id == page.machineId)
   const mix = mixes.find(m => m.id == page.mixId)
 
+  console.log('mix.recipe_id', mix.recipe_id)
   const recipeHTML = useCacheOrFetchHTML(inline_recipe_path({id: mix.recipe_id}), {waitFor: mix.recipe_id})
 
   const instructions = (mix.instructions||'').split(';')
@@ -680,7 +681,7 @@ const MixIndex = ({page, machines, mixes, ...args}) => {
   const createMix = () => {
     ajax({url: mixes_path(), type: 'POST', data: {}, success: (mix) => {
       mixes.update([...mixes, mix])
-      page.update({page: PAGE_13, machineId: machine.id, mixId: mix.id})
+      page.update({page: PAGE_14, machineId: machine.id, mixId: mix.id})
     }})
   }
   const destroyMix = (mix) => {

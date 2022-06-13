@@ -181,7 +181,15 @@ class RecipesController < ApplicationController
     cloned = Recipe.find(params[:slug].split('-')[0])
     @recipe = cloned.dup
     @recipe.user = current_user
-    @recipe.save!
+    ActiveRecord::Base.transaction do
+      @recipe.save!
+      # TODO: Duplicate everything... tools... comments... notes...
+      cloned.recipe_ingredients.each do |ing|
+        ingredient = ing.dup
+        ingredient.recipe = @recipe
+        ingredient.save!
+      end
+    end
     redirect_to edit_recipe_path(@recipe)
   end
 
