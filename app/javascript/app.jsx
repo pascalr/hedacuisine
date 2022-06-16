@@ -822,6 +822,11 @@ const MyRecipes = ({page, suggestions, tags, userRecipes, favoriteRecipes}) => {
 }
 
 const App = () => {
+  
+  //const page = useUpdatableState('recipeFilters', gon.recipe_filters, (updated) => {
+  //  let s = getStateProperties(updated)
+  //  window.history.replaceState(s, '', '?'+new URLSearchParams(s).toString())
+  //})
 
   const [page, setPage] = useState(getUrlParams())
   const changePageV2 = (page) => {
@@ -885,9 +890,7 @@ const App = () => {
   // I don't want a back system, I want a up system. So if you are given a nested link, you can go up.
   const goUp = () => {
     if (page.page && parentPages[page.page]) {
-      let s = {...getStateProperties(page), page: parentPages[page.page]}
-      window.history.replaceState(s, '', '?'+new URLSearchParams(s).toString())
-      setPage(s)
+      page.update({...getStateProperties(page), page: parentPages[page.page]})
     }
   }
 

@@ -3,11 +3,12 @@ import { omit, join, bindSetter } from "./utils"
 
 import {recipe_recipe_ingredient_path, food_path, recipe_ingredient_section_path, recipe_path, recipe_recipe_note_path, image_path } from './routes'
 
-export const useUpdatableState = (name, initial) => {
+export const useUpdatableState = (name, initial, callback=null) => {
   const [state, setState] = useState(initial)
   bindSetter(state, (updated) => {
     gon[name] = {...updated} // Keep gon updated to the latest state
     setState(updated)
+    if (callback) {callback(updated)}
   })
   return state
 }
