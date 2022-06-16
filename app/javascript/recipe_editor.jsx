@@ -14,7 +14,7 @@ import {EditRecipeImageModal} from './modals/recipe_image'
 import {PasteIngredientsButton} from './modals/paste_ingredients'
 import {EditMix} from './app'
 
-import {paste_ingredients_recipes_path, recipe_recipe_ingredients_path, recipe_recipe_ingredient_path, food_path, recipe_ingredient_sections_path, recipe_ingredient_section_path, recipe_recipe_notes_path, move_ing_recipe_path, recipe_path, recipe_recipe_note_path, image_variant_path } from './routes'
+import {paste_ingredients_recipes_path, recipe_recipe_ingredients_path, recipe_recipe_ingredient_path, food_path, recipe_ingredient_sections_path, recipe_ingredient_section_path, recipe_recipe_notes_path, move_ing_recipe_path, recipe_path, recipe_recipe_note_path, image_variant_path, mixes_path } from './routes'
 
 const InstructionsShortcuts = props => (
   <>
@@ -448,11 +448,18 @@ export class RecipeEditor extends React.Component {
     //console.log('recipe image', recipe_image)
     const imagePath = image ? image_variant_path(image, 'medium') : "/default_recipe_01.png"
     //console.log(model)
-    const mix = gon.mixes.find(m => m.recipe_id == recipe.id)
+    let mixes = this.props.context.mixes
+    const mix = mixes.find(m => m.recipe_id == recipe.id)
+
+    const createMix = () => {
+      ajax({url: mixes_path(), type: 'POST', data: {mix: {recipe_id: recipe.id}}, success: (mix) => {
+        mixes.update([...mixes, mix])
+      }})
+    }
   
     let mixEditor = mix ? <EditMix page={this.props.page} context={this.props.context} /> : (<>
       <p>Vous pouvez ajouter des instructions pour automatiser cette recette.</p>
-      <button type="button" className="btn btn-primary">Ajouter</button>
+      <button type="button" className="btn btn-primary" onClick={createMix}>Ajouter</button>
     </>)
     
     return (<>

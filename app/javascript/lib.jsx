@@ -6,7 +6,13 @@ import {recipe_recipe_ingredient_path, food_path, recipe_ingredient_section_path
 export const useUpdatableState = (name, initial, callback=null) => {
   const [state, setState] = useState(initial)
   bindSetter(state, (updated) => {
-    gon[name] = {...updated} // Keep gon updated to the latest state
+    // Keep gon updated to the latest state
+    // Make a copy to avoid modifying this data
+    if (gon[name] instanceof Array) {
+      gon[name] = gon[name].map(e => ({...e})) 
+    } else {
+      gon[name] = {...updated} 
+    }
     if (callback) {callback(updated)}
     setState(updated)
   })

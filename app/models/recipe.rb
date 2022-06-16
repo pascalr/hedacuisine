@@ -29,6 +29,8 @@ class Recipe < ApplicationRecord
 
   has_rich_text :rich_text
 
+  has_one :mix
+
   belongs_to :recipe_image, optional: true, class_name: "Image", foreign_key: "image_id"
 
   belongs_to :recipe_kind, optional: true

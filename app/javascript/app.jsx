@@ -590,6 +590,15 @@ export const EditMix = ({page, context}) => {
   const recipeNames = {}
   context.favoriteRecipes.forEach(r => {recipeNames[r.recipe_id] = r.name})
   context.userRecipes.forEach(r => {recipeNames[r.id] = r.name})
+    
+  //  <br/><br/>
+  //  <h2>Recette</h2>
+  //  <h3>Lier avec une recette existante:</h3>
+  //  <CollectionSelect model={mix} field="recipe_id" options={recipeIds} showOption={(id) => recipeNames[id]} includeBlank="true" onChange={id => {mix.recipe_id = id; update()}} />
+  //  <h3>Lier en clonant une recette existante:</h3>
+  //  <h3>Créer une nouvelle recette:</h3>
+  //  <h3>Aperçu</h3>
+  //  {recipeHTML ? <div dangerouslySetInnerHTML={{__html: recipeHTML}} /> : ''}
 
   return (<>
     <h1 contentEditable suppressContentEditableWarning={true} onBlur={(e) => {updateName(e.target.innerText)}}>
@@ -608,14 +617,6 @@ export const EditMix = ({page, context}) => {
     </DragDropContext>
     <div style={{height: '0.5em'}}></div>
     <img className="clickable" src="/icons/plus-circle.svg" width="24" height="24" onClick={addInstruction}></img>
-    <br/><br/>
-    <h2>Recette</h2>
-    <h3>Lier avec une recette existante:</h3>
-    <CollectionSelect model={mix} field="recipe_id" options={recipeIds} showOption={(id) => recipeNames[id]} includeBlank="true" onChange={id => {mix.recipe_id = id; update()}} />
-    <h3>Lier en clonant une recette existante:</h3>
-    <h3>Créer une nouvelle recette:</h3>
-    <h3>Aperçu</h3>
-    {recipeHTML ? <div dangerouslySetInnerHTML={{__html: recipeHTML}} /> : ''}
   </>)
 }
 
