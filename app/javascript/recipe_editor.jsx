@@ -448,8 +448,10 @@ export class RecipeEditor extends React.Component {
     const recipe_image = this.state.recipe_image
     let recipeKindImage = recipe_kind && recipe_kind.image_id ? gon.images.find(e => e.id == recipe_kind.image_id) : null
     const image = recipe.use_personalised_image ? recipe_image : recipeKindImage
-    console.log('recipe kind image', recipeKindImage)
-    console.log('recipe kind', recipe_kind)
+    //console.log('use_personalised_image', recipe.use_personalised_image)
+    //console.log('recipe kind image', recipeKindImage)
+    //console.log('recipe kind', recipe_kind)
+    //console.log('recipe image', recipe_image)
     const imagePath = image ? image_variant_path(image, 'medium') : "/default_recipe_01.png"
     //console.log(model)
     

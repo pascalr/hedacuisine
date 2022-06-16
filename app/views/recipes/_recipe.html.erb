@@ -3,8 +3,8 @@
 
 <div class="d-sm-flex gap-15" style="margin-bottom: 1em;">
   <%= link_to path do %>
-    <% if recipe.image %>
-      <%= image_tag small_image_path(recipe.image), width: 255, height: 171 %>
+    <% if recipe.image_used %>
+      <%= image_tag small_image_path(recipe.image_used), width: 255, height: 171 %>
     <% else %>
       <%= image_tag '/default_recipe_01.png', width: 255, height: 171 %>
     <% end %>

@@ -122,7 +122,7 @@ const RecipeSingleCarrousel = ({tag, suggestions, isCategory}) => {
     <Hammer onSwipe={handleSwipe}>
       <div>
         <div className="over-container" style={{margin: "auto"}}>
-          <img src={suggestion.image_id ? image_variant_path(suggestion.image_id, "medium") : "/default_recipe_01.png"} style={{maxWidth: "100vw"}} width="452" height="304" />
+          <img src={suggestion.image_id ? image_variant_path({id: suggestion.image_id}, "medium") : "/default_recipe_01.png"} style={{maxWidth: "100vw"}} width="452" height="304" />
           <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "2em", padding: "0.2em 0.8em 0 0.2em"}}>{suggestion.name}</h2>
           <div className="left-center">
             <img src={icon_path("custom-chevron-left.svg")} width="45" height="90" onClick={previousSuggestion} aria-disabled={suggestionNb <= 0} />
@@ -180,13 +180,13 @@ const TagCategorySuggestions = ({changePage, page, recipeFilters, suggestions}) 
 
               //return (<td key={j}>
               //  <div className="over-container clickable" style={{margin: "auto", border: `4px solid ${selected[nb] ? 'blue' : 'white'}`}} onClick={() => imageClicked(nb)}>
-              //    <img src={record.image_id ? image_variant_path(record.image_id, "small") : "/default_recipe_01.png"} width="255" height="171" />
+//    <img src={record.image_id ? image_variant_path({id: record.image_id}, "small") : "/default_recipe_01.png"} width="255" height="171" />
               //    <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "1.2em", padding: "0.2em 0.8em 0 0.2em"}}>{record.name}</h2>
               //  </div>
               //</td>)
 const RecipeImageWithTitle = ({record, selected, selectItem}) => {
   return <div className="over-container clickable d-inline-block" style={{border: `4px solid ${selected ? 'blue' : 'white'}`}} onClick={() => selectItem(record)}>
-    <img src={record.image_id ? image_variant_path(record.image_id, "small") : "/default_recipe_01.png"} width="255" height="171" style={{maxWidth: "100vw"}} />
+    <img src={record.image_id ? image_variant_path({id: record.image_id}, "small") : "/default_recipe_01.png"} width="255" height="171" style={{maxWidth: "100vw"}} />
     <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "1.2em", padding: "0.2em 0.8em 0 0.2em"}}>{record.name}</h2>
   </div>
 }
@@ -986,7 +986,7 @@ document.addEventListener('DOMContentLoaded', () => {
 //              if (!record) {return <td key={j}></td>}
 //              return (<td key={j}>
 //                <div className="over-container clickable" style={{margin: "auto", border: `4px solid ${selected[nb] ? 'blue' : 'white'}`}} onClick={() => imageClicked(nb)}>
-//                  <img src={record.image_id ? image_variant_path(record.image_id, "small") : "/default_recipe_01.png"} width="255" height="171" />
+//                  <img src={record.image_id ? image_variant_path({id: record.image_id}, "small") : "/default_recipe_01.png"} width="255" height="171" />
 //                  <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "1.2em", padding: "0.2em 0.8em 0 0.2em"}}>{record.name}</h2>
 //                </div>
 //              </td>)
@@ -1003,7 +1003,7 @@ document.addEventListener('DOMContentLoaded', () => {
 //  //  <div>
 //  //    <h2 style={{textAlign: 'center'}}>Entraîner: {filter.name}</h2>
 //  //    <div className="over-container" style={{margin: "auto"}}>
-//  //      <img src={record.image_id ? image_variant_path(record.image_id, "medium") : "/default_recipe_01.png"} style={{maxWidth: "100vw"}} width="452" height="304" />
+//  //      <img src={record.image_id ? image_variant_path({id: record.image_id}, "medium") : "/default_recipe_01.png"} style={{maxWidth: "100vw"}} width="452" height="304" />
 //  //      <h2 className="bottom-center font-satisfy" style={{borderRadius: "0.5em", border: "1px solid #777", color: "#333", bottom: "1em", backgroundColor: "#f5f5f5", fontSize: "2em", padding: "0.2em 0.8em 0 0.2em"}}>{record.name}</h2>
 //  //    </div>
 //  //    <div>

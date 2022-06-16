@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { omit, join } from "./utils"
 
-import {recipe_recipe_ingredient_path, food_path, recipe_ingredient_section_path, recipe_path, recipe_recipe_note_path } from './routes'
+import {recipe_recipe_ingredient_path, food_path, recipe_ingredient_section_path, recipe_path, recipe_recipe_note_path, image_path } from './routes'
 
 export function urlFor(model) {
   switch(model.class_name) {
     case 'recipe': return recipe_path(model); break;
+    case 'food': return food_path(model); break;
+    case 'image': return image_path(model); break;
     case 'recipe_ingredient': return recipe_recipe_ingredient_path({id: model.recipe_id}, model); break;
+    case 'ingredient_section': return recipe_ingredient_section_path({id: model.recipe_id}, model);break;
+    case 'recipe_note': return recipe_recipe_note_path({id: model.recipe_id}, model); break;
     //case '': break;
     default: throw "Cannote find url for model " + model.class_name
   }

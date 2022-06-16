@@ -4,11 +4,12 @@ import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 
 import {clearRecord, asyncUpdateModel, TextField, FileField, RadioField} from '../form'
+import { image_variant_path } from '../routes'
 
 export const EditRecipeImageModal = ({recipe, recipeImage, recipeKindImage, show, handleClose}) => {
 
   const image = recipe.use_personalised_image ? recipeImage : recipeKindImage
-  const imagePath = (image && image.path) || "/default_recipe_01.png";
+  const imagePath = image ? image_variant_path(image, 'medium') : "/default_recipe_01.png"
   
   const handleRemove = () => {
     recipeImage.onUpdate(clearRecord(recipeImage))
@@ -40,7 +41,7 @@ export const EditRecipeImageModal = ({recipe, recipeImage, recipeKindImage, show
           }
           <div style={{height: "0.5em"}}/>
           <RadioField model={recipe} field="use_personalised_image" value={true} label="Utiliser une image personnalisée"/>
-          {!recipeImage || !recipeImage.url ? '' :
+          {!recipeImage ? '' :
             <div className={recipe.use_personalised_image ? undefined : 'disabled'} style={{paddingLeft: "2em"}}>
               <div style={{height: "0.5em"}}/>
               <FileField model={recipeImage} field="original" onRemove={handleRemove} maxSizeBytes={2*1000*1000} />

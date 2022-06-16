@@ -145,11 +145,11 @@ class Recipe < ApplicationRecord
     #desc = base_recipe ? base_recipe.description : self[:description]
     #desc.gsub("\n", "<br>")
   end
-  def image_id
+  def image_used_id
     #base_recipe ? base_recipe.image_id : self[:image_id]
     use_personalised_image ? self.image_id : (self.recipe_kind ? self.recipe_kind.image_id : nil)
   end
-  def image
+  def image_used
     use_personalised_image ? self.recipe_image : (self.recipe_kind ? self.recipe_kind.image : nil)
     #self.recipe_image || (self.recipe_kind ? self.recipe_kind.image : nil)
     #base_recipe ? base_recipe.image : self.recipe_image
@@ -308,7 +308,7 @@ class Recipe < ApplicationRecord
   end
 
   def to_obj(params={})
-    extract_attributes(params, :name, :recipe_kind_id, :main_ingredient_id, :preparation_time, :cooking_time, :total_time, :raw_servings, :json)
+    extract_attributes(params, :name, :recipe_kind_id, :main_ingredient_id, :preparation_time, :cooking_time, :total_time, :raw_servings, :json, :use_personalised_image, :image_id)
   end
 
 private
