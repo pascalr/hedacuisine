@@ -13,6 +13,7 @@ import {TextField, AutocompleteInput, TextInput, CollectionSelect} from './form'
 import {PublicImageField} from './modals/public_image'
 import { DeleteConfirmButton } from './components/delete_confirm_button'
 import {AddUserTagModal} from './modals/add_user_tag'
+import {RecipeEditor} from "./recipe_editor"
 
 // The advantage of using this instead of the number is if I need to search and to refactor, I can easy
 const PAGE_1 = 1 // TagIndex
@@ -624,7 +625,8 @@ const ShowRecipe = ({page, context}) => {
 }
 
 const EditRecipe = ({page, context}) => {
-  return ''
+  window.recipe_editor = useRef(null) // FIXME: This is really ugly
+  return <RecipeEditor ref={window.recipe_editor}/>
 }
   
 const ShowMix = ({page, context}) => {

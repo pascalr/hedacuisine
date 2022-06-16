@@ -218,7 +218,7 @@ const Toggleable = ({children, ...props}) => {
   </div>)
 }
 
-class RecipeEditor extends React.Component {
+export class RecipeEditor extends React.Component {
   
   constructor(props) {
     super(props);
