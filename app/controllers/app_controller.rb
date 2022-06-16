@@ -11,6 +11,17 @@ class AppController < ApplicationController
     gon.machine_foods = current_user.machine_foods.includes(:food).sort_by(&:name).map {|f| f.to_obj}
     gon.container_quantities = current_user.container_quantities.includes(:container_format).map {|c| c.to_obj}
     gon.mixes = current_user.mixes.map {|e| e.to_obj}
+    gon.recipes = current_user.recipes.map {|e| e.to_obj}
+    #FIXME: (RecipeEditor) gon.recipe_image = to_obj(@recipe.recipe_image) if @recipe.recipe_image
+    #FIXME: (RecipeEditor) gon.recipe_kind_image = to_obj(@recipe.recipe_kind.image) if @recipe.recipe_kind && @recipe.recipe_kind.image
+    #TODO: Tools
+    #TODO: Ingredient
+    gon.recipe_ingredients = RecipeIngredient.where(recipe_id: gon.recipes.map{|r|r[:id]}).map {|e| e.to_obj}
+    gon.notes = RecipeNote.where(recipe_id: gon.recipes.map{|r|r[:id]}).map {|e| e.to_obj}
+    gon.foods = Food.order(:name).all.map {|food| food.to_obj}
+    gon.units = Unit.all.map {|unit| unit.to_obj}
+    gon.contractionList = FrenchExpression.where(contract_preposition: true).map(&:singular)
+    gon.recipe_kinds = RecipeKind.order(:name).map {|e| e.to_obj(only: :name)}
     #gon.user_recipes = current_user.recipes.order(:name).map {|r| r.to_obj(only: :name)}
     #gon.favorite_recipes = current_user.favorite_recipes.includes(:recipe).sort_by {|fav| fav.recipe.name}.map {|fav| o = fav.recipe.to_obj(only: :name); o[:fav_id] = fav.id; o}
   end

@@ -20,7 +20,7 @@ import { combineOrderedListWithHeaders } from './lib'
 import {EditRecipeImageModal} from './modals/recipe_image'
 import {PasteIngredientsButton} from './modals/paste_ingredients'
 
-import {paste_ingredients_recipes_path } from './routes'
+import {paste_ingredients_recipes_path, recipe_recipe_ingredients_path, recipe_recipe_ingredient_path, food_path, recipe_ingredient_sections_path, recipe_ingredient_section_path, recipe_recipe_notes_path, move_ing_recipe_path, recipe_path, recipe_recipe_note_path } from './routes'
 
 const InstructionsShortcuts = props => (
   <>
@@ -82,7 +82,8 @@ const NewIngInputField = props => {
   };
 
   const postNewIngredient = (data) => {
-    ajax({url: gon.recipe.new_ingredient_url, type: 'POST', data: data, success: (ingredient) => {
+      
+    ajax({url: recipe_recipe_ingredients_path(gon.recipe), type: 'POST', data: data, success: (ingredient) => {
       window.recipe_editor.current.addIng(ingredient)
       setValue(''); setQty('');
       quantityInputField.current.focus()
@@ -185,8 +186,9 @@ const EditableIngredient = ({ingredient}) => {
 
   if (ingredient == null) {return null;}
 
+  const ingUrl = recipe_recipe_ingredient_path({id: ingredient.recipe_id}, ingredient)
   const removeIngredient = (evt) => {
-    ajax({url: ingredient.url, type: 'DELETE', success: () => {
+    ajax({url: ingUrl, type: 'DELETE', success: () => {
       window.recipe_editor.current.removeIng(ingredient)
     }})
   }
@@ -196,8 +198,8 @@ const EditableIngredient = ({ingredient}) => {
       <span style={{padding: "0 10px 0 0"}}><b>{ingredient.item_nb}.</b></span>
       <TextField model={ingredient} field="raw" size="8" className="editable-input" />
       de{/*" de " ou bien " - " si la quantité n'a pas d'unité => _1_____ - oeuf*/}
-      {ingredient.food ? <a href={ingredient.food.url}>{ingredient.food.name}</a> : <div>{ingredient.name}</div>}
-      <EditableIngredientComment ingUrl={ingredient.url} commentJson={ingredient.comment_json} />
+      {ingredient.food ? <a href={food_path({id: ingredient.food_id})}>{ingredient.food.name}</a> : <div>{ingredient.name}</div>}
+      <EditableIngredientComment ingUrl={ingUrl} commentJson={ingredient.comment_json} />
       <Block flexGrow="1" />
       <DeleteConfirmButton id={`ing-${ingredient.id}`} onDeleteConfirm={removeIngredient} message="Je veux enlever cet ingrédient?" />
     </Row>
@@ -227,10 +229,10 @@ export class RecipeEditor extends React.Component {
       recipe: gon.recipe,
       recipe_image: gon.recipe_image || {},
       name: gon.recipe.name,
-      ingredients: gon.recipe.ingredients || [],
+      ingredients: gon.recipe_ingredients.filter(e => e.recipe_id == gon.recipe.id) || [],
       noteIds: noteIds,
       ingredient_sections: gon.recipe.ingredient_sections || [],
-      toolIds: Object.keys(gon.recipe.tools),
+      toolIds: Object.keys(gon.recipe.tools || []),
       instructionsSlave: gon.recipe.complete_instructions,
       showImageModal: false,
     };
@@ -279,7 +281,7 @@ export class RecipeEditor extends React.Component {
   }
 
   appendIngredientSection() {
-    ajax({url: gon.recipe.new_ingredient_section_url, type: 'POST', data: {}, success: (section) => {
+    ajax({url: recipe_ingredient_sections_path(gon.recipe), type: 'POST', data: {}, success: (section) => {
       this.setState({ingredient_sections: [...this.state.ingredient_sections, section]})
     }})
   }
@@ -292,7 +294,7 @@ export class RecipeEditor extends React.Component {
   }
 
   appendNote() {
-    ajax({url: gon.recipe.new_note_url, type: 'POST', data: {}, success: (recipe_note) => {
+    ajax({url: recipe_recipe_notes_path(gon.recipe), type: 'POST', data: {}, success: (recipe_note) => {
       if (!gon.recipe.notes) {gon.recipe.notes = {}}
       gon.recipe.notes[recipe_note.id] = recipe_note
       this.setState({noteIds: [...this.state.noteIds, recipe_note.id]})
@@ -329,7 +331,7 @@ export class RecipeEditor extends React.Component {
       let data = new FormData()
       data.append('ing_id', droppedRecord.id)
       data.append('position', destination+1)
-      ajax({url: gon.recipe.move_ing_url, type: 'PATCH', data: data})
+      ajax({url: move_ing_recipe_path(gon.recipe), type: 'PATCH', data: data})
       for (let i = 0; i < updatedList.length; i++) {
         updatedList[i].item_nb = i+1
       }
@@ -340,13 +342,14 @@ export class RecipeEditor extends React.Component {
       console.log("dropping ingredient section at ", droppedRecord.before_ing_nb)
       let data = new FormData()
       data.append('ingredient_section[before_ing_nb]', droppedRecord.before_ing_nb)
+      throw "FIXME: droppedRecord.url", droppedRecord
       ajax({url: droppedRecord.url, type: 'PATCH', data: data})
       this.setState({ingredient_sections: [...others, droppedRecord]})
     }
   }
 
   removeIngSection(section) {
-    ajax({url: section.url, type: 'DELETE', success: () => {
+    ajax({url: recipe_recipe_section_path(gon.recipe, section), type: 'DELETE', success: () => {
       let sections = this.state.ingredient_sections.filter(i => i.id != section.id)
       this.setState({ingredient_sections: sections})
     }})
@@ -413,7 +416,7 @@ export class RecipeEditor extends React.Component {
       const note = gon.recipe.notes[id]
 
       const removeNote = (evt) => {
-        ajax({url: note.url, type: 'DELETE', success: () => {
+        ajax({url: recipe_recipe_note_path(gon.recipe, note), type: 'DELETE', success: () => {
           let ids = this.state.noteIds.filter(item => item != note.id)
           this.setState({noteIds: ids})
           delete gon.recipe.notes[note.id]
@@ -424,7 +427,7 @@ export class RecipeEditor extends React.Component {
         <Row key={id} gap="5px" marginBottom="5px">
           [{note.item_nb}]
           <Block flexGrow="1">
-            <BubbleTiptap content={JSON.parse(note.json)} model="recipe_note" json_field="json" html_field="html" url={note.url}/>
+            <BubbleTiptap content={JSON.parse(note.json)} model="recipe_note" json_field="json" html_field="html" url={recipe_recipe_note_path(gon.recipe, note)} />
           </Block>
           <DeleteConfirmButton id={`note-${note.id}`} onDeleteConfirm={removeNote} message="Je veux enlever cette note?" />
         </Row>
@@ -508,7 +511,7 @@ export class RecipeEditor extends React.Component {
         {IngredientList}
       
         <h2>Instructions</h2>
-        <Tiptap model="recipe" json_field="json" html_field="html" url={gon.recipe.url} content={JSON.parse(gon.recipe.json)} />
+        <Tiptap model="recipe" json_field="json" html_field="html" url={recipe_path(gon.recipe)} content={JSON.parse(gon.recipe.json)} />
         <InstructionsShortcuts/>
         
         <h3>Notes</h3>

@@ -139,6 +139,32 @@ export const favorite_recipes_path = (arg) => {
   return `/favorite_recipes`
 }
 
+export const recipe_recipe_ingredients_path = (recipe) => {
+  return `/recipes/${extractParamFromModel(recipe)}/recipe_ingredients`
+}
+export const recipe_recipe_ingredient_path = (recipe, arg) => {
+  return `/recipes/${extractParamFromModel(recipe)}/recipe_ingredients/${extractParamFromModel(arg)}`
+}
+export const recipe_ingredient_sections_path = (recipe) => {
+  return `/recipes/${extractParamFromModel(recipe)}/ingredient_sections`
+}
+export const recipe_ingredient_section_path = (recipe, arg) => {
+  return `/recipes/${extractParamFromModel(recipe)}/ingredient_sections/${extractParamFromModel(arg)}`
+}
+export const recipe_recipe_notes_path = (recipe) => {
+  return `/recipes/${extractParamFromModel(recipe)}/recipe_notes`
+}
+export const recipe_recipe_note_path = (recipe, arg) => {
+  return `/recipes/${extractParamFromModel(recipe)}/recipe_notes/${extractParamFromModel(arg)}`
+}
+export const move_ing_recipe_path = (recipe) => {
+  return `/recipes/${extractParamFromModel(recipe)}/move`
+}
+
+export const food_path = (arg) => {
+  return `/foods/${extractParamFromModel(arg)}`
+}
+
 export const containers_path = (machine) => {
   return `/machines/${extractParamFromModel(machine)}/containers`
 }

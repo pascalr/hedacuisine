@@ -178,6 +178,7 @@ class RecipesController < ApplicationController
     gon.units = Unit.all.map {|unit| unit.to_obj}
     gon.contractionList = FrenchExpression.where(contract_preposition: true).map(&:singular)
     gon.recipe_kinds = RecipeKind.order(:name).map {|e| e.to_obj(only: :name)}
+    gon.recipe_ingredients = RecipeIngredient.where(id: gon.recipes.map{|r|r[:id]}).map {|e| e.to_obj}
     gon.notes = @recipe.notes.map {|e| e.to_obj}
   end
 

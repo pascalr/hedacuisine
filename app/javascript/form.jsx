@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
-
-import { normalizeSearchText, colorToHexString, hexStringToColor, Utils, ajax } from './utils'
-
-import { DeleteConfirmButton } from './components/delete_confirm_button'
-
 import autocomplete from 'js-autocomplete';
+
+import { urlFor } from './lib'
+import { normalizeSearchText, colorToHexString, hexStringToColor, Utils, ajax } from './utils'
+import { DeleteConfirmButton } from './components/delete_confirm_button'
 
 export const TextInput = ({defaultValue, onBlur}) => {
   const [value, setValue] = useState(defaultValue)

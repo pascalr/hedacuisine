@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { omit, join } from "./utils"
 
+import {recipe_recipe_ingredient_path, food_path, recipe_ingredient_section_path, recipe_path, recipe_recipe_note_path } from './routes'
+
+export function urlFor(model) {
+  switch(model.class_name) {
+    case 'recipe': recipe_path(model); break;
+    //case '': break;
+    default: throw "Cannote find url for model " + model
+  }
+}
+
 export const LinkToPage = ({page, className, children, active, ...props}) => {
   const switchPage = (evt, page) => {
     evt.preventDefault()

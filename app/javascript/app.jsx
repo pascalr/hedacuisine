@@ -625,7 +625,11 @@ const ShowRecipe = ({page, context}) => {
 }
 
 const EditRecipe = ({page, context}) => {
+  
+  const recipe = context.recipes.find(e => e.id == page.recipeId)
+
   window.recipe_editor = useRef(null) // FIXME: This is really ugly
+  gon.recipe = recipe // FIXME: This is really ugly
   return <RecipeEditor ref={window.recipe_editor}/>
 }
   
@@ -817,9 +821,12 @@ const MyRecipes = ({page, suggestions, tags, userRecipes, favoriteRecipes}) => {
   </>)
 }
 
-const useUpdatableState = (initial) => {
+const useUpdatableState = (name, initial) => {
   const [state, setState] = useState(initial)
-  bindSetter(state, setState)
+  bindSetter(state, (updated) => {
+    gon[name] = updated // Keep gon updated to the latest state
+    setState(updated)
+  })
   return state
 }
 
@@ -827,17 +834,19 @@ const App = () => {
 
   const [page, setPage] = useState(getUrlParams())
 
-  const recipeFilters = useUpdatableState(gon.recipe_filters)
-  const suggestions = useUpdatableState(gon.suggestions)
-  const userTags = useUpdatableState(gon.user_tags)
-  const userRecipes = useUpdatableState(gon.user_recipes)
-  const favoriteRecipes = useUpdatableState(gon.favorite_recipes)
-  const machines = useUpdatableState(gon.machines)
-  const machineFoods = useUpdatableState(gon.machine_foods)
-  const containerQuantities = useUpdatableState(gon.container_quantities)
-  const mixes = useUpdatableState(gon.mixes)
+  const recipeFilters = useUpdatableState('recipeFilters', gon.recipe_filters)
+  const suggestions = useUpdatableState('suggestions', gon.suggestions)
+  const userTags = useUpdatableState('userTags', gon.user_tags)
+  const userRecipes = useUpdatableState('userRecipes', gon.user_recipes)
+  const favoriteRecipes = useUpdatableState('favoriteRecipes', gon.favorite_recipes)
+  const machines = useUpdatableState('machines', gon.machines)
+  const machineFoods = useUpdatableState('machineFoods', gon.machine_foods)
+  const containerQuantities = useUpdatableState('containerQuantities', gon.container_quantities)
+  const mixes = useUpdatableState('mixes', gon.mixes)
+  const recipes = useUpdatableState('recipes', gon.recipes)
 
-  const context = {recipeFilters, suggestions, userTags, userRecipes, favoriteRecipes, machines, machineFoods, containerQuantities, mixes}
+  // FIXME: Using makes me type less, but it's bad for react. It will rerender everything everytime...
+  const context = {recipeFilters, suggestions, userTags, userRecipes, favoriteRecipes, machines, machineFoods, containerQuantities, mixes, recipes}
 
   const parentPages = {
     [PAGE_2]: PAGE_1,

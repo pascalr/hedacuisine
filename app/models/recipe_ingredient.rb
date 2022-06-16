@@ -17,7 +17,8 @@ class RecipeIngredient < ApplicationRecord
   end
 
   def name
-    self.food ? self.food.name : self.raw_food
+    #self.food ? self.food.name : self.raw_food
+    self.raw_food
   end
   def raw_food=(raw_food)
     super(raw_food)
@@ -78,6 +79,6 @@ class RecipeIngredient < ApplicationRecord
   #end
   
   def to_obj(params={})
-    extract_attributes(params, :name, :item_nb, :raw, :comment_json, :food_id, :raw_food)
+    extract_attributes(params, :name, :item_nb, :raw, :comment_json, :food_id, :raw_food, :recipe_id)
   end
 end

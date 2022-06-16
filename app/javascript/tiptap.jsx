@@ -460,7 +460,7 @@ const parseIngredient = (ingredient) => {
     name = foodName
     // 1 => ingredient nb 1
   } else {
-    ing = Object.values(gon.recipe.ingredients || {}).find(ing => ing.item_nb == ingredient)
+    ing = Object.values(gon.recipe_ingredients || {}).find(ing => ing.item_nb == ingredient)
     if (ing) {
       let ingredient = new Ingredient({record: ing})
       prettyQty = ingredient.originalQtyWithPreposition()
@@ -557,7 +557,7 @@ const IngredientNode = Node.create({
           console.log("INNER", inner)
           return {raw: inner}
 
-          //const ing = Object.values(gon.recipe.ingredients).find(ing => ing.item_nb == itemNb)
+          //const ing = Object.values(gon.recipe_ingredients).find(ing => ing.item_nb == itemNb)
           //if (!ing) {return {}}
           //console.log("ingredient", ing.id)
           //return {ingredient: ing.id}
@@ -615,7 +615,7 @@ const IngredientListNode = Node.create({
           //  }
           //})
           ////let ingIds = nbs.map(itemNb => (
-          ////  Object.values(gon.recipe.ingredients).find(ing => ing.item_nb == itemNb)
+          ////  Object.values(gon.recipe_ingredients).find(ing => ing.item_nb == itemNb)
           ////)).map(ing => ing.id)
           //return {'raw': ings.join(',')}
         },

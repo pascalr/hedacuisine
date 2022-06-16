@@ -131,6 +131,15 @@ Rails.application.routes.draw do
     member do
       patch 'update_tags', param: 'slug'
     end
+    resources :ingredient_sections, only: [:create, :update, :destroy] do
+      patch :move
+    end
+    resources :recipe_notes, only: [:create, :update, :destroy] do
+      patch :move
+    end
+    resources :recipe_ingredients, only: [:create, :update, :destroy] do
+      patch :move
+    end
   end
 
   localized do
@@ -148,15 +157,6 @@ Rails.application.routes.draw do
 
     resources :recipes, param: 'slug' do
       
-      resources :ingredient_sections, only: [:create, :update, :destroy] do
-        patch :move
-      end
-      resources :recipe_notes, only: [:create, :update, :destroy] do
-        patch :move
-      end
-      resources :recipe_ingredients, only: [:create, :update, :destroy] do
-        patch :move
-      end
       resources :recipe_tools, only: [:create, :update, :destroy]
       resources :references, only: [:create, :update, :destroy]
 
