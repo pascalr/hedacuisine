@@ -1,9 +1,16 @@
 class RecipeIngredient < ApplicationRecord
 
-  # unit is deprecated
-  # quantity is deprecated
-  #
-  # weight is good (better would be to rename grams, but who cares)
+  # t.bigint "recipe_id", null: false
+  # t.bigint "food_id"
+  # t.float "quantity" *** DEPRECATED ***
+  # t.bigint "unit_id" *** DEPRECATED ***
+  # t.integer "item_nb"
+  # t.float "weight" # TODO: Rename to grams. Not very important
+  # t.string "raw", limit: 255 # TODO: Rename to raw_quantity
+  # t.string "raw_food", limit: 255
+  # t.string "comment", limit: 255 *** DEPRECATED. Use comment_json and comment_html ***
+  # t.text "comment_json"
+  # t.text "comment_html"
 
   acts_as_list column: "item_nb", scope: :recipe
 
@@ -16,13 +23,21 @@ class RecipeIngredient < ApplicationRecord
     raise "deprecated, use comment_json and comment_html"
   end
 
+  def food=(val)
+    raise "Don't set food directly. Set raw_food instead."
+  end
+  def food_id=(val)
+    raise "Don't set food id directly. Set raw_food instead."
+  end
+
   def name
     #self.food ? self.food.name : self.raw_food
-    self.raw_food
+    self.raw_food || ''
   end
   def raw_food=(raw_food)
     super(raw_food)
-    self.food = Food.find_by(name: raw_food)
+    f = Food.find_by(name: raw_food)
+    self[:food_id] = f.id if f
   end
 
   def volume

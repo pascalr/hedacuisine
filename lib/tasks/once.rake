@@ -1,4 +1,13 @@
 namespace :once do
+
+  task set_recipe_ingredients_raw_food: :environment do
+    RecipeIngredient.all.each do |e|
+      if e.raw_food.blank? && e.food
+        e.raw_food = e.food.name
+        e.save!
+      end
+    end
+  end
   
   task update_book_sections_position: :environment do
     Book.all.each do |book|
