@@ -824,7 +824,7 @@ const MyRecipes = ({page, suggestions, tags, userRecipes, favoriteRecipes}) => {
 const useUpdatableState = (name, initial) => {
   const [state, setState] = useState(initial)
   bindSetter(state, (updated) => {
-    gon[name] = updated // Keep gon updated to the latest state
+    gon[name] = {...updated} // Keep gon updated to the latest state
     setState(updated)
   })
   return state

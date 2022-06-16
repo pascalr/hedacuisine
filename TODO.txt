@@ -1,5 +1,8 @@
 TOFU GÉNÉRAL TAO
 
+Ajouter les commandes dans le recipe editor.
+Afficher les ingrédients automatiquement lorsqu'ils sont dans les commandes.
+
 TODO: Remove dependency of gon inside Tiptap and RecipeEditor. This way I can either pass from gon, or from the app. Ou bien s'assurer que gon match? Mais gon c'est au début. Faire une fonction qui get la latest version.
 TODO: Recipe show dans l'app (Simplement fetch HTML pour l'instant...)
 TODO: Recipe edit dans l'app (C'est déjà en react ça ne devrait pas trop être compliqué...)

@@ -503,6 +503,8 @@ export class RecipeEditor extends React.Component {
         </div>
       </div>
       <div className="recipe-body">
+        
+        <h2>Commandes</h2>
 
         <div style={{display: 'flex', alignItems: 'baseline'}}>
           <h2 style={{flexGrow: '1'}}>Ingrédients</h2>
