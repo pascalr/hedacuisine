@@ -460,7 +460,8 @@ const parseIngredient = (ingredient) => {
     name = foodName
     // 1 => ingredient nb 1
   } else {
-    ing = Object.values(gon.recipe_ingredients || {}).find(ing => ing.item_nb == ingredient)
+    let recipe_ingredients = gon.recipe_ingredients.filter(e => e.recipe_id == gon.recipe.id)
+    ing = Object.values(recipe_ingredients || {}).find(ing => ing.item_nb == ingredient)
     if (ing) {
       let ingredient = new Ingredient({record: ing})
       prettyQty = ingredient.originalQtyWithPreposition()
