@@ -473,17 +473,17 @@ const labelForCmdType = (cmdType) => {
   return t ? t.label.fr : cmdType.id
 }
 
-const EditMix = ({page, context}) => {
+export const EditMix = ({page, context}) => {
 
   const {userRecipes, favoriteRecipes, machines, mixes, ...args} = context
 
   const machine = machines.find(m => m.id == page.machineId)
   const machineFoods = args.machineFoods.filter(m => m.machine_id == page.machineId)
-  const mix = mixes.find(m => m.id == page.mixId)
+  const mix = page.recipeId ? mixes.find(m => m.recipe_id == page.recipeId) : mixes.find(m => m.id == page.mixId)
+
+  if (!mix) { return '' }
 
   const recipeHTML = useCacheOrFetchHTML(inline_recipe_path({id: mix.recipe_id}), {waitFor: mix.recipe_id})
-
-  console.log('mix', mix)
 
   const update = () => {
     console.log('UPDATING')
@@ -630,7 +630,7 @@ const EditRecipe = ({page, context}) => {
 
   window.recipe_editor = useRef(null) // FIXME: This is really ugly
   gon.recipe = recipe // FIXME: This is really ugly
-  return <RecipeEditor ref={window.recipe_editor}/>
+  return <RecipeEditor page={page} context={context} ref={window.recipe_editor}/>
 }
   
 const ShowMix = ({page, context}) => {

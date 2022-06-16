@@ -1,24 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
-
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Autosuggest from 'react-autosuggest'
-
 import {Block, Inline, InlineBlock, Row, Col, InlineRow, InlineCol, Grid} from 'jsxstyle'
 
 import Quantity from './models/quantity'
 import { ajax } from "./utils"
-
 import { DeleteConfirmButton } from './components/delete_confirm_button'
-
 import { Tiptap, BubbleTiptap, ModificationsHandler } from './tiptap'
-
 import {AutocompleteInput, updateRecord, TextField, CollectionSelect} from './form'
-
 import { combineOrderedListWithHeaders } from './lib'
-
 import {EditRecipeImageModal} from './modals/recipe_image'
 import {PasteIngredientsButton} from './modals/paste_ingredients'
+import {EditMix} from './app'
 
 import {paste_ingredients_recipes_path, recipe_recipe_ingredients_path, recipe_recipe_ingredient_path, food_path, recipe_ingredient_sections_path, recipe_ingredient_section_path, recipe_recipe_notes_path, move_ing_recipe_path, recipe_path, recipe_recipe_note_path, image_variant_path } from './routes'
 
@@ -454,6 +448,12 @@ export class RecipeEditor extends React.Component {
     //console.log('recipe image', recipe_image)
     const imagePath = image ? image_variant_path(image, 'medium') : "/default_recipe_01.png"
     //console.log(model)
+    const mix = gon.mixes.find(m => m.recipe_id == recipe.id)
+  
+    let mixEditor = mix ? <EditMix page={this.props.page} context={this.props.context} /> : (<>
+      <p>Vous pouvez ajouter des instructions pour automatiser cette recette.</p>
+      <button type="button" className="btn btn-primary">Ajouter</button>
+    </>)
     
     return (<>
       <div className="d-block d-md-flex gap-20">
@@ -505,6 +505,7 @@ export class RecipeEditor extends React.Component {
       <div className="recipe-body">
         
         <h2>Commandes</h2>
+        {mixEditor}
 
         <div style={{display: 'flex', alignItems: 'baseline'}}>
           <h2 style={{flexGrow: '1'}}>Ingrédients</h2>
