@@ -563,6 +563,7 @@ export const EditMix = ({page, context}) => {
           <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
             <li key={`${line}-${instruction}`} className={`list-group-item${!obj || obj.errors ? ' cmd-error' : ''}`}>
               <img className="clickable float-end" style={{marginTop: '0.4em'}} src="/icons/x-lg.svg" width="18" height="18" onClick={() => removeInstruction(line)}></img>
+              <img className="clickable float-end" style={{marginRight: '0.4em', marginTop: '0.4em'}} src="/icons/arrow-down-up.svg" width="18" height="18" onClick={() => {}}></img>
               {!obj || obj.errors ? <img className="float-end" style={{marginRight: '0.4em', marginTop: '0.4em'}} src="/icons/info-circle.svg" width="18" height="18"></img> : ''}
               <div className='d-flex gap-10'>
                 <div className="dropdown">

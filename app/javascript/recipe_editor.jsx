@@ -14,7 +14,7 @@ import {EditRecipeImageModal} from './modals/recipe_image'
 import {PasteIngredientsButton} from './modals/paste_ingredients'
 import {EditMix} from './app'
 
-import {paste_ingredients_recipes_path, recipe_recipe_ingredients_path, recipe_recipe_ingredient_path, food_path, recipe_ingredient_sections_path, recipe_ingredient_section_path, recipe_recipe_notes_path, move_ing_recipe_path, recipe_path, recipe_recipe_note_path, image_variant_path, mixes_path } from './routes'
+import {paste_ingredients_recipes_path, recipe_recipe_ingredients_path, recipe_recipe_ingredient_path, food_path, recipe_ingredient_sections_path, recipe_ingredient_section_path, recipe_recipe_notes_path, move_ing_recipe_path, recipe_path, recipe_recipe_note_path, image_variant_path, mixes_path, mix_path } from './routes'
 
 const InstructionsShortcuts = props => (
   <>
@@ -189,6 +189,15 @@ const EditableIngredient = ({ingredient}) => {
   }
 
   let f = ingredient.food_id ? gon.foods.find(e => e.id == ingredient.food_id) : null
+  let mix = gon.mixes.find(e => e.recipe_id == gon.recipe.id)
+
+  let moveIngToMix = () => {
+    let ins = mix.instructions+';ADD,'+ingredient.raw+','+(f ? f.name : ingredient.name)
+    ajax({url: mix_path(mix), type: 'PATCH', data: {mix: {instructions: ins}}, success: (mix) => {
+      gon.mixes.update(gon.mixes.map(e => e.id == mix.id ? mix : e))
+    }})
+  }
+
   return (
     <Row alignItems="center" gap="5px">
       <span style={{padding: "0 10px 0 0"}}><b>{ingredient.item_nb}.</b></span>
@@ -197,6 +206,7 @@ const EditableIngredient = ({ingredient}) => {
       {f ? <a href={food_path(f)}>{f.name}</a> : <div>{ingredient.name}</div>}
       <EditableIngredientComment ingUrl={ingUrl} commentJson={ingredient.comment_json} />
       <Block flexGrow="1" />
+      {mix ? <img className="clickable" style={{marginRight: '0.4em'}} src="/icons/arrow-down-up.svg" width="16" height="16" onClick={moveIngToMix}></img> : '' }
       <DeleteConfirmButton id={`ing-${ingredient.id}`} onDeleteConfirm={removeIngredient} message="Je veux enlever cet ingrédient?" />
     </Row>
   )

@@ -9,7 +9,9 @@ export const useUpdatableState = (name, initial, callback=null) => {
     // Keep gon updated to the latest state
     // Make a copy to avoid modifying this data
     if (gon[name] instanceof Array) {
+      let f = gon[name].update
       gon[name] = gon[name].map(e => ({...e})) 
+      gon[name].update = f
     } else {
       gon[name] = {...updated} 
     }
