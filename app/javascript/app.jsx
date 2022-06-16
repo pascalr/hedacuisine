@@ -280,7 +280,7 @@ const TagEditAllCategories = ({changePage, page, recipeFilters}) => {
   </>)
 }
 
-const EditFilter = ({changePage, page, recipeFilters, setRecipeFilters}) => {
+const EditFilter = ({changePage, page, recipeFilters}) => {
   const [name, setName] = useState('')
   const filter = page && page.filterId ? recipeFilters.find(f => f.id == page.filterId) : null
   if (!filter) {console.log("Can't edit filter, did not exist."); return '';}
@@ -288,9 +288,9 @@ const EditFilter = ({changePage, page, recipeFilters, setRecipeFilters}) => {
   return (<>
     <h2>Modifier le filtre</h2>
     <h3>Titre</h3>
-    <TextField model={filter} field="name" url={recipe_filter_path(filter)} getter={recipeFilters} setter={setRecipeFilters} />
+    <TextField model={filter} field="name" url={recipe_filter_path(filter)} getter={recipeFilters} setter={recipeFilters.update} />
     <h3>Image</h3>
-    <PublicImageField model={filter} field="image_src" defaultSrc={"question-mark.jpg"} url={recipe_filter_path(filter)} getter={recipeFilters} setter={setRecipeFilters} />
+    <PublicImageField model={filter} field="image_src" defaultSrc={"question-mark.jpg"} url={recipe_filter_path(filter)} getter={recipeFilters} setter={recipeFilters.update} />
     <br/>
     <div>
       <button type="button" className="btn btn-primary" onClick={() => {}}>Modifier les recettes correspondantes (not implemented yet)</button>
@@ -302,7 +302,7 @@ const EditFilter = ({changePage, page, recipeFilters, setRecipeFilters}) => {
   </>)
 }
 
-const EditUserTags = ({userTags, recipeFilters, setRecipeFilters, page}) => {
+const EditUserTags = ({userTags, recipeFilters, page}) => {
 
   //userTags = sortBy(userTags, "position") Not necessary, done on server side
 
@@ -825,11 +825,11 @@ const App = () => {
 
   const [page, setPage] = useState(getUrlParams())
 
-  const [recipeFilters, setRecipeFilters] = useUpdatableState(gon.recipe_filters)
-  const [suggestions, setSuggestions] = useUpdatableState(gon.suggestions)
-  const [userTags, setUserTags] = useUpdatableState(gon.user_tags)
-  const [userRecipes, setUserRecipes] = useUpdatableState(gon.user_recipes)
-  const [favoriteRecipes, setFavoriteRecipes] = useUpdatableState(gon.favorite_recipes)
+  const recipeFilters = useUpdatableState(gon.recipe_filters)
+  const suggestions = useUpdatableState(gon.suggestions)
+  const userTags = useUpdatableState(gon.user_tags)
+  const userRecipes = useUpdatableState(gon.user_recipes)
+  const favoriteRecipes = useUpdatableState(gon.favorite_recipes)
   const machines = useUpdatableState(gon.machines)
   const machineFoods = useUpdatableState(gon.machine_foods)
   const containerQuantities = useUpdatableState(gon.container_quantities)
@@ -869,11 +869,11 @@ const App = () => {
   bindSetter(page, changePageV2)
 
   const pages = {
-    [PAGE_1]: <TagIndex {...{changePage, recipeFilters, userTags, machines}} addRecipeFilter={(filter) => setRecipeFilters(recipeFilters.concat([filter]))} />,
+    [PAGE_1]: <TagIndex {...{changePage, recipeFilters, userTags, machines}} addRecipeFilter={(filter) => recipeFilters.update(recipeFilters.concat([filter]))} />,
     [PAGE_2]: <TagCategorySuggestions {...{page, changePage, recipeFilters, suggestions}} />,
-    [PAGE_3]: <EditFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
-    [PAGE_4]: <EditUserTags recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} userTags={userTags} page={page} />,
-    //5: <TrainFilter changePage={changePage} page={page} recipeFilters={recipeFilters} setRecipeFilters={setRecipeFilters} />,
+    [PAGE_3]: <EditFilter changePage={changePage} page={page} recipeFilters={recipeFilters} />,
+    [PAGE_4]: <EditUserTags recipeFilters={recipeFilters}userTags={userTags} page={page} />,
+    //5: <TrainFilter changePage={changePage} page={page} recipeFilters={recipeFilters} />,
     [PAGE_6]: <MyRecipes changePage={changePage} page={page} suggestions={suggestions} tags={recipeFilters} favoriteRecipes={favoriteRecipes} userRecipes={userRecipes} />,
     [PAGE_7]: <MyBooks changePage={changePage} page={page} />,
     [PAGE_8]: <TagEditAllCategories changePage={changePage} page={page} recipeFilters={recipeFilters} />,
@@ -921,7 +921,7 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 
-//const TrainFilter = ({changePage, page, recipeFilters, setRecipeFilters}) => {
+//const TrainFilter = ({changePage, page, recipeFilters}) => {
 //
 //  const filter = page && page.filterId ? recipeFilters.find(f => f.id == page.filterId) : null
 //  if (!filter) {console.log("Can't train filter, did not exist."); return '';}

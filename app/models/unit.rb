@@ -8,4 +8,8 @@ class Unit < ApplicationRecord
     !self.is_volume and !self.is_weight
   end
   alias is_unitary? is_unitary
+  
+  def to_obj(params={})
+    extract_attributes(params, :name, :value, :is_weight, :is_volume, :show_fraction)
+  end
 end

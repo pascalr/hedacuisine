@@ -6,4 +6,8 @@ class RecipeNote < ApplicationRecord
   def content
     raise "deprecated, use json and html"
   end
+  
+  def to_obj(params={})
+    extract_attributes(params, :item_nb)
+  end
 end
