@@ -69,6 +69,14 @@ class RecipeIngredient < ApplicationRecord
     Quantity.new(self.food).set_from_grams(self.weight)
   end
   alias quantity_model quantity # deprecated
+
+  # TODO: Rename raw raw_qty and remove these methods
+  def raw_qty=(raw_qty)
+    self.raw = raw_qty
+  end
+  def raw_qty
+    self.raw
+  end
   
   #def raw_quantity=(raw_qty)
   #  q = Quantity.new(self.food).set_from_raw(raw_qty)

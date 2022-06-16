@@ -37,6 +37,26 @@
           <%# link_to image_tag(icon_path("pencil-square.svg")), "FIXME", style: "float: right;" %>
         </li>
       <% end %>
+      <% if recipe.mix %>
+        <% recipe.mix.instructions.split(';').each do |line| %>
+          <% if line.start_with? 'CONTAINER' %>
+            <% id = line.split(',')[1] %>
+            <% if id.to_f.to_s == id || id.to_i.to_s == id %>
+              <h3>Contenant <%= id %></h3>
+            <% else %>
+              <h3><%= id %></h3>
+            <% end %>
+          <% elsif line.start_with? 'ADD' %>
+            <li class="list-group-item">
+              <% args = line.split(',') %>
+              <% qty = args[1] %>
+              <% food = args[2].split('-')[1] %>
+              <% ing = RecipeIngredient.new(raw: qty, raw_food: food) %>
+              <%= scalable_detailed_ingredient(ing) %><%# "*" if foods_dup.include?(ing.food_id) %>
+            </li>
+          <% end %>
+        <% end %>
+      <% end %>
     </ul>
 
     <% ing = recipe.main_ingredient ? recipe.main_ingredient : recipe.ingredients.first %>
