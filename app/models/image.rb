@@ -91,6 +91,10 @@ class Image < ApplicationRecord
     self.width.to_f / self.height.to_f
   end
 
+  def to_obj(params={})
+    extract_attributes(params, :author, :source, :filename, :is_user_author)
+  end
+
   # FIXME: This is recent in rails and it does not work yet for me. calling image.original.variant(:thumb) like the docs says does not work yet
   #do
   #  attachable.variant :thumb, resize: "71x48"

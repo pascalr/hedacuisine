@@ -20,7 +20,7 @@ import { combineOrderedListWithHeaders } from './lib'
 import {EditRecipeImageModal} from './modals/recipe_image'
 import {PasteIngredientsButton} from './modals/paste_ingredients'
 
-import {paste_ingredients_recipes_path, recipe_recipe_ingredients_path, recipe_recipe_ingredient_path, food_path, recipe_ingredient_sections_path, recipe_ingredient_section_path, recipe_recipe_notes_path, move_ing_recipe_path, recipe_path, recipe_recipe_note_path } from './routes'
+import {paste_ingredients_recipes_path, recipe_recipe_ingredients_path, recipe_recipe_ingredient_path, food_path, recipe_ingredient_sections_path, recipe_ingredient_section_path, recipe_recipe_notes_path, move_ing_recipe_path, recipe_path, recipe_recipe_note_path, image_variant_path } from './routes'
 
 const InstructionsShortcuts = props => (
   <>
@@ -227,9 +227,10 @@ export class RecipeEditor extends React.Component {
   constructor(props) {
     super(props);
     let noteIds = gon.recipe.notes ? Object.values(gon.recipe.notes).sort((a,b) => a.item_nb - b.item_nb).map(ing => ing.id) : []
+    let recipe_image = gon.recipe.image_id ? gon.images.find(e => e.id == gon.recipe.image_id) : {}
     this.state = {
       recipe: gon.recipe,
-      recipe_image: gon.recipe_image || {},
+      recipe_image: recipe_image,
       name: gon.recipe.name,
       ingredients: gon.recipe_ingredients.filter(e => e.recipe_id == gon.recipe.id) || [],
       noteIds: noteIds,
@@ -445,9 +446,11 @@ export class RecipeEditor extends React.Component {
     const recipe = this.state.recipe
     const recipe_kind = gon.recipe_kinds.find(k => k.id == recipe.recipe_kind_id)
     const recipe_image = this.state.recipe_image
-    const recipeKindImage = gon.recipe_kind_image
+    let recipeKindImage = recipe_kind && recipe_kind.image_id ? gon.images.find(e => e.id == recipe_kind.image_id) : null
     const image = recipe.use_personalised_image ? recipe_image : recipeKindImage
-    const imagePath = (image && image.variants && image.variants.medium) || "/default_recipe_01.png"
+    console.log('recipe kind image', recipeKindImage)
+    console.log('recipe kind', recipe_kind)
+    const imagePath = image ? image_variant_path(image, 'medium') : "/default_recipe_01.png"
     //console.log(model)
     
     return (<>
