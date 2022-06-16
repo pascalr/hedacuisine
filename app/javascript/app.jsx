@@ -5,9 +5,9 @@ import Hammer from "react-hammerjs"
 //import history from 'history/hash'
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { useCacheOrFetch, useCacheOrFetchHTML, useWindowWidth, LinkToPage } from "./lib"
+import { useCacheOrFetch, useCacheOrFetchHTML, useWindowWidth, LinkToPage, useUpdatableState, getStateProperties } from "./lib"
 import {RecipeIndex} from './recipe_index'
-import { omit, ajax, isBlank, preloadImage, getUrlParams, join, bindSetter, sortBy, capitalize } from "./utils"
+import { ajax, isBlank, preloadImage, getUrlParams, join, bindSetter, sortBy, capitalize } from "./utils"
 import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, batch_create_filtered_recipes_path, batch_destroy_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path, recipe_path, user_tags_path, user_tag_path, containers_path, grocery_list_path, calendar_path, inventory_path, mixes_path, mix_path, inline_recipe_path } from './routes'
 import {TextField, AutocompleteInput, TextInput, CollectionSelect} from './form'
 import {PublicImageField} from './modals/public_image'
@@ -821,20 +821,11 @@ const MyRecipes = ({page, suggestions, tags, userRecipes, favoriteRecipes}) => {
   </>)
 }
 
-const useUpdatableState = (name, initial) => {
-  const [state, setState] = useState(initial)
-  bindSetter(state, (updated) => {
-    gon[name] = {...updated} // Keep gon updated to the latest state
-    setState(updated)
-  })
-  return state
-}
-
 const App = () => {
 
   const [page, setPage] = useState(getUrlParams())
   const changePageV2 = (page) => {
-    let s = omit(page, 'update')
+    let s = getStateProperties(page)
     window.history.replaceState(s, '', '?'+new URLSearchParams(s).toString())
     setPage(s)
   }
@@ -894,7 +885,7 @@ const App = () => {
   // I don't want a back system, I want a up system. So if you are given a nested link, you can go up.
   const goUp = () => {
     if (page.page && parentPages[page.page]) {
-      let s = {...omit(page, 'update'), page: parentPages[page.page]}
+      let s = {...getStateProperties(page), page: parentPages[page.page]}
       window.history.replaceState(s, '', '?'+new URLSearchParams(s).toString())
       setPage(s)
     }

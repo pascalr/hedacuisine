@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { omit, join } from "./utils"
+import { omit, join, bindSetter } from "./utils"
 
 import {recipe_recipe_ingredient_path, food_path, recipe_ingredient_section_path, recipe_path, recipe_recipe_note_path, image_path } from './routes'
+
+export const useUpdatableState = (name, initial) => {
+  const [state, setState] = useState(initial)
+  bindSetter(state, (updated) => {
+    gon[name] = {...updated} // Keep gon updated to the latest state
+    setState(updated)
+  })
+  return state
+}
+export const getStateProperties = (state) => {
+  return omit(state, 'update')
+}
 
 export function urlFor(model) {
   switch(model.class_name) {
@@ -19,9 +31,9 @@ export function urlFor(model) {
 export const LinkToPage = ({page, className, children, active, ...props}) => {
   const switchPage = (evt, page) => {
     evt.preventDefault()
-    page.update(omit(page,'update'))
+    page.update(getStateProperties(page))
   }
-  const href = '?'+new URLSearchParams(omit(page,'update')).toString()
+  const href = '?'+new URLSearchParams(getStateProperties(page)).toString()
 
   return <a className={join(className, active ? 'active' : null)} href={href} onClick={(e) => switchPage(e, page)} {...props}>{children}</a>
 }
