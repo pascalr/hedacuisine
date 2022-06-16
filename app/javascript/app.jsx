@@ -477,8 +477,8 @@ export const EditMix = ({page, context}) => {
 
   const {userRecipes, favoriteRecipes, machines, mixes, ...args} = context
 
-  const machine = machines.find(m => m.id == page.machineId)
-  const machineFoods = args.machineFoods.filter(m => m.machine_id == page.machineId)
+  const machine = page.machineId ? machines.find(m => m.id == page.machineId) : null
+  const machineFoods = machine ? args.machineFoods.filter(m => m.machine_id == machine.id) : args.machineFoods
   const mix = page.recipeId ? mixes.find(m => m.recipe_id == page.recipeId) : mixes.find(m => m.id == page.mixId)
 
   if (!mix) { return '' }
@@ -638,8 +638,8 @@ const ShowMix = ({page, context}) => {
 
   const {userRecipes, favoriteRecipes, machines, mixes, ...args} = context
 
-  const machine = machines.find(m => m.id == page.machineId)
-  const machineFoods = args.machineFoods.filter(m => m.machine_id == page.machineId)
+  const machine = page.machineId ? machines.find(m => m.id == page.machineId) : null
+  const machineFoods = machine ? args.machineFoods.filter(m => m.machine_id == machine.id) : args.machineFoods
   const mix = mixes.find(m => m.id == page.mixId)
 
   console.log('mix.recipe_id', mix.recipe_id)
