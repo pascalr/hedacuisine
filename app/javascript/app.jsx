@@ -823,18 +823,10 @@ const MyRecipes = ({page, suggestions, tags, userRecipes, favoriteRecipes}) => {
 
 const App = () => {
   
-  //const page = useUpdatableState('recipeFilters', gon.recipe_filters, (updated) => {
-  //  let s = getStateProperties(updated)
-  //  window.history.replaceState(s, '', '?'+new URLSearchParams(s).toString())
-  //})
-
-  const [page, setPage] = useState(getUrlParams())
-  const changePageV2 = (page) => {
-    let s = getStateProperties(page)
+  const page = useUpdatableState('page', getUrlParams(), (updated) => {
+    let s = getStateProperties(updated)
     window.history.replaceState(s, '', '?'+new URLSearchParams(s).toString())
-    setPage(s)
-  }
-  bindSetter(page, changePageV2)
+  })
 
   const recipeFilters = useUpdatableState('recipeFilters', gon.recipe_filters)
   const suggestions = useUpdatableState('suggestions', gon.suggestions)

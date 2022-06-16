@@ -7,8 +7,8 @@ export const useUpdatableState = (name, initial, callback=null) => {
   const [state, setState] = useState(initial)
   bindSetter(state, (updated) => {
     gon[name] = {...updated} // Keep gon updated to the latest state
-    setState(updated)
     if (callback) {callback(updated)}
+    setState(updated)
   })
   return state
 }
