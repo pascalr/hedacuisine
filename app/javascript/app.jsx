@@ -140,7 +140,7 @@ const RecipeSingleCarrousel = ({tag, suggestions, isCategory}) => {
   </>)
 }
 
-const TagSuggestions = ({tags, suggestions, page, changePage}) => {
+const TagSuggestions = ({tags, suggestions, page}) => {
 
   const tag = tags.find(f => f.id == page.filterId)
   if (!tag) {return ''}
@@ -148,13 +148,13 @@ const TagSuggestions = ({tags, suggestions, page, changePage}) => {
   const tagSuggestions = suggestions.filter(suggestion => suggestion.filter_id == tag.id)
 
   return (<>
-    <SuggestionsNav {...{page, changePage, tagSuggestions}} />
+    <SuggestionsNav {...{page, tagSuggestions}} />
     {tag.name ? <h2 style={{textAlign: 'center'}}>{tag.name}</h2> : ''}
     <RecipeSingleCarrousel tag={tag} suggestions={tagSuggestions}/>
   </>)
 }
 
-const TagCategorySuggestions = ({changePage, page, recipeFilters, suggestions}) => {
+const TagCategorySuggestions = ({page, recipeFilters, suggestions}) => {
 
   const tag = recipeFilters.find(f => f.id == page.filterId)
   if (!tag) {return ''}
@@ -172,7 +172,7 @@ const TagCategorySuggestions = ({changePage, page, recipeFilters, suggestions}) 
   //}, [suggestions])
 
   return (<>
-    <SuggestionsNav {...{page, changePage, tagSuggestions, categorySuggestions}} />
+    <SuggestionsNav {...{page, tagSuggestions, categorySuggestions}} />
     {tag.name ? <h2 style={{textAlign: 'center'}}>{tag.name}</h2> : ''}
     <RecipeSingleCarrousel tag={tag} suggestions={categorySuggestions} isCategory={true} />
   </>)
@@ -191,7 +191,7 @@ const RecipeImageWithTitle = ({record, selected, selectItem}) => {
   </div>
 }
 
-const TagEditAllCategories = ({changePage, page, recipeFilters}) => {
+const TagEditAllCategories = ({page, recipeFilters}) => {
   const [selected, setSelected] = useState({})
   //const [matching, setMatching] = useState([])
   //const [notMatching, setNotMatching] = useState([])
@@ -281,7 +281,7 @@ const TagEditAllCategories = ({changePage, page, recipeFilters}) => {
   </>)
 }
 
-const EditFilter = ({changePage, page, recipeFilters}) => {
+const EditFilter = ({page, recipeFilters}) => {
   const [name, setName] = useState('')
   const filter = page && page.filterId ? recipeFilters.find(f => f.id == page.filterId) : null
   if (!filter) {console.log("Can't edit filter, did not exist."); return '';}
@@ -298,7 +298,7 @@ const EditFilter = ({changePage, page, recipeFilters}) => {
     </div>
     <br/>
     <div>
-      <button type="button" className="btn btn-primary" onClick={() => changePage(8, {filterId: filter.id})}>Modifier les catégories correspondantes</button>
+      <button type="button" className="btn btn-primary" onClick={() => page.update({page: 8, filterId: filter.id})}>Modifier les catégories correspondantes</button>
     </div>
   </>)
 }
@@ -376,7 +376,7 @@ const TagButton = ({winWidth, image, title, handleClick}) => {
     </div>
   )
 }
-const TagIndex = ({machines, recipeFilters, addRecipeFilter, changePage, userTags}) => {
+const TagIndex = ({page, machines, recipeFilters, addRecipeFilter, userTags}) => {
 
   const winWidth = useWindowWidth()
 
@@ -390,22 +390,22 @@ const TagIndex = ({machines, recipeFilters, addRecipeFilter, changePage, userTag
   //const buttons = recipeFilters.map(filter => <TagButton key={filter.id} winWidth={winWidth} image={`/img/${filter.image_src || "question-mark.jpg"}`} title={filter.name || "Sans nom"} handleClick={() => changePage(PAGE_9, {filterId: filter.id})} />)
   const buttons = userTags.map(userTag => {
     let tag = recipeFilters.find(t => t.id == userTag.tag_id)
-    return <TagButton key={userTag.id} winWidth={winWidth} image={`/img/${tag.image_src || "question-mark.jpg"}`} title={tag.name || "Sans nom"} handleClick={() => changePage(PAGE_9, {filterId: tag.id})} />
+    return <TagButton key={userTag.id} winWidth={winWidth} image={`/img/${tag.image_src || "question-mark.jpg"}`} title={tag.name || "Sans nom"} handleClick={() => page.update({page: PAGE_9, filterId: tag.id})} />
   })
 
   const machineButtons = machines.map(machine => {
-    return <TagButton key={`machine-${machine.id}`} winWidth={winWidth} image='/img/robot.jpg' title={machine.name || "Heda"} handleClick={() => changePage(PAGE_10, {machineId: machine.id})} />
+    return <TagButton key={`machine-${machine.id}`} winWidth={winWidth} image='/img/robot.jpg' title={machine.name || "Heda"} handleClick={() => page.update({page: PAGE_10, machineId: machine.id})} />
   })
 
   // Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
   //<TagButton winWidth={winWidth} image="/img/recipes.jpg" title="Mes livres" handleClick={() => changePage(7)} />
   return (<>
     <div style={{maxWidth: "100vw", width: "400px", margin: "auto"}}>
-      <TagButton winWidth={winWidth} image="/img/cooking.jpg" title="Mes recettes" handleClick={() => changePage(PAGE_6)} />
+      <TagButton winWidth={winWidth} image="/img/cooking.jpg" title="Mes recettes" handleClick={() => page.update({page: PAGE_6})} />
       <TagButton winWidth={winWidth} image="/img/recipes.jpg" title="Mes livres" handleClick={() => {window.location.href = my_books_path()}} />
       {machineButtons}
       {buttons}
-      <TagButton winWidth={winWidth} image="/icons/gear-gray.svg" title="Paramètres" handleClick={() => changePage(PAGE_4)} />
+      <TagButton winWidth={winWidth} image="/icons/gear-gray.svg" title="Paramètres" handleClick={() => page.update({page: PAGE_4})} />
     </div>
   </>)
 }
@@ -833,6 +833,12 @@ const useUpdatableState = (name, initial) => {
 const App = () => {
 
   const [page, setPage] = useState(getUrlParams())
+  const changePageV2 = (page) => {
+    let s = omit(page, 'update')
+    window.history.replaceState(s, '', '?'+new URLSearchParams(s).toString())
+    setPage(s)
+  }
+  bindSetter(page, changePageV2)
 
   const recipeFilters = useUpdatableState('recipeFilters', gon.recipe_filters)
   const suggestions = useUpdatableState('suggestions', gon.suggestions)
@@ -866,29 +872,16 @@ const App = () => {
     [PAGE_16]: PAGE_15,
   }
 
-  // Deprecated, use page.update(newPage) which uses changePageV2
-  const changePage = (pageNb, args={}) => {
-    let s = {page: pageNb, ...(omit(args, 'update'))}
-    window.history.replaceState(s, '', '?'+new URLSearchParams(s).toString())
-    setPage(s)
-  }
-  const changePageV2 = (page) => {
-    let s = omit(page, 'update')
-    window.history.replaceState(s, '', '?'+new URLSearchParams(s).toString())
-    setPage(s)
-  }
-  bindSetter(page, changePageV2)
-
   const pages = {
-    [PAGE_1]: <TagIndex {...{changePage, recipeFilters, userTags, machines}} addRecipeFilter={(filter) => recipeFilters.update(recipeFilters.concat([filter]))} />,
-    [PAGE_2]: <TagCategorySuggestions {...{page, changePage, recipeFilters, suggestions}} />,
-    [PAGE_3]: <EditFilter changePage={changePage} page={page} recipeFilters={recipeFilters} />,
+    [PAGE_1]: <TagIndex {...{page, recipeFilters, userTags, machines}} addRecipeFilter={(filter) => recipeFilters.update(recipeFilters.concat([filter]))} />,
+    [PAGE_2]: <TagCategorySuggestions {...{page, recipeFilters, suggestions}} />,
+    [PAGE_3]: <EditFilter page={page} recipeFilters={recipeFilters} />,
     [PAGE_4]: <EditUserTags recipeFilters={recipeFilters}userTags={userTags} page={page} />,
-    //5: <TrainFilter changePage={changePage} page={page} recipeFilters={recipeFilters} />,
-    [PAGE_6]: <MyRecipes changePage={changePage} page={page} suggestions={suggestions} tags={recipeFilters} favoriteRecipes={favoriteRecipes} userRecipes={userRecipes} />,
-    [PAGE_7]: <MyBooks changePage={changePage} page={page} />,
-    [PAGE_8]: <TagEditAllCategories changePage={changePage} page={page} recipeFilters={recipeFilters} />,
-    [PAGE_9]: <TagSuggestions changePage={changePage} page={page} suggestions={suggestions} tags={recipeFilters} />,
+    //5: <TrainFilter page={page} recipeFilters={recipeFilters} />,
+    [PAGE_6]: <MyRecipes page={page} suggestions={suggestions} tags={recipeFilters} favoriteRecipes={favoriteRecipes} userRecipes={userRecipes} />,
+    [PAGE_7]: <MyBooks page={page} />,
+    [PAGE_8]: <TagEditAllCategories page={page} recipeFilters={recipeFilters} />,
+    [PAGE_9]: <TagSuggestions page={page} suggestions={suggestions} tags={recipeFilters} />,
     [PAGE_10]: <HedaIndex {...{page, machines}} />,
     [PAGE_11]: <Inventory {...{page, machines, machineFoods, containerQuantities}} />,
     [PAGE_12]: <MixIndex {...{page, machines, machineFoods, mixes}} />,
@@ -932,7 +925,7 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 
-//const TrainFilter = ({changePage, page, recipeFilters}) => {
+//const TrainFilter = ({page, recipeFilters}) => {
 //
 //  const filter = page && page.filterId ? recipeFilters.find(f => f.id == page.filterId) : null
 //  if (!filter) {console.log("Can't train filter, did not exist."); return '';}
