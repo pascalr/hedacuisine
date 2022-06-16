@@ -40,17 +40,11 @@ export const useCacheOrFetchHTML = (url, args={}) => {
       console.log('FETCHING',url)
       fetch(url)
         .then(result => result.text())
-        .then(content => setData(content));
-      //async function fetchData() {
-      //  console.log(`Fetching data at ${url}`)
-      //  const response = await fetch(url);
-      //  console.log('response', response)
-      //  const html = await response.html();
-      //  window[`fetched_${url}`] = json
-      //  setData(html);
-      //}
+        .then(content => {
+          window[`fetched_${url}`] = content
+          setData(content)
+        });
       window[`fetching_${url}`] = true
-      //fetchData();
     }
   }, [url, waitFor]);
 

@@ -194,12 +194,13 @@ const EditableIngredient = ({ingredient}) => {
     }})
   }
 
+  let f = ingredient.food_id ? gon.foods.find(e => e.id == ingredient.food_id) : null
   return (
     <Row alignItems="center" gap="5px">
       <span style={{padding: "0 10px 0 0"}}><b>{ingredient.item_nb}.</b></span>
       <TextField model={ingredient} field="raw" size="8" className="editable-input" />
       de{/*" de " ou bien " - " si la quantité n'a pas d'unité => _1_____ - oeuf*/}
-      {ingredient.food ? <a href={food_path({id: ingredient.food_id})}>{ingredient.food.name}</a> : <div>{ingredient.name}</div>}
+      {f ? <a href={food_path(f)}>{f.name}</a> : <div>{ingredient.name}</div>}
       <EditableIngredientComment ingUrl={ingUrl} commentJson={ingredient.comment_json} />
       <Block flexGrow="1" />
       <DeleteConfirmButton id={`ing-${ingredient.id}`} onDeleteConfirm={removeIngredient} message="Je veux enlever cet ingrédient?" />
