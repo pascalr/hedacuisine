@@ -825,11 +825,11 @@ const App = () => {
 
   const [page, setPage] = useState(getUrlParams())
 
-  const [recipeFilters, setRecipeFilters] = useState(gon.recipe_filters)
-  const [suggestions, setSuggestions] = useState(gon.suggestions)
-  const [userTags, setUserTags] = useState(gon.user_tags)
-  const [userRecipes, setUserRecipes] = useState(gon.user_recipes)
-  const [favoriteRecipes, setFavoriteRecipes] = useState(gon.favorite_recipes)
+  const [recipeFilters, setRecipeFilters] = useUpdatableState(gon.recipe_filters)
+  const [suggestions, setSuggestions] = useUpdatableState(gon.suggestions)
+  const [userTags, setUserTags] = useUpdatableState(gon.user_tags)
+  const [userRecipes, setUserRecipes] = useUpdatableState(gon.user_recipes)
+  const [favoriteRecipes, setFavoriteRecipes] = useUpdatableState(gon.favorite_recipes)
   const machines = useUpdatableState(gon.machines)
   const machineFoods = useUpdatableState(gon.machine_foods)
   const containerQuantities = useUpdatableState(gon.container_quantities)
@@ -837,12 +837,6 @@ const App = () => {
 
   const context = {recipeFilters, suggestions, userTags, userRecipes, favoriteRecipes, machines, machineFoods, containerQuantities, mixes}
 
-  bindSetter(recipeFilters, setRecipeFilters)
-  bindSetter(suggestions, setSuggestions)
-  bindSetter(userTags, setUserTags)
-  bindSetter(userRecipes, setUserRecipes)
-  bindSetter(favoriteRecipes, setFavoriteRecipes)
-  
   const parentPages = {
     [PAGE_2]: PAGE_1,
     [PAGE_3]: PAGE_4,
