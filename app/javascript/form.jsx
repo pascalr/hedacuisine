@@ -100,8 +100,8 @@ export const asyncUpdateModel = (model, diffs, options={}) => {
     data.append(model.class_name+"["+field+"]", diffs[field] == null ? '' : diffs[field])
   }
   if (model.onUpdate) { model.onUpdate(model) }
-  console.log('PATCH', model.url)
-  ajax({url: model.url, type: 'PATCH', data: data, success: (response) => {
+  console.log('PATCH', urlFor(model))
+  ajax({url: urlFor(model), type: 'PATCH', data: data, success: (response) => {
     console.log('PATCH received', response)
     if (model.onServerUpdate) { model.onServerUpdate(response) }
   }})
@@ -115,8 +115,8 @@ const updateModelField = (model, field, value, successCallback=null) => {
 
     let data = new FormData()
     data.append(model.class_name+"["+field+"]", value)
-    console.log('PATCH', model.url)
-    ajax({url: model.url, type: 'PATCH', data: data, success: () => {
+    console.log('PATCH', urlFor(model))
+    ajax({url: urlFor(model), type: 'PATCH', data: data, success: () => {
       console.log(`Updating model ${model.class_name} field ${field} from ${model[field]} to ${value}.`)
       model[field] = value
       if (successCallback) {successCallback()}

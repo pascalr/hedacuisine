@@ -110,7 +110,8 @@ const NewIngInputField = props => {
     let data = new FormData()
     let form = document.getElementById(id)
     data.append('recipe_ingredient[raw]', form.elements.raw.value)
-    data.append('recipe_ingredient[food_id]', item.dataset.id)
+    let f = gon.foods.find(e => e.id == item.dataset.id)
+    data.append('recipe_ingredient[raw_food]', f.name)
     postNewIngredient(data)
   }
 
