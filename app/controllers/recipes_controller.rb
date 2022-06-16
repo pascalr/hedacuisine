@@ -174,11 +174,11 @@ class RecipesController < ApplicationController
     gon.recipe = to_obj(@recipe)
     gon.recipe_image = to_obj(@recipe.recipe_image) if @recipe.recipe_image
     gon.recipe_kind_image = to_obj(@recipe.recipe_kind.image) if @recipe.recipe_kind && @recipe.recipe_kind.image
-    gon.foods = Food.order(:name).all.map {|food| to_obj(food)}
-    gon.units = Unit.all.map {|unit| to_obj(unit)}
+    gon.foods = Food.order(:name).all.map {|food| food.to_obj}
+    gon.units = Unit.all.map {|unit| unit.to_obj}
     gon.contractionList = FrenchExpression.where(contract_preposition: true).map(&:singular)
-    gon.recipe_kinds = RecipeKind.order(:name).all.map {|e| to_obj(e, only: :name)}
-    gon.notes = @recipe.notes.map {|e| to_obj(e)}
+    gon.recipe_kinds = RecipeKind.order(:name).map {|e| e.to_obj(only: :name)}
+    gon.notes = @recipe.notes.map {|e| e.to_obj}
   end
 
   def duplicate

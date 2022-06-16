@@ -252,9 +252,9 @@ const ModelLinkComponent = ({node, updateAttributes}) => {
 }
 
 const MODELS = {
-  food: {placeholder: 'Aliment...', records: gon.foodList, linkLabel: r => r.name, linkUrl: r => r.url},
+  food: {placeholder: 'Aliment...', records: gon.foods, linkLabel: r => r.name, linkUrl: r => r.url},
   recipeKind: {placeholder: 'Sorte de recette...', records: gon.recipe_kinds, linkLabel: r => r.name, linkUrl: r => r.url},
-  note: {records: gon.noteList, linkLabel: r => r.item_nb.toString(), linkUrl: r => `#note-${r.item_nb}`},
+  note: {records: gon.notes, linkLabel: r => r.item_nb.toString(), linkUrl: r => `#note-${r.item_nb}`},
   //r = ['sup', {}, '[', ['a', {href: `#note-${note.item_nb}`}, note.item_nb.toString()], ']']
 }
 
@@ -449,14 +449,14 @@ const parseIngredient = (ingredient) => {
   if (ingredient.includes(";")) {
     const [qty, foodName] = Quantity.parseQuantityAndFoodName(ingredient)
     prettyQty = Utils.prettyQuantityFor(qty.raw, foodName)
-    food = gon.foodList.find(food => food.name == foodName)
+    food = gon.foods.find(food => food.name == foodName)
     name = foodName
   // (200 mL) deprecated, use ;
   } else if (ingredient.startsWith("(")) { // old version
     const raw = ingredient.slice(1,-1)
     const [qty, foodName] = Quantity.parseQuantityAndFoodName(raw)
     prettyQty = Utils.prettyQuantityFor(qty.raw, foodName)
-    food = gon.foodList.find(food => food.name == foodName)
+    food = gon.foods.find(food => food.name == foodName)
     name = foodName
     // 1 => ingredient nb 1
   } else {

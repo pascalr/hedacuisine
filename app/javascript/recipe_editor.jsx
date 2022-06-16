@@ -121,7 +121,7 @@ const NewIngInputField = props => {
         de
         {' '}
         <input type="hidden" name="food_id" value="" />
-        <AutocompleteInput name="raw_food" choices={gon.foodList} onSelect={onSelect} />
+        <AutocompleteInput name="raw_food" choices={gon.foods} onSelect={onSelect} />
         <input type="submit" value="Ajouter" />
       </Row>
     </form>

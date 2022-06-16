@@ -1,3 +1,4 @@
+# FIXME: THIS IS DEPRECATED. USE MODEL#to_obj INSTEAD.
 module SerializeHelper
 
   def extract_attributes(record, *attributes)
@@ -24,7 +25,7 @@ module SerializeHelper
     return book_section_to_obj(record) if record.is_a? BookSection
     return book_recipe_to_obj(record) if record.is_a? BookRecipe
     return book_to_obj(record) if record.is_a? Book
-    return tool_to_obj(record) if tool.is_a? Tool
+    return tool_to_obj(record) if record.is_a? Tool
     raise "Can't convert to_obj. Unkown type for record #{record}"
   end
 
