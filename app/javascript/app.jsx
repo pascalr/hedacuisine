@@ -8,7 +8,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useCacheOrFetch, useCacheOrFetchHTML, useWindowWidth, LinkToPage, useUpdatableState, getStateProperties } from "./lib"
 import {RecipeIndex} from './recipe_index'
 import { ajax, isBlank, preloadImage, getUrlParams, join, bindSetter, sortBy, capitalize } from "./utils"
-import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, batch_create_filtered_recipes_path, batch_destroy_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path, recipe_path, user_tags_path, user_tag_path, containers_path, grocery_list_path, calendar_path, inventory_path, mixes_path, mix_path, inline_recipe_path } from './routes'
+import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, batch_create_filtered_recipes_path, batch_destroy_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path, recipe_path, user_tags_path, user_tag_path, containers_path, grocery_list_path, calendar_path, inventory_path, mixes_path, mix_path, inline_recipe_path, recipe_recipe_ingredients_path } from './routes'
 import {TextField, AutocompleteInput, TextInput, CollectionSelect} from './form'
 import {PublicImageField} from './modals/public_image'
 import { DeleteConfirmButton } from './components/delete_confirm_button'
@@ -425,8 +425,8 @@ const CmdAdd = {
     obj.qty = args[1]
     if (args[2]) {
       let i = args[2].indexOf('-')
-      obj.machineFoodId = args[2].substr(0,i)
-      obj.machineFoodName = args[2].substr(i+1)
+      obj.machineFoodId = (i == -1) ? null : args[2].substr(0,i)
+      obj.machineFoodName = (i == -1) ? args[2] : args[2].substr(i+1)
       obj.machineFood = context.machineFoods.find(e => e.id == obj.machineFoodId)
     }
     if (!obj.machineFood) {
@@ -527,6 +527,15 @@ export const EditMix = ({page, context}) => {
     mix.instructions = updatedList.join(';')
     update()
   }
+  const moveMixAddToIng = (obj) => {
+    let data = {recipe_ingredient: {
+      raw: obj.qty,
+      raw_food: obj.machineFoodName
+    }}
+    ajax({url: recipe_recipe_ingredients_path(gon.recipe), type: 'POST', data: data, success: (ingredient) => {
+      window.recipe_editor.current.addIng(ingredient)
+    }})
+  }
 
   const eInstructions = instructions.map((instruction,line) => {
 
@@ -563,8 +572,9 @@ export const EditMix = ({page, context}) => {
           <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
             <li key={`${line}-${instruction}`} className={`list-group-item${!obj || obj.errors ? ' cmd-error' : ''}`}>
               <img className="clickable float-end" style={{marginTop: '0.4em'}} src="/icons/x-lg.svg" width="18" height="18" onClick={() => removeInstruction(line)}></img>
-              <img className="clickable float-end" style={{marginRight: '0.4em', marginTop: '0.4em'}} src="/icons/arrow-down-up.svg" width="18" height="18" onClick={() => {}}></img>
-              {!obj || obj.errors ? <img className="float-end" style={{marginRight: '0.4em', marginTop: '0.4em'}} src="/icons/info-circle.svg" width="18" height="18"></img> : ''}
+              {(obj && obj.type.id == "ADD") ? <img className="clickable float-end" style={{marginRight: '0.4em', marginTop: '0.4em'}} src="/icons/arrow-down-up.svg" width="18" height="18" onClick={() => moveMixAddToIng(obj)}></img> : ''}
+    
+              {!obj || obj.errors ? <img className="float-end" style={{marginRight: '0.6em', marginTop: '0.4em'}} src="/icons/info-circle.svg" width="18" height="18"></img> : ''}
               <div className='d-flex gap-10'>
                 <div className="dropdown">
                   <button className="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

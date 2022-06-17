@@ -50,8 +50,10 @@
             <li class="list-group-item">
               <% args = line.split(',') %>
               <% qty = args[1] %>
-              <% food = args[2].split('-')[1] %>
-              <% ing = RecipeIngredient.new(raw: qty, raw_food: food) %>
+              <% i = args[2].index('-') %>
+              <% machineFoodId = i.nil? ? nil : args[2][0..i] %>
+              <% machineFoodName = i.nil? ? args[2] : args[2][i+1..-1] %>
+              <% ing = RecipeIngredient.new(raw: qty, raw_food: machineFoodName) %>
               <%= scalable_detailed_ingredient(ing) %><%# "*" if foods_dup.include?(ing.food_id) %>
             </li>
           <% end %>

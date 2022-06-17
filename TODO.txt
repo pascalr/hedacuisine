@@ -1,5 +1,7 @@
 TOFU GÉNÉRAL TAO
 
+Dans l'app, rajouter en haut à droite un bouton pour rechercher.
+
 Ajouter les commandes dans le recipe editor.
 Afficher les ingrédients automatiquement lorsqu'ils sont dans les commandes.
 
