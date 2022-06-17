@@ -527,13 +527,14 @@ export const EditMix = ({page, context}) => {
     mix.instructions = updatedList.join(';')
     update()
   }
-  const moveMixAddToIng = (obj) => {
+  const moveMixAddToIng = (obj, line) => {
     let data = {recipe_ingredient: {
       raw: obj.qty,
       raw_food: obj.machineFoodName
     }}
     ajax({url: recipe_recipe_ingredients_path(gon.recipe), type: 'POST', data: data, success: (ingredient) => {
       window.recipe_editor.current.addIng(ingredient)
+      removeInstruction(line)
     }})
   }
 
@@ -572,7 +573,7 @@ export const EditMix = ({page, context}) => {
           <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
             <li key={`${line}-${instruction}`} className={`list-group-item${!obj || obj.errors ? ' cmd-error' : ''}`}>
               <img className="clickable float-end" style={{marginTop: '0.4em'}} src="/icons/x-lg.svg" width="18" height="18" onClick={() => removeInstruction(line)}></img>
-              {(obj && obj.type.id == "ADD") ? <img className="clickable float-end" style={{marginRight: '0.4em', marginTop: '0.4em'}} src="/icons/arrow-down-up.svg" width="18" height="18" onClick={() => moveMixAddToIng(obj)}></img> : ''}
+              {(obj && obj.type.id == "ADD") ? <img className="clickable float-end" style={{marginRight: '0.4em', marginTop: '0.4em'}} src="/icons/arrow-down-up.svg" width="18" height="18" onClick={() => moveMixAddToIng(obj, line)}></img> : ''}
     
               {!obj || obj.errors ? <img className="float-end" style={{marginRight: '0.6em', marginTop: '0.4em'}} src="/icons/info-circle.svg" width="18" height="18"></img> : ''}
               <div className='d-flex gap-10'>

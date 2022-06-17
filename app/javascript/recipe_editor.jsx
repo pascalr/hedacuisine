@@ -364,6 +364,7 @@ export class RecipeEditor extends React.Component {
 
   render() {
     let ingItems = combineOrderedListWithHeaders(this.state.ingredients, this.state.ingredient_sections, header => header.before_ing_nb)
+    console.log('this.state.ingredients', this.state.ingredients)
     ingItems = ingItems.concat(this.state.ingredient_sections.filter(s => s.before_ing_nb > this.state.ingredients.length))
     const renderedIngItems = []
     for (let i=0; i < ingItems.length; i++) {

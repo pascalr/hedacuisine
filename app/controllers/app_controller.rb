@@ -16,7 +16,7 @@ class AppController < ApplicationController
     gon.images = Image.where(id: gon.recipes.map{|e|e[:image_id]}+gon.recipe_kinds.map{|e|e[:image_id]}).map {|e| e.to_obj }
     #TODO: Tools
     #TODO: Ingredient
-    gon.recipe_ingredients = RecipeIngredient.where(recipe_id: gon.recipes.map{|r|r[:id]}).map {|e| e.to_obj}
+    gon.recipe_ingredients = RecipeIngredient.order(:item_nb).where(recipe_id: gon.recipes.map{|r|r[:id]}).map {|e| e.to_obj}
     gon.notes = RecipeNote.where(recipe_id: gon.recipes.map{|r|r[:id]}).map {|e| e.to_obj}
     gon.foods = Food.order(:name).all.map {|food| food.to_obj}
     gon.units = Unit.all.map {|unit| unit.to_obj}
