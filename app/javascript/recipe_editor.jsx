@@ -195,6 +195,7 @@ const EditableIngredient = ({ingredient}) => {
     let ins = mix.instructions+';ADD,'+ingredient.raw+','+(f ? f.name : ingredient.name)
     ajax({url: mix_path(mix), type: 'PATCH', data: {mix: {instructions: ins}}, success: (mix) => {
       gon.mixes.update(gon.mixes.map(e => e.id == mix.id ? mix : e))
+      removeIngredient()
     }})
   }
 
