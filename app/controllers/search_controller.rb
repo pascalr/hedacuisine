@@ -27,7 +27,7 @@ class SearchController < ApplicationController
         result = @items.map do |item|
           if item.is_a? Recipe
             #image = item.use_personalised_image ? item.recipe_image : (item.recipe_kind ? item.recipe_kind.image : nil)
-            im = Image.exist?(item.image) ? thumb_image_path(item.image) : nil#'/default_recipe_01_thumb.png'
+            im = Image.exist?(item.image_used) ? thumb_image_path(item.image_used) : nil#'/default_recipe_01_thumb.png'
             {label: item.name, url: recipe_path(item), image: im}
           elsif item.is_a? RecipeKind
             im = Image.exist?(item.image) ? thumb_image_path(item.image) : nil#'/default_recipe_01_thumb.png'

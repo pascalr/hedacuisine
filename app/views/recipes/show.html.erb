@@ -3,7 +3,7 @@
 <%= content_for :description, description_recipe_ingredients(@recipe) %>
 <%= content_for :og_tags do %>
   <meta property="og:title" content="<%= @recipe.fullname %>">
-  <meta property="og:image" content="<%= prod_url(image_variant_path(@recipe.image, :medium)) %>" >
+  <meta property="og:image" content="<%= prod_url(image_variant_path(@recipe.image_used, :medium)) %>" >
   <meta property="og:type" content="website">
   <meta property="og:url" content="<%= prod_url(request.original_fullpath) %>">
   <meta property="og:description" content="<%= description %>">

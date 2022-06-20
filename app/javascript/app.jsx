@@ -818,7 +818,7 @@ const MyBooks = () => {
   </>)
 }
 
-const MyRecipes = ({page, suggestions, tags, userRecipes, favoriteRecipes}) => {
+const MyRecipes = ({page, suggestions, tags, userRecipes, favoriteRecipes, mixes}) => {
 
   //const data = useCacheOrFetch(user_recipes_recipes_path())
   //const userRecipes = data ? data.userRecipes : null
@@ -830,7 +830,7 @@ const MyRecipes = ({page, suggestions, tags, userRecipes, favoriteRecipes}) => {
       <h2>Mes recettes</h2>
       <a href={new_recipe_path()} className="btn btn-outline-primary btn-sm">Nouvelle recette</a>
     </div>
-    <RecipeIndex page={page} userRecipes={userRecipes} favoriteRecipes={favoriteRecipes} loading={false} suggestions={suggestions} tags={tags} />
+    <RecipeIndex page={page} userRecipes={userRecipes} favoriteRecipes={favoriteRecipes} loading={false} suggestions={suggestions} tags={tags} mixes={mixes} />
   </>)
 }
 
@@ -879,7 +879,7 @@ const App = () => {
     [PAGE_3]: <EditFilter page={page} recipeFilters={recipeFilters} />,
     [PAGE_4]: <EditUserTags recipeFilters={recipeFilters}userTags={userTags} page={page} />,
     //5: <TrainFilter page={page} recipeFilters={recipeFilters} />,
-    [PAGE_6]: <MyRecipes page={page} suggestions={suggestions} tags={recipeFilters} favoriteRecipes={favoriteRecipes} userRecipes={userRecipes} />,
+    [PAGE_6]: <MyRecipes {...{page, suggestions, recipeFilters, favoriteRecipes, userRecipes, mixes}} />,
     [PAGE_7]: <MyBooks page={page} />,
     [PAGE_8]: <TagEditAllCategories page={page} recipeFilters={recipeFilters} />,
     [PAGE_9]: <TagSuggestions page={page} suggestions={suggestions} tags={recipeFilters} />,

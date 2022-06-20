@@ -11,7 +11,7 @@ let recipeForItem = (item) => {
   return item.class_name == "recipe" ? item : {id: item.recipe_id, name: item.name}
 }
 
-const RecipeList = ({page, list, original, selected, suggestions, tags, editUserRecipe, updateFavoriteRecipe}) => {
+const RecipeList = ({page, list, original, selected, suggestions, tags, editUserRecipe, updateFavoriteRecipe, mixes}) => {
 
   let removeItem = (item) => {
     if (item.class_name == "favorite_recipe") { // Delete recipes is not supported here
@@ -27,6 +27,7 @@ const RecipeList = ({page, list, original, selected, suggestions, tags, editUser
       {list.map((item, current) => {
         let recipe = recipeForItem(item)
         let recipeTags = suggestions.filter(suggestion => suggestion.recipe_id == recipe.id).map(suggestion => tags.find(t => t.id == suggestion.filter_id))
+        let mix = mixes.find(e => e.recipe_id == recipe.id)
 
         let toCook = <button type="button" className="dropdown-item" onClick={() => updateFavoriteRecipe(item, 1)}>À cuisiner</button>
         let toTry = <button type="button" className="dropdown-item" onClick={() => updateFavoriteRecipe(item, 2)}>À essayer</button>
@@ -35,6 +36,7 @@ const RecipeList = ({page, list, original, selected, suggestions, tags, editUser
         return (<span key={recipe.id}>
           <li className="list-group-item" key={recipe.id}>
             <LinkToPage page={{...page, page: 15, recipeId: recipe.id}} className={current == selected ? "selected" : undefined}>{recipe.name}</LinkToPage>
+            {mix ? <img src="logo_001.svg" width="24" height="24"/> : ''}
             <span style={{color: 'gray', fontSize: '0.78em'}}>{recipeTags.map(tag => ` #${tag.name}`)} </span>
             <span className="dropdown">
               <button className="plain-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -58,7 +60,7 @@ const RecipeList = ({page, list, original, selected, suggestions, tags, editUser
   </>)
 }
 
-export const RecipeIndex = ({page, userRecipes, favoriteRecipes, suggestions, tags}) => {
+export const RecipeIndex = ({page, userRecipes, favoriteRecipes, suggestions, tags, mixes}) => {
   
   const inputField = useRef(null);
   const [search, setSearch] = useState('')
@@ -112,7 +114,7 @@ export const RecipeIndex = ({page, userRecipes, favoriteRecipes, suggestions, ta
     setShowModal(true)
   }
 
-  let listArgs = {page, selected, suggestions, tags, editUserRecipe, updateFavoriteRecipe}
+  let listArgs = {page, selected, suggestions, tags, editUserRecipe, updateFavoriteRecipe, mixes}
 
   return (<>
     <EditUserRecipeModal showModal={showModal} setShowModal={setShowModal} recipe={recipeToEdit} tags={tags} suggestions={suggestions} />
