@@ -879,7 +879,7 @@ const App = () => {
     [PAGE_3]: <EditFilter page={page} recipeFilters={recipeFilters} />,
     [PAGE_4]: <EditUserTags recipeFilters={recipeFilters}userTags={userTags} page={page} />,
     //5: <TrainFilter page={page} recipeFilters={recipeFilters} />,
-    [PAGE_6]: <MyRecipes {...{page, suggestions, recipeFilters, favoriteRecipes, userRecipes, mixes}} />,
+    [PAGE_6]: <MyRecipes {...{page, suggestions, recipeFilters, favoriteRecipes, userRecipes, tags, mixes}} />,
     [PAGE_7]: <MyBooks page={page} />,
     [PAGE_8]: <TagEditAllCategories page={page} recipeFilters={recipeFilters} />,
     [PAGE_9]: <TagSuggestions page={page} suggestions={suggestions} tags={recipeFilters} />,
