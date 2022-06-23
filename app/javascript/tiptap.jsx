@@ -30,6 +30,12 @@ import { Node, mergeAttributes, nodeInputRule, textblockTypeInputRule } from '@t
 
 import {ImageButton, HelpButton, StepButton, IngredientButton, AddNoteButton, MeasuringButton, CharButton, BoldButton, ItalicButton, MoreButton, StrikeButton, LinkButton, SubscriptButton, SuperscriptButton} from './buttons'
 
+// TODO: Check if anything in the data is null, and show a useful error if it is.
+function safeRenderHTML(html) {
+  //console.log('html', html)
+  return html
+}
+
 // https://stackoverflow.com/questions/59769774/prosemirror-using-holes-contentdom-when-returning-dom-nodes-from-todom
 // https://stackoverflow.com/questions/3066427/native-way-to-copy-all-child-nodes-to-an-other-element
 // '@tiptap/core/src/utilities/elementFromString'
@@ -510,12 +516,12 @@ const IngredientNode = Node.create({
     const {prettyQty, food, name, comment, ing} = parseIngredient(HTMLAttributes['raw'])
     let children = []
     if (prettyQty && prettyQty != '') {children.push(prettyQty)}
-    children.push(['span', {class: 'food-name'}, (food && food.is_public) ? ['a', {href: food.url}, name] : name])
+    children.push(['span', {class: 'food-name'}, (food && food.is_public) ? ['a', {href: food.url}, name||''] : name||''])
     if (comment) { children.push(elementFromString(' '+comment)) }
     if (ing) {
-      return ['span', {'data-ingredient-id': ing.id}, ...children]
+      return safeRenderHTML(['span', {'data-ingredient-id': ing.id}, ...children])
     } else {
-      return ['span', {'data-ingredient': HTMLAttributes['raw']}, ...children]
+      return safeRenderHTML(['span', {'data-ingredient': HTMLAttributes['raw']}, ...children])
     }
   },
 
@@ -644,24 +650,24 @@ const IngredientListNode = Node.create({
       let children = []
       if (prettyQty && prettyQty != '') {children.push(prettyQty)}
       if (ing && ing.food && ing.food.is_public) {
-        children.push(['span', {class: 'food-name'}, ['a', {href: ing.food.url}, ing.name]])
+        children.push(['span', {class: 'food-name'}, ['a', {href: ing.food.url}, ing.name||'']])
       } else {
-        children.push(['span', {class: 'food-name'}, name])
+        children.push(['span', {class: 'food-name'}, name||''])
       }
       if (ing) {
         if (ing.comment) {children.push(elementFromString(' '+ing.comment))}
-        return ['li', {'data-ingredient-id': ing.id}, ...children]
+        return safeRenderHTML(['li', {'data-ingredient-id': ing.id}, ...children])
       } else {
-        return ['li', {'data-ingredient': ingredient}, ...children]
+        return safeRenderHTML(['li', {'data-ingredient': ingredient}, ...children])
       }
     })
     if (!list || list.length == 0) {list = ''}
     // Return: ['tagName', {attributeName: 'attributeValue'}, child1, child2, ...children]
-    return [
+    return safeRenderHTML([
       'span',
       { 'data-ingredients': HTMLAttributes['raw']},
       ['ul', {}, ...list]
-    ]
+    ])
   },
 
   parseHTML() {
