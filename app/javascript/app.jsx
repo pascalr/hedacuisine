@@ -480,6 +480,7 @@ export const EditMix = ({page, userRecipes, favoriteRecipes, machines, mixes, ma
   const machine = page.machineId ? machines.find(m => m.id == page.machineId) : null
   const currentMachineFoods = machine ? machineFoods.filter(m => m.machine_id == machine.id) : machineFoods
   const mix = page.recipeId ? mixes.find(m => m.recipe_id == page.recipeId) : mixes.find(m => m.id == page.mixId)
+  console.log('edit mix', mix)
 
   if (!mix) { return '' }
 
@@ -637,13 +638,13 @@ const ShowRecipe = ({page}) => {
   return recipeHTML ? <div dangerouslySetInnerHTML={{__html: recipeHTML}} /> : ''
 }
 
-const EditRecipe = ({page, userRecipes, favoriteRecipes, machines, mixes, machineFoods, recipes}) => {
+const EditRecipe = ({page, userRecipes, favoriteRecipes, machines, mixes, machineFoods, recipes, foods}) => {
   
   const recipe = recipes.find(e => e.id == page.recipeId)
 
   window.recipe_editor = useRef(null) // FIXME: This is really ugly
   gon.recipe = recipe // FIXME: This is really ugly
-  return <RecipeEditor {...{page, userRecipes, favoriteRecipes, machines, mixes, machineFoods}} ref={window.recipe_editor}/>
+  return <RecipeEditor {...{page, userRecipes, favoriteRecipes, machines, mixes, machineFoods, foods}} ref={window.recipe_editor}/>
 }
   
 const ShowMix = ({page, userRecipes, favoriteRecipes, machines, mixes, machineFoods}) => {
@@ -848,10 +849,10 @@ const App = () => {
   const machineFoods = useUpdatableState('machineFoods', gon.machine_foods)
   const containerQuantities = useUpdatableState('containerQuantities', gon.container_quantities)
   const mixes = useUpdatableState('mixes', gon.mixes)
-  console.log('mixes', mixes)
+  const foods = useUpdatableState('foods', gon.foods)
   const recipes = useUpdatableState('recipes', gon.recipes)
 
-  const all = {page, recipeFilters, suggestions, userTags, userRecipes, favoriteRecipes, machines, machineFoods, containerQuantities, mixes, recipes}
+  const all = {page, recipeFilters, suggestions, userTags, userRecipes, favoriteRecipes, machines, machineFoods, containerQuantities, mixes, recipes, foods}
 
   const parentPages = {
     [PAGE_2]: PAGE_1,

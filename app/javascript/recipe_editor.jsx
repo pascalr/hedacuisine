@@ -104,7 +104,7 @@ const NewIngInputField = props => {
     let data = new FormData()
     let form = document.getElementById(id)
     data.append('recipe_ingredient[raw]', form.elements.raw.value)
-    let f = gon.foods.find(e => e.id == item.dataset.id)
+    let f = foods.find(e => e.id == item.dataset.id)
     data.append('recipe_ingredient[raw_food]', f.name)
     postNewIngredient(data)
   }
@@ -117,7 +117,7 @@ const NewIngInputField = props => {
         de
         {' '}
         <input type="hidden" name="food_id" value="" />
-        <AutocompleteInput name="raw_food" choices={gon.foods} onSelect={onSelect} />
+        <AutocompleteInput name="raw_food" choices={foods} onSelect={onSelect} />
         <input type="submit" value="Ajouter" />
       </Row>
     </form>
@@ -177,7 +177,7 @@ const EditableIngredientComment = (props) => {
   }
 }
 
-const EditableIngredient = ({ingredient}) => {
+const EditableIngredient = ({ingredient, foods, mixes}) => {
 
   if (ingredient == null) {return null;}
 
@@ -188,13 +188,13 @@ const EditableIngredient = ({ingredient}) => {
     }})
   }
 
-  let f = ingredient.food_id ? gon.foods.find(e => e.id == ingredient.food_id) : null
-  let mix = gon.mixes.find(e => e.recipe_id == gon.recipe.id)
+  let f = ingredient.food_id ? foods.find(e => e.id == ingredient.food_id) : null
+  let mix = mixes.find(e => e.recipe_id == gon.recipe.id)
 
   let moveIngToMix = () => {
     let ins = mix.instructions+';ADD,'+ingredient.raw+','+(f ? f.name : ingredient.name)
     ajax({url: mix_path(mix), type: 'PATCH', data: {mix: {instructions: ins}}, success: (mix) => {
-      gon.mixes.update(gon.mixes.map(e => e.id == mix.id ? mix : e))
+      mixes.update(mixes.map(e => e.id == mix.id ? mix : e))
       removeIngredient()
     }})
   }
@@ -365,7 +365,7 @@ export class RecipeEditor extends React.Component {
 
   render() {
 
-    const {page, userRecipes, favoriteRecipes, machines, mixes, machineFoods} = this.props
+    const {page, userRecipes, favoriteRecipes, machines, mixes, machineFoods, foods} = this.props
 
     let ingItems = combineOrderedListWithHeaders(this.state.ingredients, this.state.ingredient_sections, header => header.before_ing_nb)
     console.log('this.state.ingredients', this.state.ingredients)
@@ -392,7 +392,7 @@ export class RecipeEditor extends React.Component {
           {(provided) => (
             <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
               <li className="list-group-item">
-                {<EditableIngredient ingredient={item} />}
+                {<EditableIngredient ingredient={item} {...{mixes, foods}} />}
               </li>
             </div>
           )}
@@ -415,7 +415,7 @@ export class RecipeEditor extends React.Component {
         <Row>
           <Toggleable style={{float: "left"}}>
             <li key={99999} className="list-group-item" style={{height: "37.2px"}}>
-              <NewIngInputField/>
+              <NewIngInputField {...{foods}} />
             </li>
             <img src="/icons/plus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}}/>
             <img src="/icons/minus-circle.svg" style={{width: "2.5rem", padding: "0.5rem"}}/>
