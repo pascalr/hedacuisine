@@ -483,7 +483,7 @@ export const EditMix = ({page, context}) => {
 
   if (!mix) { return '' }
 
-  const recipeHTML = useCacheOrFetchHTML(inline_recipe_path({id: mix.recipe_id}), {waitFor: mix.recipe_id})
+  //const recipeHTML = useCacheOrFetchHTML(inline_recipe_path({id: mix.recipe_id}), {waitFor: mix.recipe_id})
 
   const update = () => {
     console.log('UPDATING')
@@ -850,6 +850,7 @@ const App = () => {
   const machineFoods = useUpdatableState('machineFoods', gon.machine_foods)
   const containerQuantities = useUpdatableState('containerQuantities', gon.container_quantities)
   const mixes = useUpdatableState('mixes', gon.mixes)
+  console.log('mixes', mixes)
   const recipes = useUpdatableState('recipes', gon.recipes)
 
   // FIXME: Using makes me type less, but it's bad for react. It will rerender everything everytime...
