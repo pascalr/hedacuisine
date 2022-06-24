@@ -380,14 +380,6 @@ const TagIndex = ({page, machines, recipeFilters, addRecipeFilter, userTags}) =>
 
   const winWidth = useWindowWidth()
 
-  //const createRecipeFilter = () => {
-  //  ajax({url: recipe_filters_path(), type: 'POST', data: {}, success: (recipe_filter) => {
-  //    addRecipeFilter(recipe_filter)
-  //    changePage(3, {filterId: recipe_filter.id})
-  //  }})
-  //}
-
-  //const buttons = recipeFilters.map(filter => <TagButton key={filter.id} winWidth={winWidth} image={`/img/${filter.image_src || "question-mark.jpg"}`} title={filter.name || "Sans nom"} handleClick={() => changePage(PAGE_9, {filterId: filter.id})} />)
   const buttons = userTags.map(userTag => {
     let tag = recipeFilters.find(t => t.id == userTag.tag_id)
     return <TagButton key={userTag.id} winWidth={winWidth} image={`/img/${tag.image_src || "question-mark.jpg"}`} title={tag.name || "Sans nom"} handleClick={() => page.update({page: PAGE_9, filterId: tag.id})} />
@@ -398,7 +390,6 @@ const TagIndex = ({page, machines, recipeFilters, addRecipeFilter, userTags}) =>
   })
 
   // Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
-  //<TagButton winWidth={winWidth} image="/img/recipes.jpg" title="Mes livres" handleClick={() => changePage(7)} />
   return (<>
     <div style={{maxWidth: "100vw", width: "400px", margin: "auto"}}>
       <TagButton winWidth={winWidth} image="/img/cooking.jpg" title="Mes recettes" handleClick={() => page.update({page: PAGE_6})} />
@@ -835,7 +826,7 @@ const MyRecipes = ({page, suggestions, tags, userRecipes, favoriteRecipes, mixes
 
 const App = () => {
   
-  const page = useUpdatableState('page', getUrlParams(), (updated) => {
+  const page = useRegisteredState('page', getUrlParams(), (updated) => {
     let s = getStateProperties(updated)
     window.history.replaceState(s, '', '?'+new URLSearchParams(s).toString())
   })

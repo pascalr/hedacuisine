@@ -8,6 +8,11 @@ export const registerSetter(id, setter) {
   window.__setters[''+id] = setter
 }
 
+export const getSetter(id, setter) {
+  window.__setters ||= {}
+  window.__setters[''+id] = setter
+}
+
 export const useRegisteredState = (name, initial, callback=null) => {
   const [state, setState] = useState(initial)
   registerSetter(name, setState)
