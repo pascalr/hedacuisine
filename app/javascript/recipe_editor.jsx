@@ -364,6 +364,9 @@ export class RecipeEditor extends React.Component {
   }
 
   render() {
+
+    const {page, userRecipes, favoriteRecipes, machines, mixes, machineFoods} = this.props
+
     let ingItems = combineOrderedListWithHeaders(this.state.ingredients, this.state.ingredient_sections, header => header.before_ing_nb)
     console.log('this.state.ingredients', this.state.ingredients)
     ingItems = ingItems.concat(this.state.ingredient_sections.filter(s => s.before_ing_nb > this.state.ingredients.length))
@@ -460,7 +463,6 @@ export class RecipeEditor extends React.Component {
     //console.log('recipe image', recipe_image)
     const imagePath = image ? image_variant_path(image, 'medium') : "/default_recipe_01.png"
     //console.log(model)
-    let mixes = this.props.context.mixes
     const mix = mixes.find(m => m.recipe_id == recipe.id)
 
     const createMix = () => {
@@ -469,7 +471,7 @@ export class RecipeEditor extends React.Component {
       }})
     }
   
-    let mixEditor = mix ? <EditMix page={this.props.page} context={this.props.context} /> : (<>
+    let mixEditor = mix ? <EditMix {...{page, userRecipes, favoriteRecipes, machines, mixes, machineFoods}} /> : (<>
       <p>Vous pouvez ajouter des instructions pour automatiser cette recette.</p>
       <button type="button" className="btn btn-primary" onClick={createMix}>Ajouter</button>
     </>)

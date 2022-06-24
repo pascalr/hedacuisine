@@ -473,12 +473,12 @@ const labelForCmdType = (cmdType) => {
   return t ? t.label.fr : cmdType.id
 }
 
-export const EditMix = ({page, context}) => {
+export const EditMix = ({page, userRecipes, favoriteRecipes, machines, mixes, machineFoods}) => {
 
-  const {userRecipes, favoriteRecipes, machines, mixes, ...args} = context
+  const context = {userRecipes, favoriteRecipes, machines, mixes, machineFoods}
 
   const machine = page.machineId ? machines.find(m => m.id == page.machineId) : null
-  const machineFoods = machine ? args.machineFoods.filter(m => m.machine_id == machine.id) : args.machineFoods
+  const currentMachineFoods = machine ? machineFoods.filter(m => m.machine_id == machine.id) : machineFoods
   const mix = page.recipeId ? mixes.find(m => m.recipe_id == page.recipeId) : mixes.find(m => m.id == page.mixId)
 
   if (!mix) { return '' }
@@ -551,12 +551,12 @@ export const EditMix = ({page, context}) => {
     if (obj && obj.type.id == "ADD") {
       eArgs = (<>
         <TextInput defaultValue={obj.qty} onBlur={(qty) => updateArg(1, qty, line)} />
-        <AutocompleteInput name="food" choices={machineFoods} defaultValue={obj.machineFoodName}
+        <AutocompleteInput name="food" choices={currentMachineFoods} defaultValue={obj.machineFoodName}
           onSelect={(e, term, item) => {
-            f = machineFoods.find(e => e.id == item.dataset.id);
+            f = currentMachineFoods.find(e => e.id == item.dataset.id);
             updateArg(2, `${item.dataset.id}-${f ? f.name : ''}`, line)
           }} onBlur={(name) => {
-            f = machineFoods.find(e => e.name  == name);
+            f = currentMachineFoods.find(e => e.name  == name);
             updateArg(2, `${f ? f.id : ''}-${name}`, line)
           }} minChars={0}
         />
@@ -598,10 +598,10 @@ export const EditMix = ({page, context}) => {
     )
   })
 
-  const recipeIds = context.favoriteRecipes.map(r => r.recipe_id).concat(context.userRecipes.map(r => r.id))
+  const recipeIds = favoriteRecipes.map(r => r.recipe_id).concat(userRecipes.map(r => r.id))
   const recipeNames = {}
-  context.favoriteRecipes.forEach(r => {recipeNames[r.recipe_id] = r.name})
-  context.userRecipes.forEach(r => {recipeNames[r.id] = r.name})
+  favoriteRecipes.forEach(r => {recipeNames[r.recipe_id] = r.name})
+  userRecipes.forEach(r => {recipeNames[r.id] = r.name})
     
   //  <br/><br/>
   //  <h2>Recette</h2>
@@ -632,26 +632,24 @@ export const EditMix = ({page, context}) => {
   </>)
 }
 
-const ShowRecipe = ({page, context}) => {
+const ShowRecipe = ({page}) => {
   const recipeHTML = useCacheOrFetchHTML(inline_recipe_path({id: page.recipeId}), {waitFor: page.recipeId})
   return recipeHTML ? <div dangerouslySetInnerHTML={{__html: recipeHTML}} /> : ''
 }
 
-const EditRecipe = ({page, context}) => {
+const EditRecipe = ({page, userRecipes, favoriteRecipes, machines, mixes, machineFoods, recipes}) => {
   
-  const recipe = context.recipes.find(e => e.id == page.recipeId)
+  const recipe = recipes.find(e => e.id == page.recipeId)
 
   window.recipe_editor = useRef(null) // FIXME: This is really ugly
   gon.recipe = recipe // FIXME: This is really ugly
-  return <RecipeEditor page={page} context={context} ref={window.recipe_editor}/>
+  return <RecipeEditor {...{page, userRecipes, favoriteRecipes, machines, mixes, machineFoods}} ref={window.recipe_editor}/>
 }
   
-const ShowMix = ({page, context}) => {
-
-  const {userRecipes, favoriteRecipes, machines, mixes, ...args} = context
+const ShowMix = ({page, userRecipes, favoriteRecipes, machines, mixes, machineFoods}) => {
 
   const machine = page.machineId ? machines.find(m => m.id == page.machineId) : null
-  const machineFoods = machine ? args.machineFoods.filter(m => m.machine_id == machine.id) : args.machineFoods
+  const currentMachineFoods = machine ? machineFoods.filter(m => m.machine_id == machine.id) : machineFoods
   const mix = mixes.find(m => m.id == page.mixId)
 
   console.log('mix.recipe_id', mix.recipe_id)
@@ -691,10 +689,10 @@ const ShowMix = ({page, context}) => {
   </>)
 }
 
-const MixIndex = ({page, machines, mixes, ...args}) => {
+const MixIndex = ({page, machines, mixes, machineFoods}) => {
 
   const machine = machines.find(m => m.id == page.machineId)
-  const machineFoods = args.machineFoods.filter(m => m.machine_id == page.machineId)
+  const currentMachineFoods = machineFoods.filter(m => m.machine_id == page.machineId)
 
   const createMix = () => {
     ajax({url: mixes_path(), type: 'POST', data: {}, success: (mix) => {
@@ -724,12 +722,12 @@ const MixIndex = ({page, machines, mixes, ...args}) => {
   </>)
 }
 
-const Inventory = ({page, machines, containerQuantities, ...args}) => {
+const Inventory = ({page, machines, containerQuantities, machineFoods}) => {
 
   const machine = machines.find(m => m.id == page.machineId)
-  const machineFoods = args.machineFoods.filter(m => m.machine_id == page.machineId)
+  const currentMachineFoods = machineFoods.filter(m => m.machine_id == page.machineId)
 
-  const items = machineFoods.map(machineFood => {
+  const items = currentMachineFoods.map(machineFood => {
     let qties = containerQuantities.filter(c => c.machine_food_id == machineFood.id)
 
     //<img src={`JarIcon${containerQuantity.container_format_name}.png`} width="42" height="42"></img>
@@ -853,8 +851,7 @@ const App = () => {
   console.log('mixes', mixes)
   const recipes = useUpdatableState('recipes', gon.recipes)
 
-  // FIXME: Using makes me type less, but it's bad for react. It will rerender everything everytime...
-  const context = {recipeFilters, suggestions, userTags, userRecipes, favoriteRecipes, machines, machineFoods, containerQuantities, mixes, recipes}
+  const all = {page, recipeFilters, suggestions, userTags, userRecipes, favoriteRecipes, machines, machineFoods, containerQuantities, mixes, recipes}
 
   const parentPages = {
     [PAGE_2]: PAGE_1,
@@ -887,10 +884,10 @@ const App = () => {
     [PAGE_10]: <HedaIndex {...{page, machines}} />,
     [PAGE_11]: <Inventory {...{page, machines, machineFoods, containerQuantities}} />,
     [PAGE_12]: <MixIndex {...{page, machines, machineFoods, mixes}} />,
-    [PAGE_13]: <ShowMix {...{page, context}} />,
-    [PAGE_14]: <EditMix {...{page, context}} />,
-    [PAGE_15]: <ShowRecipe {...{page, context}} />,
-    [PAGE_16]: <EditRecipe {...{page, context}} />,
+    [PAGE_13]: <ShowMix {...all} />,
+    [PAGE_14]: <EditMix {...all} />,
+    [PAGE_15]: <ShowRecipe {...all} />,
+    [PAGE_16]: <EditRecipe {...all} />,
   }
 
   // I don't want a back system, I want a up system. So if you are given a nested link, you can go up.
