@@ -5,19 +5,24 @@ import {recipe_recipe_ingredient_path, food_path, recipe_ingredient_section_path
 
 export const useUpdatableState = (name, initial, callback=null) => {
   const [state, setState] = useState(initial)
-  bindSetter(state, (updated) => {
-    // Keep gon updated to the latest state
-    // Make a copy to avoid modifying this data
-    if (gon[name] instanceof Array) {
-      let f = gon[name].update
-      gon[name] = gon[name].map(e => ({...e})) 
-      gon[name].update = f
+  useEffect(() => {
+    bindSetter(state, (updated) => {
+      setState(updated)
+      if (callback) {callback(updated)}
+    })
+  }, [state])
+
+  // Keep gon updated to the latest state
+  useEffect(() => {
+    let copy = null
+    if (state instanceof Array) {
+      copy = [...state].map(e => ({...e})) 
+      copy.update = state.update
     } else {
-      gon[name] = {...updated} 
+      copy = {...state} 
     }
-    if (callback) {callback(updated)}
-    setState(updated)
-  })
+    gon[name] = copy
+  }, [state])
   return state
 }
 export const getStateProperties = (state) => {
