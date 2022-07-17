@@ -104,7 +104,7 @@ const NewIngInputField = props => {
     let data = new FormData()
     let form = document.getElementById(id)
     data.append('recipe_ingredient[raw]', form.elements.raw.value)
-    let f = foods.find(e => e.id == item.dataset.id)
+    let f = props.foods.find(e => e.id == item.dataset.id)
     data.append('recipe_ingredient[raw_food]', f.name)
     postNewIngredient(data)
   }
@@ -117,7 +117,7 @@ const NewIngInputField = props => {
         de
         {' '}
         <input type="hidden" name="food_id" value="" />
-        <AutocompleteInput name="raw_food" choices={foods} onSelect={onSelect} />
+        <AutocompleteInput name="raw_food" choices={props.foods} onSelect={onSelect} />
         <input type="submit" value="Ajouter" />
       </Row>
     </form>
