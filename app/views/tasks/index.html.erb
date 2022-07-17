@@ -24,7 +24,7 @@
         <td><%= task.frequency %></td>
         <td><%= link_to 'Show', task %></td>
         <td><%= link_to 'Edit', edit_task_path(task) %></td>
-        <td><%= link_to 'Destroy', task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to_delete 'Destroy', task, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

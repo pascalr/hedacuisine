@@ -51,7 +51,7 @@
           <td><%= form.check_box :is_public %></td>
           <td><%= form.submit "Mettre à jour" %></td>
           <td><%= link_to 'Show', food %></td>
-          <td><%= link_to 'Destroy', food, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to_delete 'Destroy', food, data: { confirm: 'Are you sure?' } %></td>
         </tr>
       <% end %>
     <% end %>

@@ -51,6 +51,12 @@ module ApplicationHelper
     end
   end
 
+  # Since I updated to rails 7, link_to method: :delete does not work anymore... I use button_to method: :delete for it to work now...
+  # This seems to be the proper way to do it. See: https://stackoverflow.com/questions/70474422/rails-7-link-to-with-method-delete-still-performs-get-request 
+  def link_to_delete(name, path, options={})
+    button_to name, path, options.merge({method: :delete})
+  end
+
   # Probablement inutile... Attendre pour voir.
   def recipe_in_category_path(recipe_kind, args={})
     if args[:recipe_id]

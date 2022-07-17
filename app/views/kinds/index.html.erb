@@ -27,7 +27,7 @@
           <td><%= form.collection_select :kind_id, @kinds, :id, :name, include_blank: true %></td>
           <td><%= form.submit 'Update' %></td>
           <td><%= link_to 'Show', abstract %></td>
-          <td><%= link_to 'Destroy', abstract, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to_delete 'Destroy', abstract, data: { confirm: 'Are you sure?' } %></td>
         </tr>
       <% end %>
     <% end %>

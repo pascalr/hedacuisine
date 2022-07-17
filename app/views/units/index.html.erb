@@ -30,7 +30,7 @@
             <td><%= form.check_box :show_fraction %></td>
             <td><%= form.submit "Mettre à jour" %></td>
             <td><%= link_to 'Show', unit %></td>
-            <td><%= link_to 'Destroy', unit, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td><%= link_to_delete 'Destroy', unit, data: { confirm: 'Are you sure?' } %></td>
           </tr>
         <% end %>
       <% end %>

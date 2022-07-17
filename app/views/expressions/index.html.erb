@@ -33,7 +33,7 @@
             <td><%= nested.check_box :contract_preposition %></td>
           <% end %>
           <td><%= form.submit "Mettre à jour" %></td>
-          <td><%= link_to 'Destroy', expression, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to_delete 'Destroy', expression, data: { confirm: 'Are you sure?' } %></td>
         </tr>
       <% end %>
     <% end %>

@@ -3,7 +3,7 @@
 <h2>Meals - <%= @day.day %> <%= t('date.month_names')[@day.month] %> <%= @day.year %></h2>
 
 <% @meals.each do |meal| %>
-  <%= meal.start_time.strftime("%k:%M") %>: <%= link_to meal.recipe.name, recipe_path(meal.recipe) %> <%= link_to 'x', [@machine, meal], method: :delete, data: { confirm: 'Are you sure?' } %><br>
+  <%= meal.start_time.strftime("%k:%M") %>: <%= link_to meal.recipe.name, recipe_path(meal.recipe) %> <%= link_to_delete 'x', [@machine, meal], data: { confirm: 'Are you sure?' } %><br>
 <% end %>
 
 <h3>New Meal</h3>

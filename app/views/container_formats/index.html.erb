@@ -34,7 +34,7 @@
           <td><%= form.number_field :lid_weight, precision: 2, step: 0.1, size: 6 %></td>
           <td><%= form.submit "Mettre à jour" %></td>
           <td><%= link_to 'Show', container_format %></td>
-          <td><%= link_to 'Destroy', container_format, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to_delete 'Destroy', container_format, data: { confirm: 'Are you sure?' } %></td>
         </tr>
       <% end %>
     <% end %>

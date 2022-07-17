@@ -3,7 +3,7 @@
   <% if current_user and recipe.user_rating(current_user) %>
 
     <div class="rating" style="display: inline-block;" data-id=<%= recipe.id %> <%= "data-rating=#{recipe.user_rating(current_user).rating}" %>></div>
-    <span style="padding-left: 3px;"><%= link_to 'X', recipe_ratings_path(recipe_id: recipe.id), method: :delete %></span>
+    <span style="padding-left: 3px;"><%= link_to_delete 'X', recipe_ratings_path(recipe_id: recipe.id) %></span>
 
   <% elsif recipe.average_rating %>
 

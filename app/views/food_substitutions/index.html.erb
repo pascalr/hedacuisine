@@ -35,7 +35,7 @@
           <td><%= form.text_field :substitute_raw_quantity, size: "6" %></td>
           <td><%= substitution.substitute.name %></td>
           <td><%= form.submit "Mettre à jour" %></td>
-          <td><%= link_to 'Destroy', substitution, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to_delete 'Destroy', substitution, data: { confirm: 'Are you sure?' } %></td>
         </tr>
       <% end %>
     <% end %>

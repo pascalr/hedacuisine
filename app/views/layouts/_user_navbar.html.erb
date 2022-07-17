@@ -14,7 +14,7 @@
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <%= link_to "Mon profil", current_user, class: "dropdown-item" %>
             <%= link_to t("heda.modify"), users_modify_path, class: "dropdown-item" %>
-            <%= link_to t("heda.menu.logout"), destroy_account_session_path, method: :delete, class: "dropdown-item"  %>
+            <%= button_to t("heda.menu.logout"), destroy_account_session_path, method: :delete, class: "dropdown-item"  %>
             <% unless current_user.siblings.blank? %>
               <li><hr class="dropdown-divider"></li>
               <li><h6 class="dropdown-header">Changer d'utilisateur</h6></li>

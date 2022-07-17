@@ -6,7 +6,7 @@
 <% @empty_containers = @machine.containers.left_outer_joins(:container_ingredients).where(container_ingredients: { id: nil }).where(food_id: nil) %>
 
 <%= link_to "print", "TODO_CLEAR" %> | 
-<%= link_to "clear", machine_clear_grocery_items_path(@machine), method: :delete, data: {confirm: "Are you sure?"} %>
+<%= link_to_delete "clear", machine_clear_grocery_items_path(@machine), data: {confirm: "Are you sure?"} %>
 
 <h1 style="font-size: 1.5rem; margin-top: 1.5rem;">Grocery list</h1>
 
@@ -57,7 +57,7 @@ tr:last-child td:last-child { border-bottom-right-radius: 5px; }
           <%= item.description %>
         </td>
         <td style="border-left: 0; text-align: center">
-          <%= link_to "X", [@machine, item], method: :delete, data: {confirm: 'Are you sure?'} %>
+          <%= link_to_delete "X", [@machine, item], data: {confirm: 'Are you sure?'} %>
         </td>
       </tr>
     <% end %>

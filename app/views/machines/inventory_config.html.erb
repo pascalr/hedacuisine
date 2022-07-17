@@ -63,7 +63,7 @@
             <% end %>
           </td>
           <td style="vertical-align: middle;"><%= form.submit "Mettre à jour" %></td>
-          <td style="vertical-align: middle;"><%= link_to 'Destroy', [@machine, machine_food], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td style="vertical-align: middle;"><%= link_to_delete 'Destroy', [@machine, machine_food], data: { confirm: 'Are you sure?' } %></td>
         </tr>
       <% end %>
     <% end %>

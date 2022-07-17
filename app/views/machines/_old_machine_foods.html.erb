@@ -27,7 +27,7 @@
           <td><%= form.text_field :manual_full_weight %></td>
           <td><%= pretty_volume_and_weight(Ingredient.food_grams(machine_food.food, machine_food.full_weight)) %></td>
           <td><%= form.submit "Mettre à jour" %></td>
-          <td><%= link_to 'Destroy', [@machine, machine_food], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to_delete 'Destroy', [@machine, machine_food], data: { confirm: 'Are you sure?' } %></td>
         </tr>
       <% end %>
     <% end %>

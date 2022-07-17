@@ -12,7 +12,7 @@
     <div>
       <% c = recipe_kind.recipes.count %>
       <%= link_to recipe_kind.name, edit_recipe_kind_path(recipe_kind) %>(<%= c %> <%= c > 1 ? "recettes" : "recette" %>)
-      <%= link_to "X", recipe_kind_path(recipe_kind), method: :delete, 'data-confirm': 'Are you sure?' %>
+      <%= link_to_delete "X", recipe_kind_path(recipe_kind), 'data-confirm': 'Are you sure?' %>
     </div>
   <% end %>
 <% end %>

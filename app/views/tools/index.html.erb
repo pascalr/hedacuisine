@@ -21,7 +21,7 @@
       <tr>
         <td><%= abstract.name %></td>
         <td><%= link_to 'Show', abstract %></td>
-        <td><%= link_to 'Destroy', abstract, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to_delete 'Destroy', abstract, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

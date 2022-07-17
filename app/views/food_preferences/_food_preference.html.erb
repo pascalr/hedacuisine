@@ -5,5 +5,5 @@
     <%= form.submit %>
   <% end %>
 <% end %>
-<%= link_to 'x', food_preference_path(food_preference), method: :delete, data: {confirm: 'Are you sure?'} %>
+<%= link_to_delete 'x', food_preference_path(food_preference), data: {confirm: 'Are you sure?'} %>
 <br>
