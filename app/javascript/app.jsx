@@ -849,6 +849,8 @@ const App = () => {
 
   const all = {page, recipeFilters, suggestions, userTags, userRecipes, favoriteRecipes, machines, machineFoods, containerQuantities, mixes, recipes, foods}
 
+  const [isSearching, setIsSearching] = useState(false)
+
   const parentPages = {
     [PAGE_2]: PAGE_1,
     [PAGE_3]: PAGE_4,
@@ -901,13 +903,16 @@ const App = () => {
   // Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
   return (<>
     <div className="d-flex align-items-center">
-      {moveBtn}
+      {isSearching ? '' : moveBtn}
       <div className="flex-grow-1"/>
       <h1 style={{marginBottom: "0"}}>Qu'est-ce qu'on mange?</h1>
       <div className="flex-grow-1"/>
+      {page.page == 6 ? '' : <img className="clickable" src={icon_path("search_black.svg")} width="24" onClick={() => {setIsSearching(!isSearching)}}/>}
     </div>
     <hr style={{color: "#aaa", marginTop: "0"}}/>
-    {pages[page.page || 1]}
+    {isSearching ? <>
+      {pages[6]}
+    </> : pages[page.page || 1]}
   </>)
 }
 
