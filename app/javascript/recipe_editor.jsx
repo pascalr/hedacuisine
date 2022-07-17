@@ -272,6 +272,12 @@ export class RecipeEditor extends React.Component {
     this.pasteIngredients = this.pasteIngredients.bind(this)
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.ingredients !== this.state.ingredients) {
+      gon.recipe_ingredients = this.state.ingredients
+    }
+  }
+
   //swapIng(dragIndex, dropIndex) {
   //  let swappedIngs = swapArrayPositions(this.state.ings, dragIndex, dropIndex);
   //  this.setState({ings: swappedIngs})
