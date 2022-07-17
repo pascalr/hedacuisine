@@ -1,3 +1,23 @@
+Grandeur des batteurs: 3" de rayon - 1 1/8" offset orbitale = 1.875" - diamètre batteur - clearance = 1.875" - 0.125" - 0.125" = 1.625"
+
+Pour être pris facilement, il faudrait que le contenant mesure 5 1/2" maximum. Avec une hauteur de disons
+ 6", ça fait un volume de 3.1416*(5.5/2)**2*6. Ça donne 3.1 L
+
+Le bol de la machine à pain fait 2.75L (mesuré volume). 5.25*5.75*5.5 in^3 to L = 2.72L
+
+À 5.5" de diamètre, le contenant doit mesurer 7" de hauteur pour être aussi grand que le bol de la machine à pain.
+
+À 6.5" de diamètre, le contenant doit mesurer 5.875" de hauteur pour être aussi grand que le bol de la machine à pain. Ça me semble bon...
+
+Un petit mélangeur sur pied a un volume de 4.5 qt == 5.114351 L.
+
+De combien est-ce que ça monte où descend quand ça s'incline. Est-ce que ça va accrocher sur le bord?
+
+registerSetter('foods', setter)
+getSetter('foods').update()
+
+Si au lieu d'un bras robotique qui cuisine, considérer une épicerie en vrac automatisée qui peut faire des mélanges sur mesures? L'avantage du bras robotique c'est que ça peut scale. Je peux ajouter modulairement des modules de cuisine automatique à côté.
+
 https://sebhastian.com/react-context-api/
 
 Pouvoir drag and drop des ingrédients et des commandes ajouter d'une liste à l'autre!!!

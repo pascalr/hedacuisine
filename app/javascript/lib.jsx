@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { omit, join, bindSetter } from "./utils"
+import { omit, join, bindSetter, capitalize } from "./utils"
 
 import {recipe_recipe_ingredient_path, food_path, recipe_ingredient_section_path, recipe_path, recipe_recipe_note_path, image_path } from './routes'
 
-export const registerSetter(id, setter) {
-  window.__setters ||= {}
-  window.__setters[''+id] = setter
+// I think I should convert updatable state to registered state.
+// The advantage is that it does not modify the model by adding an update method.
+export const register = (id, setter) => {
+  window.__registers||= {}
+  window.__registers[''+id] = setter
 }
 
-export const getSetter(id, setter) {
-  window.__setters ||= {}
-  window.__setters[''+id] = setter
+export const getRegister = (id) => {
+  window.__registers||= {}
+  return window.__registers[''+id]
 }
 
 export const useRegisteredState = (name, initial, callback=null) => {
   const [state, setState] = useState(initial)
-  registerSetter(name, setState)
+  register('set'+capitalize(name), setState)
 
   useEffect(() => {
     if (callback) {callback(state)}
@@ -80,7 +82,7 @@ export function urlFor(model) {
 export const LinkToPage = ({page, className, children, active, ...props}) => {
   const switchPage = (evt, page) => {
     evt.preventDefault()
-    page.update(getStateProperties(page))
+    getRegister('setPage')(getStateProperties(page))
   }
   const href = '?'+new URLSearchParams(getStateProperties(page)).toString()
 

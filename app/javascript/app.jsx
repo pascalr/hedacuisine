@@ -5,7 +5,7 @@ import Hammer from "react-hammerjs"
 //import history from 'history/hash'
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { useCacheOrFetch, useCacheOrFetchHTML, useWindowWidth, LinkToPage, useUpdatableState, getStateProperties } from "./lib"
+import { useCacheOrFetch, useCacheOrFetchHTML, useWindowWidth, LinkToPage, useUpdatableState, getStateProperties, register, getRegister, useRegisteredState } from "./lib"
 import {RecipeIndex} from './recipe_index'
 import { ajax, isBlank, preloadImage, getUrlParams, join, bindSetter, sortBy, capitalize } from "./utils"
 import { icon_path, recipe_kind_path, suggestions_path, image_variant_path, send_data_suggestions_path, batch_update_filtered_recipes_path, batch_create_filtered_recipes_path, batch_destroy_filtered_recipes_path, recipe_filters_path, recipe_filter_path, missing_filtered_recipes_path, user_recipes_recipes_path, new_recipe_path, new_book_path, user_books_books_path, my_books_path, all_recipe_kinds_recipe_filters_path, recipe_path, user_tags_path, user_tag_path, containers_path, grocery_list_path, calendar_path, inventory_path, mixes_path, mix_path, inline_recipe_path, recipe_recipe_ingredients_path } from './routes'
@@ -36,6 +36,10 @@ const PAGE_17 = 17
 const PAGE_18 = 18
 const PAGE_19 = 19
 const PAGE_20 = 20
+
+const changePage = (page) => {
+  getRegister('setPage')(page)
+}
   
 const encodeRecord = (record) => (`${record.class_name == "recipe_kind" ? '' : '_'}${record.id}`)
 
@@ -298,7 +302,7 @@ const EditFilter = ({page, recipeFilters}) => {
     </div>
     <br/>
     <div>
-      <button type="button" className="btn btn-primary" onClick={() => page.update({page: 8, filterId: filter.id})}>Modifier les catégories correspondantes</button>
+      <button type="button" className="btn btn-primary" onClick={() => changePage({page: 8, filterId: filter.id})}>Modifier les catégories correspondantes</button>
     </div>
   </>)
 }
@@ -321,7 +325,7 @@ const EditUserTags = ({userTags, recipeFilters, page}) => {
       {(provided) => (<>
         <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
           <li>
-            <span className="cursor-pointer" onClick={() => page.update({page: 3, filterId: tag.id})}>{tag.name || "Sans nom"}</span>
+            <span className="cursor-pointer" onClick={() => changePage({page: 3, filterId: tag.id})}>{tag.name || "Sans nom"}</span>
             <DeleteConfirmButton id={`del-user-tag-${userTag.id}`} onDeleteConfirm={() => removeUserTag(userTag)} message="Je veux retirer cette étiquette?" />
           </li>
         </div>
@@ -382,21 +386,21 @@ const TagIndex = ({page, machines, recipeFilters, addRecipeFilter, userTags}) =>
 
   const buttons = userTags.map(userTag => {
     let tag = recipeFilters.find(t => t.id == userTag.tag_id)
-    return <TagButton key={userTag.id} winWidth={winWidth} image={`/img/${tag.image_src || "question-mark.jpg"}`} title={tag.name || "Sans nom"} handleClick={() => page.update({page: PAGE_9, filterId: tag.id})} />
+    return <TagButton key={userTag.id} winWidth={winWidth} image={`/img/${tag.image_src || "question-mark.jpg"}`} title={tag.name || "Sans nom"} handleClick={() => changePage({page: PAGE_9, filterId: tag.id})} />
   })
 
   const machineButtons = machines.map(machine => {
-    return <TagButton key={`machine-${machine.id}`} winWidth={winWidth} image='/img/robot.jpg' title={machine.name || "Heda"} handleClick={() => page.update({page: PAGE_10, machineId: machine.id})} />
+    return <TagButton key={`machine-${machine.id}`} winWidth={winWidth} image='/img/robot.jpg' title={machine.name || "Heda"} handleClick={() => changePage({page: PAGE_10, machineId: machine.id})} />
   })
 
   // Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
   return (<>
     <div style={{maxWidth: "100vw", width: "400px", margin: "auto"}}>
-      <TagButton winWidth={winWidth} image="/img/cooking.jpg" title="Mes recettes" handleClick={() => page.update({page: PAGE_6})} />
+      <TagButton winWidth={winWidth} image="/img/cooking.jpg" title="Mes recettes" handleClick={() => changePage({page: PAGE_6})} />
       <TagButton winWidth={winWidth} image="/img/recipes.jpg" title="Mes livres" handleClick={() => {window.location.href = my_books_path()}} />
       {machineButtons}
       {buttons}
-      <TagButton winWidth={winWidth} image="/icons/gear-gray.svg" title="Paramètres" handleClick={() => page.update({page: PAGE_4})} />
+      <TagButton winWidth={winWidth} image="/icons/gear-gray.svg" title="Paramètres" handleClick={() => changePage({page: PAGE_4})} />
     </div>
   </>)
 }
@@ -668,7 +672,7 @@ const ShowMix = ({page, userRecipes, favoriteRecipes, machines, mixes, machineFo
   return (<>
     <div className="d-flex gap-20 align-items-center">
       <h1>{mix.name || 'Sans nom'}</h1>
-      <button type="button" className="btn btn-outline-primary btn-sm" onClick={() => page.update({page: PAGE_14, machineId: machine.id, mixId: mix.id})}>Modifier</button>
+      <button type="button" className="btn btn-outline-primary btn-sm" onClick={() => changePage({page: PAGE_14, machineId: machine.id, mixId: mix.id})}>Modifier</button>
     </div>
     <ul className="list-group">{eInstructions}</ul>
     <div style={{height: '0.5em'}}></div>
@@ -689,7 +693,7 @@ const MixIndex = ({page, machines, mixes, machineFoods}) => {
   const createMix = () => {
     ajax({url: mixes_path(), type: 'POST', data: {}, success: (mix) => {
       mixes.update([...mixes, mix])
-      page.update({page: PAGE_14, machineId: machine.id, mixId: mix.id})
+      changePage({page: PAGE_14, machineId: machine.id, mixId: mix.id})
     }})
   }
   const destroyMix = (mix) => {
@@ -701,7 +705,7 @@ const MixIndex = ({page, machines, mixes, machineFoods}) => {
   const sorted = sortBy(mixes, "name") // Sorting client side so newly created are sorted
   const eMixes = sorted.map(mix => {
     return <li key={mix.id} className="list-group-item">
-      <span className="clickable" onClick={() => page.update({page: PAGE_13, machineId: machine.id, mixId: mix.id})}>{mix.name || 'Sans nom'}</span>
+      <span className="clickable" onClick={() => changePage({page: PAGE_13, machineId: machine.id, mixId: mix.id})}>{mix.name || 'Sans nom'}</span>
       <img className="clickable float-end" src="/icons/x-lg.svg" width="18" height="18" onClick={() => destroyMix(mix)}></img>
     </li>
   })
@@ -777,8 +781,8 @@ const HedaIndex = ({page, machines}) => {
   return (<>
     <div style={{maxWidth: "100vw", width: "400px", margin: "auto"}}>
       <TagButton winWidth={winWidth} image="/img/calendar.jpg" title="Calendrier" handleClick={() => window.location.href = calendar_path(machine)} />
-      <TagButton winWidth={winWidth} image="/img/blender.jpg" title="Mélanges" handleClick={() => page.update({page: PAGE_12, machineId: machine.id})} />
-      <TagButton winWidth={winWidth} image="/img/bar_code.jpg" title="Inventaire" handleClick={() => page.update({page: PAGE_11, machineId: machine.id})} />
+      <TagButton winWidth={winWidth} image="/img/blender.jpg" title="Mélanges" handleClick={() => changePage({page: PAGE_12, machineId: machine.id})} />
+      <TagButton winWidth={winWidth} image="/img/bar_code.jpg" title="Inventaire" handleClick={() => changePage({page: PAGE_11, machineId: machine.id})} />
     
       <TagButton winWidth={winWidth} image="/img/jar.svg" title="Pots" handleClick={() => window.location.href = containers_path(machine)} />
       <TagButton winWidth={winWidth} image="/img/shopping_cart.jpg" title="Liste d'épicerie" handleClick={() => window.location.href = grocery_list_path(machine)} />
@@ -885,7 +889,7 @@ const App = () => {
   // I don't want a back system, I want a up system. So if you are given a nested link, you can go up.
   const goUp = () => {
     if (page.page && parentPages[page.page]) {
-      page.update({...getStateProperties(page), page: parentPages[page.page]})
+      changePage({...getStateProperties(page), page: parentPages[page.page]})
     }
   }
 
