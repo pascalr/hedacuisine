@@ -905,7 +905,7 @@ const App = () => {
     <div className="d-flex align-items-center">
       {isSearching ? '' : moveBtn}
       <div className="flex-grow-1"/>
-      <h1 style={{marginBottom: "0"}}>Qu'est-ce qu'on mange?</h1>
+      <h1 style={{marginBottom: "0"}} className="clickable" onClick={() => changePage(1)}>Qu'est-ce qu'on mange?</h1>
       <div className="flex-grow-1"/>
       {page.page == 6 ? '' : <img className="clickable" src={icon_path("search_black.svg")} width="24" onClick={() => {setIsSearching(!isSearching)}}/>}
     </div>
