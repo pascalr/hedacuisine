@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_12_130209) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_19_212228) do
   create_table "accounts", force: :cascade do |t|
     t.string "email", limit: 255, default: "", null: false
     t.string "encrypted_password", limit: 255, default: "", null: false
@@ -719,25 +719,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_12_130209) do
     t.index ["language_id"], name: "index_units_on_language_id"
   end
 
-  create_table "user_recipe_categories", force: :cascade do |t|
-    t.string "name", limit: 255
-    t.bigint "user_id", null: false
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.index ["user_id"], name: "index_user_recipe_categories_on_user_id"
-  end
-
-  create_table "user_recipes", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "recipe_id", null: false
-    t.bigint "user_recipe_category_id"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.index ["recipe_id"], name: "index_user_recipes_on_recipe_id"
-    t.index ["user_id"], name: "index_user_recipes_on_user_id"
-    t.index ["user_recipe_category_id"], name: "index_user_recipes_on_user_recipe_category_id"
-  end
-
   create_table "user_siblings", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.integer "sibling_id", null: false
@@ -841,10 +822,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_12_130209) do
   add_foreign_key "unit_system_items", "unit_systems"
   add_foreign_key "unit_system_items", "units"
   add_foreign_key "units", "languages"
-  add_foreign_key "user_recipe_categories", "users"
-  add_foreign_key "user_recipes", "recipes"
-  add_foreign_key "user_recipes", "user_recipe_categories"
-  add_foreign_key "user_recipes", "users"
   add_foreign_key "user_siblings", "users"
   add_foreign_key "user_tags", "users"
   add_foreign_key "weighings", "foods"

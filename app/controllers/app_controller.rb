@@ -5,13 +5,12 @@ class AppController < ApplicationController
     gon.user_tags = current_user.user_tags.order(:position).map {|t| t.to_obj}
     gon.recipe_filters = RecipeFilter.where(user_id: nil).or(current_user.recipe_filters).map {|f| f.to_obj }
     gon.favorite_recipes = current_user.favorite_recipes.includes(:recipe).sort_by {|fav| fav.recipe.name}.map{|fav| fav.to_obj}
-    gon.user_recipes = current_user.recipes.order(:name).map {|r| r.to_obj(only: :name)}
     gon.machines = current_user.machines.map {|m| m.to_obj}
     gon.containers = current_user.containers.map {|c| c.to_obj}
     gon.machine_foods = current_user.machine_foods.includes(:food).sort_by(&:name).map {|f| f.to_obj}
     gon.container_quantities = current_user.container_quantities.includes(:container_format).map {|c| c.to_obj}
     gon.mixes = current_user.mixes.map {|e| e.to_obj}
-    gon.recipes = current_user.recipes.map {|e| e.to_obj}
+    gon.recipes = current_user.recipes.order(:name).map {|e| e.to_obj}
     gon.recipe_kinds = RecipeKind.order(:name).map {|e| e.to_obj(only: [:name, :image_id])}
     gon.images = Image.where(id: gon.recipes.map{|e|e[:image_id]}+gon.recipe_kinds.map{|e|e[:image_id]}).map {|e| e.to_obj }
     #TODO: Tools

@@ -792,3 +792,9 @@ input[type="radio"] {
   border-radius: 0.25em;
 }
 .instruction > *:last-child {margin-right: 0px;}
+
+.recipe-list li {
+  list-style-type: none;
+  padding: 0.25em;
+  border-bottom: 1px solid #ddd;
+}

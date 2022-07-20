@@ -2,16 +2,17 @@ import React, { useState, useEffect, useRef } from 'react'
 
 import {PercentageCompleted} from './helpers/recipes_helper'
 import { ajax, isBlank, normalizeSearchText } from "./utils"
-import { recipe_path, favorite_recipe_path, favorite_recipes_path } from "./routes"
+import { recipe_path, favorite_recipe_path, favorite_recipes_path, image_variant_path } from "./routes"
 import {EditUserRecipeModal} from './modals/edit_user_recipe'
 import { DeleteConfirmButton } from './components/delete_confirm_button'
 import { LinkToPage } from "./lib"
 
-let recipeForItem = (item) => {
-  return item.class_name == "recipe" ? item : {id: item.recipe_id, name: item.name}
+let recipeForItem = (item, recipes) => {
+  if (item.class_name == "recipe") {return item;}
+  return {id: item.recipe_id, name: item.name, image_used_id: item.image_used_id}
 }
 
-const RecipeList = ({page, list, original, selected, suggestions, tags, editUserRecipe, updateFavoriteRecipe, mixes}) => {
+const RecipeList = ({page, list, original, selected, suggestions, tags, editUserRecipe, updateFavoriteRecipe, mixes, recipes}) => {
 
   let removeItem = (item) => {
     if (item.class_name == "favorite_recipe") { // Delete recipes is not supported here
@@ -23,9 +24,9 @@ const RecipeList = ({page, list, original, selected, suggestions, tags, editUser
 
   //{!showPercentCompleted ? '' : <span>&nbsp;(<PercentageCompleted recipe={recipe}/>)</span>}
   return (<>
-    <ul id="recipes" className="list-group">
+    <ul id="recipes" className="recipe-list">
       {list.map((item, current) => {
-        let recipe = recipeForItem(item)
+        let recipe = recipeForItem(item, recipes)
         let recipeTags = suggestions.filter(suggestion => suggestion.recipe_id == recipe.id).map(suggestion => tags.find(t => t.id == suggestion.filter_id))
         let mix = mixes.find(e => e.recipe_id == recipe.id)
 
@@ -33,12 +34,17 @@ const RecipeList = ({page, list, original, selected, suggestions, tags, editUser
         let toTry = <button type="button" className="dropdown-item" onClick={() => updateFavoriteRecipe(item, 2)}>À essayer</button>
         let toNotCook = <button type="button" className="dropdown-item" onClick={() => updateFavoriteRecipe(item, 0)}>Ne plus cuisiner</button>
         let toNotTry = <button type="button" className="dropdown-item" onClick={() => updateFavoriteRecipe(item, 0)}>Ne plus essayer</button>
-        return (<span key={recipe.id}>
-          <li className="list-group-item" key={recipe.id}>
-            <LinkToPage page={{...page, page: 15, recipeId: recipe.id}} className={current == selected ? "selected" : undefined}>{recipe.name}</LinkToPage>
-            {mix ? <img src="logo_001.svg" width="24" height="24"/> : ''}
-            <span style={{color: 'gray', fontSize: '0.78em'}}>{recipeTags.map(tag => ` #${tag.name}`)} </span>
-            <span className="dropdown">
+        console.log('image_used_id', recipe.image_used_id)
+        return (
+          <li key={recipe.id} className='d-flex'>
+            <span>
+              <img src={recipe.image_used_id ? image_variant_path({id: recipe.image_used_id}, "thumb") : "/default_recipe_01_thumb.png"} width="71" height="48" style={{marginRight: '0.5em'}} />
+              <LinkToPage page={{...page, page: 15, recipeId: recipe.id}} style={{color: 'black', fontSize: '1.1em'}} className={current == selected ? "selected" : undefined}>{recipe.name}</LinkToPage>
+              {mix ? <img src="logo_001.svg" width="24" height="24"/> : ''}
+              <span style={{color: 'gray', fontSize: '0.78em'}}>{recipeTags.map(tag => ` #${tag.name}`)} </span>
+            </span>
+            <span className="flex-grow-1"/>
+            <span className="dropdown m-auto">
               <button className="plain-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                 <img src="icons/three-dots.svg"/>
               </button>
@@ -54,13 +60,13 @@ const RecipeList = ({page, list, original, selected, suggestions, tags, editUser
               </ul>
             </span>
           </li>
-        </span>)
+        )
       })}
     </ul>
   </>)
 }
 
-export const RecipeIndex = ({page, userRecipes, favoriteRecipes, suggestions, tags, mixes}) => {
+export const RecipeIndex = ({page, favoriteRecipes, suggestions, tags, mixes, recipes}) => {
   
   const inputField = useRef(null);
   const [search, setSearch] = useState('')
@@ -78,11 +84,11 @@ export const RecipeIndex = ({page, userRecipes, favoriteRecipes, suggestions, ta
   }
 
   let ids = favoriteRecipes.map(f => f.recipe_id)
-  let filteredUserRecipes = filterList(userRecipes.filter(r => !ids.includes(r.id)))
+  let filteredUserRecipes = filterList(recipes.filter(r => !ids.includes(r.id)))
   let toCookList = filterList(favoriteRecipes.filter(r => r.list_id == 1))
   let toTryList = filterList(favoriteRecipes.filter(r => r.list_id == 2))
   let otherList = filterList(favoriteRecipes.filter(r => !r.list_id || r.list_id >= 3))
-  let all = [...userRecipes, ...toCookList, ...toTryList, ...otherList]
+  let all = [...recipes, ...toCookList, ...toTryList, ...otherList]
 
   let select = (pos) => {
     setSelected(pos)
@@ -114,7 +120,7 @@ export const RecipeIndex = ({page, userRecipes, favoriteRecipes, suggestions, ta
     setShowModal(true)
   }
 
-  let listArgs = {page, selected, suggestions, tags, editUserRecipe, updateFavoriteRecipe, mixes}
+  let listArgs = {page, selected, suggestions, tags, editUserRecipe, updateFavoriteRecipe, mixes, recipes}
 
   return (<>
     <EditUserRecipeModal showModal={showModal} setShowModal={setShowModal} recipe={recipeToEdit} tags={tags} suggestions={suggestions} />
@@ -126,7 +132,7 @@ export const RecipeIndex = ({page, userRecipes, favoriteRecipes, suggestions, ta
     <h3>À essayer</h3>
     <RecipeList original={favoriteRecipes} list={toTryList} {...listArgs} />
     <h3>Mes recettes personnelles</h3>
-    <RecipeList original={userRecipes} list={filteredUserRecipes} {...listArgs} />
+    <RecipeList original={recipes} list={filteredUserRecipes} {...listArgs} />
     <h3>Mes recettes favorites</h3>
     <RecipeList original={favoriteRecipes} list={otherList} {...listArgs} />
   </>)

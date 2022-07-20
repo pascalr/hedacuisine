@@ -468,9 +468,9 @@ const labelForCmdType = (cmdType) => {
   return t ? t.label.fr : cmdType.id
 }
 
-export const EditMix = ({page, userRecipes, favoriteRecipes, machines, mixes, machineFoods}) => {
+export const EditMix = ({page, recipes, favoriteRecipes, machines, mixes, machineFoods}) => {
 
-  const context = {userRecipes, favoriteRecipes, machines, mixes, machineFoods}
+  const context = {recipes, favoriteRecipes, machines, mixes, machineFoods}
 
   const machine = page.machineId ? machines.find(m => m.id == page.machineId) : null
   const currentMachineFoods = machine ? machineFoods.filter(m => m.machine_id == machine.id) : machineFoods
@@ -594,10 +594,10 @@ export const EditMix = ({page, userRecipes, favoriteRecipes, machines, mixes, ma
     )
   })
 
-  const recipeIds = favoriteRecipes.map(r => r.recipe_id).concat(userRecipes.map(r => r.id))
+  const recipeIds = favoriteRecipes.map(r => r.recipe_id).concat(recipes.map(r => r.id))
   const recipeNames = {}
   favoriteRecipes.forEach(r => {recipeNames[r.recipe_id] = r.name})
-  userRecipes.forEach(r => {recipeNames[r.id] = r.name})
+  recipes.forEach(r => {recipeNames[r.id] = r.name})
     
   //  <br/><br/>
   //  <h2>Recette</h2>
@@ -633,16 +633,16 @@ const ShowRecipe = ({page}) => {
   return recipeHTML ? <div dangerouslySetInnerHTML={{__html: recipeHTML}} /> : ''
 }
 
-const EditRecipe = ({page, userRecipes, favoriteRecipes, machines, mixes, machineFoods, recipes, foods}) => {
+const EditRecipe = ({page, favoriteRecipes, machines, mixes, machineFoods, recipes, foods}) => {
   
   const recipe = recipes.find(e => e.id == page.recipeId)
 
   window.recipe_editor = useRef(null) // FIXME: This is really ugly
   gon.recipe = recipe // FIXME: This is really ugly
-  return <RecipeEditor {...{page, userRecipes, favoriteRecipes, machines, mixes, machineFoods, foods}} ref={window.recipe_editor}/>
+  return <RecipeEditor {...{page, favoriteRecipes, machines, mixes, machineFoods, foods}} ref={window.recipe_editor}/>
 }
   
-const ShowMix = ({page, userRecipes, favoriteRecipes, machines, mixes, machineFoods}) => {
+const ShowMix = ({page, recipes, favoriteRecipes, machines, mixes, machineFoods}) => {
 
   const machine = page.machineId ? machines.find(m => m.id == page.machineId) : null
   const currentMachineFoods = machine ? machineFoods.filter(m => m.machine_id == machine.id) : machineFoods
@@ -812,7 +812,7 @@ const MyBooks = () => {
   </>)
 }
 
-const MyRecipes = ({page, suggestions, tags, userRecipes, favoriteRecipes, mixes}) => {
+const MyRecipes = ({page, suggestions, tags, favoriteRecipes, recipes, mixes}) => {
 
   //const data = useCacheOrFetch(user_recipes_recipes_path())
   //const userRecipes = data ? data.userRecipes : null
@@ -824,7 +824,7 @@ const MyRecipes = ({page, suggestions, tags, userRecipes, favoriteRecipes, mixes
       <h2>Mes recettes</h2>
       <a href={new_recipe_path()} className="btn btn-outline-primary btn-sm">Nouvelle recette</a>
     </div>
-    <RecipeIndex page={page} userRecipes={userRecipes} favoriteRecipes={favoriteRecipes} loading={false} suggestions={suggestions} tags={tags} mixes={mixes} />
+    <RecipeIndex page={page} favoriteRecipes={favoriteRecipes} loading={false} suggestions={suggestions} tags={tags} mixes={mixes} recipes={recipes} />
   </>)
 }
 
@@ -838,7 +838,6 @@ const App = () => {
   const recipeFilters = useUpdatableState('recipeFilters', gon.recipe_filters)
   const suggestions = useUpdatableState('suggestions', gon.suggestions)
   const userTags = useUpdatableState('userTags', gon.user_tags)
-  const userRecipes = useUpdatableState('userRecipes', gon.user_recipes)
   const favoriteRecipes = useUpdatableState('favoriteRecipes', gon.favorite_recipes)
   const machines = useUpdatableState('machines', gon.machines)
   const machineFoods = useUpdatableState('machineFoods', gon.machine_foods)
@@ -847,7 +846,7 @@ const App = () => {
   const foods = useUpdatableState('foods', gon.foods)
   const recipes = useUpdatableState('recipes', gon.recipes)
 
-  const all = {page, recipeFilters, suggestions, userTags, userRecipes, favoriteRecipes, machines, machineFoods, containerQuantities, mixes, recipes, foods}
+  const all = {page, recipeFilters, suggestions, userTags, favoriteRecipes, machines, machineFoods, containerQuantities, mixes, recipes, foods}
 
   const [isSearching, setIsSearching] = useState(false)
 
@@ -875,7 +874,7 @@ const App = () => {
     [PAGE_3]: <EditFilter page={page} recipeFilters={recipeFilters} />,
     [PAGE_4]: <EditUserTags recipeFilters={recipeFilters}userTags={userTags} page={page} />,
     //5: <TrainFilter page={page} recipeFilters={recipeFilters} />,
-    [PAGE_6]: <MyRecipes {...{page, suggestions, recipeFilters, favoriteRecipes, userRecipes, tags: recipeFilters, mixes}} />,
+    [PAGE_6]: <MyRecipes {...{page, recipes, suggestions, recipeFilters, favoriteRecipes, tags: recipeFilters, mixes}} />,
     [PAGE_7]: <MyBooks page={page} />,
     [PAGE_8]: <TagEditAllCategories page={page} recipeFilters={recipeFilters} />,
     [PAGE_9]: <TagSuggestions page={page} suggestions={suggestions} tags={recipeFilters} />,

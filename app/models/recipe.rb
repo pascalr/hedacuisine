@@ -310,7 +310,7 @@ class Recipe < ApplicationRecord
   end
 
   def to_obj(params={})
-    extract_attributes(params, :name, :recipe_kind_id, :main_ingredient_id, :preparation_time, :cooking_time, :total_time, :raw_servings, :json, :use_personalised_image, :image_id)
+    extract_attributes(params, :name, :recipe_kind_id, :main_ingredient_id, :preparation_time, :cooking_time, :total_time, :raw_servings, :json, :use_personalised_image, :image_id, :image_used_id)
   end
 
 private
