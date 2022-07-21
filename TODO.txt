@@ -1,3 +1,5 @@
+TODO: Rechercher, qui afficher comme Recipe Index, mais qui affiche aussi les autres recettes possibles!
+
 Grandeur des batteurs: 3" de rayon - 1 1/8" offset orbitale = 1.875" - diamètre batteur - clearance = 1.875" - 0.125" - 0.125" = 1.625"
 
 Pour être pris facilement, il faudrait que le contenant mesure 5 1/2" maximum. Avec une hauteur de disons
