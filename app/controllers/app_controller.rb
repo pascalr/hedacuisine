@@ -11,6 +11,7 @@ class AppController < ApplicationController
     gon.container_quantities = current_user.container_quantities.includes(:container_format).map {|c| c.to_obj}
     gon.mixes = current_user.mixes.map {|e| e.to_obj}
     gon.recipes = current_user.recipes.order(:name).map {|e| e.to_obj}
+    gon.ingredient_sections = IngredientSection.where(recipe_id: gon.recipes.map{|e|e[:id]}).map {|e| e.to_obj}
     gon.recipe_kinds = RecipeKind.order(:name).map {|e| e.to_obj(only: [:name, :image_id])}
     gon.images = Image.where(id: gon.recipes.map{|e|e[:image_id]}+gon.recipe_kinds.map{|e|e[:image_id]}).map {|e| e.to_obj }
     #TODO: Tools

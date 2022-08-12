@@ -239,7 +239,7 @@ export class RecipeEditor extends React.Component {
       name: gon.recipe.name,
       ingredients: gon.recipe_ingredients.filter(e => e.recipe_id == gon.recipe.id) || [],
       noteIds: noteIds,
-      ingredient_sections: gon.recipe.ingredient_sections || [],
+      ingredient_sections: gon.ingredient_sections || [],
       toolIds: Object.keys(gon.recipe.tools || []),
       instructionsSlave: gon.recipe.complete_instructions,
       showImageModal: false,
@@ -385,7 +385,7 @@ export class RecipeEditor extends React.Component {
           {(provided) => (
             <div className="item-container" ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
               <h3 style={{margin: "0", padding: "0.5em 0 0.2em 0"}}>
-                <TextField model={item} field="name" className="plain-input" />
+                <TextField model={item} field="name" className="plain-input" url={recipe_ingredient_section_path({id: item.recipe_id}, {id: item.id})} />
                 <span style={{margin: "0 0.2em"}}>
                   <DeleteConfirmButton id={`del-${sectionId}`} onDeleteConfirm={() => this.removeIngSection(section)} message="Je veux enlever ce titre?" />
                 </span>

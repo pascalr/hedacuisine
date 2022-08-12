@@ -34,7 +34,6 @@ const RecipeList = ({page, list, original, selected, suggestions, tags, editUser
         let toTry = <button type="button" className="dropdown-item" onClick={() => updateFavoriteRecipe(item, 2)}>À essayer</button>
         let toNotCook = <button type="button" className="dropdown-item" onClick={() => updateFavoriteRecipe(item, 0)}>Ne plus cuisiner</button>
         let toNotTry = <button type="button" className="dropdown-item" onClick={() => updateFavoriteRecipe(item, 0)}>Ne plus essayer</button>
-        console.log('image_used_id', recipe.image_used_id)
         return (
           <li key={recipe.id} className='d-flex'>
             <span>

@@ -125,6 +125,8 @@ function convertFormDataValue(val) {
 **/
 export function ajax(params) {
 
+  console.log('ajax', params)
+
   if (!params.url) {throw "ajax missing params url"}
 
   // I think using FormData is better in order to be able to send files.

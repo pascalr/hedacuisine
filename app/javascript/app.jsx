@@ -812,6 +812,26 @@ const MyBooks = () => {
   </>)
 }
 
+const useTransition = (initial, current, final) => {
+  const [state, setState] = useState(initial)
+
+  useEffect(() => {
+    setState(final)
+  }, [current])
+
+  return state
+}
+
+const SearchBox = ({shown}) => {
+  const height = useTransition('0', shown ? '100vh' : '0', '100vh')
+  if (!shown) {return ''}
+  return (<>
+    <div style={{height: height, backgroundColor: '#cff', transition: 'height 1s'}}>
+      <h2>Rechercher</h2>
+    </div>
+  </>)
+}
+
 const MyRecipes = ({page, suggestions, tags, favoriteRecipes, recipes, mixes}) => {
 
   //const data = useCacheOrFetch(user_recipes_recipes_path())
@@ -902,16 +922,15 @@ const App = () => {
   // Pour recevoir des invités => (page suivantes, quelles restrictions => véganes)
   return (<>
     <div className="d-flex align-items-center">
-      {isSearching ? '' : moveBtn}
+      {moveBtn}
       <div className="flex-grow-1"/>
       <h1 style={{marginBottom: "0"}} className="clickable" onClick={() => changePage(1)}>Qu'est-ce qu'on mange?</h1>
       <div className="flex-grow-1"/>
-      {page.page == 6 ? '' : <img className="clickable" src={icon_path("search_black.svg")} width="24" onClick={() => {setIsSearching(!isSearching)}}/>}
+      <img className="clickable" src={icon_path("search_black.svg")} width="24" onClick={() => {setIsSearching(!isSearching)}}/>
     </div>
     <hr style={{color: "#aaa", marginTop: "0"}}/>
-    {isSearching ? <>
-      {pages[6]}
-    </> : pages[page.page || 1]}
+    <SearchBox shown={isSearching}/>
+    {pages[page.page || 1]}
   </>)
 }
 
