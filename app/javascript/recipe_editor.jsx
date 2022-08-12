@@ -356,8 +356,7 @@ export class RecipeEditor extends React.Component {
       console.log("dropping ingredient section at ", droppedRecord.before_ing_nb)
       let data = new FormData()
       data.append('ingredient_section[before_ing_nb]', droppedRecord.before_ing_nb)
-      throw "FIXME: droppedRecord.url", droppedRecord
-      ajax({url: droppedRecord.url, type: 'PATCH', data: data})
+      ajax({url: recipe_ingredient_section_path({id: droppedRecord.recipe_id}, droppedRecord), type: 'PATCH', data: data})
       this.setState({ingredient_sections: [...others, droppedRecord]})
     }
   }
