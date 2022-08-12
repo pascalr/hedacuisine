@@ -363,7 +363,7 @@ export class RecipeEditor extends React.Component {
   }
 
   removeIngSection(section) {
-    ajax({url: recipe_recipe_section_path(gon.recipe, section), type: 'DELETE', success: () => {
+    ajax({url: recipe_ingredient_section_path({id: section.recipe_id}, section), type: 'DELETE', success: () => {
       let sections = this.state.ingredient_sections.filter(i => i.id != section.id)
       this.setState({ingredient_sections: sections})
     }})
@@ -387,7 +387,7 @@ export class RecipeEditor extends React.Component {
               <h3 style={{margin: "0", padding: "0.5em 0 0.2em 0"}}>
                 <TextField model={item} field="name" className="plain-input" url={recipe_ingredient_section_path({id: item.recipe_id}, {id: item.id})} />
                 <span style={{margin: "0 0.2em"}}>
-                  <DeleteConfirmButton id={`del-${sectionId}`} onDeleteConfirm={() => this.removeIngSection(section)} message="Je veux enlever ce titre?" />
+                  <DeleteConfirmButton id={`del-${sectionId}`} onDeleteConfirm={() => this.removeIngSection(item)} message="Je veux enlever ce titre?" />
                 </span>
               </h3>
             </div>

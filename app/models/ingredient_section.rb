@@ -6,6 +6,6 @@ class IngredientSection < ApplicationRecord
   end
 
   def to_obj(params={})
-    extract_attributes(params, :before_ing_nb, :name)
+    extract_attributes(params, :before_ing_nb, :name, :recipe_id)
   end
 end
