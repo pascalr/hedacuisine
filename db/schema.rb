@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_19_212228) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_17_135942) do
   create_table "accounts", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -557,40 +557,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_19_212228) do
     t.datetime "updated_at", null: false
     t.index ["recipe_id"], name: "index_recipe_tools_on_recipe_id"
     t.index ["tool_id"], name: "index_recipe_tools_on_tool_id"
-  end
-
-  create_table "recipes", force: :cascade do |t|
-    t.string "name"
-    t.string "source"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "user_id"
-    t.text "instructions"
-    t.integer "group_id"
-    t.string "version_name"
-    t.text "complete_instructions"
-    t.integer "image_id"
-    t.integer "preparation_time"
-    t.integer "cooking_time"
-    t.integer "servings_quantity"
-    t.string "servings_name"
-    t.integer "total_time"
-    t.boolean "is_public"
-    t.boolean "is_gluten_free"
-    t.boolean "is_vegetarian"
-    t.boolean "is_vegan"
-    t.integer "base_recipe_id"
-    t.text "description"
-    t.integer "main_ingredient_id"
-    t.integer "version_nb"
-    t.integer "kind_id"
-    t.text "content"
-    t.text "text"
-    t.integer "recipe_kind_id"
-    t.boolean "mods_unpublished"
-    t.text "json"
-    t.text "html"
-    t.boolean "use_personalised_image"
   end
 
   create_table "references", force: :cascade do |t|
