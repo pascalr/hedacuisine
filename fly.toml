@@ -1,4 +1,5 @@
 # fly.toml file generated for heda-cuisine on 2022-09-15T17:52:15-04:00
+# fly ssh console -C "/app/bin/rails console" => To run a rails console
 
 app = "heda-cuisine"
 kill_signal = "SIGINT"
