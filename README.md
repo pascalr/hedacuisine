@@ -1,3 +1,13 @@
+Je veux pouvoir voir le contenu sur une application, et sur le web.
+Je veux pouvoir modifier le contenu sur le web.
+Dans le fond, je veux un client qui se connecte à la base de donnée, et je veux un serveur qui gère la base de données.
+Mon client est en js. Je cherche un remplacement pour le serveur qui est plus lightweight que Ruby on Rails.
+SQLite3 with Node.js?
+Je peux déjà avoir un serveur PostgresSQL sur Fly.io, alors simplement utilisé ça...
+Ça n'a pas l'air d'être possible. Probablement par sécurité.
+Donc, faire une app Node.js minimaliste. Elle contient un système de authentification et une query get_data(user: ...) qui te retourne toute l'info. Un peu
+comme je fais présentemment anyway. Database en SQLITE3. Dans la query, je vais faire plein de select all, mettre ça dans un objet et tout retourner.
+
 # HedaCuisine
 
 Un repository qui contient le code pour faire fonctionner le site internet dynamique de hedacuisine.com.
