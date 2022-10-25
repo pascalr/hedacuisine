@@ -54,6 +54,7 @@ Rails.application.routes.draw do
   resources :images do
     member do
       patch 'process_image'
+      get 'original', defaults: {locale: nil}, as: nil, action: 'original'
       get ':variant', defaults: {locale: nil}, as: nil, action: 'variant'
     end
   end

@@ -3,9 +3,9 @@ class ImagesController < ApplicationController
   #include ActiveStorage::SetCurrent # For images path. (thumb, small, medium, original, ...)
   #include ActiveStorage::FileServer # For serve_file method
 
-  before_action :set_image, only: [:show, :update, :destroy, :edit, :process_image, :variant]
-  skip_before_action :authenticate_account!, only: [:variant]
-  skip_before_action :only_admin!, only: [:variant]
+  before_action :set_image, only: [:show, :update, :destroy, :edit, :process_image, :variant, :original]
+  skip_before_action :authenticate_account!, only: [:variant, :original]
+  skip_before_action :only_admin!, only: [:variant, :original]
 
   #around_filter :silence_action, :only => :variant
   #def silence_action
@@ -37,6 +37,9 @@ class ImagesController < ApplicationController
   end
   def variant
     send_image @image.variant(params[:variant])
+  end
+  def original
+    redirect_to @image.original
   end
 
   def show

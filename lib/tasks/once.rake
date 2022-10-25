@@ -1,5 +1,11 @@
 namespace :once do
 
+  task download_all_images: :environment do
+    Image.all.each do |image|
+      system("wget localhost:3000/images/#{image.id}/original.jpg -O images/#{image.id}.jpg")
+    end
+  end
+
   task set_recipe_ingredients_raw_food: :environment do
     RecipeIngredient.all.each do |e|
       if e.raw_food.blank? && e.food
