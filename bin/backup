@@ -1,3 +1,3 @@
 #!/bin/bash
-heroku pg:backups:capture
-heroku pg:backups:download
+heroku pg:backups:capture -a aqueous-fortress-30634
+heroku pg:backups:download -a aqueous-fortress-30634
