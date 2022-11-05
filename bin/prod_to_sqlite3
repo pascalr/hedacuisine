@@ -3,7 +3,7 @@
 path = "db/migrated.sqlite3"
 system("rm #{path}") if File.file? path
 
-raw = `heroku config | grep DATABASE_URL`
+raw = `heroku config -a aqueous-fortress-30634 | grep DATABASE_URL`
 db_path = raw[(raw.index('postgres://'))..-1].strip
 
 # FIXME: The application sequel was not installed and this command was not showing any error when running the script...
